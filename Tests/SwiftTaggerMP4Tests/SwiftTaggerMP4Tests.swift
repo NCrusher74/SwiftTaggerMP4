@@ -2,14 +2,83 @@ import XCTest
 @testable import SwiftTaggerMP4
 
 final class SwiftTaggerMP4Tests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(SwiftTaggerMP4().text, "Hello, World!")
+    @available(OSX 10.12, *)
+    func testReading() throws {
+
+        let reading = try tag(withMeta: true)
+            
+        XCTAssertEqual(reading.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(reading.album, "Album")
+        XCTAssertEqual(reading.albumArtist, "AlbumArtist")
+        XCTAssertEqual(reading.albumArtistSort, "SortAlbumArtist")
+        XCTAssertEqual(reading.albumSort, "SortAlbum")
+        XCTAssertEqual(reading.arranger, "Arranger")
+        XCTAssertEqual(reading.artDirector, "ArtDirector")
+        XCTAssertEqual(reading.artist, "Artist")
+        XCTAssertEqual(reading.artistSort, "SortArtist")
+        XCTAssertEqual(reading.bpm, 99)
+        XCTAssertEqual(reading.comments, "Comments")
+        XCTAssertEqual(reading.compilation, true)
+        XCTAssertEqual(reading.composer, "Composer")
+        XCTAssertEqual(reading.composerSort, "SortComposer")
+        XCTAssertEqual(reading.conductor, "Conductor")
+        XCTAssertEqual(reading.contentRating, .clean)
+        XCTAssertEqual(reading.copyright, "2020 Copyright")
+        XCTAssertEqual(reading.description, "Description")
+        XCTAssertEqual(reading.discNumber, [3,4])
+        XCTAssertEqual(reading.encodingTool, "EncodedBy")
+        XCTAssertEqual(reading.episodeNumber, 5)
+        XCTAssertEqual(reading.execProducer, "ExecutiveProducer")
+        XCTAssertEqual(reading.genre, "Genre")
+        XCTAssertEqual(reading.grouping, "Grouping")
+        XCTAssertEqual(reading.linerNotes, "LinerNotes")
+        XCTAssertEqual(reading.longDescription, "LongDescription")
+        XCTAssertEqual(reading.lyricist, "Lyricist")
+        XCTAssertEqual(reading.lyrics, "Lyrics")
+        XCTAssertEqual(reading.mediaKind, 1)
+        XCTAssertEqual(reading.movementName, "MovementName")
+        XCTAssertEqual(reading.movementNumber, 7)
+        XCTAssertEqual(reading.network, "Network")
+        XCTAssertEqual(reading.onlineExtras, "www.onlineextras.com")
+        XCTAssertEqual(reading.originalArtist, "OriginalArtist")
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        let originalReleaseDate = formatter.date(from: "1999-05-08")
+
+        XCTAssertEqual(reading.originalReleaseDate, originalReleaseDate)
+        XCTAssertEqual(reading.performer, "Performer")
+        XCTAssertEqual(reading.phonogramRights, "PhonogramRights")
+        XCTAssertEqual(reading.podcast, true)
+        XCTAssertEqual(reading.podcastCategory, "Category")
+        XCTAssertEqual(reading.podcastKeywords, "Keywords")
+        XCTAssertEqual(reading.podcastUrl, "http://podcastfeed.url")
+        XCTAssertEqual(reading.producer, "SongProducer")
+        XCTAssertEqual(reading.publisher, "Publisher")
+        let purchaseDate = formatter.date(from: "1998-06-07")
+        XCTAssertEqual(reading.purchaseDate, purchaseDate)
+        XCTAssertEqual(reading.recordCompany, "Label")
+        let releaseDate = formatter.date(from: "1997-08-09")
+        XCTAssertEqual(reading.releaseDate, releaseDate)
+        XCTAssertEqual(reading.season, 6)
+        XCTAssertEqual(reading.series, "SeriesTitle")
+        XCTAssertEqual(reading.seriesDescription, "SeriesDescription")
+        XCTAssertEqual(reading.seriesSort, "SortSeries")
+        XCTAssertEqual(reading.setSubtitle, "SetSubtitle")
+        XCTAssertEqual(reading.soloist, "Soloist")
+        XCTAssertEqual(reading.songDescription, "SongDescription")
+        XCTAssertEqual(reading.soundEngineer, "SoundEngineer")
+        XCTAssertEqual(reading.sourceCredit, "Credits")
+        let taggingTime = formatter.date(from: "1996-10-11")
+        XCTAssertEqual(reading.taggingTime, taggingTime)
+        XCTAssertEqual(reading.thanks, "Thanks")
+        XCTAssertEqual(reading.title, "Title")
+        XCTAssertEqual(reading.titleSort, "SortName")
+        XCTAssertEqual(reading.totalMovements, 8)
+        XCTAssertEqual(reading.trackNumber, [1,2])
+        XCTAssertEqual(reading.workName, "WorkName")
+        let year = formatter.date(from: "1995")
+        XCTAssertEqual(reading.year, year)
+
     }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
