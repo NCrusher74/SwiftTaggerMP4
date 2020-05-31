@@ -64,7 +64,8 @@ func emptyDirectory() throws {
 func localDirectory(fileName: String, fileExtension: String) throws -> URL {
     let home = FileManager.default.homeDirectoryForCurrentUser
     let desktopPath = "Desktop/TestOutput"
-    let directory = home.appendingPathComponent(
-        desktopPath, isDirectory: true)
-    return directory.appendingPathComponent(fileName).appendingPathExtension(fileExtension)
+    try FileManager.default.createDirectory(
+        at: home.appendingPathComponent(desktopPath, isDirectory: true),
+        withIntermediateDirectories: true)
+    return home.appendingPathComponent(desktopPath, isDirectory: true).appendingPathComponent(fileName).appendingPathExtension(fileExtension)
 }

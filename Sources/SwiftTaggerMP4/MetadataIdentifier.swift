@@ -31,7 +31,7 @@ enum MetadataIdentifier: String, CaseIterable {
     case conductor = "©con"
     case contentAdvisory = "[iTunEXTC]"
     case contentRating = "rtng"
-    case copyright = "©cpy"
+    case copyright = "cprt"
     case copyrightWebpage = "[COPYRIGHT URL]"
     case description = "desc"
     case director = "©dir"

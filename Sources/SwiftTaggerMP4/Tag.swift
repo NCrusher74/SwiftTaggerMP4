@@ -88,7 +88,8 @@ extension Tag {
     }
     
     private func intArrayFromData(for identifier: MetadataIdentifier) -> [Int]? {
-        if identifier.keyFormat == .data && (identifier == .trackNumber || identifier == .discNumber) {
+        if identifier.keyFormat == .data &&
+            (identifier == .trackNumber || identifier == .discNumber) {
             let key = identifier.rawValue
             let items = AVMetadataItem.metadataItems(
                 from: self.metadata,
@@ -96,6 +97,9 @@ extension Tag {
                 keySpace: identifier.keyspace)
             if let item = items.first {
                 #warning("this doesn't work yet")
+                // disc data is 0 0 0 3 0 4
+                // track data is 0 0 0 1 0 2 0 0
+                // need to figure out how to predict and parse that
                 let itemArray = NSArray(object: item.dataValue ?? [])
                 return itemArray as? [Int]
             } else {
@@ -104,7 +108,6 @@ extension Tag {
         } else {
             return nil
         }
-        
     }
     
     private mutating func set(_ identifier: MetadataIdentifier, to integer: Int) {
@@ -227,7 +230,7 @@ extension Tag {
             metadataItem.keySpace = .iTunes
             metadataItem.key = identifier.rawValue as NSString
             metadataItem.value = date as NSDate
-            self.metadata.append(metadataItem)
+            metadata.append(metadataItem)
             
         }
     }
@@ -402,8 +405,10 @@ extension Tag {
     }
     
     public var discNumber: [Int]? {
-        get { if let item = intArrayFromData(for: .discNumber) { return item }
-        else { return nil } }
+        get {
+            if let item = intArrayFromData(for: .discNumber)
+            { return item }
+            else { return nil } }
         set { set(.discNumber, to: newValue ?? []) }
     }
     
@@ -454,13 +459,13 @@ extension Tag {
         }
         set { set(.genreID, to: newValue?.rawValue ?? 0) }
     }
-
+    
     public var genre: String? {
         get { if let item = string(for: .genre) { return item }
         else { return nil } }
         set { set(.genre, to: newValue ?? "") }
     }
-
+    
     public var grouping: String? {
         get { if let item = string(for: .grouping) { return item }
         else { return nil } }
@@ -502,7 +507,7 @@ extension Tag {
         }
         set { set(.language, to: newValue?.rawValue ?? "") }
     }
-
+    
     public var linerNotes: String? {
         get { if let item = string(for: .linerNotes) { return item }
         else { return nil } }
@@ -797,7 +802,7 @@ extension Tag {
         set { set(.network, to: newValue ?? "") }
     }
     
-    public var workName: String? {
+    public var work: String? {
         get { if let item = string(for: .workName) { return item }
         else { return nil } }
         set { set(.workName, to: newValue ?? "") }
