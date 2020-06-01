@@ -28,40 +28,6 @@ public struct Mp4File {
     public func read() throws {
         _ = Tag(readFrom: self)
     }
-
-//    public func write(using tag: Tag,
-//                      of fileType: AVFileType,
-//                      writingTo url: URL) throws {
-//        var exportSession = AVAssetExportSession(
-//            asset: self.asset,
-//            presetName: AVAssetExportPresetPassthrough)
-//        exportSession?.outputURL = url
-//        exportSession?.outputFileType = fileType
-//        exportSession?.metadata = tag.metadata
-//        exportSession?.exportAsynchronously(completionHandler: {
-//            if exportSession?.error != nil {
-//                print(exportSession?.error as Any)
-//            }else{
-//                print("success creating m4b")
-//            }
-//        })
-//    }
-  
     
-    public func write(outputUrl: URL, using tag: Tag) {
-        let exportSession = AVAssetExportSession(
-            asset: self.asset,
-            presetName: AVAssetExportPresetPassthrough)
-        exportSession?.outputURL = outputUrl
-        exportSession?.outputFileType = AVFileType.m4a
-        exportSession?.metadata = tag.metadata
-        exportSession?.exportAsynchronously(completionHandler: {
-            if exportSession?.error != nil {
-                print(exportSession?.error as Any)
-            }else{
-                print("success creating m4b")
-            }
-        })
-    }
 
 }

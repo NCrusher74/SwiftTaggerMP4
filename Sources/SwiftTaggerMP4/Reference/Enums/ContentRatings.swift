@@ -17,7 +17,7 @@ public enum ContentRating: Int {
 
 public enum ContentAdvisory: String {
     
-    case unrated = "unrated|???|"
+    case unknown = ""
     case usMovieNR = "mpaa|NR|000|"
     case usMovieG = "mpaa|G|100|"
     case usMoviePG = "mpaa|PG|200|"
