@@ -38,9 +38,9 @@ func mp4File(withMeta: Bool) throws -> Mp4File {
 
 func tag(withMeta: Bool) throws -> Tag {
     if withMeta {
-        return try Tag(readFrom: mp4File(withMeta: true))
+        return try Tag(from: mp4File(withMeta: true))
     } else {
-        return try Tag(readFrom: mp4File(withMeta: false))
+        return try Tag(from: mp4File(withMeta: false))
     }
 }
 
