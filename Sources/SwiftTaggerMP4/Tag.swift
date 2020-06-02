@@ -119,11 +119,68 @@ extension Tag {
         set { set(metadataItem: .comment, to: newValue ?? "") }
     }
 
+    #warning("This doesn't work on the writing side. Now sure if it's due to the Bool -> NSNumber conversion or what")
     var compilation: Bool? {
         get { boolean(for: .compilation) }
         set { set(metadataItem: .bpm, to: newValue ?? false) }
     }
 
+    var composer: String? {
+        get { string(for: .composer) }
+        set { set(metadataItem: .composer, to: newValue ?? "") }
+    }
+
+    var conductor: String? {
+        get { string(for: .conductor) }
+        set { set(metadataItem: .conductor, to: newValue ?? "") }
+    }
+
+    var contentRating: ContentRating? {
+        get {
+            guard let int = integer(for: .contentRating)
+                else { return ContentRating(rawValue: 0) }
+            if let rating = ContentRating(rawValue: int) {
+                return rating
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(metadataItem: .contentRating, to: new.rawValue)
+            }
+        }
+    }
+
+    var copyright: String? {
+        get { string(for: .copyright) }
+        set { set(metadataItem: .copyright, to: newValue ?? "") }
+    }
+
+    var description: String? {
+        get { string(for: .description) }
+        set { set(metadataItem: .description, to: newValue ?? "") }
+    }
+
+    var director: String? {
+        get { string(for: .director) }
+        set { set(metadataItem: .director, to: newValue ?? "") }
+    }
+    
+    var discNumber: [Int]? {
+        get {
+            let items = AVMetadataItem.metadataItems(
+                from: self.metadata,
+                filteredByIdentifier: Metadata.disc.identifier)
+            if let item = items.first {
+                let itemData = item.dataValue
+                
+            } else {
+                return nil
+            }
+        }
+    }
+    
 }
 
 //@available(OSX 10.12, *)

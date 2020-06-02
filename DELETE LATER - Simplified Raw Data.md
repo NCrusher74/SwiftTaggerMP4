@@ -2,11 +2,11 @@ Keyspace: itsk:
 ////////////////////////////////////////////
 (RAW DATA)
 Identifier: trkn
-Value: <00000001 00020000>
+Value: <00 00 00 01 00 02 00 00> // 0 0 0 1 0 2 0 0
 DataType: raw-data
 
 Identifier: disk
-Value: <00000003 0004>
+Value: <00 00 00 03 00 04> // 0 0 0 3 0 4
 DataType: raw-data
 
 Identifier: purl

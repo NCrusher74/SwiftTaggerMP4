@@ -11,6 +11,7 @@ import AVFoundation
 
 enum Metadata: CaseIterable {
     
+    #warning("Commented out items here are custom tags that will later be added for ID3 compatibility")
     case acknowledgment
     case album
     case albumArtist
@@ -26,6 +27,14 @@ enum Metadata: CaseIterable {
     case bpm
     case comment
     case compilation
+    case composer
+    // case composerSort
+    case conductor
+    case contentRating
+    case copyright
+    case description
+    case director
+    case disc
     
     
     var identifier: AVMetadataIdentifier {
@@ -39,6 +48,13 @@ enum Metadata: CaseIterable {
             case .bpm: return .iTunesMetadataBeatsPerMin
             case .comment: return .iTunesMetadataUserComment
             case .compilation: return .iTunesMetadataDiscCompilation
+            case .composer: return .iTunesMetadataComposer
+            case .conductor: return .iTunesMetadataConductor
+            case .contentRating: return .iTunesMetadataContentRating
+            case .copyright: return .iTunesMetadataCopyright
+            case .description: return .iTunesMetadataDescription
+            case .director: return .iTunesMetadataDirector
+            case .disc: return .iTunesMetadataDiscNumber
         }
     }
     
@@ -53,36 +69,25 @@ enum Metadata: CaseIterable {
             case .bpm: return .iTunesMetadataKeyBeatsPerMin
             case .comment: return .iTunesMetadataKeyUserComment
             case .compilation: return .iTunesMetadataKeyDiscCompilation
+            case .composer: return .iTunesMetadataKeyComposer
+            case .conductor: return .iTunesMetadataKeyConductor
+            case .contentRating: return .iTunesMetadataKeyContentRating
+            case .copyright: return .iTunesMetadataKeyCopyright
+            case .description: return .iTunesMetadataKeyDescription
+            case .director: return .iTunesMetadataKeyDirector
+            case .disc: return .iTunesMetadataKeyDiscNumber
         }
     }
     
     var metadataFormat: AVMetadataFormat {
         switch self {
-            case .acknowledgment,
-                 .album,
-                 .albumArtist,
-                 .arranger,
-                 .artDirector,
-                 .artist,
-                 .bpm,
-                 .comment,
-                 .comment,
-                 .compilation: return AVMetadataFormat.iTunesMetadata
+            default: return AVMetadataFormat.iTunesMetadata
         }
     }
     
     var keySpace: AVMetadataKeySpace {
         switch self {
-            case .acknowledgment,
-                 .album,
-                 .albumArtist,
-                 .arranger,
-                 .artDirector,
-                 .artist,
-                 .bpm,
-                 .comment,
-                 .comment,
-                 .compilation: return AVMetadataKeySpace.iTunes
+            default: return AVMetadataKeySpace.iTunes
         }
     }
     
@@ -98,60 +103,34 @@ enum Metadata: CaseIterable {
     
     var format: Format {
         switch self {
-            case .acknowledgment,
-                 .album,
-                 .albumArtist,
-                 .arranger,
-                 .artDirector,
-                 .artist,
-                 .comment: return Format.string
-            case .bpm: return Format.integer
+            case .bpm,
+                 .contentRating: return Format.integer
             case .compilation: return Format.boolean
+            case .disc: return Format.intArray
+            default: return Format.string
         }
     }
 }
 
-//    case comments = "©cmt"
-//    case compilation = "cpil"
-//    case composer = "©wrt"
-//    case composerSort = "soco"
-//    case conductor = "©con"
-//    case contentAdvisory = "[iTunEXTC]"
-//    case contentRating = "rtng"
-//    case copyright = "cprt"
-//    case copyrightWebpage = "[COPYRIGHT URL]"
-//    case description = "desc"
-//    case director = "©dir"
-//    case discNumber = "disk"
 //    case encodedBy = "©enc"
 //    case encodingTool = "©too"
-//    case encodingSettings = "[ENCODING]"
-//    case encodingTime = "[ENCODINGTIME]"
 //    case executiveProducer = "©xpd"
 //    case fileType = "©fmt"
 //    case genre = "©gen"
 //    case genreID = "gnre"
 //    case grouping = "©grp"
 //    case isrc = "©isr"
-//    case initialKey = "[KEY]"
-//    case language = "[LANGUAGE]"
 //    case linerNotes = "©lnt"
 //    case longDescription = "ldes"
 //    case lyricist = "©aut"
 //    case lyrics = "©lyr"
 //    case mediaKind = "stik"
-//    case mood = "[MOOD]"
 //    case movementCount = "©mvc"
 //    case movementName = "©mvn"
 //    case movementNumber = "©mvi"
 //    case narrator = "©nrt"
 //    case onlineExtras = "©url"
-//    case originalAlbum = "[ORIGINAL ALBUM]"
 //    case originalArtist = "©ope"
-//    case originalFilename = "[ORIGINAL FILENAME]"
-//    case originalLyricist = "[ORIGINAL LYRICIST]"
-//    case originalReleaseDate = "[ORIGINAL YEAR]"
-//    case paymentWebpage = "[PAYMENT_URL]"
 //    case performer = "©prf"
 //    case podcast = "pcst"
 //    case podcastCategory = "catg"
@@ -161,22 +140,16 @@ enum Metadata: CaseIterable {
 //    case phonogramRights = "©phg"
 //    case producers = "©prd"
 //    case publisher = "©pub"
-//    case publisherWebpage = "[LABEL_URL]"
 //    case purchaseDate = "purd"
-//    case radioStation = "[RADIO_STATION]"
-//    case radioStationOwner = "[STATION_OWNER]"
-//    case radioStationWebpage = "[OFFICIAL_RADIO_URL]"
 //    case recordCompany = "©mak"
 //    case recordingDate = "©day"
 //    case releaseDate = "rldt"
 //    case seriesDescription = "sdes"
 //    case setSubtitle = "©st3"
 //    case soloist = "©sol"
-//    case songDescription = "©des"
 //    case soundEngineer = "©sne"
 //    case sourceCredit = "©src"
 //    case subtitle = "©snm"
-//    case taggingTime = "[TAGGINGTIME]"
 //    case thanks = "©thx"
 //    case title = "©nam"
 //    case titleSort = "sonm"
@@ -193,3 +166,25 @@ enum Metadata: CaseIterable {
 
 // case albumArtistSort
 // case albumSort
+// case artistSort
+// case artistWebpage
+// case audioFileWebpage
+// case audioSourceWebpage
+// case contentAdvisory = "[iTunEXTC]"
+// case copyrightWebpage = "[COPYRIGHT URL]"
+// case songDescription = "©des"
+//    case encodingSettings = "[ENCODING]"
+//    case encodingTime = "[ENCODINGTIME]"
+//    case initialKey = "[KEY]"
+//    case language = "[LANGUAGE]"
+//    case mood = "[MOOD]"
+//    case originalAlbum = "[ORIGINAL ALBUM]"
+//    case originalFilename = "[ORIGINAL FILENAME]"
+//    case originalLyricist = "[ORIGINAL LYRICIST]"
+//    case originalReleaseDate = "[ORIGINAL YEAR]"
+//    case paymentWebpage = "[PAYMENT_URL]"
+//    case publisherWebpage = "[LABEL_URL]"
+//    case radioStation = "[RADIO_STATION]"
+//    case radioStationOwner = "[STATION_OWNER]"
+//    case radioStationWebpage = "[OFFICIAL_RADIO_URL]"
+//    case taggingTime = "[TAGGINGTIME]"
