@@ -22,65 +22,108 @@ public struct Tag {
 
 extension Tag {
     
+    private func string(for identifier: Metadata) -> String? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            filteredByIdentifier: identifier.identifier)
+        if let item = items.first {
+            return item.stringValue
+        } else {
+            return nil
+        }
+    }
+
+    private func integer(for identifier: Metadata) -> Int? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            filteredByIdentifier: identifier.identifier)
+        if let item = items.first {
+            return item.numberValue as? Int
+        } else {
+            return nil
+        }
+    }
+
+    private func boolean(for identifier: Metadata) -> Bool? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            filteredByIdentifier: identifier.identifier)
+        if let item = items.first {
+            return item.numberValue?.boolValue
+        } else {
+            return nil
+        }
+    }
+
+    private mutating func set(metadataItem: Metadata, to string: String) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.key as NSString
+        item.value = string as NSString
+        self.metadata.append(item)
+    }
+
+    private mutating func set(metadataItem: Metadata, to integer: Int) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.key as NSString
+        item.value = integer as NSNumber
+        self.metadata.append(item)
+    }
+
+    private mutating func set(metadataItem: Metadata, to boolean: Bool) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.key as NSString
+        item.value = boolean as NSNumber
+        self.metadata.append(item)
+    }
+
     var acknowledgment: String? {
-        get {
-            let items = AVMetadataItem.metadataItems(
-                from: self.metadata,
-                filteredByIdentifier: Metadata.acknowledgment.identifier)
-            if let item = items.first {
-                return item.stringValue
-            } else {
-                return nil
-            }
-        }
-        set {
-            let item = AVMutableMetadataItem()
-            item.keySpace = Metadata.acknowledgment.keySpace
-            item.key = Metadata.acknowledgment.key as NSString
-            item.value = (newValue ?? "") as NSString
-            self.metadata.append(item)
-        }
+        get { string(for: .acknowledgment) }
+        set { set(metadataItem: .acknowledgment, to: newValue ?? "") }
     }
     
     var album: String? {
-        get {
-            let items = AVMetadataItem.metadataItems(
-                from: self.metadata,
-                filteredByIdentifier: Metadata.album.identifier)
-            if let item = items.first {
-                return item.stringValue
-            } else {
-                return nil
-            }
-        }
-        set {
-            let item = AVMutableMetadataItem()
-            item.keySpace = Metadata.album.keySpace
-            item.key = Metadata.album.key as NSString
-            item.value = (newValue ?? "") as NSString
-            self.metadata.append(item)
-        }
+        get { string(for: .album) }
+        set { set(metadataItem: .album, to: newValue ?? "") }
     }
     
     var albumArtist: String? {
-        get {
-            let items = AVMetadataItem.metadataItems(
-                from: self.metadata,
-                filteredByIdentifier: Metadata.albumArtist.identifier)
-            if let item = items.first {
-                return item.stringValue
-            } else {
-                return nil
-            }
-        }
-        set {
-            let item = AVMutableMetadataItem()
-            item.keySpace = Metadata.albumArtist.keySpace
-            item.key = Metadata.albumArtist.key as NSString
-            item.value = (newValue ?? "") as NSString
-            self.metadata.append(item)
-        }
+        get { string(for: .albumArtist) }
+        set { set(metadataItem: .albumArtist, to: newValue ?? "") }
     }
+
+    var arranger: String? {
+        get { string(for: .arranger) }
+        set { set(metadataItem: .arranger, to: newValue ?? "") }
+    }
+
+    var artDirector: String? {
+        get { string(for: .artDirector) }
+        set { set(metadataItem: .artDirector, to: newValue ?? "") }
+    }
+
+    var artist: String? {
+        get { string(for: .artist) }
+        set { set(metadataItem: .artist, to: newValue ?? "") }
+    }
+
+    var bpm: Int? {
+        get { integer(for: .bpm) }
+        set { set(metadataItem: .bpm, to: newValue ?? 0) }
+    }
+
+    var comment: String? {
+        get { string(for: .comment) }
+        set { set(metadataItem: .comment, to: newValue ?? "") }
+    }
+
+    var compilation: Bool? {
+        get { boolean(for: .compilation) }
+        set { set(metadataItem: .bpm, to: newValue ?? false) }
+    }
+
 }
 
 //@available(OSX 10.12, *)

@@ -14,12 +14,31 @@ enum Metadata: CaseIterable {
     case acknowledgment
     case album
     case albumArtist
+    // case albumArtistSort
+    // case albumSort
+    case arranger
+    case artDirector
+    case artist
+    // case artistSort
+    // case artistWebpage
+    // case audioFileWebpage
+    // case audioSourceWebpage
+    case bpm
+    case comment
+    case compilation
+    
     
     var identifier: AVMetadataIdentifier {
         switch self {
-            case .acknowledgment : return .iTunesMetadataAcknowledgement
-            case .album : return .iTunesMetadataAlbum
+            case .acknowledgment: return .iTunesMetadataAcknowledgement
+            case .album: return .iTunesMetadataAlbum
             case .albumArtist: return .iTunesMetadataAlbumArtist
+            case .arranger: return .iTunesMetadataArranger
+            case .artDirector: return .iTunesMetadataArtDirector
+            case .artist: return .iTunesMetadataArtist
+            case .bpm: return .iTunesMetadataBeatsPerMin
+            case .comment: return .iTunesMetadataUserComment
+            case .compilation: return .iTunesMetadataDiscCompilation
         }
     }
     
@@ -28,6 +47,12 @@ enum Metadata: CaseIterable {
             case .acknowledgment : return .iTunesMetadataKeyAcknowledgement
             case .album : return .iTunesMetadataKeyAlbum
             case .albumArtist: return .iTunesMetadataKeyAlbumArtist
+            case .arranger: return .iTunesMetadataKeyArranger
+            case .artDirector: return .iTunesMetadataKeyArtDirector
+            case .artist: return .iTunesMetadataKeyArtist
+            case .bpm: return .iTunesMetadataKeyBeatsPerMin
+            case .comment: return .iTunesMetadataKeyUserComment
+            case .compilation: return .iTunesMetadataKeyDiscCompilation
         }
     }
     
@@ -35,7 +60,14 @@ enum Metadata: CaseIterable {
         switch self {
             case .acknowledgment,
                  .album,
-                 .albumArtist: return AVMetadataFormat.iTunesMetadata
+                 .albumArtist,
+                 .arranger,
+                 .artDirector,
+                 .artist,
+                 .bpm,
+                 .comment,
+                 .comment,
+                 .compilation: return AVMetadataFormat.iTunesMetadata
         }
     }
     
@@ -43,43 +75,42 @@ enum Metadata: CaseIterable {
         switch self {
             case .acknowledgment,
                  .album,
-                 .albumArtist: return AVMetadataKeySpace.iTunes
+                 .albumArtist,
+                 .arranger,
+                 .artDirector,
+                 .artist,
+                 .bpm,
+                 .comment,
+                 .comment,
+                 .compilation: return AVMetadataKeySpace.iTunes
         }
     }
     
-    enum inputFormat: Int {
+    enum Format: Int {
         case string = 0
         case integer = 1
-        case data = 2
-        case date = 3
+        case boolean = 2
+        case data = 3
         case intArray = 4
         case stringArray = 5
+        case date = 6
     }
     
-    var format: inputFormat {
+    var format: Format {
         switch self {
             case .acknowledgment,
                  .album,
-                 .albumArtist: return inputFormat.string
+                 .albumArtist,
+                 .arranger,
+                 .artDirector,
+                 .artist,
+                 .comment: return Format.string
+            case .bpm: return Format.integer
+            case .compilation: return Format.boolean
         }
     }
 }
 
-//enum MetadataIdentifier: String, CaseIterable {
-//
-//    case acknowledgment = "©cak"
-//    case album = "©alb"
-//    case albumSort = "soal"
-//    case albumArtist = "aART"
-//    case albumArtistSort = "soaa"
-//    case arranger = "©arg"
-//    case artDirector = "©ard"
-//    case artist = "©ART"
-//    case artistSort = "soar"
-//    case artistWebpage = "[URL_OFFICIAL_ARTIST_SITE]"
-//    case audioFileWebpage = "[OFFICIAL_AUDIO_FILE_URL]"
-//    case audioSourceWebpage = "[OFFICIAL_AUDIO_SOURCE_URL]"
-//    case bpm = "tmpo"
 //    case comments = "©cmt"
 //    case compilation = "cpil"
 //    case composer = "©wrt"
@@ -159,70 +190,6 @@ enum Metadata: CaseIterable {
 //    case work = "©wrk"
 //    case year = "yrrc"
 //
-//    // Keyspace = AVMetadataKeySpaceQuickTimeMetadata
-//    enum KeyFormat {
-//        case boolean // return as boolean
-//        case string // return as string
-//        case integer // read in as number, return as integer
-//        case date // read in as string, return as date
-//        case data // read in as data, return varies
-//        case unspecified
-//    }
-//
-//    var keyFormat: KeyFormat {
-//        switch self {
-//            /// a metadata value read in using .numberValue, then translated to boolean for return
-//            case .compilation,
-//                 .podcast:
-//                return .boolean
-//            /// a metadata value read in as data and translated to an NSImage
-//            case .podcastURL, // read as data, return as String
-//                .trackNumber, // read as data, return as integer array or tuple
-//                .discNumber: // read as data, return as integer array or tuple
-//                return .data
-//            /// a metadata value read in using .numberValue, returned as Integer
-//            case .bpm,
-//                 .contentRating,
-//                 .mediaKind, // create enum
-//                .episodeNumber,
-//                .genreID,
-//                .season,
-//                .movementNumber,
-//                .movementCount: return .integer
-//            /// a metadata value read in using .stringValue, parsed and returned as Date?
-//            case .originalReleaseDate,
-//                 .purchaseDate,
-//                 .releaseDate,
-//                 .taggingTime,
-//                 .year: return .date
-//            /// a metadata value read in using .stringValue, returned as String
-//            default: return .string
-//        }
-//    }
-//
-//    var keyspace: AVMetadataKeySpace {
-//        switch self {
-//            case .audioFileWebpage,
-//                 .audioSourceWebpage,
-//                 .contentAdvisory,
-//                 .copyrightWebpage,
-//                 .encodingSettings,
-//                 .encodingTime,
-//                 .initialKey,
-//                 .language,
-//                 .mood,
-//                 .onlineExtras,
-//                 .originalAlbum,
-//                 .originalFilename,
-//                 .originalLyricist,
-//                 .originalReleaseDate,
-//                 .paymentWebpage,
-//                 .publisherWebpage,
-//                 .radioStation,
-//                 .radioStationOwner,
-//                 .radioStationWebpage,
-//                 .taggingTime: return .quickTimeUserData
-//            default: return .iTunes
-//        }
-//    }
-//}
+
+// case albumArtistSort
+// case albumSort

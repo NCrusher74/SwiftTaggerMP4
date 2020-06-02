@@ -9,6 +9,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.acknowledgment, "Acknowledgment")
         XCTAssertEqual(reading.album, "Album")
         XCTAssertEqual(reading.albumArtist, "AlbumArtist")
+        XCTAssertEqual(reading.arranger, "Arranger")
+        XCTAssertEqual(reading.artDirector, "ArtDirector")
+        XCTAssertEqual(reading.artist, "Artist")
+        XCTAssertEqual(reading.bpm, 99)
+        XCTAssertEqual(reading.comment, "Comments")
+        XCTAssertEqual(reading.compilation, true)
     }
     
     @available(OSX 10.12, *)
@@ -18,6 +24,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.acknowledgment = "ACKNOWLEDGMENT"
         writing.album = "ALBUM"
         writing.albumArtist = "ALBUMARTIST"
+        writing.arranger = "ARRANGER"
+        writing.artDirector = "ARTDIRECTOR"
+        writing.artist = "ARTIST"
+        writing.bpm = 97
+        writing.comment = "COMMENT"
+        writing.compilation = true
         
         let output = try localDirectory(fileName: "tesfile", fileExtension: "m4a")
         let file = try mp4File(withMeta: false)
@@ -29,5 +41,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.acknowledgment, "ACKNOWLEDGMENT")
         XCTAssertEqual(testing.album, "ALBUM")
         XCTAssertEqual(testing.albumArtist, "ALBUMARTIST")
+        XCTAssertEqual(testing.arranger, "ARRANGER")
+        XCTAssertEqual(testing.artDirector, "ARTDIRECTOR")
+        XCTAssertEqual(testing.artist, "ARTIST")
+        XCTAssertEqual(testing.bpm, 97)
+        XCTAssertEqual(testing.comment, "COMMENT")
+        XCTAssertEqual(testing.compilation, true)
     }
 }
