@@ -26,7 +26,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.conductor, "Conductor")
         XCTAssertEqual(reading.contentRating, .clean)
         XCTAssertEqual(reading.copyright, "2020 Copyright")
-        XCTAssertEqual(reading.copyrightWebpage, "http://copyright.url")
         XCTAssertEqual(reading.description, "Description")
         XCTAssertEqual(reading.discNumber, [3,4])
         XCTAssertEqual(reading.encodingTool, "EncodedBy")
@@ -36,7 +35,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.executiveProducer, "ExecutiveProducer")
         XCTAssertEqual(reading.genre, "Genre")
         XCTAssertEqual(reading.initialKey, nil)
-        XCTAssertEqual(reading.language, .eng)
+        XCTAssertEqual(reading.language, [.eng])
         XCTAssertEqual(reading.linerNotes, "LinerNotes")
         XCTAssertEqual(reading.longDescription, "LongDescription")
         XCTAssertEqual(reading.lyrics, "Lyrics")
@@ -72,11 +71,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.thanks, "Thanks")
         XCTAssertEqual(reading.title, "Title")
         XCTAssertEqual(reading.titleSort, "SortName")
+
         let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
         XCTAssertEqual(reading.recordingDate, formatter.date(from: "1999-05-08"))
-//        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
-//        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
-//        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
+        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
+        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
+        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
     }
     
     func testWriting() throws {
@@ -105,11 +105,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.contentAdvisory = .ustvUnrated
         writing.contentRating = .clean
         writing.copyright = "2020 COPYRIGHT"
+        writing.copyrightWebpage = "COPYRIGHT.URL"
         writing.description = "DESCRIPTION"
         writing.director = "DIRECTOR"
         writing.discNumber = [1,2]
         writing.encodedBy = "ENCODED BY"
-        writing.encodingTime = formatter.date(from: "1998-06-09")
         writing.encodingTool = "ENCODING TOOL"
         writing.episodeNumber = 3
         writing.episodeTitle = "EPISODE TITLE"
@@ -118,7 +118,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.genreID = .audiobooks
         writing.initialKey = .aMajor
         writing.isrc = 123456789012
-        writing.language = .eng
+        writing.language = [.eng, .und]
         writing.linerNotes = "LINER NOTES"
         writing.longDescription = "LONG DESCRIPTION"
         writing.lyrics = "LYRICS"
@@ -134,7 +134,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.originalArtist = "ORIGINAL ARTIST"
         writing.originalFilename = "ORIGINAL FILENAME"
         writing.originalLyricist = "ORIGINAL LYRICIST"
-        writing.originalReleaseDate = formatter.date(from: "1997-07-10")
         writing.paymentWebpage = "WWW.PAYMENT.URL"
         writing.performer = "PERFORMER"
         writing.phonogramRights = "PHONOGRAM RIGHTS"
@@ -148,12 +147,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.producer = "PRODUCER"
         writing.publisher = "PUBLISHER"
         writing.publisherWebpage = "PUBLISHER.URL"
-        writing.purchaseDate = formatter.date(from: "1996-08-11")
         writing.radioStation = "RADIO STATION"
         writing.radioStationOwner = "RADIO STATION OWNER"
         writing.radioStationWebpage = "RADIOSTATION.URL"
         writing.recordCompany = "RECORD COMPANY"
-        writing.recordingDate = formatter.date(from: "1995-08-12")
         writing.seriesName = "SERIES"
         writing.seriesDescription = "SERIES DESCRIPTION"
         writing.season = 4
@@ -162,13 +159,19 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.soundEngineer = "SOUND ENGINEER"
         writing.sourceCredit = "SOURCE CREDIT"
         writing.trackNumber = [7,8]
-        writing.recordingDate = formatter.date(from: "1995-08-12")
         writing.trackSubtitle = "TRACK SUBTITLE"
-        writing.taggingTime = formatter.date(from: "1996-06-10")
         writing.thanks = "THANKS"
         writing.title = "TITLE"
         writing.titleSort = "SORT TITLE"
         writing.work = "WORK"
+
+        writing.encodingTime = formatter.date(from: "2000-10-13")
+        writing.releaseDate = formatter.date(from: "1999-05-08")
+        writing.recordingDate = formatter.date(from: "1998-06-09")
+        writing.purchaseDate = formatter.date(from: "1997-07-10")
+        writing.originalReleaseDate = formatter.date(from: "1996-08-11")
+        writing.taggingTime = formatter.date(from: "1995-09-12")
+        writing.year = formatter.date(from: "1994")
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
 //        try FileManager.default.removeItem(at: output)
@@ -200,12 +203,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.contentAdvisory, .ustvUnrated)
         XCTAssertEqual(testing.contentRating, .clean)
         XCTAssertEqual(testing.copyright, "2020 COPYRIGHT")
+        XCTAssertEqual(testing.copyrightWebpage, "COPYRIGHT.URL")
         XCTAssertEqual(testing.description, "DESCRIPTION")
         XCTAssertEqual(testing.director, "DIRECTOR")
         XCTAssertEqual(testing.discNumber, [1,2])
         XCTAssertEqual(testing.encodedBy, "ENCODED BY")
         XCTAssertEqual(testing.encodingTool, "ENCODING TOOL")
-//        XCTAssertEqual(testing.encodingTime, formatter.date(from: "1998-06-09"))
         XCTAssertEqual(testing.episodeNumber, 3)
         XCTAssertEqual(testing.episodeTitle, "EPISODE TITLE")
         XCTAssertEqual(testing.executiveProducer, "EXEC PRODUCER")
@@ -213,7 +216,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.genreID, .audiobooks)
         XCTAssertEqual(testing.initialKey, .aMajor)
         XCTAssertEqual(testing.isrc, 123456789012)
-        XCTAssertEqual(testing.language, .eng)
+        XCTAssertEqual(testing.language, [.eng, .und])
         XCTAssertEqual(testing.linerNotes, "LINER NOTES")
         XCTAssertEqual(testing.longDescription, "LONG DESCRIPTION")
         XCTAssertEqual(testing.lyrics, "LYRICS")
@@ -229,7 +232,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.originalAlbum, "ORIGINAL ALBUM")
         XCTAssertEqual(testing.originalFilename, "ORIGINAL FILENAME")
         XCTAssertEqual(testing.originalLyricist, "ORIGINAL LYRICIST")
-//        XCTAssertEqual(testing.originalReleaseDate, formatter.date(from: "1997-07-10"))
         XCTAssertEqual(testing.paymentWebpage, "WWW.PAYMENT.URL")
         XCTAssertEqual(testing.performer, "PERFORMER")
         XCTAssertEqual(testing.phonogramRights, "PHONOGRAM RIGHTS")
@@ -247,8 +249,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.radioStationOwner, "RADIO STATION OWNER")
         XCTAssertEqual(testing.radioStationWebpage, "RADIOSTATION.URL")
         XCTAssertEqual(testing.recordCompany, "RECORD COMPANY")
-//        XCTAssertEqual(testing.recordingDate, formatter.date(from: "1995-09-12"))
-//        XCTAssertEqual(testing.releaseDate, formatter.date(from: "1999-05-08"))
         XCTAssertEqual(testing.season, 4)
         XCTAssertEqual(testing.seriesName, "SERIES")
         XCTAssertEqual(testing.seriesDescription, "SERIES DESCRIPTION")
@@ -256,14 +256,20 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.soloist, "SOLOIST")
         XCTAssertEqual(testing.soundEngineer, "SOUND ENGINEER")
         XCTAssertEqual(testing.sourceCredit, "SOURCE CREDIT")
-//        XCTAssertEqual(testing.taggingTime, formatter.date(from: "1996-06-10"))
         XCTAssertEqual(testing.thanks, "THANKS")
         XCTAssertEqual(testing.title, "TITLE")
         XCTAssertEqual(testing.titleSort, "SORT TITLE")
         XCTAssertEqual(testing.trackNumber, [7,8])
         XCTAssertEqual(testing.trackSubtitle, "TRACK SUBTITLE")
         XCTAssertEqual(testing.work, "WORK")
-//        XCTAssertEqual(testing.year, formatter.date(from: "1999"))
+
+        XCTAssertEqual(testing.encodingTime, formatter.date(from: "2000-10-13"))
+        XCTAssertEqual(testing.originalReleaseDate, formatter.date(from: "1996-08-11"))
+        XCTAssertEqual(testing.recordingDate, formatter.date(from: "1998-06-09"))
+        XCTAssertEqual(testing.releaseDate, formatter.date(from: "1999-05-08"))
+        XCTAssertEqual(testing.taggingTime, formatter.date(from: "1995-09-12"))
+        XCTAssertEqual(testing.purchaseDate, formatter.date(from: "1997-07-10"))
+        XCTAssertEqual(testing.year, formatter.date(from: "1999"))
 
     }
 }

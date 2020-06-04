@@ -17,12 +17,29 @@ public struct Tag {
     public init(from file: Mp4File) {
         let asset = file.asset
         self.metadata = asset.metadata
+
+//        let url = Bundle.main.url(forResource: "audio", withExtension: "m4a")!
+//        let asset = AVAsset(url: url)
+//        let formatsKey = "availableMetadataFormats"
+//        
+//        asset.loadValuesAsynchronously(forKeys: [formatsKey]) {
+//            var error: NSError? = nil
+//            let status = asset.statusOfValue(forKey: formatsKey, error: &error)
+//            if status == .loaded {
+//                for format in asset.availableMetadataFormats {
+//                    let metadata = asset.metadata(forFormat: format)
+//                    // process format-specific metadata collection
+//                }
+//            }
+//        }
+
     }
 }
 
 @available(OSX 10.13, *)
 extension Tag {
     
+    // MARK: Private Helper - getters
     private func string(for identifier: Metadata) -> String? {
         let items = AVMetadataItem.metadataItems(
             from: self.metadata,
@@ -91,17 +108,7 @@ extension Tag {
             return item.numberValue?.boolValue
         }; return nil
     }
-    
-    private func data(for identifier: Metadata) -> Data? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            return item.dataValue
-        }; return nil
-    }
-    
+        
     private func date(for identifier: Metadata) -> Date? {
         let items = AVMetadataItem.metadataItems(
             from: self.metadata,
@@ -112,6 +119,7 @@ extension Tag {
         }; return nil
     }
     
+    // MARK: Private Helpers - setters
     private mutating func set(metadataItem: Metadata, to string: String) {
         let item = AVMutableMetadataItem()
         item.keySpace = metadataItem.keySpace
@@ -136,19 +144,11 @@ extension Tag {
         self.metadata.append(item)
     }
     
-    private mutating func set(metadataItem: Metadata, to boolean: Bool) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        item.value = boolean as NSNumber
-        self.metadata.append(item)
-    }
-    
     private mutating func set(metadataItem: Metadata, to stringArray: [String]) {
         let item = AVMutableMetadataItem()
         item.keySpace = metadataItem.keySpace
         item.key = metadataItem.rawValue as NSString
-        item.value = stringArray.joined(separator: ";") as NSString
+        item.value = stringArray.joined(separator: ",") as NSString
         self.metadata.append(item)
     }
     
@@ -188,6 +188,7 @@ extension Tag {
         self.metadata.append(item)
     }
     
+    // MARK: Convenience getter/setters
     var acknowledgment: String? {
         get { string(for: .acknowledgment) }
         set { set(metadataItem: .acknowledgment, to: newValue ?? "") }
@@ -240,29 +241,23 @@ extension Tag {
     
     var audioFileWebpage: String? {
         get {
-            if let str = string(for: .audioFileWebpageYate) {
-                return str
-            } else if let str = string(for: .audioFileWebpageKid3) {
+            if let str = string(for: .audioFileWebpage) {
                 return str
             }; return nil
         }
         set {
-            set(metadataItem: .audioFileWebpageYate, to: newValue ?? "")
-            set(metadataItem: .audioFileWebpageKid3, to: newValue ?? "")
+            set(metadataItem: .audioFileWebpage, to: newValue ?? "")
         }
     }
     
     var audioSourceWebpage: String? {
         get {
-            if let str = string(for: .audioSourceWebpageYate) {
-                return str
-            } else if let str = string(for: .audioSourceWebpageKid3) {
+            if let str = string(for: .audioSourceWebpage) {
                 return str
             }; return nil
         }
         set {
-            set(metadataItem: .audioSourceWebpageYate, to: newValue ?? "")
-            set(metadataItem: .audioSourceWebpageKid3, to: newValue ?? "")
+            set(metadataItem: .audioSourceWebpage, to: newValue ?? "")
         }
     }
     
@@ -414,11 +409,7 @@ extension Tag {
 
     var initialKey: KeySignature? {
         get {
-            if let str = string(for: .initialKeyYate) {
-                if let key = KeySignature(rawValue: str) {
-                    return key
-                }; return nil
-            } else if let str = string(for: .initialKeyKid3) {
+            if let str = string(for: .initialKey) {
                 if let key = KeySignature(rawValue: str) {
                     return key
                 }; return nil
@@ -426,8 +417,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(metadataItem: .initialKeyYate, to: new.rawValue)
-                set(metadataItem: .initialKeyKid3, to: new.rawValue)
+                set(metadataItem: .initialKey, to: new.rawValue)
             }
         }
     }
@@ -437,19 +427,26 @@ extension Tag {
         set { set(metadataItem: .isrc, to: newValue ?? 0) }
     }
     
-    #warning("make this a string array")
-    var language: ISO6392Codes? {
+    var language: [ISO6392Codes]? {
         get {
-            let str = string(for: .language) ?? "und"
-            if let language = ISO6392Codes(rawValue: str) {
-                return language
-            } else {
-                return nil
-            }
+            if let str = string(for: .language) {
+                var languageArray: [ISO6392Codes] = []
+                let stringArray = str.components(separatedBy: ",")
+                for string in stringArray {
+                    if let language = ISO6392Codes(rawValue: string) {
+                        languageArray.append(language)
+                    }
+                }
+                return languageArray
+            }; return nil
         }
         set {
             if let new = newValue {
-                set(metadataItem: .language, to: new.rawValue)
+                var stringArray: [String] = []
+                for languageCode in new {
+                    stringArray.append(languageCode.rawValue)
+                }
+                set(metadataItem: .language, to: stringArray)
             }
         }
     }
@@ -529,17 +526,12 @@ extension Tag {
 
     var originalAlbum: String? {
         get {
-            if let str = string(for: .originalAlbumYate) {
+            if let str = string(for: .originalAlbum) {
                 return str
-            } else if let str = string(for: .originalAlbumKid3) {
-                return str
-            } else {
-                return nil
-            }
+            }; return nil
         }
         set {
-            set(metadataItem: .originalAlbumYate, to: newValue ?? "")
-            set(metadataItem: .originalAlbumKid3, to: newValue ?? "")
+            set(metadataItem: .originalAlbum, to: newValue ?? "")
         }
     }
     
@@ -560,15 +552,12 @@ extension Tag {
     
     var originalReleaseDate: Date? {
         get {
-            if let date = date(for: .originalYearYate) {
-                return date
-            } else if let date = date(for: .originalYearKid3) {
+            if let date = date(for: .originalYear) {
                 return date
             }; return nil
         }
         set {
-            set(metadataItem: .originalYearYate, to: newValue ?? Date.distantPast)
-            set(metadataItem: .originalYearKid3, to: newValue ?? Date.distantPast)
+            set(metadataItem: .originalYear, to: newValue ?? Date.distantPast)
         }
     }
 
