@@ -72,17 +72,15 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.title, "Title")
         XCTAssertEqual(reading.titleSort, "SortName")
 
-        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
-        XCTAssertEqual(reading.recordingDate, formatter.date(from: "1999-05-08"))
-        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
-        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
-        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
+//        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
+//        XCTAssertEqual(reading.recordingDate, formatter.date(from: "1999-05-08"))
+//        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
+//        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
+//        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
     }
     
     func testWriting() throws {
         var writing = try tag(withMeta: false)
-        
-        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
         
         writing.acknowledgment = "ACKNOWLEDGMENT"
         writing.album = "ALBUM"
@@ -165,23 +163,38 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.titleSort = "SORT TITLE"
         writing.work = "WORK"
 
-        writing.encodingTime = formatter.date(from: "2000-10-13")
-        writing.releaseDate = formatter.date(from: "1999-05-08")
-        writing.recordingDate = formatter.date(from: "1998-06-09")
-        writing.purchaseDate = formatter.date(from: "1997-07-10")
-        writing.originalReleaseDate = formatter.date(from: "1996-08-11")
-        writing.taggingTime = formatter.date(from: "1995-09-12")
-        writing.year = formatter.date(from: "1994")
+        writing.encodingTime?.year = 2000
+        writing.encodingTime?.month = 10
+        writing.encodingTime?.day = 13
+
+        writing.releaseDate?.year = 1999
+        writing.releaseDate?.month = 05
+        writing.releaseDate?.day = 08
+        
+        writing.recordingDate?.year = 1998
+        writing.recordingDate?.month = 06
+        writing.recordingDate?.day = 09
+        
+        writing.purchaseDate?.year = 1997
+        writing.purchaseDate?.month = 07
+        writing.purchaseDate?.day = 10
+        
+        writing.originalReleaseYear = 1996
+
+        writing.taggingTime?.year = 1995
+        writing.taggingTime?.month = 09
+        writing.taggingTime?.day = 12
+        
+        writing.year = 1994
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-//        try FileManager.default.removeItem(at: output)
+        try FileManager.default.removeItem(at: output)
         let file = try mp4File(withMeta: false)
         try file.write(to: output, writingTag: writing)
         
         let testFile = try Mp4File(location: output)
         let testing = Tag(from: testFile)
         
-        #warning("When I run this test, I have to run it twice, because the first time it won't read the file being output. I also have to clear the directory each time; it won't overwrite.")
         XCTAssertEqual(testing.acknowledgment, "ACKNOWLEDGMENT")
         XCTAssertEqual(testing.album, "ALBUM")
         XCTAssertEqual(testing.albumArtist, "ALBUMARTIST")
@@ -263,13 +276,90 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.trackSubtitle, "TRACK SUBTITLE")
         XCTAssertEqual(testing.work, "WORK")
 
-        XCTAssertEqual(testing.encodingTime, formatter.date(from: "2000-10-13"))
-        XCTAssertEqual(testing.originalReleaseDate, formatter.date(from: "1996-08-11"))
-        XCTAssertEqual(testing.recordingDate, formatter.date(from: "1998-06-09"))
-        XCTAssertEqual(testing.releaseDate, formatter.date(from: "1999-05-08"))
-        XCTAssertEqual(testing.taggingTime, formatter.date(from: "1995-09-12"))
-        XCTAssertEqual(testing.purchaseDate, formatter.date(from: "1997-07-10"))
-        XCTAssertEqual(testing.year, formatter.date(from: "1999"))
 
+        XCTAssertEqual(writing.encodingTime?.year,2000)
+        XCTAssertEqual(writing.encodingTime?.month, 10)
+        XCTAssertEqual(writing.encodingTime?.day, 13)
+        
+        XCTAssertEqual(writing.releaseDate?.year, 1999)
+        XCTAssertEqual(writing.releaseDate?.month, 05)
+        XCTAssertEqual(writing.releaseDate?.day, 08)
+        
+        XCTAssertEqual(writing.recordingDate?.year, 1998)
+        XCTAssertEqual(writing.recordingDate?.month, 06)
+        XCTAssertEqual(writing.recordingDate?.day, 09)
+        
+        XCTAssertEqual(writing.purchaseDate?.year, 1997)
+        XCTAssertEqual(writing.purchaseDate?.month, 07)
+        XCTAssertEqual(writing.purchaseDate?.day, 10)
+        
+        XCTAssertEqual(writing.originalReleaseYear, 1996)
+        
+        XCTAssertEqual(writing.taggingTime?.year, 1995)
+        XCTAssertEqual(writing.taggingTime?.month, 09)
+        XCTAssertEqual(writing.taggingTime?.day, 12)
+        
+        XCTAssertEqual(writing.year,1994)
     }
+
+    func testdates() throws {
+        var writing = try tag(withMeta: false)
+        
+        writing.encodingTime?.year = 2000
+        writing.encodingTime?.month = 10
+        writing.encodingTime?.day = 13
+        
+        writing.releaseDate?.year = 1999
+        writing.releaseDate?.month = 05
+        writing.releaseDate?.day = 08
+        
+        writing.recordingDate?.year = 1998
+        writing.recordingDate?.month = 06
+        writing.recordingDate?.day = 09
+        
+        writing.purchaseDate?.year = 1997
+        writing.purchaseDate?.month = 07
+        writing.purchaseDate?.day = 10
+        
+        writing.originalReleaseYear = 1996
+        
+        writing.taggingTime?.year = 1995
+        writing.taggingTime?.month = 09
+        writing.taggingTime?.day = 12
+        
+        writing.year = 1994
+
+        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
+//        try FileManager.default.removeItem(at: output)
+        let file = try mp4File(withMeta: false)
+        try file.write(to: output, writingTag: writing)
+        
+        let testFile = try Mp4File(location: output)
+        let testing = Tag(from: testFile)
+                
+        XCTAssertEqual(testing.encodingTime?.year,2000)
+        XCTAssertEqual(testing.encodingTime?.month, 10)
+        XCTAssertEqual(testing.encodingTime?.day, 13)
+        
+        XCTAssertEqual(testing.releaseDate?.year, 1999)
+        XCTAssertEqual(testing.releaseDate?.month, 05)
+        XCTAssertEqual(testing.releaseDate?.day, 08)
+        
+        XCTAssertEqual(testing.recordingDate?.year, 1998)
+        XCTAssertEqual(testing.recordingDate?.month, 06)
+        XCTAssertEqual(testing.recordingDate?.day, 09)
+        
+        XCTAssertEqual(testing.purchaseDate?.year, 1997)
+        XCTAssertEqual(testing.purchaseDate?.month, 07)
+        XCTAssertEqual(testing.purchaseDate?.day, 10)
+        
+        XCTAssertEqual(testing.originalReleaseYear, 1996)
+        
+        XCTAssertEqual(testing.taggingTime?.year, 1995)
+        XCTAssertEqual(testing.taggingTime?.month, 09)
+        XCTAssertEqual(testing.taggingTime?.day, 12)
+        
+        XCTAssertEqual(testing.year,1994)
+    }
+
 }
