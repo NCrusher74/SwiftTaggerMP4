@@ -58,15 +58,24 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.podcastUrl, "http://podcastfeed.url")
         XCTAssertEqual(reading.phonogramRights, "PhonogramRights")
         XCTAssertEqual(reading.publisher, "Publisher")
+        XCTAssertEqual(reading.publisherWebpage, "http://publisher.url")
+        XCTAssertEqual(reading.radioStationWebpage, "http://radiostation.url")
         XCTAssertEqual(reading.recordCompany, "Label")
+        XCTAssertEqual(reading.season, 6)
+        XCTAssertEqual(reading.seriesName, "SeriesTitle")
+        XCTAssertEqual(reading.seriesSort, "SortSeries")
+        XCTAssertEqual(reading.seriesDescription, "SeriesDescription")
         XCTAssertEqual(reading.soloist, "Soloist")
         XCTAssertEqual(reading.soundEngineer, "SoundEngineer")
         XCTAssertEqual(reading.sourceCredit, "Credits")
         XCTAssertEqual(reading.trackNumber, [1,2])
-        
+        XCTAssertEqual(reading.thanks, "Thanks")
+        XCTAssertEqual(reading.title, "Title")
+        XCTAssertEqual(reading.titleSort, "SortName")
         let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
+        XCTAssertEqual(reading.recordingDate, formatter.date(from: "1999-05-08"))
 //        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
-        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
+//        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
 //        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
     }
     
@@ -135,15 +144,31 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.podcastID = "PODCAST ID"
         writing.podcastDescription = "PODCAST DESCRIPTION"
         writing.podcastUrl = "WWW.PODCAST.URL"
+        writing.predefinedGenre = .audiobooksNews
         writing.producer = "PRODUCER"
         writing.publisher = "PUBLISHER"
+        writing.publisherWebpage = "PUBLISHER.URL"
+        writing.purchaseDate = formatter.date(from: "1996-08-11")
+        writing.radioStation = "RADIO STATION"
+        writing.radioStationOwner = "RADIO STATION OWNER"
+        writing.radioStationWebpage = "RADIOSTATION.URL"
         writing.recordCompany = "RECORD COMPANY"
+        writing.recordingDate = formatter.date(from: "1995-08-12")
+        writing.seriesName = "SERIES"
+        writing.seriesDescription = "SERIES DESCRIPTION"
+        writing.season = 4
+        writing.seriesSort = "SORT SERIES"
         writing.soloist = "SOLOIST"
         writing.soundEngineer = "SOUND ENGINEER"
         writing.sourceCredit = "SOURCE CREDIT"
         writing.trackNumber = [7,8]
+        writing.recordingDate = formatter.date(from: "1995-08-12")
         writing.trackSubtitle = "TRACK SUBTITLE"
-        writing.releaseDate = formatter.date(from: "1999-05-08")
+        writing.taggingTime = formatter.date(from: "1996-06-10")
+        writing.thanks = "THANKS"
+        writing.title = "TITLE"
+        writing.titleSort = "SORT TITLE"
+        writing.work = "WORK"
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
 //        try FileManager.default.removeItem(at: output)
@@ -214,15 +239,31 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.podcastID, "PODCAST ID")
         XCTAssertEqual(testing.podcastKeywords, "PODCAST KEYWORDS")
         XCTAssertEqual(testing.podcastUrl, "WWW.PODCAST.URL")
+        XCTAssertEqual(testing.predefinedGenre, .audiobooksNews)
         XCTAssertEqual(testing.producer, "PRODUCER")
         XCTAssertEqual(testing.publisher, "PUBLISHER")
+        XCTAssertEqual(testing.publisherWebpage, "PUBLISHER.URL")
+        XCTAssertEqual(testing.radioStation, "RADIO STATION")
+        XCTAssertEqual(testing.radioStationOwner, "RADIO STATION OWNER")
+        XCTAssertEqual(testing.radioStationWebpage, "RADIOSTATION.URL")
         XCTAssertEqual(testing.recordCompany, "RECORD COMPANY")
+//        XCTAssertEqual(testing.recordingDate, formatter.date(from: "1995-09-12"))
 //        XCTAssertEqual(testing.releaseDate, formatter.date(from: "1999-05-08"))
+        XCTAssertEqual(testing.season, 4)
+        XCTAssertEqual(testing.seriesName, "SERIES")
+        XCTAssertEqual(testing.seriesDescription, "SERIES DESCRIPTION")
+        XCTAssertEqual(testing.seriesSort, "SORT SERIES")
         XCTAssertEqual(testing.soloist, "SOLOIST")
         XCTAssertEqual(testing.soundEngineer, "SOUND ENGINEER")
         XCTAssertEqual(testing.sourceCredit, "SOURCE CREDIT")
+//        XCTAssertEqual(testing.taggingTime, formatter.date(from: "1996-06-10"))
+        XCTAssertEqual(testing.thanks, "THANKS")
+        XCTAssertEqual(testing.title, "TITLE")
+        XCTAssertEqual(testing.titleSort, "SORT TITLE")
         XCTAssertEqual(testing.trackNumber, [7,8])
         XCTAssertEqual(testing.trackSubtitle, "TRACK SUBTITLE")
-        
+        XCTAssertEqual(testing.work, "WORK")
+//        XCTAssertEqual(testing.year, formatter.date(from: "1999"))
+
     }
 }

@@ -635,6 +635,20 @@ extension Tag {
         }
     }
     
+    var predefinedGenre: Genres? {
+        get {
+            let str = string(for: .predefinedGenre) ?? ""
+            if let genre = Genres(genreName: str) {
+                return genre
+            } else {
+                return nil
+            }
+        }
+        set {
+            set(metadataItem: .predefinedGenre, to: newValue?.predefinedGenres ?? "")
+        }
+    }
+
     var producer: String? {
         get { string(for: .producer) }
         set { set(metadataItem: .producer, to: newValue ?? "") }
@@ -644,16 +658,66 @@ extension Tag {
         get { string(for: .publisher) }
         set { set(metadataItem: .publisher, to: newValue ?? "") }
     }
+
+    var publisherWebpage: String? {
+        get { string(for: .publisherWebpage) }
+        set { set(metadataItem: .publisherWebpage, to: newValue ?? "") }
+    }
+    
+    var purchaseDate: Date? {
+        get { date(for: .purchaseDate) }
+        set { set(metadataItem: .purchaseDate, to: newValue ?? Date.distantPast) }
+    }
+    
+    var radioStation: String? {
+        get { string(for: .radioStation) }
+        set { set(metadataItem: .radioStation, to: newValue ?? "") }
+    }
+    
+    var radioStationOwner: String? {
+        get { string(for: .radioStationOwner) }
+        set { set(metadataItem: .radioStationOwner, to: newValue ?? "") }
+    }
+    
+    var radioStationWebpage: String? {
+        get { string(for: .radioStationWebpage) }
+        set { set(metadataItem: .radioStationWebpage, to: newValue ?? "") }
+    }
     
     var recordCompany: String? {
         get { string(for: .recordCompany) }
         set { set(metadataItem: .recordCompany, to: newValue ?? "") }
     }
     
+    var recordingDate: Date? {
+        get { date(for: .recordingDate) }
+        set { set(metadataItem: .recordingDate, to: newValue ?? Date.distantPast) }
+    }
+    
     /// date needs to be in ISO8601 format yyyy-MM-dd
     var releaseDate: Date? {
         get { date(for: .releaseDate) }
         set { set(metadataItem: .releaseDate, to: newValue ?? Date.distantPast) }
+    }
+    
+    var season: Int? {
+        get { integer(for: .season) }
+        set { set(metadataItem: .season, to: newValue ?? 0) }
+    }
+    
+    var seriesName: String? {
+        get { string(for: .series) }
+        set { set(metadataItem: .series, to: newValue ?? "") }
+    }
+    
+    var seriesDescription: String? {
+        get { string(for: .seriesDescription) }
+        set { set(metadataItem: .seriesDescription, to: newValue ?? "") }
+    }
+    
+    var seriesSort: String? {
+        get { string(for: .seriesSort) }
+        set { set(metadataItem: .seriesSort, to: newValue ?? "") }
     }
     
     var soloist: String? {
@@ -671,6 +735,25 @@ extension Tag {
         set { set(metadataItem: .sourceCredit, to: newValue ?? "") }
     }
     
+    var taggingTime: Date? {
+        get { date(for: .taggingTime) }
+        set { set(metadataItem: .taggingTime, to: newValue ?? Date.distantPast) }
+    }
+    var thanks: String? {
+        get { string(for: .thanks) }
+        set { set(metadataItem: .thanks, to: newValue ?? "") }
+    }
+    
+    var title: String? {
+        get { string(for: .title) }
+        set { set(metadataItem: .title, to: newValue ?? "") }
+    }
+    
+    var titleSort: String? {
+        get { string(for: .titleSort) }
+        set { set(metadataItem: .titleSort, to: newValue ?? "") }
+    }
+    
     var trackNumber: [Int]? {
         get { intArrayFromData(for: .trackNumber) }
         set { set(metadataItem: .trackNumber, to: newValue ?? [])
@@ -681,5 +764,15 @@ extension Tag {
         get { string(for: .trackSubtitle) }
         set { set(metadataItem: .trackSubtitle, to: newValue ?? "") }
     }
+
+    var work: String? {
+        get { string(for: .work) }
+        set { set(metadataItem: .work, to: newValue ?? "") }
+    }
+    
+    var year: Date? {
+        get { date(for: .year) }
+        set { set(metadataItem: .year, to: newValue ?? Date.distantPast) }
+    }    
 }
 

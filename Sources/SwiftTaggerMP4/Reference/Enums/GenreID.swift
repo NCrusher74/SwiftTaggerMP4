@@ -1,14 +1,10 @@
-// GenreID.swift
-// Created by Nolaine Crusher on 5-5-20.
-
-import Foundation
 import SE0270_RangeSet
 
-public enum Genres: Int, CaseIterable {
-    case none = 0
+enum Genres: Int, CaseIterable {
+    case unknown = 0
     case musicBlues = 2
     case musicComedy = 3
-    case musicChildrenMusic = 4
+    case musicChildrensMusic = 4
     case musicClassical = 5
     case musicCountry = 6
     case musicElectronic = 7
@@ -74,9 +70,9 @@ public enum Genres: Int, CaseIterable {
     case musicBluesCountryBlues = 1011
     case musicBluesDeltaBlues = 1012
     case musicBluesElectricBlues = 1013
-    case musicMusicLullabies = 1014
-    case musicMusicSingAlong = 1015
-    case musicMusicStories = 1016
+    case musicChildrensMusicLullabies = 1014
+    case musicChildrensMusicSingAlong = 1015
+    case musicChildrensMusicStories = 1016
     case musicClassicalAvantGarde = 1017
     case musicClassicalBaroqueEra = 1018
     case musicClassicalChamberMusic = 1019
@@ -108,7 +104,7 @@ public enum Genres: Int, CaseIterable {
     case musicDanceGarage = 1046
     case musicDanceHardcore = 1047
     case musicDanceHouse = 1048
-    case musicDanceJungleDrumandBass = 1049
+    case musicDanceJungleDrumnbass = 1049
     case musicDanceTechno = 1050
     case musicDanceTrance = 1051
     case musicJazzBigBand = 1052
@@ -206,7 +202,7 @@ public enum Genres: Int, CaseIterable {
     case musicRockArenaRock = 1146
     case musicRockBluesRock = 1147
     case musicRockBritishInvasion = 1148
-    case musicRockDeathMetalBlackMeta = 1149
+    case musicRockDeathMetalBlackMetal = 1149
     case musicRockGlamRock = 1150
     case musicRockHairMetal = 1151
     case musicRockHardRock = 1152
@@ -375,7 +371,7 @@ public enum Genres: Int, CaseIterable {
     case podcastsBusinessCareers = 1410
     case podcastsBusinessInvesting = 1412
     case podcastsBusinessManagementandMarketing = 1413
-    case podcastsEducationKgenreID12 = 1415
+    case podcastsEducationK12 = 1415
     case podcastsEducationHigherEducation = 1416
     case podcastsHealthFitnessandNutrition = 1417
     case podcastsHealthSelfHelp = 1420
@@ -501,7 +497,7 @@ public enum Genres: Int, CaseIterable {
     case podcastsTVandFilmFilmInterviews = 1565
     case musicVideosBlues = 1602
     case musicVideosComedy = 1603
-    case musicVideosChildrenMusic = 1604
+    case musicVideosChildrensMusic = 1604
     case musicVideosClassical = 1605
     case musicVideosCountry = 1606
     case musicVideosElectronic = 1607
@@ -636,8 +632,9 @@ public enum Genres: Int, CaseIterable {
     case musicVideosBluesCountryBlues = 1741
     case musicVideosBluesDeltaBlues = 1742
     case musicVideosBluesElectricBlues = 1743
-    case musicVideosChildrensMusic = 1744
+    case musicVideosChildrensMusicLullabies = 1744
     case musicVideosChildrensMusicSingAlong = 1745
+    case musicVideosChildrensMusicStories = 1746
     case musicVideosChristianandGospelCCM = 1747
     case musicVideosChristianandGospelChristianMetal = 1748
     case musicVideosChristianandGospelChristianPop = 1749
@@ -682,7 +679,7 @@ public enum Genres: Int, CaseIterable {
     case musicVideosDanceGarage = 1788
     case musicVideosDanceHardcore = 1789
     case musicVideosDanceHouse = 1790
-    case musicVideosDanceJungleDrumAndBass = 1791
+    case musicVideosDanceJungleDrumnbass = 1791
     case musicVideosDanceTechno = 1792
     case musicVideosDanceTrance = 1793
     case musicVideosEasyListeningLounge = 1794
@@ -702,7 +699,7 @@ public enum Genres: Int, CaseIterable {
     case musicVideosHipHopRapOldSchoolRap = 1808
     case musicVideosHipHopRapRap = 1809
     case musicVideosHipHopRapUndergroundRap = 1810
-    case musicVideosHipHoRapWestCoastRap = 1811
+    case musicVideosHipHopRapWestCoastRap = 1811
     case musicVideosHolidayChanukah = 1812
     case musicVideosHolidayChristmas = 1813
     case musicVideosHolidayChristmasChildrens = 1814
@@ -1137,7 +1134,7 @@ public enum Genres: Int, CaseIterable {
     case tonesRingtonesDanceGarage = 8143
     case tonesRingtonesDanceHardcore = 8144
     case tonesRingtonesDanceHouse = 8145
-    case tonesRingtonesDanceJungleDrumandBass = 8146
+    case tonesRingtonesDanceJungleDrumnbass = 8146
     case tonesRingtonesDanceTechno = 8147
     case tonesRingtonesDanceTrance = 8148
     case tonesRingtonesDisney = 8149
@@ -2643,7 +2640,2652 @@ public enum Genres: Int, CaseIterable {
     case booksRomanceMulticultural = 50000091
     case audiobooksErotica = 50000092
     case audiobooksLightNovels = 50000093
- 
+    
+    var predefinedGenres: String? {
+        switch self {
+            case .musicBlues : return "Music|Blues"
+            case .musicComedy : return "Music|Comedy"
+            case .musicChildrensMusic : return "Music|Children's Music"
+            case .musicClassical : return "Music|Classical"
+            case .musicCountry : return "Music|Country"
+            case .musicElectronic : return "Music|Electronic"
+            case .musicHoliday : return "Music|Holiday"
+            case .musicClassicalOpera : return "Music|Classical|Opera"
+            case .musicSingerSongwriter : return "Music|Singer/Songwriter"
+            case .musicJazz : return "Music|Jazz"
+            case .musicLatino : return "Music|Latino"
+            case .musicNewAge : return "Music|New Age"
+            case .musicPop : return "Music|Pop"
+            case .musicRandBSoul : return "Music|RandB/Soul"
+            case .musicSoundtrack : return "Music|Soundtrack"
+            case .musicDance : return "Music|Dance"
+            case .musicHipHopRap : return "Music|Hip-Hop/Rap"
+            case .musicWorld : return "Music|World"
+            case .musicAlternative : return "Music|Alternative"
+            case .musicRock : return "Music|Rock"
+            case .musicChristianandGospel : return "Music|Christian and Gospel"
+            case .musicVocal : return "Music|Vocal"
+            case .musicReggae : return "Music|Reggae"
+            case .musicEasyListening : return "Music|Easy Listening"
+            case .podcasts : return "Podcasts"
+            case .musicJPop : return "Music|J-Pop"
+            case .musicEnka : return "Music|Enka"
+            case .musicAnime : return "Music|Anime"
+            case .musicKayokyoku : return "Music|Kayokyoku"
+            case .musicVideos : return "Music Videos"
+            case .tVShows : return "TV Shows"
+            case .movies : return "Movies"
+            case .music : return "Music"
+            case .iPodGames : return "iPod Games"
+            case .appStore : return "App Store"
+            case .tones : return "Tones"
+            case .books : return "Books"
+            case .macAppStore : return "Mac App Store"
+            case .textbooks : return "Textbooks"
+            case .musicFitnessandWorkout : return "Music|Fitness & Workout"
+            case .musicPopKPop : return "Music|Pop|K-Pop"
+            case .musicKaraoke : return "Music|Karaoke"
+            case .musicInstrumental : return "Music|Instrumental"
+            case .audiobooksNews : return "Audiobooks|News"
+            case .audiobooksProgramsandPerformances : return "Audiobooks|Programs & Performances"
+            case .fitnessMusic : return "Fitness Music"
+            case .fitnessMusicPop : return "Fitness Music|Pop"
+            case .fitnessMusicDance : return "Fitness Music|Dance"
+            case .fitnessMusicHipHop : return "Fitness Music|Hip-Hop"
+            case .fitnessMusicRock : return "Fitness Music|Rock"
+            case .fitnessMusicAltIndie : return "Fitness Music|Alt/Indie"
+            case .fitnessMusicLatino : return "Fitness Music|Latino"
+            case .fitnessMusicCountry : return "Fitness Music|Country"
+            case .fitnessMusicWorld : return "Fitness Music|World"
+            case .fitnessMusicNewAge : return "Fitness Music|New Age"
+            case .fitnessMusicClassical : return "Fitness Music|Classical"
+            case .musicAlternativeCollegeRock : return "Music|Alternative|College Rock"
+            case .musicAlternativeGothRock : return "Music|Alternative|Goth Rock"
+            case .musicAlternativeGrunge : return "Music|Alternative|Grunge"
+            case .musicAlternativeIndieRock : return "Music|Alternative|Indie Rock"
+            case .musicAlternativeNewWave : return "Music|Alternative|New Wave"
+            case .musicAlternativePunk : return "Music|Alternative|Punk"
+            case .musicBluesChicagoBlues : return "Music|Blues|Chicago Blues"
+            case .musicBluesClassicBlues : return "Music|Blues|Classic Blues"
+            case .musicBluesContemporaryBlues : return "Music|Blues|Contemporary Blues"
+            case .musicBluesCountryBlues : return "Music|Blues|Country Blues"
+            case .musicBluesDeltaBlues : return "Music|Blues|Delta Blues"
+            case .musicBluesElectricBlues : return "Music|Blues|Electric Blues"
+            case .musicChildrensMusicLullabies : return "Music|Children's Music|Lullabies"
+            case .musicChildrensMusicSingAlong : return "Music|Children's Music|Sing-Along"
+            case .musicChildrensMusicStories : return "Music|Children's Music|Stories"
+            case .musicClassicalAvantGarde : return "Music|Classical|Avant-Garde"
+            case .musicClassicalBaroqueEra : return "Music|Classical|Baroque Era"
+            case .musicClassicalChamberMusic : return "Music|Classical|Chamber Music"
+            case .musicClassicalChant : return "Music|Classical|Chant"
+            case .musicClassicalChoral : return "Music|Classical|Choral"
+            case .musicClassicalClassicalCrossover : return "Music|Classical|Classical Crossover"
+            case .musicClassicalEarlyMusic : return "Music|Classical|Early Music"
+            case .musicClassicalImpressionist : return "Music|Classical|Impressionist"
+            case .musicClassicalMedievalEra : return "Music|Classical|Medieval Era"
+            case .musicClassicalMinimalism : return "Music|Classical|Minimalism"
+            case .musicClassicalModernEra : return "Music|Classical|Modern Era"
+            case .musicClassicalOrchestral : return "Music|Classical|Orchestral"
+            case .musicClassicalRenaissance : return "Music|Classical|Renaissance"
+            case .musicClassicalRomanticEra : return "Music|Classical|Romantic Era"
+            case .musicClassicalWeddingMusic : return "Music|Classical|Wedding Music"
+            case .musicCountryAlternativeCountry : return "Music|Country|Alternative Country"
+            case .musicCountryAmericana : return "Music|Country|Americana"
+            case .musicCountryBluegrass : return "Music|Country|Bluegrass"
+            case .musicCountryContemporaryBluegrass : return "Music|Country|Contemporary Bluegrass"
+            case .musicCountryContemporaryCountry : return "Music|Country|Contemporary Country"
+            case .musicCountryCountryGospel : return "Music|Country|Country Gospel"
+            case .musicCountryHonkyTonk : return "Music|Country|Honky Tonk"
+            case .musicCountryOutlawCountry : return "Music|Country|Outlaw Country"
+            case .musicCountryTraditionalBluegrass : return "Music|Country|Traditional Bluegrass"
+            case .musicCountryTraditionalCountry : return "Music|Country|Traditional Country"
+            case .musicCountryUrbanCowboy : return "Music|Country|Urban Cowboy"
+            case .musicDanceBreakbeat : return "Music|Dance|Breakbeat"
+            case .musicDanceExercise : return "Music|Dance|Exercise"
+            case .musicDanceGarage : return "Music|Dance|Garage"
+            case .musicDanceHardcore : return "Music|Dance|Hardcore"
+            case .musicDanceHouse : return "Music|Dance|House"
+            case .musicDanceJungleDrumnbass : return "Music|Dance|Jungle/Drum'n'bass"
+            case .musicDanceTechno : return "Music|Dance|Techno"
+            case .musicDanceTrance : return "Music|Dance|Trance"
+            case .musicJazzBigBand : return "Music|Jazz|Big Band"
+            case .musicJazzBop : return "Music|Jazz|Bop"
+            case .musicEasyListeningLounge : return "Music|Easy Listening|Lounge"
+            case .musicEasyListeningSwing : return "Music|Easy Listening|Swing"
+            case .musicElectronicAmbient : return "Music|Electronic|Ambient"
+            case .musicElectronicDowntempo : return "Music|Electronic|Downtempo"
+            case .musicElectronicElectronica : return "Music|Electronic|Electronica"
+            case .musicElectronicIDMExperimental : return "Music|Electronic|IDM/Experimental"
+            case .musicElectronicIndustrial : return "Music|Electronic|Industrial"
+            case .musicSingerSongwriterAlternativeFolk : return "Music|Singer/Songwriter|Alternative Folk"
+            case .musicSingerSongwriterContemporaryFolk : return "Music|Singer/Songwriter|Contemporary Folk"
+            case .musicSingerSongwriterContemporarySingerSongwriter : return "Music|Singer/Songwriter|Contemporary Singer/Songwriter"
+            case .musicSingerSongwriterFolkRock : return "Music|Singer/Songwriter|Folk-Rock"
+            case .musicSingerSongwriterNewAcoustic : return "Music|Singer/Songwriter|New Acoustic"
+            case .musicSingerSongwriterTraditionalFolk : return "Music|Singer/Songwriter|Traditional Folk"
+            case .musicHipHopRapAlternativeRap : return "Music|Hip-Hop/Rap|Alternative Rap"
+            case .musicHipHopRapDirtySouth : return "Music|Hip-Hop/Rap|Dirty South"
+            case .musicHipHopRapEastCoastRap : return "Music|Hip-Hop/Rap|East Coast Rap"
+            case .musicHipHopRapGangstaRap : return "Music|Hip-Hop/Rap|Gangsta Rap"
+            case .musicHipHopRapHardcoreRap : return "Music|Hip-Hop/Rap|Hardcore Rap"
+            case .musicHipHopRapHipHop : return "Music|Hip-Hop/Rap|Hip-Hop"
+            case .musicHipHopRapLatinRap : return "Music|Hip-Hop/Rap|Latin Rap"
+            case .musicHipHopRapOldSchoolRap : return "Music|Hip-Hop/Rap|Old School Rap"
+            case .musicHipHopRapRap : return "Music|Hip-Hop/Rap|Rap"
+            case .musicHipHopRapUndergroundRap : return "Music|Hip-Hop/Rap|Underground Rap"
+            case .musicHipHopRapWestCoastRap : return "Music|Hip-Hop/Rap|West Coast Rap"
+            case .musicHolidayChanukah : return "Music|Holiday|Chanukah"
+            case .musicHolidayChristmas : return "Music|Holiday|Christmas"
+            case .musicHolidayChristmasChildrens: return "Music|Holiday|Christmas: Children's"
+            case .musicHolidayChristmasClassic: return "Music|Holiday|Christmas: Classic"
+            case .musicHolidayChristmasClassical: return "Music|Holiday|Christmas: Classical"
+            case .musicHolidayChristmasJazz: return "Music|Holiday|Christmas: Jazz"
+            case .musicHolidayChristmasModern: return "Music|Holiday|Christmas: Modern"
+            case .musicHolidayChristmasPop: return "Music|Holiday|Christmas: Pop"
+            case .musicHolidayChristmasRandB: return "Music|Holiday|Christmas: R&B"
+            case .musicHolidayChristmasReligious: return "Music|Holiday|Christmas: Religious"
+            case .musicHolidayChristmasRock: return "Music|Holiday|Christmas: Rock"
+            case .musicHolidayEaster : return "Music|Holiday|Easter"
+            case .musicHolidayHalloween : return "Music|Holiday|Halloween"
+            case .musicHolidayHolidayOther: return "Music|Holiday|Holiday: Other"
+            case .musicHolidayThanksgiving : return "Music|Holiday|Thanksgiving"
+            case .musicChristianandGospelCCM : return "Music|Christian & Gospel|CCM"
+            case .musicChristianandGospelChristianMetal : return "Music|Christian & Gospel|Christian Metal"
+            case .musicChristianandGospelChristianPop : return "Music|Christian & Gospel|Christian Pop"
+            case .musicChristianandGospelChristianRap : return "Music|Christian & Gospel|Christian Rap"
+            case .musicChristianandGospelChristianRock : return "Music|Christian & Gospel|Christian Rock"
+            case .musicChristianandGospelClassicChristian : return "Music|Christian & Gospel|Classic Christian"
+            case .musicChristianandGospelContemporaryGospel : return "Music|Christian & Gospel|Contemporary Gospel"
+            case .musicChristianandGospelGospel : return "Music|Christian & Gospel|Gospel"
+            case .musicChristianandGospelPraiseandWorship : return "Music|Christian & Gospel|Praise & Worship"
+            case .musicChristianandGospelSouthernGospel : return "Music|Christian & Gospel|Southern Gospel"
+            case .musicChristianandGospelTraditionalGospel : return "Music|Christian & Gospel|Traditional Gospel"
+            case .musicJazzAvantGardeJazz : return "Music|Jazz|Avant-Garde Jazz"
+            case .musicJazzContemporaryJazz : return "Music|Jazz|Contemporary Jazz"
+            case .musicJazzCrossoverJazz : return "Music|Jazz|Crossover Jazz"
+            case .musicJazzDixieland : return "Music|Jazz|Dixieland"
+            case .musicJazzFusion : return "Music|Jazz|Fusion"
+            case .musicJazzLatinJazz : return "Music|Jazz|Latin Jazz"
+            case .musicJazzMainstreamJazz : return "Music|Jazz|Mainstream Jazz"
+            case .musicJazzRagtime : return "Music|Jazz|Ragtime"
+            case .musicJazzSmoothJazz : return "Music|Jazz|Smooth Jazz"
+            case .musicLatinoLatinJazz : return "Music|Latino|Latin Jazz"
+            case .musicLatinoContemporaryLatin : return "Music|Latino|Contemporary Latin"
+            case .musicLatinoPopLatino : return "Music|Latino|Pop Latino"
+            case .musicLatinoRaices : return "Music|Latino|Raices"
+            case .musicLatinoUrbanolatino : return "Music|Latino|Urbano latino"
+            case .musicLatinoBaladasyBoleros : return "Music|Latino|Baladas y Boleros"
+            case .musicLatinoRockyAlternativo : return "Music|Latino|Rock y Alternativo"
+            case .musicBrazilian : return "Music|Brazilian"
+            case .musicLatinoMusicaMexicana : return "Music|Latino|Musica Mexicana"
+            case .musicLatinoMusicatropical : return "Music|Latino|Musica tropical"
+            case .musicNewAgeEnvironmental : return "Music|New Age|Environmental"
+            case .musicNewAgeHealing : return "Music|New Age|Healing"
+            case .musicNewAgeMeditation : return "Music|New Age|Meditation"
+            case .musicNewAgeNature : return "Music|New Age|Nature"
+            case .musicNewAgeRelaxation : return "Music|New Age|Relaxation"
+            case .musicNewAgeTravel : return "Music|New Age|Travel"
+            case .musicPopAdultContemporary : return "Music|Pop|Adult Contemporary"
+            case .musicPopBritpop : return "Music|Pop|Britpop"
+            case .musicPopPopRock : return "Music|Pop|Pop/Rock"
+            case .musicPopSoftRock : return "Music|Pop|Soft Rock"
+            case .musicPopTeenPop : return "Music|Pop|Teen Pop"
+            case .musicRandBSoulContemporaryRandB : return "Music|R&B/Soul|Contemporary R&B"
+            case .musicRandBSoulDisco : return "Music|R&B/Soul|Disco"
+            case .musicRandBSoulDooWop : return "Music|R&B/Soul|Doo Wop"
+            case .musicRandBSoulFunk : return "Music|R&B/Soul|Funk"
+            case .musicRandBSoulMotown : return "Music|R&B/Soul|Motown"
+            case .musicRandBSoulNeoSoul : return "Music|R&B/Soul|Neo-Soul"
+            case .musicRandBSoulQuietStorm : return "Music|R&B/Soul|Quiet Storm"
+            case .musicRandBSoulSoul : return "Music|R&B/Soul|Soul"
+            case .musicRockAdultAlternative : return "Music|Rock|Adult Alternative"
+            case .musicRockAmericanTradRock : return "Music|Rock|American Trad Rock"
+            case .musicRockArenaRock : return "Music|Rock|Arena Rock"
+            case .musicRockBluesRock : return "Music|Rock|Blues-Rock"
+            case .musicRockBritishInvasion : return "Music|Rock|British Invasion"
+            case .musicRockDeathMetalBlackMetal : return "Music|Rock|Death Metal/Black Metal"
+            case .musicRockGlamRock : return "Music|Rock|Glam Rock"
+            case .musicRockHairMetal : return "Music|Rock|Hair Metal"
+            case .musicRockHardRock : return "Music|Rock|Hard Rock"
+            case .musicRockMetal : return "Music|Rock|Metal"
+            case .musicRockJamBands : return "Music|Rock|Jam Bands"
+            case .musicRockProgRockArtRock : return "Music|Rock|Prog-Rock/Art Rock"
+            case .musicRockPsychedelic : return "Music|Rock|Psychedelic"
+            case .musicRockRockandRoll : return "Music|Rock|Rock & Roll"
+            case .musicRockRockabilly : return "Music|Rock|Rockabilly"
+            case .musicRockRootsRock : return "Music|Rock|Roots Rock"
+            case .musicRockSingerSongwriter : return "Music|Rock|Singer/Songwriter"
+            case .musicRockSouthernRock : return "Music|Rock|Southern Rock"
+            case .musicRockSurf : return "Music|Rock|Surf"
+            case .musicRockTexMex : return "Music|Rock|Tex-Mex"
+            case .musicSoundtrackForeignCinema : return "Music|Soundtrack|Foreign Cinema"
+            case .musicSoundtrackMusicals : return "Music|Soundtrack|Musicals"
+            case .musicComedyNovelty : return "Music|Comedy|Novelty"
+            case .musicSoundtrackOriginalScore : return "Music|Soundtrack|Original Score"
+            case .musicSoundtrackSoundtrack : return "Music|Soundtrack|Soundtrack"
+            case .musicComedyStandupComedy : return "Music|Comedy|Standup Comedy"
+            case .musicSoundtrackTVSoundtrack : return "Music|Soundtrack|TV Soundtrack"
+            case .musicVocalStandards : return "Music|Vocal|Standards"
+            case .musicVocalTraditionalPop : return "Music|Vocal|Traditional Pop"
+            case .musicJazzVocalJazz : return "Music|Jazz|Vocal Jazz"
+            case .musicVocalVocalPop : return "Music|Vocal|Vocal Pop"
+            case .musicAfricanAfroBeat : return "Music|African|Afro-Beat"
+            case .musicAfricanAfroPop : return "Music|African|Afro-Pop"
+            case .musicWorldCajun : return "Music|World|Cajun"
+            case .musicWorldCeltic : return "Music|World|Celtic"
+            case .musicWorldCelticFolk : return "Music|World|Celtic Folk"
+            case .musicWorldContemporaryCeltic : return "Music|World|Contemporary Celtic"
+            case .musicReggaeModernDancehall : return "Music|Reggae|Modern Dancehall"
+            case .musicWorldDrinkingSongs : return "Music|World|Drinking Songs"
+            case .musicIndianIndianPop : return "Music|Indian|Indian Pop"
+            case .musicWorldJapanesePop : return "Music|World|Japanese Pop"
+            case .musicWorldKlezmer : return "Music|World|Klezmer"
+            case .musicWorldPolka : return "Music|World|Polka"
+            case .musicWorldTraditionalCeltic : return "Music|World|Traditional Celtic"
+            case .musicWorldWorldbeat : return "Music|World|Worldbeat"
+            case .musicWorldZydeco : return "Music|World|Zydeco"
+            case .musicReggaeRootsReggae : return "Music|Reggae|Roots Reggae"
+            case .musicReggaeDub : return "Music|Reggae|Dub"
+            case .musicReggaeSka : return "Music|Reggae|Ska"
+            case .musicWorldCaribbean : return "Music|World|Caribbean"
+            case .musicWorldSouthAmerica : return "Music|World|South America"
+            case .musicArabic : return "Music|Arabic"
+            case .musicWorldNorthAmerica : return "Music|World|North America"
+            case .musicWorldHawaii : return "Music|World|Hawaii"
+            case .musicWorldAustralia : return "Music|World|Australia"
+            case .musicWorldJapan : return "Music|World|Japan"
+            case .musicWorldFrance : return "Music|World|France"
+            case .musicAfrican : return "Music|African"
+            case .musicWorldAsia : return "Music|World|Asia"
+            case .musicWorldEurope : return "Music|World|Europe"
+            case .musicWorldSouthAfrica : return "Music|World|South Africa"
+            case .musicJazzHardBop : return "Music|Jazz|Hard Bop"
+            case .musicJazzTradJazz : return "Music|Jazz|Trad Jazz"
+            case .musicJazzCoolJazz : return "Music|Jazz|Cool Jazz"
+            case .musicBluesAcousticBlues : return "Music|Blues|Acoustic Blues"
+            case .musicClassicalHighClassical : return "Music|Classical|High Classical"
+            case .musicBrazilianAxe : return "Music|Brazilian|Axe"
+            case .musicBrazilianBossaNova : return "Music|Brazilian|Bossa Nova"
+            case .musicBrazilianChoro : return "Music|Brazilian|Choro"
+            case .musicBrazilianForro : return "Music|Brazilian|Forro"
+            case .musicBrazilianFrevo : return "Music|Brazilian|Frevo"
+            case .musicBrazilianMPB : return "Music|Brazilian|MPB"
+            case .musicBrazilianPagode : return "Music|Brazilian|Pagode"
+            case .musicBrazilianSamba : return "Music|Brazilian|Samba"
+            case .musicBrazilianSertanejo : return "Music|Brazilian|Sertanejo"
+            case .musicBrazilianBaileFunk : return "Music|Brazilian|Baile Funk"
+            case .musicAlternativeChineseAlt : return "Music|Alternative|Chinese Alt"
+            case .musicAlternativeKoreanIndie : return "Music|Alternative|Korean Indie"
+            case .musicChinese : return "Music|Chinese"
+            case .musicChineseChineseClassical : return "Music|Chinese|Chinese Classical"
+            case .musicChineseChineseFlute : return "Music|Chinese|Chinese Flute"
+            case .musicChineseChineseOpera : return "Music|Chinese|Chinese Opera"
+            case .musicChineseChineseOrchestral : return "Music|Chinese|Chinese Orchestral"
+            case .musicChineseChineseRegionalFolk : return "Music|Chinese|Chinese Regional Folk"
+            case .musicChineseChineseStrings : return "Music|Chinese|Chinese Strings"
+            case .musicChineseTaiwaneseFolk : return "Music|Chinese|Taiwanese Folk"
+            case .musicChineseTibetanNativeMusic : return "Music|Chinese|Tibetan Native Music"
+            case .musicHipHopRapChineseHipHop : return "Music|Hip-Hop/Rap|Chinese Hip-Hop"
+            case .musicHipHopRapKoreanHipHop : return "Music|Hip-Hop/Rap|Korean Hip-Hop"
+            case .musicKorean : return "Music|Korean"
+            case .musicKoreanKoreanClassical : return "Music|Korean|Korean Classical"
+            case .musicKoreanKoreanTradSong : return "Music|Korean|Korean Trad Song"
+            case .musicKoreanKoreanTradInstrumental : return "Music|Korean|Korean Trad Instrumental"
+            case .musicKoreanKoreanTradTheater : return "Music|Korean|Korean Trad Theater"
+            case .musicRockChineseRock : return "Music|Rock|Chinese Rock"
+            case .musicRockKoreanRock : return "Music|Rock|Korean Rock"
+            case .musicPopCPop : return "Music|Pop|C-Pop"
+            case .musicPopCantopopHKPop : return "Music|Pop|Cantopop/HK-Pop"
+            case .musicPopKoreanFolkPop : return "Music|Pop|Korean Folk-Pop"
+            case .musicPopMandopop : return "Music|Pop|Mandopop"
+            case .musicPopTaiPop : return "Music|Pop|Tai-Pop"
+            case .musicPopMalaysianPop : return "Music|Pop|Malaysian Pop"
+            case .musicPopPinoyPop : return "Music|Pop|Pinoy Pop"
+            case .musicPopOriginalPilipinoMusic : return "Music|Pop|Original Pilipino Music"
+            case .musicPopManillaSound : return "Music|Pop|Manilla Sound"
+            case .musicPopIndoPop : return "Music|Pop|Indo Pop"
+            case .musicPopThaiPop : return "Music|Pop|Thai Pop"
+            case .musicVocalTrot : return "Music|Vocal|Trot"
+            case .musicIndian : return "Music|Indian"
+            case .musicIndianBollywood : return "Music|Indian|Bollywood"
+            case .musicIndianRegionalIndianTamil : return "Music|Indian|Regional Indian|Tamil"
+            case .musicIndianRegionalIndianTelugu : return "Music|Indian|Regional Indian|Telugu"
+            case .musicIndianRegionalIndian : return "Music|Indian|Regional Indian"
+            case .musicIndianDevotionalandSpiritual : return "Music|Indian|Devotional & Spiritual"
+            case .musicIndianSufi : return "Music|Indian|Sufi"
+            case .musicIndianIndianClassical : return "Music|Indian|Indian Classical"
+            case .musicRussianRussianChanson : return "Music|Russian|Russian Chanson"
+            case .musicWorldDini : return "Music|World|Dini"
+            case .musicTurkishHalk : return "Music|Turkish|Halk"
+            case .musicTurkishSanat : return "Music|Turkish|Sanat"
+            case .musicWorldDangdut : return "Music|World|Dangdut"
+            case .musicWorldIndonesianReligious : return "Music|World|Indonesian Religious"
+            case .musicWorldCalypso : return "Music|World|Calypso"
+            case .musicWorldSoca : return "Music|World|Soca"
+            case .musicIndianGhazals : return "Music|Indian|Ghazals"
+            case .musicIndianIndianFolk : return "Music|Indian|Indian Folk"
+            case .musicTurkishArabesque : return "Music|Turkish|Arabesque"
+            case .musicAfricanAfrikaans : return "Music|African|Afrikaans"
+            case .musicWorldFarsi : return "Music|World|Farsi"
+            case .musicWorldIsraeli : return "Music|World|Israeli"
+            case .musicArabicKhaleeji : return "Music|Arabic|Khaleeji"
+            case .musicArabicNorthAfrican : return "Music|Arabic|North African"
+            case .musicArabicArabicPop : return "Music|Arabic|Arabic Pop"
+            case .musicArabicIslamic : return "Music|Arabic|Islamic"
+            case .musicSoundtrackSoundEffects : return "Music|Soundtrack|Sound Effects"
+            case .musicFolk : return "Music|Folk"
+            case .musicOrchestral : return "Music|Orchestral"
+            case .musicMarching : return "Music|Marching"
+            case .musicPopOldies : return "Music|Pop|Oldies"
+            case .musicCountryThaiCountry : return "Music|Country|Thai Country"
+            case .musicWorldFlamenco : return "Music|World|Flamenco"
+            case .musicWorldTango : return "Music|World|Tango"
+            case .musicWorldFado : return "Music|World|Fado"
+            case .musicWorldIberia : return "Music|World|Iberia"
+            case .musicRussian : return "Music|Russian"
+            case .musicTurkish : return "Music|Turkish"
+            case .podcastsArts : return "Podcasts|Arts"
+            case .podcastsSocietyandCulturePersonalJournals : return "Podcasts|Society & Culture|Personal Journals"
+            case .podcastsComedy : return "Podcasts|Comedy"
+            case .podcastsEducation : return "Podcasts|Education"
+            case .podcastsKidsandFamily : return "Podcasts|Kids & Family"
+            case .podcastsArtsFood : return "Podcasts|Arts|Food"
+            case .podcastsHealth : return "Podcasts|Health"
+            case .podcastsTVandFilm : return "Podcasts|TV & Film"
+            case .podcastsMusic : return "Podcasts|Music"
+            case .podcastsNewsandPolitics : return "Podcasts|News & Politics"
+            case .podcastsReligionandSpirituality : return "Podcasts|Religion & Spirituality"
+            case .podcastsScienceandMedicine : return "Podcasts|Science & Medicine"
+            case .podcastsSportsandRecreation : return "Podcasts|Sports & Recreation"
+            case .podcastsTechnology : return "Podcasts|Technology"
+            case .podcastsSocietyandCulturePlacesandTravel : return "Podcasts|Society & Culture|Places & Travel"
+            case .podcastsBusiness : return "Podcasts|Business"
+            case .podcastsGamesandHobbies : return "Podcasts|Games & Hobbies"
+            case .podcastsSocietyandCulture : return "Podcasts|Society & Culture"
+            case .podcastsGovernmentandOrganizations : return "Podcasts|Government & Organizations"
+            case .musicVideosClassicalPiano : return "Music Videos|Classical|Piano"
+            case .podcastsArtsLiterature : return "Podcasts|Arts|Literature"
+            case .podcastsArtsDesign : return "Podcasts|Arts|Design"
+            case .podcastsGamesandHobbiesVideoGames : return "Podcasts|Games & Hobbies|Video Games"
+            case .podcastsArtsPerformingArts : return "Podcasts|Arts|Performing Arts"
+            case .podcastsArtsVisualArts : return "Podcasts|Arts|Visual Arts"
+            case .podcastsBusinessCareers : return "Podcasts|Business|Careers"
+            case .podcastsBusinessInvesting : return "Podcasts|Business|Investing"
+            case .podcastsBusinessManagementandMarketing : return "Podcasts|Business|Management & Marketing"
+            case .podcastsEducationK12 : return "Podcasts|Education|K-12"
+            case .podcastsEducationHigherEducation : return "Podcasts|Education|Higher Education"
+            case .podcastsHealthFitnessandNutrition : return "Podcasts|Health|Fitness & Nutrition"
+            case .podcastsHealthSelfHelp : return "Podcasts|Health|Self-Help"
+            case .podcastsHealthSexuality : return "Podcasts|Health|Sexuality"
+            case .podcastsReligionandSpiritualityBuddhism : return "Podcasts|Religion & Spirituality|Buddhism"
+            case .podcastsReligionandSpiritualityChristianity : return "Podcasts|Religion & Spirituality|Christianity"
+            case .podcastsReligionandSpiritualityIslam : return "Podcasts|Religion & Spirituality|Islam"
+            case .podcastsReligionandSpiritualityJudaism : return "Podcasts|Religion & Spirituality|Judaism"
+            case .podcastsSocietyandCulturePhilosophy : return "Podcasts|Society & Culture|Philosophy"
+            case .podcastsReligionandSpiritualitySpirituality : return "Podcasts|Religion & Spirituality|Spirituality"
+            case .podcastsTechnologyGadgets : return "Podcasts|Technology|Gadgets"
+            case .podcastsTechnologyTechNews : return "Podcasts|Technology|Tech News"
+            case .podcastsTechnologyPodcasting : return "Podcasts|Technology|Podcasting"
+            case .podcastsGamesandHobbiesAutomotive : return "Podcasts|Games & Hobbies|Automotive"
+            case .podcastsGamesandHobbiesAviation : return "Podcasts|Games & Hobbies|Aviation"
+            case .podcastsSportsandRecreationOutdoor : return "Podcasts|Sports & Recreation|Outdoor"
+            case .podcastsArtsFashionandBeauty : return "Podcasts|Arts|Fashion & Beauty"
+            case .podcastsGamesandHobbiesHobbies : return "Podcasts|Games & Hobbies|Hobbies"
+            case .podcastsGamesandHobbiesOtherGames : return "Podcasts|Games & Hobbies|Other Games"
+            case .podcastsSocietyandCultureHistory : return "Podcasts|Society & Culture|History"
+            case .podcastsReligionandSpiritualityHinduism : return "Podcasts|Religion & Spirituality|Hinduism"
+            case .podcastsReligionandSpiritualityOther : return "Podcasts|Religion & Spirituality|Other"
+            case .podcastsSportsandRecreationProfessional : return "Podcasts|Sports & Recreation|Professional"
+            case .podcastsSportsandRecreationCollegeandHighSchool : return "Podcasts|Sports & Recreation|College & High School"
+            case .podcastsSportsandRecreationAmateur : return "Podcasts|Sports & Recreation|Amateur"
+            case .podcastsEducationEducationalTechnology : return "Podcasts|Education|Educational Technology"
+            case .podcastsEducationLanguageCourses : return "Podcasts|Education|Language Courses"
+            case .podcastsEducationTraining : return "Podcasts|Education|Training"
+            case .podcastsBusinessBusinessNews : return "Podcasts|Business|Business News"
+            case .podcastsBusinessShopping : return "Podcasts|Business|Shopping"
+            case .podcastsGovernmentandOrganizationsNational : return "Podcasts|Government & Organizations|National"
+            case .podcastsGovernmentandOrganizationsRegional : return "Podcasts|Government & Organizations|Regional"
+            case .podcastsGovernmentandOrganizationsLocal : return "Podcasts|Government & Organizations|Local"
+            case .podcastsGovernmentandOrganizationsNonProfit : return "Podcasts|Government & Organizations|Non-Profit"
+            case .podcastsScienceandMedicineNaturalSciences : return "Podcasts|Science & Medicine|Natural Sciences"
+            case .podcastsScienceandMedicineMedicine : return "Podcasts|Science & Medicine|Medicine"
+            case .podcastsScienceandMedicineSocialSciences : return "Podcasts|Science & Medicine|Social Sciences"
+            case .podcastsTechnologySoftwareHowTo : return "Podcasts|Technology|Software How-To"
+            case .podcastsHealthAlternativeHealth : return "Podcasts|Health|Alternative Health"
+            case .podcastsArtsBooks : return "Podcasts|Arts|Books"
+            case .podcastsFiction : return "Podcasts|Fiction"
+            case .podcastsFictionDrama : return "Podcasts|Fiction|Drama"
+            case .podcastsFictionScienceFiction : return "Podcasts|Fiction|Science Fiction"
+            case .podcastsFictionComedyFiction : return "Podcasts|Fiction|Comedy Fiction"
+            case .podcastsHistory : return "Podcasts|History"
+            case .podcastsTrueCrime : return "Podcasts|True Crime"
+            case .podcastsNews : return "Podcasts|News"
+            case .podcastsNewsBusinessNews : return "Podcasts|News|Business News"
+            case .podcastsBusinessManagement : return "Podcasts|Business|Management"
+            case .podcastsBusinessMarketing : return "Podcasts|Business|Marketing"
+            case .podcastsBusinessEntrepreneurship : return "Podcasts|Business|Entrepreneurship"
+            case .podcastsBusinessNonProfit : return "Podcasts|Business|Non-Profit"
+            case .podcastsComedyImprov : return "Podcasts|Comedy|Improv"
+            case .podcastsComedyComedyInterviews : return "Podcasts|Comedy|Comedy Interviews"
+            case .podcastsComedyStandUp : return "Podcasts|Comedy|Stand-Up"
+            case .podcastsEducationLanguageLearning : return "Podcasts|Education|Language Learning"
+            case .podcastsEducationHowTo : return "Podcasts|Education|How To"
+            case .podcastsEducationSelfImprovement : return "Podcasts|Education|Self-Improvement"
+            case .podcastsEducationCourses : return "Podcasts|Education|Courses"
+            case .podcastsLeisure : return "Podcasts|Leisure"
+            case .podcastsLeisureAutomotive : return "Podcasts|Leisure|Automotive"
+            case .podcastsLeisureAviation : return "Podcasts|Leisure|Aviation"
+            case .podcastsLeisureHobbies : return "Podcasts|Leisure|Hobbies"
+            case .podcastsLeisureCrafts : return "Podcasts|Leisure|Crafts"
+            case .podcastsLeisureGames : return "Podcasts|Leisure|Games"
+            case .podcastsLeisureHomeandGarden : return "Podcasts|Leisure|Home & Garden"
+            case .podcastsLeisureVideoGames : return "Podcasts|Leisure|Video Games"
+            case .podcastsLeisureAnimationandManga : return "Podcasts|Leisure|Animation & Manga"
+            case .podcastsGovernment : return "Podcasts|Government"
+            case .podcastsHealthandFitness : return "Podcasts|Health & Fitness"
+            case .podcastsHealthandFitnessAlternativeHealth : return "Podcasts|Health & Fitness|Alternative Health"
+            case .podcastsHealthandFitnessFitness : return "Podcasts|Health & Fitness|Fitness"
+            case .podcastsHealthandFitnessNutrition : return "Podcasts|Health & Fitness|Nutrition"
+            case .podcastsHealthandFitnessSexuality : return "Podcasts|Health & Fitness|Sexuality"
+            case .podcastsHealthandFitnessMentalHealth : return "Podcasts|Health & Fitness|Mental Health"
+            case .podcastsHealthandFitnessMedicine : return "Podcasts|Health & Fitness|Medicine"
+            case .podcastsKidsandFamilyEducationforKids : return "Podcasts|Kids & Family|Education for Kids"
+            case .podcastsKidsandFamilyStoriesforKids : return "Podcasts|Kids & Family|Stories for Kids"
+            case .podcastsKidsandFamilyParenting : return "Podcasts|Kids & Family|Parenting"
+            case .podcastsKidsandFamilyPetsandAnimals : return "Podcasts|Kids & Family|Pets & Animals"
+            case .podcastsMusicMusicCommentary : return "Podcasts|Music|Music Commentary"
+            case .podcastsMusicMusicHistory : return "Podcasts|Music|Music History"
+            case .podcastsMusicMusicInterviews : return "Podcasts|Music|Music Interviews"
+            case .podcastsNewsDailyNews : return "Podcasts|News|Daily News"
+            case .podcastsNewsPolitics : return "Podcasts|News|Politics"
+            case .podcastsNewsTechNews : return "Podcasts|News|Tech News"
+            case .podcastsNewsSportsNews : return "Podcasts|News|Sports News"
+            case .podcastsNewsNewsCommentary : return "Podcasts|News|News Commentary"
+            case .podcastsNewsEntertainmentNews : return "Podcasts|News|Entertainment News"
+            case .podcastsReligionandSpiritualityReligion : return "Podcasts|Religion & Spirituality|Religion"
+            case .podcastsScience : return "Podcasts|Science"
+            case .podcastsScienceNaturalSciences : return "Podcasts|Science|Natural Sciences"
+            case .podcastsScienceSocialSciences : return "Podcasts|Science|Social Sciences"
+            case .podcastsScienceMathematics : return "Podcasts|Science|Mathematics"
+            case .podcastsScienceNature : return "Podcasts|Science|Nature"
+            case .podcastsScienceAstronomy : return "Podcasts|Science|Astronomy"
+            case .podcastsScienceChemistry : return "Podcasts|Science|Chemistry"
+            case .podcastsScienceEarthSciences : return "Podcasts|Science|Earth Sciences"
+            case .podcastsScienceLifeSciences : return "Podcasts|Science|Life Sciences"
+            case .podcastsSciencePhysics : return "Podcasts|Science|Physics"
+            case .podcastsSocietyandCultureDocumentary : return "Podcasts|Society & Culture|Documentary"
+            case .podcastsSocietyandCultureRelationships : return "Podcasts|Society & Culture|Relationships"
+            case .podcastsSports : return "Podcasts|Sports"
+            case .podcastsSportsSoccer : return "Podcasts|Sports|Soccer"
+            case .podcastsSportsFootball : return "Podcasts|Sports|Football"
+            case .podcastsSportsBasketball : return "Podcasts|Sports|Basketball"
+            case .podcastsSportsBaseball : return "Podcasts|Sports|Baseball"
+            case .podcastsSportsHockey : return "Podcasts|Sports|Hockey"
+            case .podcastsSportsRunning : return "Podcasts|Sports|Running"
+            case .podcastsSportsRugby : return "Podcasts|Sports|Rugby"
+            case .podcastsSportsGolf : return "Podcasts|Sports|Golf"
+            case .podcastsSportsCricket : return "Podcasts|Sports|Cricket"
+            case .podcastsSportsWrestling : return "Podcasts|Sports|Wrestling"
+            case .podcastsSportsTennis : return "Podcasts|Sports|Tennis"
+            case .podcastsSportsVolleyball : return "Podcasts|Sports|Volleyball"
+            case .podcastsSportsSwimming : return "Podcasts|Sports|Swimming"
+            case .podcastsSportsWilderness : return "Podcasts|Sports|Wilderness"
+            case .podcastsSportsFantasySports : return "Podcasts|Sports|Fantasy Sports"
+            case .podcastsTVandFilmTVReviews : return "Podcasts|TV & Film|TV Reviews"
+            case .podcastsTVandFilmAfterShows : return "Podcasts|TV & Film|After Shows"
+            case .podcastsTVandFilmFilmReviews : return "Podcasts|TV & Film|Film Reviews"
+            case .podcastsTVandFilmFilmHistory : return "Podcasts|TV & Film|Film History"
+            case .podcastsTVandFilmFilmInterviews : return "Podcasts|TV & Film|Film Interviews"
+            case .musicVideosBlues : return "Music Videos|Blues"
+            case .musicVideosComedy : return "Music Videos|Comedy"
+            case .musicVideosChildrensMusic : return "Music Videos|Children's Music"
+            case .musicVideosClassical : return "Music Videos|Classical"
+            case .musicVideosCountry : return "Music Videos|Country"
+            case .musicVideosElectronic : return "Music Videos|Electronic"
+            case .musicVideosHoliday : return "Music Videos|Holiday"
+            case .musicVideosClassicalOpera : return "Music Videos|Classical|Opera"
+            case .musicVideosSingerSongwriter : return "Music Videos|Singer/Songwriter"
+            case .musicVideosJazz : return "Music Videos|Jazz"
+            case .musicVideosLatin : return "Music Videos|Latin"
+            case .musicVideosNewAge : return "Music Videos|New Age"
+            case .musicVideosPop : return "Music Videos|Pop"
+            case .musicVideosRandBSoul : return "Music Videos|R&B/Soul"
+            case .musicVideosSoundtrack : return "Music Videos|Soundtrack"
+            case .musicVideosDance : return "Music Videos|Dance"
+            case .musicVideosHipHopRap : return "Music Videos|Hip-Hop/Rap"
+            case .musicVideosWorld : return "Music Videos|World"
+            case .musicVideosAlternative : return "Music Videos|Alternative"
+            case .musicVideosRock : return "Music Videos|Rock"
+            case .musicVideosChristianandGospel : return "Music Videos|Christian & Gospel"
+            case .musicVideosVocal : return "Music Videos|Vocal"
+            case .musicVideosReggae : return "Music Videos|Reggae"
+            case .musicVideosEasyListening : return "Music Videos|Easy Listening"
+            case .musicVideosPodcasts : return "Music Videos|Podcasts"
+            case .musicVideosJPop : return "Music Videos|J-Pop"
+            case .musicVideosEnka : return "Music Videos|Enka"
+            case .musicVideosAnime : return "Music Videos|Anime"
+            case .musicVideosKayokyoku : return "Music Videos|Kayokyoku"
+            case .musicVideosDisney : return "Music Videos|Disney"
+            case .musicVideosFrenchPop : return "Music Videos|French Pop"
+            case .musicVideosGermanPop : return "Music Videos|German Pop"
+            case .musicVideosGermanFolk : return "Music Videos|German Folk"
+            case .musicVideosAlternativeChineseAlt : return "Music Videos|Alternative|Chinese Alt"
+            case .musicVideosAlternativeKoreanIndie : return "Music Videos|Alternative|Korean Indie"
+            case .musicVideosChinese : return "Music Videos|Chinese"
+            case .musicVideosChineseChineseClassical : return "Music Videos|Chinese|Chinese Classical"
+            case .musicVideosChineseChineseFlute : return "Music Videos|Chinese|Chinese Flute"
+            case .musicVideosChineseChineseOpera : return "Music Videos|Chinese|Chinese Opera"
+            case .musicVideosChineseChineseOrchestral : return "Music Videos|Chinese|Chinese Orchestral"
+            case .musicVideosChineseChineseRegionalFolk : return "Music Videos|Chinese|Chinese Regional Folk"
+            case .musicVideosChineseChineseStrings : return "Music Videos|Chinese|Chinese Strings"
+            case .musicVideosChineseTaiwaneseFolk : return "Music Videos|Chinese|Taiwanese Folk"
+            case .musicVideosChineseTibetanNativeMusic : return "Music Videos|Chinese|Tibetan Native Music"
+            case .musicVideosHipHopRapChineseHipHop : return "Music Videos|Hip-Hop/Rap|Chinese Hip-Hop"
+            case .musicVideosHipHopRapKoreanHipHop : return "Music Videos|Hip-Hop/Rap|Korean Hip-Hop"
+            case .musicVideosKorean : return "Music Videos|Korean"
+            case .musicVideosKoreanKoreanClassical : return "Music Videos|Korean|Korean Classical"
+            case .musicVideosKoreanKoreanTradSong : return "Music Videos|Korean|Korean Trad Song"
+            case .musicVideosKoreanKoreanTradInstrumental : return "Music Videos|Korean|Korean Trad Instrumental"
+            case .musicVideosKoreanKoreanTradTheater : return "Music Videos|Korean|Korean Trad Theater"
+            case .musicVideosRockChineseRock : return "Music Videos|Rock|Chinese Rock"
+            case .musicVideosRockKoreanRock : return "Music Videos|Rock|Korean Rock"
+            case .musicVideosPopCPop : return "Music Videos|Pop|C-Pop"
+            case .musicVideosPopCantopopHKPop : return "Music Videos|Pop|Cantopop/HK-Pop"
+            case .musicVideosPopKoreanFolkPop : return "Music Videos|Pop|Korean Folk-Pop"
+            case .musicVideosPopMandopop : return "Music Videos|Pop|Mandopop"
+            case .musicVideosPopTaiPop : return "Music Videos|Pop|Tai-Pop"
+            case .musicVideosPopMalaysianPop : return "Music Videos|Pop|Malaysian Pop"
+            case .musicVideosPopPinoyPop : return "Music Videos|Pop|Pinoy Pop"
+            case .musicVideosPopOriginalPilipinoMusic : return "Music Videos|Pop|Original Pilipino Music"
+            case .musicVideosPopManillaSound : return "Music Videos|Pop|Manilla Sound"
+            case .musicVideosPopIndoPop : return "Music Videos|Pop|Indo Pop"
+            case .musicVideosPopThaiPop : return "Music Videos|Pop|Thai Pop"
+            case .musicVideosVocalTrot : return "Music Videos|Vocal|Trot"
+            case .musicVideosBrazilian : return "Music Videos|Brazilian"
+            case .musicVideosBrazilianAxe : return "Music Videos|Brazilian|Axe"
+            case .musicVideosBrazilianBaileFunk : return "Music Videos|Brazilian|Baile Funk"
+            case .musicVideosBrazilianBossaNova : return "Music Videos|Brazilian|Bossa Nova"
+            case .musicVideosBrazilianChoro : return "Music Videos|Brazilian|Choro"
+            case .musicVideosBrazilianForro : return "Music Videos|Brazilian|Forro"
+            case .musicVideosBrazilianFrevo : return "Music Videos|Brazilian|Frevo"
+            case .musicVideosBrazilianMPB : return "Music Videos|Brazilian|MPB"
+            case .musicVideosBrazilianPagode : return "Music Videos|Brazilian|Pagode"
+            case .musicVideosBrazilianSamba : return "Music Videos|Brazilian|Samba"
+            case .musicVideosBrazilianSertanejo : return "Music Videos|Brazilian|Sertanejo"
+            case .musicVideosClassicalHighClassical : return "Music Videos|Classical|High Classical"
+            case .musicVideosFitnessandWorkout : return "Music Videos|Fitness & Workout"
+            case .musicVideosInstrumental : return "Music Videos|Instrumental"
+            case .musicVideosJazzBigBand : return "Music Videos|Jazz|Big Band"
+            case .musicVideosPopKPop : return "Music Videos|Pop|K-Pop"
+            case .musicVideosKaraoke : return "Music Videos|Karaoke"
+            case .musicVideosRockHeavyMetal : return "Music Videos|Rock|Heavy Metal"
+            case .musicVideosSpokenWord : return "Music Videos|Spoken Word"
+            case .musicVideosIndian : return "Music Videos|Indian"
+            case .musicVideosIndianBollywood : return "Music Videos|Indian|Bollywood"
+            case .musicVideosIndianRegionalIndianTamil : return "Music Videos|Indian|Regional Indian|Tamil"
+            case .musicVideosIndianRegionalIndianTelugu : return "Music Videos|Indian|Regional Indian|Telugu"
+            case .musicVideosIndianRegionalIndian : return "Music Videos|Indian|Regional Indian"
+            case .musicVideosIndianDevotionalandSpiritual : return "Music Videos|Indian|Devotional & Spiritual"
+            case .musicVideosIndianSufi : return "Music Videos|Indian|Sufi"
+            case .musicVideosIndianIndianClassical : return "Music Videos|Indian|Indian Classical"
+            case .musicVideosRussianRussianChanson : return "Music Videos|Russian|Russian Chanson"
+            case .musicVideosWorldDini : return "Music Videos|World|Dini"
+            case .musicVideosTurkishHalk : return "Music Videos|Turkish|Halk"
+            case .musicVideosTurkishSanat : return "Music Videos|Turkish|Sanat"
+            case .musicVideosWorldDangdut : return "Music Videos|World|Dangdut"
+            case .musicVideosWorldIndonesianReligious : return "Music Videos|World|Indonesian Religious"
+            case .musicVideosIndianIndianPop : return "Music Videos|Indian|Indian Pop"
+            case .musicVideosWorldCalypso : return "Music Videos|World|Calypso"
+            case .musicVideosWorldSoca : return "Music Videos|World|Soca"
+            case .musicVideosIndianGhazals : return "Music Videos|Indian|Ghazals"
+            case .musicVideosIndianIndianFolk : return "Music Videos|Indian|Indian Folk"
+            case .musicVideosTurkishArabesque : return "Music Videos|Turkish|Arabesque"
+            case .musicVideosAfricanAfrikaans : return "Music Videos|African|Afrikaans"
+            case .musicVideosWorldFarsi : return "Music Videos|World|Farsi"
+            case .musicVideosWorldIsraeli : return "Music Videos|World|Israeli"
+            case .musicVideosArabic : return "Music Videos|Arabic"
+            case .musicVideosArabicKhaleeji : return "Music Videos|Arabic|Khaleeji"
+            case .musicVideosArabicNorthAfrican : return "Music Videos|Arabic|North African"
+            case .musicVideosArabicArabicPop : return "Music Videos|Arabic|Arabic Pop"
+            case .musicVideosArabicIslamic : return "Music Videos|Arabic|Islamic"
+            case .musicVideosSoundtrackSoundEffects : return "Music Videos|Soundtrack|Sound Effects"
+            case .musicVideosFolk : return "Music Videos|Folk"
+            case .musicVideosOrchestral : return "Music Videos|Orchestral"
+            case .musicVideosMarching : return "Music Videos|Marching"
+            case .musicVideosPopOldies : return "Music Videos|Pop|Oldies"
+            case .musicVideosCountryThaiCountry : return "Music Videos|Country|Thai Country"
+            case .musicVideosWorldFlamenco : return "Music Videos|World|Flamenco"
+            case .musicVideosWorldTango : return "Music Videos|World|Tango"
+            case .musicVideosWorldFado : return "Music Videos|World|Fado"
+            case .musicVideosWorldIberia : return "Music Videos|World|Iberia"
+            case .musicVideosRussian : return "Music Videos|Russian"
+            case .musicVideosTurkish : return "Music Videos|Turkish"
+            case .musicVideosAlternativeCollegeRock : return "Music Videos|Alternative|College Rock"
+            case .musicVideosAlternativeGothRock : return "Music Videos|Alternative|Goth Rock"
+            case .musicVideosAlternativeGrunge : return "Music Videos|Alternative|Grunge"
+            case .musicVideosAlternativeIndieRock : return "Music Videos|Alternative|Indie Rock"
+            case .musicVideosAlternativeNewWave : return "Music Videos|Alternative|New Wave"
+            case .musicVideosAlternativePunk : return "Music Videos|Alternative|Punk"
+            case .musicVideosBluesAcousticBlues : return "Music Videos|Blues|Acoustic Blues"
+            case .musicVideosBluesChicagoBlues : return "Music Videos|Blues|Chicago Blues"
+            case .musicVideosBluesClassicBlues : return "Music Videos|Blues|Classic Blues"
+            case .musicVideosBluesContemporaryBlues : return "Music Videos|Blues|Contemporary Blues"
+            case .musicVideosBluesCountryBlues : return "Music Videos|Blues|Country Blues"
+            case .musicVideosBluesDeltaBlues : return "Music Videos|Blues|Delta Blues"
+            case .musicVideosBluesElectricBlues : return "Music Videos|Blues|Electric Blues"
+            case .musicVideosChildrensMusicLullabies : return "Music Videos|Children's Music|Lullabies"
+            case .musicVideosChildrensMusicSingAlong : return "Music Videos|Children's Music|Sing-Along"
+            case .musicVideosChildrensMusicStories : return "Music Videos|Children's Music|Stories"
+            case .musicVideosChristianandGospelCCM : return "Music Videos|Christian & Gospel|CCM"
+            case .musicVideosChristianandGospelChristianMetal : return "Music Videos|Christian & Gospel|Christian Metal"
+            case .musicVideosChristianandGospelChristianPop : return "Music Videos|Christian & Gospel|Christian Pop"
+            case .musicVideosChristianandGospelChristianRap : return "Music Videos|Christian & Gospel|Christian Rap"
+            case .musicVideosChristianandGospelChristianRock : return "Music Videos|Christian & Gospel|Christian Rock"
+            case .musicVideosChristianandGospelClassicChristian : return "Music Videos|Christian & Gospel|Classic Christian"
+            case .musicVideosChristianandGospelContemporaryGospel : return "Music Videos|Christian & Gospel|Contemporary Gospel"
+            case .musicVideosChristianandGospelGospel : return "Music Videos|Christian & Gospel|Gospel"
+            case .musicVideosChristianandGospelPraiseandWorship : return "Music Videos|Christian & Gospel|Praise & Worship"
+            case .musicVideosChristianandGospelSouthernGospel : return "Music Videos|Christian & Gospel|Southern Gospel"
+            case .musicVideosChristianandGospelTraditionalGospel : return "Music Videos|Christian & Gospel|Traditional Gospel"
+            case .musicVideosClassicalAvantGarde : return "Music Videos|Classical|Avant-Garde"
+            case .musicVideosClassicalBaroqueEra : return "Music Videos|Classical|Baroque Era"
+            case .musicVideosClassicalChamberMusic : return "Music Videos|Classical|Chamber Music"
+            case .musicVideosClassicalChant : return "Music Videos|Classical|Chant"
+            case .musicVideosClassicalChoral : return "Music Videos|Classical|Choral"
+            case .musicVideosClassicalClassicalCrossover : return "Music Videos|Classical|Classical Crossover"
+            case .musicVideosClassicalEarlyMusic : return "Music Videos|Classical|Early Music"
+            case .musicVideosClassicalImpressionist : return "Music Videos|Classical|Impressionist"
+            case .musicVideosClassicalMedievalEra : return "Music Videos|Classical|Medieval Era"
+            case .musicVideosClassicalMinimalism : return "Music Videos|Classical|Minimalism"
+            case .musicVideosClassicalModernEra : return "Music Videos|Classical|Modern Era"
+            case .musicVideosClassicalOrchestral : return "Music Videos|Classical|Orchestral"
+            case .musicVideosClassicalRenaissance : return "Music Videos|Classical|Renaissance"
+            case .musicVideosClassicalRomanticEra : return "Music Videos|Classical|Romantic Era"
+            case .musicVideosClassicalWeddingMusic : return "Music Videos|Classical|Wedding Music"
+            case .musicVideosComedyNovelty : return "Music Videos|Comedy|Novelty"
+            case .musicVideosComedyStandupComedy : return "Music Videos|Comedy|Standup Comedy"
+            case .musicVideosCountryAlternativeCountry : return "Music Videos|Country|Alternative Country"
+            case .musicVideosCountryAmericana : return "Music Videos|Country|Americana"
+            case .musicVideosCountryBluegrass : return "Music Videos|Country|Bluegrass"
+            case .musicVideosCountryContemporaryBluegrass : return "Music Videos|Country|Contemporary Bluegrass"
+            case .musicVideosCountryContemporaryCountry : return "Music Videos|Country|Contemporary Country"
+            case .musicVideosCountryCountryGospel : return "Music Videos|Country|Country Gospel"
+            case .musicVideosCountryHonkyTonk : return "Music Videos|Country|Honky Tonk"
+            case .musicVideosCountryOutlawCountry : return "Music Videos|Country|Outlaw Country"
+            case .musicVideosCountryTraditionalBluegrass : return "Music Videos|Country|Traditional Bluegrass"
+            case .musicVideosCountryTraditionalCountry : return "Music Videos|Country|Traditional Country"
+            case .musicVideosCountryUrbanCowboy : return "Music Videos|Country|Urban Cowboy"
+            case .musicVideosDanceBreakbeat : return "Music Videos|Dance|Breakbeat"
+            case .musicVideosDanceExercise : return "Music Videos|Dance|Exercise"
+            case .musicVideosDanceGarage : return "Music Videos|Dance|Garage"
+            case .musicVideosDanceHardcore : return "Music Videos|Dance|Hardcore"
+            case .musicVideosDanceHouse : return "Music Videos|Dance|House"
+            case .musicVideosDanceJungleDrumnbass : return "Music Videos|Dance|Jungle/Drum'n'bass"
+            case .musicVideosDanceTechno : return "Music Videos|Dance|Techno"
+            case .musicVideosDanceTrance : return "Music Videos|Dance|Trance"
+            case .musicVideosEasyListeningLounge : return "Music Videos|Easy Listening|Lounge"
+            case .musicVideosEasyListeningSwing : return "Music Videos|Easy Listening|Swing"
+            case .musicVideosElectronicAmbient : return "Music Videos|Electronic|Ambient"
+            case .musicVideosElectronicDowntempo : return "Music Videos|Electronic|Downtempo"
+            case .musicVideosElectronicElectronica : return "Music Videos|Electronic|Electronica"
+            case .musicVideosElectronicIDMExperimental : return "Music Videos|Electronic|IDM/Experimental"
+            case .musicVideosElectronicIndustrial : return "Music Videos|Electronic|Industrial"
+            case .musicVideosHipHopRapAlternativeRap : return "Music Videos|Hip-Hop/Rap|Alternative Rap"
+            case .musicVideosHipHopRapDirtySouth : return "Music Videos|Hip-Hop/Rap|Dirty South"
+            case .musicVideosHipHopRapEastCoastRap : return "Music Videos|Hip-Hop/Rap|East Coast Rap"
+            case .musicVideosHipHopRapGangstaRap : return "Music Videos|Hip-Hop/Rap|Gangsta Rap"
+            case .musicVideosHipHopRapHardcoreRap : return "Music Videos|Hip-Hop/Rap|Hardcore Rap"
+            case .musicVideosHipHopRapHipHop : return "Music Videos|Hip-Hop/Rap|Hip-Hop"
+            case .musicVideosHipHopRapLatinRap : return "Music Videos|Hip-Hop/Rap|Latin Rap"
+            case .musicVideosHipHopRapOldSchoolRap : return "Music Videos|Hip-Hop/Rap|Old School Rap"
+            case .musicVideosHipHopRapRap : return "Music Videos|Hip-Hop/Rap|Rap"
+            case .musicVideosHipHopRapUndergroundRap : return "Music Videos|Hip-Hop/Rap|Underground Rap"
+            case .musicVideosHipHopRapWestCoastRap : return "Music Videos|Hip-Hop/Rap|West Coast Rap"
+            case .musicVideosHolidayChanukah : return "Music Videos|Holiday|Chanukah"
+            case .musicVideosHolidayChristmas : return "Music Videos|Holiday|Christmas"
+            case .musicVideosHolidayChristmasChildrens: return "Music Videos|Holiday|Christmas: Children's"
+            case .musicVideosHolidayChristmasClassic: return "Music Videos|Holiday|Christmas: Classic"
+            case .musicVideosHolidayChristmasClassical: return "Music Videos|Holiday|Christmas: Classical"
+            case .musicVideosHolidayChristmasJazz: return "Music Videos|Holiday|Christmas: Jazz"
+            case .musicVideosHolidayChristmasModern: return "Music Videos|Holiday|Christmas: Modern"
+            case .musicVideosHolidayChristmasPop: return "Music Videos|Holiday|Christmas: Pop"
+            case .musicVideosHolidayChristmasRandB: return "Music Videos|Holiday|Christmas: R&B"
+            case .musicVideosHolidayChristmasReligious: return "Music Videos|Holiday|Christmas: Religious"
+            case .musicVideosHolidayChristmasRock: return "Music Videos|Holiday|Christmas: Rock"
+            case .musicVideosHolidayEaster : return "Music Videos|Holiday|Easter"
+            case .musicVideosHolidayHalloween : return "Music Videos|Holiday|Halloween"
+            case .musicVideosHolidayThanksgiving : return "Music Videos|Holiday|Thanksgiving"
+            case .musicVideosJazzAvantGardeJazz : return "Music Videos|Jazz|Avant-Garde Jazz"
+            case .musicVideosJazzBop : return "Music Videos|Jazz|Bop"
+            case .musicVideosJazzContemporaryJazz : return "Music Videos|Jazz|Contemporary Jazz"
+            case .musicVideosJazzCoolJazz : return "Music Videos|Jazz|Cool Jazz"
+            case .musicVideosJazzCrossoverJazz : return "Music Videos|Jazz|Crossover Jazz"
+            case .musicVideosJazzDixieland : return "Music Videos|Jazz|Dixieland"
+            case .musicVideosJazzFusion : return "Music Videos|Jazz|Fusion"
+            case .musicVideosJazzHardBop : return "Music Videos|Jazz|Hard Bop"
+            case .musicVideosJazzLatinJazz : return "Music Videos|Jazz|Latin Jazz"
+            case .musicVideosJazzMainstreamJazz : return "Music Videos|Jazz|Mainstream Jazz"
+            case .musicVideosJazzRagtime : return "Music Videos|Jazz|Ragtime"
+            case .musicVideosJazzSmoothJazz : return "Music Videos|Jazz|Smooth Jazz"
+            case .musicVideosJazzTradJazz : return "Music Videos|Jazz|Trad Jazz"
+            case .musicVideosLatinAlternativeandRockinSpanish : return "Music Videos|Latin|Alternative & Rock in Spanish"
+            case .musicVideosLatinBaladasyBoleros : return "Music Videos|Latin|Baladas y Boleros"
+            case .musicVideosLatinContemporaryLatin : return "Music Videos|Latin|Contemporary Latin"
+            case .musicVideosLatinLatinJazz : return "Music Videos|Latin|Latin Jazz"
+            case .musicVideosLatinLatinUrban : return "Music Videos|Latin|Latin Urban"
+            case .musicVideosLatinPopinSpanish : return "Music Videos|Latin|Pop in Spanish"
+            case .musicVideosLatinRaices : return "Music Videos|Latin|Raices"
+            case .musicVideosLatinMusicaMexicana : return "Music Videos|Latin|Musica Mexicana"
+            case .musicVideosLatinSalsayTropical : return "Music Videos|Latin|Salsa y Tropical"
+            case .musicVideosNewAgeHealing : return "Music Videos|New Age|Healing"
+            case .musicVideosNewAgeMeditation : return "Music Videos|New Age|Meditation"
+            case .musicVideosNewAgeNature : return "Music Videos|New Age|Nature"
+            case .musicVideosNewAgeRelaxation : return "Music Videos|New Age|Relaxation"
+            case .musicVideosNewAgeTravel : return "Music Videos|New Age|Travel"
+            case .musicVideosPopAdultContemporary : return "Music Videos|Pop|Adult Contemporary"
+            case .musicVideosPopBritpop : return "Music Videos|Pop|Britpop"
+            case .musicVideosPopPopRock : return "Music Videos|Pop|Pop/Rock"
+            case .musicVideosPopSoftRock : return "Music Videos|Pop|Soft Rock"
+            case .musicVideosPopTeenPop : return "Music Videos|Pop|Teen Pop"
+            case .musicVideosRandBSoulContemporaryRandB : return "Music Videos|R&B/Soul|Contemporary R&B"
+            case .musicVideosRandBSoulDisco : return "Music Videos|R&B/Soul|Disco"
+            case .musicVideosRandBSoulDooWop : return "Music Videos|R&B/Soul|Doo Wop"
+            case .musicVideosRandBSoulFunk : return "Music Videos|R&B/Soul|Funk"
+            case .musicVideosRandBSoulMotown : return "Music Videos|R&B/Soul|Motown"
+            case .musicVideosRandBSoulNeoSoul : return "Music Videos|R&B/Soul|Neo-Soul"
+            case .musicVideosRandBSoulSoul : return "Music Videos|R&B/Soul|Soul"
+            case .musicVideosReggaeModernDancehall : return "Music Videos|Reggae|Modern Dancehall"
+            case .musicVideosReggaeDub : return "Music Videos|Reggae|Dub"
+            case .musicVideosReggaeRootsReggae : return "Music Videos|Reggae|Roots Reggae"
+            case .musicVideosReggaeSka : return "Music Videos|Reggae|Ska"
+            case .musicVideosRockAdultAlternative : return "Music Videos|Rock|Adult Alternative"
+            case .musicVideosRockAmericanTradRock : return "Music Videos|Rock|American Trad Rock"
+            case .musicVideosRockArenaRock : return "Music Videos|Rock|Arena Rock"
+            case .musicVideosRockBluesRock : return "Music Videos|Rock|Blues-Rock"
+            case .musicVideosRockBritishInvasion : return "Music Videos|Rock|British Invasion"
+            case .musicVideosRockDeathMetalBlackMetal : return "Music Videos|Rock|Death Metal/Black Metal"
+            case .musicVideosRockGlamRock : return "Music Videos|Rock|Glam Rock"
+            case .musicVideosRockHairMetal : return "Music Videos|Rock|Hair Metal"
+            case .musicVideosRockHardRock : return "Music Videos|Rock|Hard Rock"
+            case .musicVideosRockJamBands : return "Music Videos|Rock|Jam Bands"
+            case .musicVideosRockProgRockArtRock : return "Music Videos|Rock|Prog-Rock/Art Rock"
+            case .musicVideosRockPsychedelic : return "Music Videos|Rock|Psychedelic"
+            case .musicVideosRockRockandRoll : return "Music Videos|Rock|Rock & Roll"
+            case .musicVideosRockRockabilly : return "Music Videos|Rock|Rockabilly"
+            case .musicVideosRockRootsRock : return "Music Videos|Rock|Roots Rock"
+            case .musicVideosRockSingerSongwriter : return "Music Videos|Rock|Singer/Songwriter"
+            case .musicVideosRockSouthernRock : return "Music Videos|Rock|Southern Rock"
+            case .musicVideosRockSurf : return "Music Videos|Rock|Surf"
+            case .musicVideosRockTexMex : return "Music Videos|Rock|Tex-Mex"
+            case .musicVideosSingerSongwriterAlternativeFolk : return "Music Videos|Singer/Songwriter|Alternative Folk"
+            case .musicVideosSingerSongwriterContemporaryFolk : return "Music Videos|Singer/Songwriter|Contemporary Folk"
+            case .musicVideosSingerSongwriterContemporarySingerSongwriter : return "Music Videos|Singer/Songwriter|Contemporary Singer/Songwriter"
+            case .musicVideosSingerSongwriterFolkRock : return "Music Videos|Singer/Songwriter|Folk-Rock"
+            case .musicVideosSingerSongwriterNewAcoustic : return "Music Videos|Singer/Songwriter|New Acoustic"
+            case .musicVideosSingerSongwriterTraditionalFolk : return "Music Videos|Singer/Songwriter|Traditional Folk"
+            case .musicVideosSoundtrackForeignCinema : return "Music Videos|Soundtrack|Foreign Cinema"
+            case .musicVideosSoundtrackMusicals : return "Music Videos|Soundtrack|Musicals"
+            case .musicVideosSoundtrackOriginalScore : return "Music Videos|Soundtrack|Original Score"
+            case .musicVideosSoundtrackSoundtrack : return "Music Videos|Soundtrack|Soundtrack"
+            case .musicVideosSoundtrackTVSoundtrack : return "Music Videos|Soundtrack|TV Soundtrack"
+            case .musicVideosVocalStandards : return "Music Videos|Vocal|Standards"
+            case .musicVideosVocalTraditionalPop : return "Music Videos|Vocal|Traditional Pop"
+            case .musicVideosJazzVocalJazz : return "Music Videos|Jazz|Vocal Jazz"
+            case .musicVideosVocalVocalPop : return "Music Videos|Vocal|Vocal Pop"
+            case .musicVideosAfrican : return "Music Videos|African"
+            case .musicVideosAfricanAfroBeat : return "Music Videos|African|Afro-Beat"
+            case .musicVideosAfricanAfroPop : return "Music Videos|African|Afro-Pop"
+            case .musicVideosWorldAsia : return "Music Videos|World|Asia"
+            case .musicVideosWorldAustralia : return "Music Videos|World|Australia"
+            case .musicVideosWorldCajun : return "Music Videos|World|Cajun"
+            case .musicVideosWorldCaribbean : return "Music Videos|World|Caribbean"
+            case .musicVideosWorldCeltic : return "Music Videos|World|Celtic"
+            case .musicVideosWorldCelticFolk : return "Music Videos|World|Celtic Folk"
+            case .musicVideosWorldContemporaryCeltic : return "Music Videos|World|Contemporary Celtic"
+            case .musicVideosWorldEurope : return "Music Videos|World|Europe"
+            case .musicVideosWorldFrance : return "Music Videos|World|France"
+            case .musicVideosWorldHawaii : return "Music Videos|World|Hawaii"
+            case .musicVideosWorldJapan : return "Music Videos|World|Japan"
+            case .musicVideosWorldKlezmer : return "Music Videos|World|Klezmer"
+            case .musicVideosWorldNorthAmerica : return "Music Videos|World|North America"
+            case .musicVideosWorldPolka : return "Music Videos|World|Polka"
+            case .musicVideosWorldSouthAfrica : return "Music Videos|World|South Africa"
+            case .musicVideosWorldSouthAmerica : return "Music Videos|World|South America"
+            case .musicVideosWorldTraditionalCeltic : return "Music Videos|World|Traditional Celtic"
+            case .musicVideosWorldWorldbeat : return "Music Videos|World|Worldbeat"
+            case .musicVideosWorldZydeco : return "Music Videos|World|Zydeco"
+            case .musicVideosClassicalArtSong : return "Music Videos|Classical|Art Song"
+            case .musicVideosClassicalBrassandWoodwinds : return "Music Videos|Classical|Brass & Woodwinds"
+            case .musicVideosClassicalSoloInstrumental : return "Music Videos|Classical|Solo Instrumental"
+            case .musicVideosClassicalContemporaryEra : return "Music Videos|Classical|Contemporary Era"
+            case .musicVideosClassicalOratorio : return "Music Videos|Classical|Oratorio"
+            case .musicVideosClassicalCantata : return "Music Videos|Classical|Cantata"
+            case .musicVideosClassicalElectronic : return "Music Videos|Classical|Electronic"
+            case .musicVideosClassicalSacred : return "Music Videos|Classical|Sacred"
+            case .musicVideosClassicalGuitar : return "Music Videos|Classical|Guitar"
+            case .musicVideosClassicalViolin : return "Music Videos|Classical|Violin"
+            case .musicVideosClassicalCello : return "Music Videos|Classical|Cello"
+            case .musicVideosClassicalPercussion : return "Music Videos|Classical|Percussion"
+            case .musicVideosElectronicDubstep : return "Music Videos|Electronic|Dubstep"
+            case .musicVideosElectronicBass : return "Music Videos|Electronic|Bass"
+            case .musicVideosHipHopRapUKHipHop : return "Music Videos|Hip-Hop/Rap|UK Hip-Hop"
+            case .musicVideosReggaeLoversRock : return "Music Videos|Reggae|Lovers Rock"
+            case .musicVideosAlternativeEMO : return "Music Videos|Alternative|EMO"
+            case .musicVideosAlternativePopPunk : return "Music Videos|Alternative|Pop Punk"
+            case .musicVideosAlternativeIndiePop : return "Music Videos|Alternative|Indie Pop"
+            case .musicVideosNewAgeYoga : return "Music Videos|New Age|Yoga"
+            case .musicVideosPopTribute : return "Music Videos|Pop|Tribute"
+            case .musicVideosPopShows : return "Music Videos|Pop|Shows"
+            case .musicVideosCuban : return "Music Videos|Cuban"
+            case .musicVideosCubanMambo : return "Music Videos|Cuban|Mambo"
+            case .musicVideosCubanChachacha : return "Music Videos|Cuban|Chachacha"
+            case .musicVideosCubanGuajira : return "Music Videos|Cuban|Guajira"
+            case .musicVideosCubanSon : return "Music Videos|Cuban|Son"
+            case .musicVideosCubanBolero : return "Music Videos|Cuban|Bolero"
+            case .musicVideosCubanGuaracha : return "Music Videos|Cuban|Guaracha"
+            case .musicVideosCubanTimba : return "Music Videos|Cuban|Timba"
+            case .musicVideosSoundtrackVideoGame : return "Music Videos|Soundtrack|Video Game"
+            case .musicVideosIndianRegionalIndianPunjabiPunjabiPop : return "Music Videos|Indian|Regional Indian|Punjabi|Punjabi Pop"
+            case .musicVideosIndianRegionalIndianBengaliRabindraSangeet : return "Music Videos|Indian|Regional Indian|Bengali|Rabindra Sangeet"
+            case .musicVideosIndianRegionalIndianMalayalam : return "Music Videos|Indian|Regional Indian|Malayalam"
+            case .musicVideosIndianRegionalIndianKannada : return "Music Videos|Indian|Regional Indian|Kannada"
+            case .musicVideosIndianRegionalIndianMarathi : return "Music Videos|Indian|Regional Indian|Marathi"
+            case .musicVideosIndianRegionalIndianGujarati : return "Music Videos|Indian|Regional Indian|Gujarati"
+            case .musicVideosIndianRegionalIndianAssamese : return "Music Videos|Indian|Regional Indian|Assamese"
+            case .musicVideosIndianRegionalIndianBhojpuri : return "Music Videos|Indian|Regional Indian|Bhojpuri"
+            case .musicVideosIndianRegionalIndianHaryanvi : return "Music Videos|Indian|Regional Indian|Haryanvi"
+            case .musicVideosIndianRegionalIndianOdia : return "Music Videos|Indian|Regional Indian|Odia"
+            case .musicVideosIndianRegionalIndianRajasthani : return "Music Videos|Indian|Regional Indian|Rajasthani"
+            case .musicVideosIndianRegionalIndianUrdu : return "Music Videos|Indian|Regional Indian|Urdu"
+            case .musicVideosIndianRegionalIndianPunjabi : return "Music Videos|Indian|Regional Indian|Punjabi"
+            case .musicVideosIndianRegionalIndianBengali : return "Music Videos|Indian|Regional Indian|Bengali"
+            case .musicVideosIndianIndianClassicalCarnaticClassical : return "Music Videos|Indian|Indian Classical|Carnatic Classical"
+            case .musicVideosIndianIndianClassicalHindustaniClassical : return "Music Videos|Indian|Indian Classical|Hindustani Classical"
+            case .musicVideosAfricanAfroHouse : return "Music Videos|African|Afro House"
+            case .musicVideosAfricanAfroSoul : return "Music Videos|African|Afro Soul"
+            case .musicVideosAfricanAfrobeats : return "Music Videos|African|Afrobeats"
+            case .musicVideosAfricanBenga : return "Music Videos|African|Benga"
+            case .musicVideosAfricanBongoFlava : return "Music Videos|African|Bongo-Flava"
+            case .musicVideosAfricanCoupeDecale : return "Music Videos|African|Coupe-Decale"
+            case .musicVideosAfricanGqom : return "Music Videos|African|Gqom"
+            case .musicVideosAfricanHighlife : return "Music Videos|African|Highlife"
+            case .musicVideosAfricanKuduro : return "Music Videos|African|Kuduro"
+            case .musicVideosAfricanKizomba : return "Music Videos|African|Kizomba"
+            case .musicVideosAfricanKwaito : return "Music Videos|African|Kwaito"
+            case .musicVideosAfricanMbalax : return "Music Videos|African|Mbalax"
+            case .musicVideosAfricanNdombolo : return "Music Videos|African|Ndombolo"
+            case .musicVideosAfricanShangaanElectro : return "Music Videos|African|Shangaan Electro"
+            case .musicVideosAfricanSoukous : return "Music Videos|African|Soukous"
+            case .musicVideosAfricanTaarab : return "Music Videos|African|Taarab"
+            case .musicVideosAfricanZouglou : return "Music Videos|African|Zouglou"
+            case .musicVideosTurkishOzgun : return "Music Videos|Turkish|Ozgun"
+            case .musicVideosTurkishFantezi : return "Music Videos|Turkish|Fantezi"
+            case .musicVideosTurkishReligious : return "Music Videos|Turkish|Religious"
+            case .musicVideosPopTurkishPop : return "Music Videos|Pop|Turkish Pop"
+            case .musicVideosRockTurkishRock : return "Music Videos|Rock|Turkish Rock"
+            case .musicVideosAlternativeTurkishAlternative : return "Music Videos|Alternative|Turkish Alternative"
+            case .musicVideosHipHopRapTurkishHipHopRap : return "Music Videos|Hip-Hop/Rap|Turkish Hip-Hop/Rap"
+            case .musicVideosAfricanMaskandi : return "Music Videos|African|Maskandi"
+            case .musicVideosRussianRussianRomance : return "Music Videos|Russian|Russian Romance"
+            case .musicVideosRussianRussianBard : return "Music Videos|Russian|Russian Bard"
+            case .musicVideosRussianRussianPop : return "Music Videos|Russian|Russian Pop"
+            case .musicVideosRussianRussianRock : return "Music Videos|Russian|Russian Rock"
+            case .musicVideosRussianRussianHipHop : return "Music Videos|Russian|Russian Hip-Hop"
+            case .musicVideosArabicLevant : return "Music Videos|Arabic|Levant"
+            case .musicVideosArabicLevantDabke : return "Music Videos|Arabic|Levant|Dabke"
+            case .musicVideosArabicMaghrebRai : return "Music Videos|Arabic|Maghreb Rai"
+            case .musicVideosArabicKhaleejiKhaleejiJalsat : return "Music Videos|Arabic|Khaleeji|Khaleeji Jalsat"
+            case .musicVideosArabicKhaleejiKhaleejiShailat : return "Music Videos|Arabic|Khaleeji|Khaleeji Shailat"
+            case .musicVideosTarab : return "Music Videos|Tarab"
+            case .musicVideosTarabIraqiTarab : return "Music Videos|Tarab|Iraqi Tarab"
+            case .musicVideosTarabEgyptianTarab : return "Music Videos|Tarab|Egyptian Tarab"
+            case .musicVideosTarabKhaleejiTarab : return "Music Videos|Tarab|Khaleeji Tarab"
+            case .musicVideosPopLevantPop : return "Music Videos|Pop|Levant Pop"
+            case .musicVideosPopIraqiPop : return "Music Videos|Pop|Iraqi Pop"
+            case .musicVideosPopEgyptianPop : return "Music Videos|Pop|Egyptian Pop"
+            case .musicVideosPopMaghrebPop : return "Music Videos|Pop|Maghreb Pop"
+            case .musicVideosPopKhaleejiPop : return "Music Videos|Pop|Khaleeji Pop"
+            case .musicVideosHipHopRapLevantHipHop : return "Music Videos|Hip-Hop/Rap|Levant Hip-Hop"
+            case .musicVideosHipHopRapEgyptianHipHop : return "Music Videos|Hip-Hop/Rap|Egyptian Hip-Hop"
+            case .musicVideosHipHopRapMaghrebHipHop : return "Music Videos|Hip-Hop/Rap|Maghreb Hip-Hop"
+            case .musicVideosHipHopRapKhaleejiHipHop : return "Music Videos|Hip-Hop/Rap|Khaleeji Hip-Hop"
+            case .musicVideosAlternativeIndieLevant : return "Music Videos|Alternative|Indie Levant"
+            case .musicVideosAlternativeIndieEgyptian : return "Music Videos|Alternative|Indie Egyptian"
+            case .musicVideosAlternativeIndieMaghreb : return "Music Videos|Alternative|Indie Maghreb"
+            case .musicVideosElectronicLevantElectronic : return "Music Videos|Electronic|Levant Electronic"
+            case .musicVideosElectronicElectroChaabi : return "Music Videos|Electronic|Electro-Cha'abi"
+            case .musicVideosElectronicMaghrebElectronic : return "Music Videos|Electronic|Maghreb Electronic"
+            case .musicVideosFolkIraqiFolk : return "Music Videos|Folk|Iraqi Folk"
+            case .musicVideosFolkKhaleejiFolk : return "Music Videos|Folk|Khaleeji Folk"
+            case .musicVideosDanceMaghrebDance : return "Music Videos|Dance|Maghreb Dance"
+            case .tVShowsComedy : return "TV Shows|Comedy"
+            case .tVShowsDrama : return "TV Shows|Drama"
+            case .tVShowsAnimation : return "TV Shows|Animation"
+            case .tVShowsActionandAdventure : return "TV Shows|Action & Adventure"
+            case .tVShowsClassics : return "TV Shows|Classics"
+            case .tVShowsKidsandFamily : return "TV Shows|Kids & Family"
+            case .tVShowsNonfiction : return "TV Shows|Nonfiction"
+            case .tVShowsRealityTV : return "TV Shows|Reality TV"
+            case .tVShowsSciFiandFantasy : return "TV Shows|Sci-Fi & Fantasy"
+            case .tVShowsSports : return "TV Shows|Sports"
+            case .tVShowsTeens : return "TV Shows|Teens"
+            case .tVShowsLatinoTV : return "TV Shows|Latino TV"
+            case .moviesActionandAdventure : return "Movies|Action & Adventure"
+            case .moviesAnime : return "Movies|Anime"
+            case .moviesClassics : return "Movies|Classics"
+            case .moviesComedy : return "Movies|Comedy"
+            case .moviesDocumentary : return "Movies|Documentary"
+            case .moviesDrama : return "Movies|Drama"
+            case .moviesForeign : return "Movies|Foreign"
+            case .moviesHorror : return "Movies|Horror"
+            case .moviesIndependent : return "Movies|Independent"
+            case .moviesKidsandFamily : return "Movies|Kids & Family"
+            case .moviesMusicals : return "Movies|Musicals"
+            case .moviesRomance : return "Movies|Romance"
+            case .moviesSciFiandFantasy : return "Movies|Sci-Fi & Fantasy"
+            case .moviesShortFilms : return "Movies|Short Films"
+            case .moviesSpecialInterest : return "Movies|Special Interest"
+            case .moviesThriller : return "Movies|Thriller"
+            case .moviesSports : return "Movies|Sports"
+            case .moviesWestern : return "Movies|Western"
+            case .moviesUrban : return "Movies|Urban"
+            case .moviesHoliday : return "Movies|Holiday"
+            case .moviesMadeforTV : return "Movies|Made for TV"
+            case .moviesConcertFilms : return "Movies|Concert Films"
+            case .moviesMusicDocumentaries : return "Movies|Music Documentaries"
+            case .moviesMusicFeatureFilms : return "Movies|Music Feature Films"
+            case .moviesJapaneseCinema : return "Movies|Japanese Cinema"
+            case .moviesJidaigeki : return "Movies|Jidaigeki"
+            case .moviesTokusatsu : return "Movies|Tokusatsu"
+            case .moviesKoreanCinema : return "Movies|Korean Cinema"
+            case .moviesRussian : return "Movies|Russian"
+            case .moviesTurkish : return "Movies|Turkish"
+            case .moviesBollywood : return "Movies|Bollywood"
+            case .moviesRegionalIndian : return "Movies|Regional Indian"
+            case .moviesMiddleEastern : return "Movies|Middle Eastern"
+            case .moviesAfrican : return "Movies|African"
+            case .appStoreBusiness : return "App Store|Business"
+            case .appStoreWeather : return "App Store|Weather"
+            case .appStoreUtilities : return "App Store|Utilities"
+            case .appStoreTravel : return "App Store|Travel"
+            case .appStoreSports : return "App Store|Sports"
+            case .appStoreSocialNetworking : return "App Store|Social Networking"
+            case .appStoreReference : return "App Store|Reference"
+            case .appStoreProductivity : return "App Store|Productivity"
+            case .appStorePhotoandVideo : return "App Store|Photo & Video"
+            case .appStoreNews : return "App Store|News"
+            case .appStoreNavigation : return "App Store|Navigation"
+            case .appStoreMusic : return "App Store|Music"
+            case .appStoreLifestyle : return "App Store|Lifestyle"
+            case .appStoreHealthandFitness : return "App Store|Health & Fitness"
+            case .appStoreGames : return "App Store|Games"
+            case .appStoreFinance : return "App Store|Finance"
+            case .appStoreEntertainment : return "App Store|Entertainment"
+            case .appStoreEducation : return "App Store|Education"
+            case .appStoreBooks : return "App Store|Books"
+            case .appStoreMedical : return "App Store|Medical"
+            case .appStoreMagazinesandNewspapers : return "App Store|Magazines & Newspapers"
+            case .appStoreCatalogs : return "App Store|Catalogs"
+            case .appStoreFoodandDrink : return "App Store|Food & Drink"
+            case .appStoreShopping : return "App Store|Shopping"
+            case .appStoreStickers : return "App Store|Stickers"
+            case .appStoreDeveloperTools : return "App Store|Developer Tools"
+            case .appStoreGraphicsandDesign : return "App Store|Graphics & Design"
+            case .appStoreGamesAction : return "App Store|Games|Action"
+            case .appStoreGamesAdventure : return "App Store|Games|Adventure"
+            case .appStoreGamesCasual : return "App Store|Games|Casual"
+            case .appStoreGamesBoard : return "App Store|Games|Board"
+            case .appStoreGamesCard : return "App Store|Games|Card"
+            case .appStoreGamesCasino : return "App Store|Games|Casino"
+            case .appStoreGamesDice : return "App Store|Games|Dice"
+            case .appStoreGamesEducational : return "App Store|Games|Educational"
+            case .appStoreGamesFamily : return "App Store|Games|Family"
+            case .appStoreGamesMusic : return "App Store|Games|Music"
+            case .appStoreGamesPuzzle : return "App Store|Games|Puzzle"
+            case .appStoreGamesRacing : return "App Store|Games|Racing"
+            case .appStoreGamesRolePlaying : return "App Store|Games|Role Playing"
+            case .appStoreGamesSimulation : return "App Store|Games|Simulation"
+            case .appStoreGamesSports : return "App Store|Games|Sports"
+            case .appStoreGamesStrategy : return "App Store|Games|Strategy"
+            case .appStoreGamesTrivia : return "App Store|Games|Trivia"
+            case .appStoreGamesWord : return "App Store|Games|Word"
+            case .tonesRingtonesAlternative : return "Tones|Ringtones|Alternative"
+            case .tonesRingtonesBlues : return "Tones|Ringtones|Blues"
+            case .tonesRingtonesChildrensMusic : return "Tones|Ringtones|Children's Music"
+            case .tonesRingtonesClassical : return "Tones|Ringtones|Classical"
+            case .tonesRingtonesComedy : return "Tones|Ringtones|Comedy"
+            case .tonesRingtonesCountry : return "Tones|Ringtones|Country"
+            case .tonesRingtonesDance : return "Tones|Ringtones|Dance"
+            case .tonesRingtonesElectronic : return "Tones|Ringtones|Electronic"
+            case .tonesRingtonesEnka : return "Tones|Ringtones|Enka"
+            case .tonesRingtonesFrenchPop : return "Tones|Ringtones|French Pop"
+            case .tonesRingtonesGermanFolk : return "Tones|Ringtones|German Folk"
+            case .tonesRingtonesGermanPop : return "Tones|Ringtones|German Pop"
+            case .tonesRingtonesHipHopRap : return "Tones|Ringtones|Hip-Hop/Rap"
+            case .tonesRingtonesHoliday : return "Tones|Ringtones|Holiday"
+            case .tonesRingtonesInspirational : return "Tones|Ringtones|Inspirational"
+            case .tonesRingtonesJPop : return "Tones|Ringtones|J-Pop"
+            case .tonesRingtonesJazz : return "Tones|Ringtones|Jazz"
+            case .tonesRingtonesKayokyoku : return "Tones|Ringtones|Kayokyoku"
+            case .tonesRingtonesLatin : return "Tones|Ringtones|Latin"
+            case .tonesRingtonesNewAge : return "Tones|Ringtones|New Age"
+            case .tonesRingtonesClassicalOpera : return "Tones|Ringtones|Classical|Opera"
+            case .tonesRingtonesPop : return "Tones|Ringtones|Pop"
+            case .tonesRingtonesRandBSoul : return "Tones|Ringtones|R&B/Soul"
+            case .tonesRingtonesReggae : return "Tones|Ringtones|Reggae"
+            case .tonesRingtonesRock : return "Tones|Ringtones|Rock"
+            case .tonesRingtonesSingerSongwriter : return "Tones|Ringtones|Singer/Songwriter"
+            case .tonesRingtonesSoundtrack : return "Tones|Ringtones|Soundtrack"
+            case .tonesRingtonesSpokenWord : return "Tones|Ringtones|Spoken Word"
+            case .tonesRingtonesVocal : return "Tones|Ringtones|Vocal"
+            case .tonesRingtonesWorld : return "Tones|Ringtones|World"
+            case .tonesAlertTonesSoundEffects : return "Tones|Alert Tones|Sound Effects"
+            case .tonesAlertTonesDialogue : return "Tones|Alert Tones|Dialogue"
+            case .tonesAlertTonesMusic : return "Tones|Alert Tones|Music"
+            case .tonesRingtones : return "Tones|Ringtones"
+            case .tonesAlertTones : return "Tones|Alert Tones"
+            case .tonesRingtonesAlternativeChineseAlt : return "Tones|Ringtones|Alternative|Chinese Alt"
+            case .tonesRingtonesAlternativeCollegeRock : return "Tones|Ringtones|Alternative|College Rock"
+            case .tonesRingtonesAlternativeGothRock : return "Tones|Ringtones|Alternative|Goth Rock"
+            case .tonesRingtonesAlternativeGrunge : return "Tones|Ringtones|Alternative|Grunge"
+            case .tonesRingtonesAlternativeIndieRock : return "Tones|Ringtones|Alternative|Indie Rock"
+            case .tonesRingtonesAlternativeKoreanIndie : return "Tones|Ringtones|Alternative|Korean Indie"
+            case .tonesRingtonesAlternativeNewWave : return "Tones|Ringtones|Alternative|New Wave"
+            case .tonesRingtonesAlternativePunk : return "Tones|Ringtones|Alternative|Punk"
+            case .tonesRingtonesAnime : return "Tones|Ringtones|Anime"
+            case .tonesRingtonesArabic : return "Tones|Ringtones|Arabic"
+            case .tonesRingtonesArabicArabicPop : return "Tones|Ringtones|Arabic|Arabic Pop"
+            case .tonesRingtonesArabicIslamic : return "Tones|Ringtones|Arabic|Islamic"
+            case .tonesRingtonesArabicKhaleeji : return "Tones|Ringtones|Arabic|Khaleeji"
+            case .tonesRingtonesArabicNorthAfrican : return "Tones|Ringtones|Arabic|North African"
+            case .tonesRingtonesBluesAcousticBlues : return "Tones|Ringtones|Blues|Acoustic Blues"
+            case .tonesRingtonesBluesChicagoBlues : return "Tones|Ringtones|Blues|Chicago Blues"
+            case .tonesRingtonesBluesClassicBlues : return "Tones|Ringtones|Blues|Classic Blues"
+            case .tonesRingtonesBluesContemporaryBlues : return "Tones|Ringtones|Blues|Contemporary Blues"
+            case .tonesRingtonesBluesCountryBlues : return "Tones|Ringtones|Blues|Country Blues"
+            case .tonesRingtonesBluesDeltaBlues : return "Tones|Ringtones|Blues|Delta Blues"
+            case .tonesRingtonesBluesElectricBlues : return "Tones|Ringtones|Blues|Electric Blues"
+            case .tonesRingtonesBrazilian : return "Tones|Ringtones|Brazilian"
+            case .tonesRingtonesBrazilianAxe : return "Tones|Ringtones|Brazilian|Axe"
+            case .tonesRingtonesBrazilianBaileFunk : return "Tones|Ringtones|Brazilian|Baile Funk"
+            case .tonesRingtonesBrazilianBossaNova : return "Tones|Ringtones|Brazilian|Bossa Nova"
+            case .tonesRingtonesBrazilianChoro : return "Tones|Ringtones|Brazilian|Choro"
+            case .tonesRingtonesBrazilianForro : return "Tones|Ringtones|Brazilian|Forro"
+            case .tonesRingtonesBrazilianFrevo : return "Tones|Ringtones|Brazilian|Frevo"
+            case .tonesRingtonesBrazilianMPB : return "Tones|Ringtones|Brazilian|MPB"
+            case .tonesRingtonesBrazilianPagode : return "Tones|Ringtones|Brazilian|Pagode"
+            case .tonesRingtonesBrazilianSamba : return "Tones|Ringtones|Brazilian|Samba"
+            case .tonesRingtonesBrazilianSertanejo : return "Tones|Ringtones|Brazilian|Sertanejo"
+            case .tonesRingtonesChildrensMusicLullabies : return "Tones|Ringtones|Children's Music|Lullabies"
+            case .tonesRingtonesChildrensMusicSingAlong : return "Tones|Ringtones|Children's Music|Sing-Along"
+            case .tonesRingtonesChildrensMusicStories : return "Tones|Ringtones|Children's Music|Stories"
+            case .tonesRingtonesChinese : return "Tones|Ringtones|Chinese"
+            case .tonesRingtonesChineseChineseClassical : return "Tones|Ringtones|Chinese|Chinese Classical"
+            case .tonesRingtonesChineseChineseFlute : return "Tones|Ringtones|Chinese|Chinese Flute"
+            case .tonesRingtonesChineseChineseOpera : return "Tones|Ringtones|Chinese|Chinese Opera"
+            case .tonesRingtonesChineseChineseOrchestral : return "Tones|Ringtones|Chinese|Chinese Orchestral"
+            case .tonesRingtonesChineseChineseRegionalFolk : return "Tones|Ringtones|Chinese|Chinese Regional Folk"
+            case .tonesRingtonesChineseChineseStrings : return "Tones|Ringtones|Chinese|Chinese Strings"
+            case .tonesRingtonesChineseTaiwaneseFolk : return "Tones|Ringtones|Chinese|Taiwanese Folk"
+            case .tonesRingtonesChineseTibetanNativeMusic : return "Tones|Ringtones|Chinese|Tibetan Native Music"
+            case .tonesRingtonesChristianandGospel : return "Tones|Ringtones|Christian & Gospel"
+            case .tonesRingtonesChristianandGospelCCM : return "Tones|Ringtones|Christian & Gospel|CCM"
+            case .tonesRingtonesChristianandGospelChristianMetal : return "Tones|Ringtones|Christian & Gospel|Christian Metal"
+            case .tonesRingtonesChristianandGospelChristianPop : return "Tones|Ringtones|Christian & Gospel|Christian Pop"
+            case .tonesRingtonesChristianandGospelChristianRap : return "Tones|Ringtones|Christian & Gospel|Christian Rap"
+            case .tonesRingtonesChristianandGospelChristianRock : return "Tones|Ringtones|Christian & Gospel|Christian Rock"
+            case .tonesRingtonesChristianandGospelClassicChristian : return "Tones|Ringtones|Christian & Gospel|Classic Christian"
+            case .tonesRingtonesChristianandGospelContemporaryGospel : return "Tones|Ringtones|Christian & Gospel|Contemporary Gospel"
+            case .tonesRingtonesChristianandGospelGospel : return "Tones|Ringtones|Christian & Gospel|Gospel"
+            case .tonesRingtonesChristianandGospelPraiseandWorship : return "Tones|Ringtones|Christian & Gospel|Praise & Worship"
+            case .tonesRingtonesChristianandGospelSouthernGospel : return "Tones|Ringtones|Christian & Gospel|Southern Gospel"
+            case .tonesRingtonesChristianandGospelTraditionalGospel : return "Tones|Ringtones|Christian & Gospel|Traditional Gospel"
+            case .tonesRingtonesClassicalAvantGarde : return "Tones|Ringtones|Classical|Avant-Garde"
+            case .tonesRingtonesClassicalBaroqueEra : return "Tones|Ringtones|Classical|Baroque Era"
+            case .tonesRingtonesClassicalChamberMusic : return "Tones|Ringtones|Classical|Chamber Music"
+            case .tonesRingtonesClassicalChant : return "Tones|Ringtones|Classical|Chant"
+            case .tonesRingtonesClassicalChoral : return "Tones|Ringtones|Classical|Choral"
+            case .tonesRingtonesClassicalClassicalCrossover : return "Tones|Ringtones|Classical|Classical Crossover"
+            case .tonesRingtonesClassicalEarlyMusic : return "Tones|Ringtones|Classical|Early Music"
+            case .tonesRingtonesClassicalHighClassical : return "Tones|Ringtones|Classical|High Classical"
+            case .tonesRingtonesClassicalImpressionist : return "Tones|Ringtones|Classical|Impressionist"
+            case .tonesRingtonesClassicalMedievalEra : return "Tones|Ringtones|Classical|Medieval Era"
+            case .tonesRingtonesClassicalMinimalism : return "Tones|Ringtones|Classical|Minimalism"
+            case .tonesRingtonesClassicalModernEra : return "Tones|Ringtones|Classical|Modern Era"
+            case .tonesRingtonesClassicalOrchestral : return "Tones|Ringtones|Classical|Orchestral"
+            case .tonesRingtonesClassicalRenaissance : return "Tones|Ringtones|Classical|Renaissance"
+            case .tonesRingtonesClassicalRomanticEra : return "Tones|Ringtones|Classical|Romantic Era"
+            case .tonesRingtonesClassicalWeddingMusic : return "Tones|Ringtones|Classical|Wedding Music"
+            case .tonesRingtonesComedyNovelty : return "Tones|Ringtones|Comedy|Novelty"
+            case .tonesRingtonesComedyStandupComedy : return "Tones|Ringtones|Comedy|Standup Comedy"
+            case .tonesRingtonesCountryAlternativeCountry : return "Tones|Ringtones|Country|Alternative Country"
+            case .tonesRingtonesCountryAmericana : return "Tones|Ringtones|Country|Americana"
+            case .tonesRingtonesCountryBluegrass : return "Tones|Ringtones|Country|Bluegrass"
+            case .tonesRingtonesCountryContemporaryBluegrass : return "Tones|Ringtones|Country|Contemporary Bluegrass"
+            case .tonesRingtonesCountryContemporaryCountry : return "Tones|Ringtones|Country|Contemporary Country"
+            case .tonesRingtonesCountryCountryGospel : return "Tones|Ringtones|Country|Country Gospel"
+            case .tonesRingtonesCountryHonkyTonk : return "Tones|Ringtones|Country|Honky Tonk"
+            case .tonesRingtonesCountryOutlawCountry : return "Tones|Ringtones|Country|Outlaw Country"
+            case .tonesRingtonesCountryThaiCountry : return "Tones|Ringtones|Country|Thai Country"
+            case .tonesRingtonesCountryTraditionalBluegrass : return "Tones|Ringtones|Country|Traditional Bluegrass"
+            case .tonesRingtonesCountryTraditionalCountry : return "Tones|Ringtones|Country|Traditional Country"
+            case .tonesRingtonesCountryUrbanCowboy : return "Tones|Ringtones|Country|Urban Cowboy"
+            case .tonesRingtonesDanceBreakbeat : return "Tones|Ringtones|Dance|Breakbeat"
+            case .tonesRingtonesDanceExercise : return "Tones|Ringtones|Dance|Exercise"
+            case .tonesRingtonesDanceGarage : return "Tones|Ringtones|Dance|Garage"
+            case .tonesRingtonesDanceHardcore : return "Tones|Ringtones|Dance|Hardcore"
+            case .tonesRingtonesDanceHouse : return "Tones|Ringtones|Dance|House"
+            case .tonesRingtonesDanceJungleDrumnbass : return "Tones|Ringtones|Dance|Jungle/Drum'n'bass"
+            case .tonesRingtonesDanceTechno : return "Tones|Ringtones|Dance|Techno"
+            case .tonesRingtonesDanceTrance : return "Tones|Ringtones|Dance|Trance"
+            case .tonesRingtonesDisney : return "Tones|Ringtones|Disney"
+            case .tonesRingtonesEasyListening : return "Tones|Ringtones|Easy Listening"
+            case .tonesRingtonesEasyListeningLounge : return "Tones|Ringtones|Easy Listening|Lounge"
+            case .tonesRingtonesEasyListeningSwing : return "Tones|Ringtones|Easy Listening|Swing"
+            case .tonesRingtonesElectronicAmbient : return "Tones|Ringtones|Electronic|Ambient"
+            case .tonesRingtonesElectronicDowntempo : return "Tones|Ringtones|Electronic|Downtempo"
+            case .tonesRingtonesElectronicElectronica : return "Tones|Ringtones|Electronic|Electronica"
+            case .tonesRingtonesElectronicIDMExperimental : return "Tones|Ringtones|Electronic|IDM/Experimental"
+            case .tonesRingtonesElectronicIndustrial : return "Tones|Ringtones|Electronic|Industrial"
+            case .tonesRingtonesFitnessandWorkout : return "Tones|Ringtones|Fitness & Workout"
+            case .tonesRingtonesFolk : return "Tones|Ringtones|Folk"
+            case .tonesRingtonesHipHopRapAlternativeRap : return "Tones|Ringtones|Hip-Hop/Rap|Alternative Rap"
+            case .tonesRingtonesHipHopRapChineseHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Chinese Hip-Hop"
+            case .tonesRingtonesHipHopRapDirtySouth : return "Tones|Ringtones|Hip-Hop/Rap|Dirty South"
+            case .tonesRingtonesHipHopRapEastCoastRap : return "Tones|Ringtones|Hip-Hop/Rap|East Coast Rap"
+            case .tonesRingtonesHipHopRapGangstaRap : return "Tones|Ringtones|Hip-Hop/Rap|Gangsta Rap"
+            case .tonesRingtonesHipHopRapHardcoreRap : return "Tones|Ringtones|Hip-Hop/Rap|Hardcore Rap"
+            case .tonesRingtonesHipHopRapHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Hip-Hop"
+            case .tonesRingtonesHipHopRapKoreanHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Korean Hip-Hop"
+            case .tonesRingtonesHipHopRapLatinRap : return "Tones|Ringtones|Hip-Hop/Rap|Latin Rap"
+            case .tonesRingtonesHipHopRapOldSchoolRap : return "Tones|Ringtones|Hip-Hop/Rap|Old School Rap"
+            case .tonesRingtonesHipHopRapRap : return "Tones|Ringtones|Hip-Hop/Rap|Rap"
+            case .tonesRingtonesHipHopRapUndergroundRap : return "Tones|Ringtones|Hip-Hop/Rap|Underground Rap"
+            case .tonesRingtonesHipHopRapWestCoastRap : return "Tones|Ringtones|Hip-Hop/Rap|West Coast Rap"
+            case .tonesRingtonesHolidayChanukah : return "Tones|Ringtones|Holiday|Chanukah"
+            case .tonesRingtonesHolidayChristmas : return "Tones|Ringtones|Holiday|Christmas"
+            case .tonesRingtonesHolidayChristmasChildrens: return "Tones|Ringtones|Holiday|Christmas: Children's"
+            case .tonesRingtonesHolidayChristmasClassic: return "Tones|Ringtones|Holiday|Christmas: Classic"
+            case .tonesRingtonesHolidayChristmasClassical: return "Tones|Ringtones|Holiday|Christmas: Classical"
+            case .tonesRingtonesHolidayChristmasJazz: return "Tones|Ringtones|Holiday|Christmas: Jazz"
+            case .tonesRingtonesHolidayChristmasModern: return "Tones|Ringtones|Holiday|Christmas: Modern"
+            case .tonesRingtonesHolidayChristmasPop: return "Tones|Ringtones|Holiday|Christmas: Pop"
+            case .tonesRingtonesHolidayChristmasRandB: return "Tones|Ringtones|Holiday|Christmas: R&B"
+            case .tonesRingtonesHolidayChristmasReligious: return "Tones|Ringtones|Holiday|Christmas: Religious"
+            case .tonesRingtonesHolidayChristmasRock: return "Tones|Ringtones|Holiday|Christmas: Rock"
+            case .tonesRingtonesHolidayEaster : return "Tones|Ringtones|Holiday|Easter"
+            case .tonesRingtonesHolidayHalloween : return "Tones|Ringtones|Holiday|Halloween"
+            case .tonesRingtonesHolidayThanksgiving : return "Tones|Ringtones|Holiday|Thanksgiving"
+            case .tonesRingtonesIndian : return "Tones|Ringtones|Indian"
+            case .tonesRingtonesIndianBollywood : return "Tones|Ringtones|Indian|Bollywood"
+            case .tonesRingtonesIndianDevotionalandSpiritual : return "Tones|Ringtones|Indian|Devotional & Spiritual"
+            case .tonesRingtonesIndianGhazals : return "Tones|Ringtones|Indian|Ghazals"
+            case .tonesRingtonesIndianIndianClassical : return "Tones|Ringtones|Indian|Indian Classical"
+            case .tonesRingtonesIndianIndianFolk : return "Tones|Ringtones|Indian|Indian Folk"
+            case .tonesRingtonesIndianIndianPop : return "Tones|Ringtones|Indian|Indian Pop"
+            case .tonesRingtonesIndianRegionalIndian : return "Tones|Ringtones|Indian|Regional Indian"
+            case .tonesRingtonesIndianSufi : return "Tones|Ringtones|Indian|Sufi"
+            case .tonesRingtonesIndianRegionalIndianTamil : return "Tones|Ringtones|Indian|Regional Indian|Tamil"
+            case .tonesRingtonesIndianRegionalIndianTelugu : return "Tones|Ringtones|Indian|Regional Indian|Telugu"
+            case .tonesRingtonesInstrumental : return "Tones|Ringtones|Instrumental"
+            case .tonesRingtonesJazzAvantGardeJazz : return "Tones|Ringtones|Jazz|Avant-Garde Jazz"
+            case .tonesRingtonesJazzBigBand : return "Tones|Ringtones|Jazz|Big Band"
+            case .tonesRingtonesJazzBop : return "Tones|Ringtones|Jazz|Bop"
+            case .tonesRingtonesJazzContemporaryJazz : return "Tones|Ringtones|Jazz|Contemporary Jazz"
+            case .tonesRingtonesJazzCoolJazz : return "Tones|Ringtones|Jazz|Cool Jazz"
+            case .tonesRingtonesJazzCrossoverJazz : return "Tones|Ringtones|Jazz|Crossover Jazz"
+            case .tonesRingtonesJazzDixieland : return "Tones|Ringtones|Jazz|Dixieland"
+            case .tonesRingtonesJazzFusion : return "Tones|Ringtones|Jazz|Fusion"
+            case .tonesRingtonesJazzHardBop : return "Tones|Ringtones|Jazz|Hard Bop"
+            case .tonesRingtonesJazzLatinJazz : return "Tones|Ringtones|Jazz|Latin Jazz"
+            case .tonesRingtonesJazzMainstreamJazz : return "Tones|Ringtones|Jazz|Mainstream Jazz"
+            case .tonesRingtonesJazzRagtime : return "Tones|Ringtones|Jazz|Ragtime"
+            case .tonesRingtonesJazzSmoothJazz : return "Tones|Ringtones|Jazz|Smooth Jazz"
+            case .tonesRingtonesJazzTradJazz : return "Tones|Ringtones|Jazz|Trad Jazz"
+            case .tonesRingtonesPopKPop : return "Tones|Ringtones|Pop|K-Pop"
+            case .tonesRingtonesKaraoke : return "Tones|Ringtones|Karaoke"
+            case .tonesRingtonesKorean : return "Tones|Ringtones|Korean"
+            case .tonesRingtonesKoreanKoreanClassical : return "Tones|Ringtones|Korean|Korean Classical"
+            case .tonesRingtonesKoreanKoreanTradInstrumental : return "Tones|Ringtones|Korean|Korean Trad Instrumental"
+            case .tonesRingtonesKoreanKoreanTradSong : return "Tones|Ringtones|Korean|Korean Trad Song"
+            case .tonesRingtonesKoreanKoreanTradTheater : return "Tones|Ringtones|Korean|Korean Trad Theater"
+            case .tonesRingtonesLatinAlternativeandRockinSpanish : return "Tones|Ringtones|Latin|Alternative & Rock in Spanish"
+            case .tonesRingtonesLatinBaladasyBoleros : return "Tones|Ringtones|Latin|Baladas y Boleros"
+            case .tonesRingtonesLatinContemporaryLatin : return "Tones|Ringtones|Latin|Contemporary Latin"
+            case .tonesRingtonesLatinLatinJazz : return "Tones|Ringtones|Latin|Latin Jazz"
+            case .tonesRingtonesLatinLatinUrban : return "Tones|Ringtones|Latin|Latin Urban"
+            case .tonesRingtonesLatinPopinSpanish : return "Tones|Ringtones|Latin|Pop in Spanish"
+            case .tonesRingtonesLatinRaices : return "Tones|Ringtones|Latin|Raices"
+            case .tonesRingtonesLatinMusicaMexicana : return "Tones|Ringtones|Latin|Musica Mexicana"
+            case .tonesRingtonesLatinSalsayTropical : return "Tones|Ringtones|Latin|Salsa y Tropical"
+            case .tonesRingtonesMarchingBands : return "Tones|Ringtones|Marching Bands"
+            case .tonesRingtonesNewAgeHealing : return "Tones|Ringtones|New Age|Healing"
+            case .tonesRingtonesNewAgeMeditation : return "Tones|Ringtones|New Age|Meditation"
+            case .tonesRingtonesNewAgeNature : return "Tones|Ringtones|New Age|Nature"
+            case .tonesRingtonesNewAgeRelaxation : return "Tones|Ringtones|New Age|Relaxation"
+            case .tonesRingtonesNewAgeTravel : return "Tones|Ringtones|New Age|Travel"
+            case .tonesRingtonesOrchestral : return "Tones|Ringtones|Orchestral"
+            case .tonesRingtonesPopAdultContemporary : return "Tones|Ringtones|Pop|Adult Contemporary"
+            case .tonesRingtonesPopBritpop : return "Tones|Ringtones|Pop|Britpop"
+            case .tonesRingtonesPopCPop : return "Tones|Ringtones|Pop|C-Pop"
+            case .tonesRingtonesPopCantopopHKPop : return "Tones|Ringtones|Pop|Cantopop/HK-Pop"
+            case .tonesRingtonesPopIndoPop : return "Tones|Ringtones|Pop|Indo Pop"
+            case .tonesRingtonesPopKoreanFolkPop : return "Tones|Ringtones|Pop|Korean Folk-Pop"
+            case .tonesRingtonesPopMalaysianPop : return "Tones|Ringtones|Pop|Malaysian Pop"
+            case .tonesRingtonesPopMandopop : return "Tones|Ringtones|Pop|Mandopop"
+            case .tonesRingtonesPopManillaSound : return "Tones|Ringtones|Pop|Manilla Sound"
+            case .tonesRingtonesPopOldies : return "Tones|Ringtones|Pop|Oldies"
+            case .tonesRingtonesPopOriginalPilipinoMusic : return "Tones|Ringtones|Pop|Original Pilipino Music"
+            case .tonesRingtonesPopPinoyPop : return "Tones|Ringtones|Pop|Pinoy Pop"
+            case .tonesRingtonesPopPopRock : return "Tones|Ringtones|Pop|Pop/Rock"
+            case .tonesRingtonesPopSoftRock : return "Tones|Ringtones|Pop|Soft Rock"
+            case .tonesRingtonesPopTaiPop : return "Tones|Ringtones|Pop|Tai-Pop"
+            case .tonesRingtonesPopTeenPop : return "Tones|Ringtones|Pop|Teen Pop"
+            case .tonesRingtonesPopThaiPop : return "Tones|Ringtones|Pop|Thai Pop"
+            case .tonesRingtonesRandBSoulContemporaryRandB : return "Tones|Ringtones|R&B/Soul|Contemporary R&B"
+            case .tonesRingtonesRandBSoulDisco : return "Tones|Ringtones|R&B/Soul|Disco"
+            case .tonesRingtonesRandBSoulDooWop : return "Tones|Ringtones|R&B/Soul|Doo Wop"
+            case .tonesRingtonesRandBSoulFunk : return "Tones|Ringtones|R&B/Soul|Funk"
+            case .tonesRingtonesRandBSoulMotown : return "Tones|Ringtones|R&B/Soul|Motown"
+            case .tonesRingtonesRandBSoulNeoSoul : return "Tones|Ringtones|R&B/Soul|Neo-Soul"
+            case .tonesRingtonesRandBSoulSoul : return "Tones|Ringtones|R&B/Soul|Soul"
+            case .tonesRingtonesReggaeModernDancehall : return "Tones|Ringtones|Reggae|Modern Dancehall"
+            case .tonesRingtonesReggaeDub : return "Tones|Ringtones|Reggae|Dub"
+            case .tonesRingtonesReggaeRootsReggae : return "Tones|Ringtones|Reggae|Roots Reggae"
+            case .tonesRingtonesReggaeSka : return "Tones|Ringtones|Reggae|Ska"
+            case .tonesRingtonesRockAdultAlternative : return "Tones|Ringtones|Rock|Adult Alternative"
+            case .tonesRingtonesRockAmericanTradRock : return "Tones|Ringtones|Rock|American Trad Rock"
+            case .tonesRingtonesRockArenaRock : return "Tones|Ringtones|Rock|Arena Rock"
+            case .tonesRingtonesRockBluesRock : return "Tones|Ringtones|Rock|Blues-Rock"
+            case .tonesRingtonesRockBritishInvasion : return "Tones|Ringtones|Rock|British Invasion"
+            case .tonesRingtonesRockChineseRock : return "Tones|Ringtones|Rock|Chinese Rock"
+            case .tonesRingtonesRockDeathMetalBlackMetal : return "Tones|Ringtones|Rock|Death Metal/Black Metal"
+            case .tonesRingtonesRockGlamRock : return "Tones|Ringtones|Rock|Glam Rock"
+            case .tonesRingtonesRockHairMetal : return "Tones|Ringtones|Rock|Hair Metal"
+            case .tonesRingtonesRockHardRock : return "Tones|Ringtones|Rock|Hard Rock"
+            case .tonesRingtonesRockMetal : return "Tones|Ringtones|Rock|Metal"
+            case .tonesRingtonesRockJamBands : return "Tones|Ringtones|Rock|Jam Bands"
+            case .tonesRingtonesRockKoreanRock : return "Tones|Ringtones|Rock|Korean Rock"
+            case .tonesRingtonesRockProgRockArtRock : return "Tones|Ringtones|Rock|Prog-Rock/Art Rock"
+            case .tonesRingtonesRockPsychedelic : return "Tones|Ringtones|Rock|Psychedelic"
+            case .tonesRingtonesRockRockandRoll : return "Tones|Ringtones|Rock|Rock & Roll"
+            case .tonesRingtonesRockRockabilly : return "Tones|Ringtones|Rock|Rockabilly"
+            case .tonesRingtonesRockRootsRock : return "Tones|Ringtones|Rock|Roots Rock"
+            case .tonesRingtonesRockSingerSongwriter : return "Tones|Ringtones|Rock|Singer/Songwriter"
+            case .tonesRingtonesRockSouthernRock : return "Tones|Ringtones|Rock|Southern Rock"
+            case .tonesRingtonesRockSurf : return "Tones|Ringtones|Rock|Surf"
+            case .tonesRingtonesRockTexMex : return "Tones|Ringtones|Rock|Tex-Mex"
+            case .tonesRingtonesSingerSongwriterAlternativeFolk : return "Tones|Ringtones|Singer/Songwriter|Alternative Folk"
+            case .tonesRingtonesSingerSongwriterContemporaryFolk : return "Tones|Ringtones|Singer/Songwriter|Contemporary Folk"
+            case .tonesRingtonesSingerSongwriterContemporarySingerSongwriter : return "Tones|Ringtones|Singer/Songwriter|Contemporary Singer/Songwriter"
+            case .tonesRingtonesSingerSongwriterFolkRock : return "Tones|Ringtones|Singer/Songwriter|Folk-Rock"
+            case .tonesRingtonesSingerSongwriterNewAcoustic : return "Tones|Ringtones|Singer/Songwriter|New Acoustic"
+            case .tonesRingtonesSingerSongwriterTraditionalFolk : return "Tones|Ringtones|Singer/Songwriter|Traditional Folk"
+            case .tonesRingtonesSoundtrackForeignCinema : return "Tones|Ringtones|Soundtrack|Foreign Cinema"
+            case .tonesRingtonesSoundtrackMusicals : return "Tones|Ringtones|Soundtrack|Musicals"
+            case .tonesRingtonesSoundtrackOriginalScore : return "Tones|Ringtones|Soundtrack|Original Score"
+            case .tonesRingtonesSoundtrackSoundEffects : return "Tones|Ringtones|Soundtrack|Sound Effects"
+            case .tonesRingtonesSoundtrackSoundtrack : return "Tones|Ringtones|Soundtrack|Soundtrack"
+            case .tonesRingtonesSoundtrackTVSoundtrack : return "Tones|Ringtones|Soundtrack|TV Soundtrack"
+            case .tonesRingtonesVocalStandards : return "Tones|Ringtones|Vocal|Standards"
+            case .tonesRingtonesVocalTraditionalPop : return "Tones|Ringtones|Vocal|Traditional Pop"
+            case .tonesRingtonesVocalTrot : return "Tones|Ringtones|Vocal|Trot"
+            case .tonesRingtonesJazzVocalJazz : return "Tones|Ringtones|Jazz|Vocal Jazz"
+            case .tonesRingtonesVocalVocalPop : return "Tones|Ringtones|Vocal|Vocal Pop"
+            case .tonesRingtonesAfrican : return "Tones|Ringtones|African"
+            case .tonesRingtonesAfricanAfrikaans : return "Tones|Ringtones|African|Afrikaans"
+            case .tonesRingtonesAfricanAfroBeat : return "Tones|Ringtones|African|Afro-Beat"
+            case .tonesRingtonesAfricanAfroPop : return "Tones|Ringtones|African|Afro-Pop"
+            case .tonesRingtonesTurkishArabesque : return "Tones|Ringtones|Turkish|Arabesque"
+            case .tonesRingtonesWorldAsia : return "Tones|Ringtones|World|Asia"
+            case .tonesRingtonesWorldAustralia : return "Tones|Ringtones|World|Australia"
+            case .tonesRingtonesWorldCajun : return "Tones|Ringtones|World|Cajun"
+            case .tonesRingtonesWorldCalypso : return "Tones|Ringtones|World|Calypso"
+            case .tonesRingtonesWorldCaribbean : return "Tones|Ringtones|World|Caribbean"
+            case .tonesRingtonesWorldCeltic : return "Tones|Ringtones|World|Celtic"
+            case .tonesRingtonesWorldCelticFolk : return "Tones|Ringtones|World|Celtic Folk"
+            case .tonesRingtonesWorldContemporaryCeltic : return "Tones|Ringtones|World|Contemporary Celtic"
+            case .tonesRingtonesWorldDangdut : return "Tones|Ringtones|World|Dangdut"
+            case .tonesRingtonesWorldDini : return "Tones|Ringtones|World|Dini"
+            case .tonesRingtonesWorldEurope : return "Tones|Ringtones|World|Europe"
+            case .tonesRingtonesWorldFado : return "Tones|Ringtones|World|Fado"
+            case .tonesRingtonesWorldFarsi : return "Tones|Ringtones|World|Farsi"
+            case .tonesRingtonesWorldFlamenco : return "Tones|Ringtones|World|Flamenco"
+            case .tonesRingtonesWorldFrance : return "Tones|Ringtones|World|France"
+            case .tonesRingtonesTurkishHalk : return "Tones|Ringtones|Turkish|Halk"
+            case .tonesRingtonesWorldHawaii : return "Tones|Ringtones|World|Hawaii"
+            case .tonesRingtonesWorldIberia : return "Tones|Ringtones|World|Iberia"
+            case .tonesRingtonesWorldIndonesianReligious : return "Tones|Ringtones|World|Indonesian Religious"
+            case .tonesRingtonesWorldIsraeli : return "Tones|Ringtones|World|Israeli"
+            case .tonesRingtonesWorldJapan : return "Tones|Ringtones|World|Japan"
+            case .tonesRingtonesWorldKlezmer : return "Tones|Ringtones|World|Klezmer"
+            case .tonesRingtonesWorldNorthAmerica : return "Tones|Ringtones|World|North America"
+            case .tonesRingtonesWorldPolka : return "Tones|Ringtones|World|Polka"
+            case .tonesRingtonesRussian : return "Tones|Ringtones|Russian"
+            case .tonesRingtonesRussianRussianChanson : return "Tones|Ringtones|Russian|Russian Chanson"
+            case .tonesRingtonesTurkishSanat : return "Tones|Ringtones|Turkish|Sanat"
+            case .tonesRingtonesWorldSoca : return "Tones|Ringtones|World|Soca"
+            case .tonesRingtonesWorldSouthAfrica : return "Tones|Ringtones|World|South Africa"
+            case .tonesRingtonesWorldSouthAmerica : return "Tones|Ringtones|World|South America"
+            case .tonesRingtonesWorldTango : return "Tones|Ringtones|World|Tango"
+            case .tonesRingtonesWorldTraditionalCeltic : return "Tones|Ringtones|World|Traditional Celtic"
+            case .tonesRingtonesTurkish : return "Tones|Ringtones|Turkish"
+            case .tonesRingtonesWorldWorldbeat : return "Tones|Ringtones|World|Worldbeat"
+            case .tonesRingtonesWorldZydeco : return "Tones|Ringtones|World|Zydeco"
+            case .tonesRingtonesClassicalArtSong : return "Tones|Ringtones|Classical|Art Song"
+            case .tonesRingtonesClassicalBrassandWoodwinds : return "Tones|Ringtones|Classical|Brass & Woodwinds"
+            case .tonesRingtonesClassicalSoloInstrumental : return "Tones|Ringtones|Classical|Solo Instrumental"
+            case .tonesRingtonesClassicalContemporaryEra : return "Tones|Ringtones|Classical|Contemporary Era"
+            case .tonesRingtonesClassicalOratorio : return "Tones|Ringtones|Classical|Oratorio"
+            case .tonesRingtonesClassicalCantata : return "Tones|Ringtones|Classical|Cantata"
+            case .tonesRingtonesClassicalElectronic : return "Tones|Ringtones|Classical|Electronic"
+            case .tonesRingtonesClassicalSacred : return "Tones|Ringtones|Classical|Sacred"
+            case .tonesRingtonesClassicalGuitar : return "Tones|Ringtones|Classical|Guitar"
+            case .tonesRingtonesClassicalPiano : return "Tones|Ringtones|Classical|Piano"
+            case .tonesRingtonesClassicalViolin : return "Tones|Ringtones|Classical|Violin"
+            case .tonesRingtonesClassicalCello : return "Tones|Ringtones|Classical|Cello"
+            case .tonesRingtonesClassicalPercussion : return "Tones|Ringtones|Classical|Percussion"
+            case .tonesRingtonesElectronicDubstep : return "Tones|Ringtones|Electronic|Dubstep"
+            case .tonesRingtonesElectronicBass : return "Tones|Ringtones|Electronic|Bass"
+            case .tonesRingtonesHipHopRapUKHipHop : return "Tones|Ringtones|Hip-Hop/Rap|UK Hip Hop"
+            case .tonesRingtonesReggaeLoversRock : return "Tones|Ringtones|Reggae|Lovers Rock"
+            case .tonesRingtonesAlternativeEMO : return "Tones|Ringtones|Alternative|EMO"
+            case .tonesRingtonesAlternativePopPunk : return "Tones|Ringtones|Alternative|Pop Punk"
+            case .tonesRingtonesAlternativeIndiePop : return "Tones|Ringtones|Alternative|Indie Pop"
+            case .tonesRingtonesNewAgeYoga : return "Tones|Ringtones|New Age|Yoga"
+            case .tonesRingtonesPopTribute : return "Tones|Ringtones|Pop|Tribute"
+            case .tonesRingtonesPopShows : return "Tones|Ringtones|Pop|Shows"
+            case .tonesRingtonesCuban : return "Tones|Ringtones|Cuban"
+            case .tonesRingtonesCubanMambo : return "Tones|Ringtones|Cuban|Mambo"
+            case .tonesRingtonesCubanChachacha : return "Tones|Ringtones|Cuban|Chachacha"
+            case .tonesRingtonesCubanGuajira : return "Tones|Ringtones|Cuban|Guajira"
+            case .tonesRingtonesCubanSon : return "Tones|Ringtones|Cuban|Son"
+            case .tonesRingtonesCubanBolero : return "Tones|Ringtones|Cuban|Bolero"
+            case .tonesRingtonesCubanGuaracha : return "Tones|Ringtones|Cuban|Guaracha"
+            case .tonesRingtonesCubanTimba : return "Tones|Ringtones|Cuban|Timba"
+            case .tonesRingtonesSoundtrackVideoGame : return "Tones|Ringtones|Soundtrack|Video Game"
+            case .tonesRingtonesIndianRegionalIndianPunjabiPunjabiPop : return "Tones|Ringtones|Indian|Regional Indian|Punjabi|Punjabi Pop"
+            case .tonesRingtonesIndianRegionalIndianBengaliRabindraSangeet : return "Tones|Ringtones|Indian|Regional Indian|Bengali|Rabindra Sangeet"
+            case .tonesRingtonesIndianRegionalIndianMalayalam : return "Tones|Ringtones|Indian|Regional Indian|Malayalam"
+            case .tonesRingtonesIndianRegionalIndianKannada : return "Tones|Ringtones|Indian|Regional Indian|Kannada"
+            case .tonesRingtonesIndianRegionalIndianMarathi : return "Tones|Ringtones|Indian|Regional Indian|Marathi"
+            case .tonesRingtonesIndianRegionalIndianGujarati : return "Tones|Ringtones|Indian|Regional Indian|Gujarati"
+            case .tonesRingtonesIndianRegionalIndianAssamese : return "Tones|Ringtones|Indian|Regional Indian|Assamese"
+            case .tonesRingtonesIndianRegionalIndianBhojpuri : return "Tones|Ringtones|Indian|Regional Indian|Bhojpuri"
+            case .tonesRingtonesIndianRegionalIndianHaryanvi : return "Tones|Ringtones|Indian|Regional Indian|Haryanvi"
+            case .tonesRingtonesIndianRegionalIndianOdia : return "Tones|Ringtones|Indian|Regional Indian|Odia"
+            case .tonesRingtonesIndianRegionalIndianRajasthani : return "Tones|Ringtones|Indian|Regional Indian|Rajasthani"
+            case .tonesRingtonesIndianRegionalIndianUrdu : return "Tones|Ringtones|Indian|Regional Indian|Urdu"
+            case .tonesRingtonesIndianRegionalIndianPunjabi : return "Tones|Ringtones|Indian|Regional Indian|Punjabi"
+            case .tonesRingtonesIndianRegionalIndianBengali : return "Tones|Ringtones|Indian|Regional Indian|Bengali"
+            case .tonesRingtonesIndianIndianClassicalCarnaticClassical : return "Tones|Ringtones|Indian|Indian Classical|Carnatic Classical"
+            case .tonesRingtonesIndianIndianClassicalHindustaniClassical : return "Tones|Ringtones|Indian|Indian Classical|Hindustani Classical"
+            case .tonesRingtonesAfricanAfroHouse : return "Tones|Ringtones|African|Afro House"
+            case .tonesRingtonesAfricanAfroSoul : return "Tones|Ringtones|African|Afro Soul"
+            case .tonesRingtonesAfricanAfrobeats : return "Tones|Ringtones|African|Afrobeats"
+            case .tonesRingtonesAfricanBenga : return "Tones|Ringtones|African|Benga"
+            case .tonesRingtonesAfricanBongoFlava : return "Tones|Ringtones|African|Bongo-Flava"
+            case .tonesRingtonesAfricanCoupeDecale : return "Tones|Ringtones|African|Coupe-Decale"
+            case .tonesRingtonesAfricanGqom : return "Tones|Ringtones|African|Gqom"
+            case .tonesRingtonesAfricanHighlife : return "Tones|Ringtones|African|Highlife"
+            case .tonesRingtonesAfricanKuduro : return "Tones|Ringtones|African|Kuduro"
+            case .tonesRingtonesAfricanKizomba : return "Tones|Ringtones|African|Kizomba"
+            case .tonesRingtonesAfricanKwaito : return "Tones|Ringtones|African|Kwaito"
+            case .tonesRingtonesAfricanMbalax : return "Tones|Ringtones|African|Mbalax"
+            case .tonesRingtonesAfricanNdombolo : return "Tones|Ringtones|African|Ndombolo"
+            case .tonesRingtonesAfricanShangaanElectro : return "Tones|Ringtones|African|Shangaan Electro"
+            case .tonesRingtonesAfricanSoukous : return "Tones|Ringtones|African|Soukous"
+            case .tonesRingtonesAfricanTaarab : return "Tones|Ringtones|African|Taarab"
+            case .tonesRingtonesAfricanZouglou : return "Tones|Ringtones|African|Zouglou"
+            case .tonesRingtonesTurkishOzgun : return "Tones|Ringtones|Turkish|Ozgun"
+            case .tonesRingtonesTurkishFantezi : return "Tones|Ringtones|Turkish|Fantezi"
+            case .tonesRingtonesTurkishReligious : return "Tones|Ringtones|Turkish|Religious"
+            case .tonesRingtonesPopTurkishPop : return "Tones|Ringtones|Pop|Turkish Pop"
+            case .tonesRingtonesRockTurkishRock : return "Tones|Ringtones|Rock|Turkish Rock"
+            case .tonesRingtonesAlternativeTurkishAlternative : return "Tones|Ringtones|Alternative|Turkish Alternative"
+            case .tonesRingtonesHipHopRapTurkishHipHopRap : return "Tones|Ringtones|Hip-Hop/Rap|Turkish Hip-Hop/Rap"
+            case .tonesRingtonesAfricanMaskandi : return "Tones|Ringtones|African|Maskandi"
+            case .tonesRingtonesRussianRussianRomance : return "Tones|Ringtones|Russian|Russian Romance"
+            case .tonesRingtonesRussianRussianBard : return "Tones|Ringtones|Russian|Russian Bard"
+            case .tonesRingtonesRussianRussianPop : return "Tones|Ringtones|Russian|Russian Pop"
+            case .tonesRingtonesRussianRussianRock : return "Tones|Ringtones|Russian|Russian Rock"
+            case .tonesRingtonesRussianRussianHipHop : return "Tones|Ringtones|Russian|Russian Hip-Hop"
+            case .tonesRingtonesArabicLevant : return "Tones|Ringtones|Arabic|Levant"
+            case .tonesRingtonesArabicLevantDabke : return "Tones|Ringtones|Arabic|Levant|Dabke"
+            case .tonesRingtonesArabicMaghrebRai : return "Tones|Ringtones|Arabic|Maghreb Rai"
+            case .tonesRingtonesArabicKhaleejiKhaleejiJalsat : return "Tones|Ringtones|Arabic|Khaleeji|Khaleeji Jalsat"
+            case .tonesRingtonesArabicKhaleejiKhaleejiShailat : return "Tones|Ringtones|Arabic|Khaleeji|Khaleeji Shailat"
+            case .tonesRingtonesTarab : return "Tones|Ringtones|Tarab"
+            case .tonesRingtonesTarabIraqiTarab : return "Tones|Ringtones|Tarab|Iraqi Tarab"
+            case .tonesRingtonesTarabEgyptianTarab : return "Tones|Ringtones|Tarab|Egyptian Tarab"
+            case .tonesRingtonesTarabKhaleejiTarab : return "Tones|Ringtones|Tarab|Khaleeji Tarab"
+            case .tonesRingtonesPopLevantPop : return "Tones|Ringtones|Pop|Levant Pop"
+            case .tonesRingtonesPopIraqiPop : return "Tones|Ringtones|Pop|Iraqi Pop"
+            case .tonesRingtonesPopEgyptianPop : return "Tones|Ringtones|Pop|Egyptian Pop"
+            case .tonesRingtonesPopMaghrebPop : return "Tones|Ringtones|Pop|Maghreb Pop"
+            case .tonesRingtonesPopKhaleejiPop : return "Tones|Ringtones|Pop|Khaleeji Pop"
+            case .tonesRingtonesHipHopRapLevantHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Levant Hip-Hop"
+            case .tonesRingtonesHipHopRapEgyptianHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Egyptian Hip-Hop"
+            case .tonesRingtonesHipHopRapMaghrebHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Maghreb Hip-Hop"
+            case .tonesRingtonesHipHopRapKhaleejiHipHop : return "Tones|Ringtones|Hip-Hop/Rap|Khaleeji Hip-Hop"
+            case .tonesRingtonesAlternativeIndieLevant : return "Tones|Ringtones|Alternative|Indie Levant"
+            case .tonesRingtonesAlternativeIndieEgyptian : return "Tones|Ringtones|Alternative|Indie Egyptian"
+            case .tonesRingtonesAlternativeIndieMaghreb : return "Tones|Ringtones|Alternative|Indie Maghreb"
+            case .tonesRingtonesElectronicLevantElectronic : return "Tones|Ringtones|Electronic|Levant Electronic"
+            case .tonesRingtonesElectronicElectroChaabi : return "Tones|Ringtones|Electronic|Electro-Cha'abi"
+            case .tonesRingtonesElectronicMaghrebElectronic : return "Tones|Ringtones|Electronic|Maghreb Electronic"
+            case .tonesRingtonesFolkIraqiFolk : return "Tones|Ringtones|Folk|Iraqi Folk"
+            case .tonesRingtonesFolkKhaleejiFolk : return "Tones|Ringtones|Folk|Khaleeji Folk"
+            case .tonesRingtonesDanceMaghrebDance : return "Tones|Ringtones|Dance|Maghreb Dance"
+            case .booksNonfiction : return "Books|Nonfiction"
+            case .booksRomance : return "Books|Romance"
+            case .booksTravelandAdventure : return "Books|Travel & Adventure"
+            case .booksArtsandEntertainment : return "Books|Arts & Entertainment"
+            case .booksBiographiesandMemoirs : return "Books|Biographies & Memoirs"
+            case .booksBusinessandPersonalFinance : return "Books|Business & Personal Finance"
+            case .booksChildrenandTeens : return "Books|Children & Teens"
+            case .booksHumor : return "Books|Humor"
+            case .booksHistory : return "Books|History"
+            case .booksReligionandSpirituality : return "Books|Religion & Spirituality"
+            case .booksScienceandNature : return "Books|Science & Nature"
+            case .booksSciFiandFantasy : return "Books|Sci-Fi & Fantasy"
+            case .booksLifestyleandHome : return "Books|Lifestyle & Home"
+            case .booksSelfDevelopment : return "Books|Self-Development"
+            case .booksComicsandGraphicNovels : return "Books|Comics & Graphic Novels"
+            case .booksComputersandInternet : return "Books|Computers & Internet"
+            case .booksCookbooksFoodandWine: return "Books|Cookbooks, Food & Wine"
+            case .booksProfessionalandTechnical : return "Books|Professional & Technical"
+            case .booksParenting : return "Books|Parenting"
+            case .booksFictionandLiterature : return "Books|Fiction & Literature"
+            case .booksMysteriesandThrillers : return "Books|Mysteries & Thrillers"
+            case .booksReference : return "Books|Reference"
+            case .booksPoliticsandCurrentEvents : return "Books|Politics & Current Events"
+            case .booksSportsandOutdoors : return "Books|Sports & Outdoors"
+            case .booksLifestyleandHomeAntiquesandCollectibles : return "Books|Lifestyle & Home|Antiques & Collectibles"
+            case .booksArtsandEntertainmentArtandArchitecture : return "Books|Arts & Entertainment|Art & Architecture"
+            case .booksReligionandSpiritualityBibles : return "Books|Religion & Spirituality|Bibles"
+            case .booksSelfDevelopmentSpirituality : return "Books|Self-Development|Spirituality"
+            case .booksBusinessandPersonalFinanceIndustriesandProfessions : return "Books|Business & Personal Finance|Industries & Professions"
+            case .booksBusinessandPersonalFinanceMarketingandSales : return "Books|Business & Personal Finance|Marketing & Sales"
+            case .booksBusinessandPersonalFinanceSmallBusinessandEntrepreneurship : return "Books|Business & Personal Finance|Small Business & Entrepreneurship"
+            case .booksBusinessandPersonalFinancePersonalFinance : return "Books|Business & Personal Finance|Personal Finance"
+            case .booksBusinessandPersonalFinanceReference : return "Books|Business & Personal Finance|Reference"
+            case .booksBusinessandPersonalFinanceCareers : return "Books|Business & Personal Finance|Careers"
+            case .booksBusinessandPersonalFinanceEconomics : return "Books|Business & Personal Finance|Economics"
+            case .booksBusinessandPersonalFinanceInvesting : return "Books|Business & Personal Finance|Investing"
+            case .booksBusinessandPersonalFinanceFinance : return "Books|Business & Personal Finance|Finance"
+            case .booksBusinessandPersonalFinanceManagementandLeadership : return "Books|Business & Personal Finance|Management & Leadership"
+            case .booksComicsandGraphicNovelsGraphicNovels : return "Books|Comics & Graphic Novels|Graphic Novels"
+            case .booksComicsandGraphicNovelsManga : return "Books|Comics & Graphic Novels|Manga"
+            case .booksComputersandInternetComputers : return "Books|Computers & Internet|Computers"
+            case .booksComputersandInternetDatabases : return "Books|Computers & Internet|Databases"
+            case .booksComputersandInternetDigitalMedia : return "Books|Computers & Internet|Digital Media"
+            case .booksComputersandInternetInternet : return "Books|Computers & Internet|Internet"
+            case .booksComputersandInternetNetwork : return "Books|Computers & Internet|Network"
+            case .booksComputersandInternetOperatingSystems : return "Books|Computers & Internet|Operating Systems"
+            case .booksComputersandInternetProgramming : return "Books|Computers & Internet|Programming"
+            case .booksComputersandInternetSoftware : return "Books|Computers & Internet|Software"
+            case .booksComputersandInternetSystemAdministration : return "Books|Computers & Internet|System Administration"
+            case .booksCookbooksFoodandWineBeverages: return "Books|Cookbooks, Food & Wine|Beverages"
+            case .booksCookbooksFoodandWineCoursesandDishes: return "Books|Cookbooks, Food & Wine|Courses & Dishes"
+            case .booksCookbooksFoodandWineSpecialDiet: return "Books|Cookbooks, Food & Wine|Special Diet"
+            case .booksCookbooksFoodandWineSpecialOccasions: return "Books|Cookbooks, Food & Wine|Special Occasions"
+            case .booksCookbooksFoodandWineMethods: return "Books|Cookbooks, Food & Wine|Methods"
+            case .booksCookbooksFoodandWineReference: return "Books|Cookbooks, Food & Wine|Reference"
+            case .booksCookbooksFoodandWineRegionalandEthnic: return "Books|Cookbooks, Food & Wine|Regional & Ethnic"
+            case .booksCookbooksFoodandWineSpecificIngredients: return "Books|Cookbooks, Food & Wine|Specific Ingredients"
+            case .booksLifestyleandHomeCraftsandHobbies : return "Books|Lifestyle & Home|Crafts & Hobbies"
+            case .booksProfessionalandTechnicalDesign : return "Books|Professional & Technical|Design"
+            case .booksArtsandEntertainmentTheater : return "Books|Arts & Entertainment|Theater"
+            case .booksProfessionalandTechnicalEducation : return "Books|Professional & Technical|Education"
+            case .booksNonfictionFamilyandRelationships : return "Books|Nonfiction|Family & Relationships"
+            case .booksFictionandLiteratureActionandAdventure : return "Books|Fiction & Literature|Action & Adventure"
+            case .booksFictionandLiteratureAfricanAmerican : return "Books|Fiction & Literature|African American"
+            case .booksFictionandLiteratureReligious : return "Books|Fiction & Literature|Religious"
+            case .booksFictionandLiteratureClassics : return "Books|Fiction & Literature|Classics"
+            case .booksFictionandLiteratureErotica : return "Books|Fiction & Literature|Erotica"
+            case .booksSciFiandFantasyFantasy : return "Books|Sci-Fi & Fantasy|Fantasy"
+            case .booksFictionandLiteratureGay : return "Books|Fiction & Literature|Gay"
+            case .booksFictionandLiteratureGhost : return "Books|Fiction & Literature|Ghost"
+            case .booksFictionandLiteratureHistorical : return "Books|Fiction & Literature|Historical"
+            case .booksFictionandLiteratureHorror : return "Books|Fiction & Literature|Horror"
+            case .booksFictionandLiteratureLiterary : return "Books|Fiction & Literature|Literary"
+            case .booksMysteriesandThrillersHardBoiled : return "Books|Mysteries & Thrillers|Hard-Boiled"
+            case .booksMysteriesandThrillersHistorical : return "Books|Mysteries & Thrillers|Historical"
+            case .booksMysteriesandThrillersPoliceProcedural : return "Books|Mysteries & Thrillers|Police Procedural"
+            case .booksMysteriesandThrillersShortStories : return "Books|Mysteries & Thrillers|Short Stories"
+            case .booksMysteriesandThrillersBritishDetectives : return "Books|Mysteries & Thrillers|British Detectives"
+            case .booksMysteriesandThrillersWomenSleuths : return "Books|Mysteries & Thrillers|Women Sleuths"
+            case .booksRomanceEroticRomance : return "Books|Romance|Erotic Romance"
+            case .booksRomanceContemporary : return "Books|Romance|Contemporary"
+            case .booksRomanceParanormal : return "Books|Romance|Paranormal"
+            case .booksRomanceHistorical : return "Books|Romance|Historical"
+            case .booksRomanceShortStories : return "Books|Romance|Short Stories"
+            case .booksRomanceSuspense : return "Books|Romance|Suspense"
+            case .booksRomanceWestern : return "Books|Romance|Western"
+            case .booksSciFiandFantasyScienceFiction : return "Books|Sci-Fi & Fantasy|Science Fiction"
+            case .booksSciFiandFantasyScienceFictionandLiterature : return "Books|Sci-Fi & Fantasy|Science Fiction & Literature"
+            case .booksFictionandLiteratureShortStories : return "Books|Fiction & Literature|Short Stories"
+            case .booksReferenceForeignLanguages : return "Books|Reference|Foreign Languages"
+            case .booksArtsandEntertainmentGames : return "Books|Arts & Entertainment|Games"
+            case .booksLifestyleandHomeGardening : return "Books|Lifestyle & Home|Gardening"
+            case .booksSelfDevelopmentHealthandFitness : return "Books|Self-Development|Health & Fitness"
+            case .booksHistoryAfrica : return "Books|History|Africa"
+            case .booksHistoryAmericas : return "Books|History|Americas"
+            case .booksHistoryAncient : return "Books|History|Ancient"
+            case .booksHistoryAsia : return "Books|History|Asia"
+            case .booksHistoryAustraliaandOceania : return "Books|History|Australia & Oceania"
+            case .booksHistoryEurope : return "Books|History|Europe"
+            case .booksHistoryLatinAmerica : return "Books|History|Latin America"
+            case .booksHistoryMiddleEast : return "Books|History|Middle East"
+            case .booksHistoryMilitary : return "Books|History|Military"
+            case .booksHistoryUnitedStates : return "Books|History|United States"
+            case .booksHistoryWorld : return "Books|History|World"
+            case .booksChildrenandTeensChildrensFiction : return "Books|Children & Teens|Children's Fiction"
+            case .booksChildrenandTeensChildrensNonfiction : return "Books|Children & Teens|Children's Nonfiction"
+            case .booksProfessionalandTechnicalLaw : return "Books|Professional & Technical|Law"
+            case .booksFictionandLiteratureLiteraryCriticism : return "Books|Fiction & Literature|Literary Criticism"
+            case .booksScienceandNatureMathematics : return "Books|Science & Nature|Mathematics"
+            case .booksProfessionalandTechnicalMedical : return "Books|Professional & Technical|Medical"
+            case .booksArtsandEntertainmentMusic : return "Books|Arts & Entertainment|Music"
+            case .booksScienceandNatureNature : return "Books|Science & Nature|Nature"
+            case .booksArtsandEntertainmentPerformingArts : return "Books|Arts & Entertainment|Performing Arts"
+            case .booksLifestyleandHomePets : return "Books|Lifestyle & Home|Pets"
+            case .booksNonfictionPhilosophy : return "Books|Nonfiction|Philosophy"
+            case .booksArtsandEntertainmentPhotography : return "Books|Arts & Entertainment|Photography"
+            case .booksFictionandLiteraturePoetry : return "Books|Fiction & Literature|Poetry"
+            case .booksSelfDevelopmentPsychology : return "Books|Self-Development|Psychology"
+            case .booksReferenceAlmanacsandYearbooks : return "Books|Reference|Almanacs & Yearbooks"
+            case .booksReferenceAtlasesandMaps : return "Books|Reference|Atlases & Maps"
+            case .booksReferenceCatalogsandDirectories : return "Books|Reference|Catalogs & Directories"
+            case .booksReferenceConsumerGuides : return "Books|Reference|Consumer Guides"
+            case .booksReferenceDictionariesandThesauruses : return "Books|Reference|Dictionaries & Thesauruses"
+            case .booksReferenceEncyclopedias : return "Books|Reference|Encyclopedias"
+            case .booksReferenceEtiquette : return "Books|Reference|Etiquette"
+            case .booksReferenceQuotations : return "Books|Reference|Quotations"
+            case .booksReferenceWordsandLanguage : return "Books|Reference|Words & Language"
+            case .booksReferenceWriting : return "Books|Reference|Writing"
+            case .booksReligionandSpiritualityBibleStudies : return "Books|Religion & Spirituality|Bible Studies"
+            case .booksReligionandSpiritualityBuddhism : return "Books|Religion & Spirituality|Buddhism"
+            case .booksReligionandSpiritualityChristianity : return "Books|Religion & Spirituality|Christianity"
+            case .booksReligionandSpiritualityHinduism : return "Books|Religion & Spirituality|Hinduism"
+            case .booksReligionandSpiritualityIslam : return "Books|Religion & Spirituality|Islam"
+            case .booksReligionandSpiritualityJudaism : return "Books|Religion & Spirituality|Judaism"
+            case .booksScienceandNatureAstronomy : return "Books|Science & Nature|Astronomy"
+            case .booksScienceandNatureChemistry : return "Books|Science & Nature|Chemistry"
+            case .booksScienceandNatureEarthSciences : return "Books|Science & Nature|Earth Sciences"
+            case .booksScienceandNatureEssays : return "Books|Science & Nature|Essays"
+            case .booksScienceandNatureHistory : return "Books|Science & Nature|History"
+            case .booksScienceandNatureLifeSciences : return "Books|Science & Nature|Life Sciences"
+            case .booksScienceandNaturePhysics : return "Books|Science & Nature|Physics"
+            case .booksScienceandNatureReference : return "Books|Science & Nature|Reference"
+            case .booksSelfDevelopmentSelfImprovement : return "Books|Self-Development|Self-Improvement"
+            case .booksNonfictionSocialScience : return "Books|Nonfiction|Social Science"
+            case .booksSportsandOutdoorsBaseball : return "Books|Sports & Outdoors|Baseball"
+            case .booksSportsandOutdoorsBasketball : return "Books|Sports & Outdoors|Basketball"
+            case .booksSportsandOutdoorsCoaching : return "Books|Sports & Outdoors|Coaching"
+            case .booksSportsandOutdoorsExtremeSports : return "Books|Sports & Outdoors|Extreme Sports"
+            case .booksSportsandOutdoorsFootball : return "Books|Sports & Outdoors|Football"
+            case .booksSportsandOutdoorsGolf : return "Books|Sports & Outdoors|Golf"
+            case .booksSportsandOutdoorsHockey : return "Books|Sports & Outdoors|Hockey"
+            case .booksSportsandOutdoorsMountaineering : return "Books|Sports & Outdoors|Mountaineering"
+            case .booksSportsandOutdoorsOutdoors : return "Books|Sports & Outdoors|Outdoors"
+            case .booksSportsandOutdoorsRacketSports : return "Books|Sports & Outdoors|Racket Sports"
+            case .booksSportsandOutdoorsReference : return "Books|Sports & Outdoors|Reference"
+            case .booksSportsandOutdoorsSoccer : return "Books|Sports & Outdoors|Soccer"
+            case .booksSportsandOutdoorsTraining : return "Books|Sports & Outdoors|Training"
+            case .booksSportsandOutdoorsWaterSports : return "Books|Sports & Outdoors|Water Sports"
+            case .booksSportsandOutdoorsWinterSports : return "Books|Sports & Outdoors|Winter Sports"
+            case .booksReferenceStudyAids : return "Books|Reference|Study Aids"
+            case .booksProfessionalandTechnicalEngineering : return "Books|Professional & Technical|Engineering"
+            case .booksNonfictionTransportation : return "Books|Nonfiction|Transportation"
+            case .booksTravelandAdventureAfrica : return "Books|Travel & Adventure|Africa"
+            case .booksTravelandAdventureAsia : return "Books|Travel & Adventure|Asia"
+            case .booksTravelandAdventureSpecialtyTravel : return "Books|Travel & Adventure|Specialty Travel"
+            case .booksTravelandAdventureCanada : return "Books|Travel & Adventure|Canada"
+            case .booksTravelandAdventureCaribbean : return "Books|Travel & Adventure|Caribbean"
+            case .booksTravelandAdventureLatinAmerica : return "Books|Travel & Adventure|Latin America"
+            case .booksTravelandAdventureEssaysandMemoirs : return "Books|Travel & Adventure|Essays & Memoirs"
+            case .booksTravelandAdventureEurope : return "Books|Travel & Adventure|Europe"
+            case .booksTravelandAdventureMiddleEast : return "Books|Travel & Adventure|Middle East"
+            case .booksTravelandAdventureUnitedStates : return "Books|Travel & Adventure|United States"
+            case .booksNonfictionTrueCrime : return "Books|Nonfiction|True Crime"
+            case .booksSciFiandFantasyFantasyContemporary : return "Books|Sci-Fi & Fantasy|Fantasy|Contemporary"
+            case .booksSciFiandFantasyFantasyEpic : return "Books|Sci-Fi & Fantasy|Fantasy|Epic"
+            case .booksSciFiandFantasyFantasyHistorical : return "Books|Sci-Fi & Fantasy|Fantasy|Historical"
+            case .booksSciFiandFantasyFantasyParanormal : return "Books|Sci-Fi & Fantasy|Fantasy|Paranormal"
+            case .booksSciFiandFantasyFantasyShortStories : return "Books|Sci-Fi & Fantasy|Fantasy|Short Stories"
+            case .booksSciFiandFantasyScienceFictionandLiteratureAdventure : return "Books|Sci-Fi & Fantasy|Science Fiction & Literature|Adventure"
+            case .booksSciFiandFantasyScienceFictionandLiteratureHighTech : return "Books|Sci-Fi & Fantasy|Science Fiction & Literature|High Tech"
+            case .booksSciFiandFantasyScienceFictionandLiteratureShortStories : return "Books|Sci-Fi & Fantasy|Science Fiction & Literature|Short Stories"
+            case .booksProfessionalandTechnicalEducationLanguageArtsandDisciplines : return "Books|Professional & Technical|Education|Language Arts & Disciplines"
+            case .booksCommunicationsandMedia : return "Books|Communications & Media"
+            case .booksCommunicationsandMediaBroadcasting : return "Books|Communications & Media|Broadcasting"
+            case .booksCommunicationsandMediaDigitalMedia : return "Books|Communications & Media|Digital Media"
+            case .booksCommunicationsandMediaJournalism : return "Books|Communications & Media|Journalism"
+            case .booksCommunicationsandMediaPhotojournalism : return "Books|Communications & Media|Photojournalism"
+            case .booksCommunicationsandMediaPrint : return "Books|Communications & Media|Print"
+            case .booksCommunicationsandMediaSpeech : return "Books|Communications & Media|Speech"
+            case .booksCommunicationsandMediaWriting : return "Books|Communications & Media|Writing"
+            case .booksArtsandEntertainmentArtandArchitectureUrbanPlanning : return "Books|Arts & Entertainment|Art & Architecture|Urban Planning"
+            case .booksArtsandEntertainmentDance : return "Books|Arts & Entertainment|Dance"
+            case .booksArtsandEntertainmentFashion : return "Books|Arts & Entertainment|Fashion"
+            case .booksArtsandEntertainmentFilm : return "Books|Arts & Entertainment|Film"
+            case .booksArtsandEntertainmentInteriorDesign : return "Books|Arts & Entertainment|Interior Design"
+            case .booksArtsandEntertainmentMediaArts : return "Books|Arts & Entertainment|Media Arts"
+            case .booksArtsandEntertainmentRadio : return "Books|Arts & Entertainment|Radio"
+            case .booksArtsandEntertainmentTV : return "Books|Arts & Entertainment|TV"
+            case .booksArtsandEntertainmentVisualArts : return "Books|Arts & Entertainment|Visual Arts"
+            case .booksBiographiesandMemoirsArtsandEntertainment : return "Books|Biographies & Memoirs|Arts & Entertainment"
+            case .booksBiographiesandMemoirsBusiness : return "Books|Biographies & Memoirs|Business"
+            case .booksBiographiesandMemoirsCulinary : return "Books|Biographies & Memoirs|Culinary"
+            case .booksBiographiesandMemoirsGayandLesbian : return "Books|Biographies & Memoirs|Gay & Lesbian"
+            case .booksBiographiesandMemoirsHistorical : return "Books|Biographies & Memoirs|Historical"
+            case .booksBiographiesandMemoirsLiterary : return "Books|Biographies & Memoirs|Literary"
+            case .booksBiographiesandMemoirsMediaandJournalism : return "Books|Biographies & Memoirs|Media & Journalism"
+            case .booksBiographiesandMemoirsMilitary : return "Books|Biographies & Memoirs|Military"
+            case .booksBiographiesandMemoirsPolitics : return "Books|Biographies & Memoirs|Politics"
+            case .booksBiographiesandMemoirsReligious : return "Books|Biographies & Memoirs|Religious"
+            case .booksBiographiesandMemoirsScienceandTechnology : return "Books|Biographies & Memoirs|Science & Technology"
+            case .booksBiographiesandMemoirsSports : return "Books|Biographies & Memoirs|Sports"
+            case .booksBiographiesandMemoirsWomen : return "Books|Biographies & Memoirs|Women"
+            case .booksRomanceNewAdult : return "Books|Romance|New Adult"
+            case .booksRomanceRomanticComedy : return "Books|Romance|Romantic Comedy"
+            case .booksRomanceGayandLesbian : return "Books|Romance|Gay & Lesbian"
+            case .booksFictionandLiteratureEssays : return "Books|Fiction & Literature|Essays"
+            case .booksFictionandLiteratureAnthologies : return "Books|Fiction & Literature|Anthologies"
+            case .booksFictionandLiteratureComparativeLiterature : return "Books|Fiction & Literature|Comparative Literature"
+            case .booksFictionandLiteratureDrama : return "Books|Fiction & Literature|Drama"
+            case .booksFictionandLiteratureFairyTalesMythsandFables: return "Books|Fiction & Literature|Fairy Tales, Myths & Fables"
+            case .booksFictionandLiteratureFamily : return "Books|Fiction & Literature|Family"
+            case .booksComicsandGraphicNovelsMangaSchoolDrama : return "Books|Comics & Graphic Novels|Manga|School Drama"
+            case .booksComicsandGraphicNovelsMangaHumanDrama : return "Books|Comics & Graphic Novels|Manga|Human Drama"
+            case .booksComicsandGraphicNovelsMangaFamilyDrama : return "Books|Comics & Graphic Novels|Manga|Family Drama"
+            case .booksSportsandOutdoorsBoxing : return "Books|Sports & Outdoors|Boxing"
+            case .booksSportsandOutdoorsCricket : return "Books|Sports & Outdoors|Cricket"
+            case .booksSportsandOutdoorsCycling : return "Books|Sports & Outdoors|Cycling"
+            case .booksSportsandOutdoorsEquestrian : return "Books|Sports & Outdoors|Equestrian"
+            case .booksSportsandOutdoorsMartialArtsandSelfDefense : return "Books|Sports & Outdoors|Martial Arts & Self Defense"
+            case .booksSportsandOutdoorsMotorSports : return "Books|Sports & Outdoors|Motor Sports"
+            case .booksSportsandOutdoorsRugby : return "Books|Sports & Outdoors|Rugby"
+            case .booksSportsandOutdoorsRunning : return "Books|Sports & Outdoors|Running"
+            case .booksSelfDevelopmentDietandNutrition : return "Books|Self-Development|Diet & Nutrition"
+            case .booksScienceandNatureAgriculture : return "Books|Science & Nature|Agriculture"
+            case .booksScienceandNatureAtmosphere : return "Books|Science & Nature|Atmosphere"
+            case .booksScienceandNatureBiology : return "Books|Science & Nature|Biology"
+            case .booksScienceandNatureEcology : return "Books|Science & Nature|Ecology"
+            case .booksScienceandNatureEnvironment : return "Books|Science & Nature|Environment"
+            case .booksScienceandNatureGeography : return "Books|Science & Nature|Geography"
+            case .booksScienceandNatureGeology : return "Books|Science & Nature|Geology"
+            case .booksNonfictionSocialScienceAnthropology : return "Books|Nonfiction|Social Science|Anthropology"
+            case .booksNonfictionSocialScienceArchaeology : return "Books|Nonfiction|Social Science|Archaeology"
+            case .booksNonfictionSocialScienceCivics : return "Books|Nonfiction|Social Science|Civics"
+            case .booksNonfictionSocialScienceGovernment : return "Books|Nonfiction|Social Science|Government"
+            case .booksNonfictionSocialScienceSocialStudies : return "Books|Nonfiction|Social Science|Social Studies"
+            case .booksNonfictionSocialScienceSocialWelfare : return "Books|Nonfiction|Social Science|Social Welfare"
+            case .booksNonfictionSocialScienceSociety : return "Books|Nonfiction|Social Science|Society"
+            case .booksNonfictionPhilosophyAesthetics : return "Books|Nonfiction|Philosophy|Aesthetics"
+            case .booksNonfictionPhilosophyEpistemology : return "Books|Nonfiction|Philosophy|Epistemology"
+            case .booksNonfictionPhilosophyEthics : return "Books|Nonfiction|Philosophy|Ethics"
+            case .booksNonfictionPhilosophyLanguage : return "Books|Nonfiction|Philosophy|Language"
+            case .booksNonfictionPhilosophyLogic : return "Books|Nonfiction|Philosophy|Logic"
+            case .booksNonfictionPhilosophyMetaphysics : return "Books|Nonfiction|Philosophy|Metaphysics"
+            case .booksNonfictionPhilosophyPolitical : return "Books|Nonfiction|Philosophy|Political"
+            case .booksNonfictionPhilosophyReligion : return "Books|Nonfiction|Philosophy|Religion"
+            case .booksReferenceManuals : return "Books|Reference|Manuals"
+            case .booksKids : return "Books|Kids"
+            case .booksKidsAnimals : return "Books|Kids|Animals"
+            case .booksKidsBasicConcepts : return "Books|Kids|Basic Concepts"
+            case .booksKidsBasicConceptsAlphabet : return "Books|Kids|Basic Concepts|Alphabet"
+            case .booksKidsBasicConceptsBody : return "Books|Kids|Basic Concepts|Body"
+            case .booksKidsBasicConceptsColors : return "Books|Kids|Basic Concepts|Colors"
+            case .booksKidsBasicConceptsCountingandNumbers : return "Books|Kids|Basic Concepts|Counting & Numbers"
+            case .booksKidsBasicConceptsDateandTime : return "Books|Kids|Basic Concepts|Date & Time"
+            case .booksKidsBasicConceptsGeneral : return "Books|Kids|Basic Concepts|General"
+            case .booksKidsBasicConceptsMoney : return "Books|Kids|Basic Concepts|Money"
+            case .booksKidsBasicConceptsOpposites : return "Books|Kids|Basic Concepts|Opposites"
+            case .booksKidsBasicConceptsSeasons : return "Books|Kids|Basic Concepts|Seasons"
+            case .booksKidsBasicConceptsSensesandSensation : return "Books|Kids|Basic Concepts|Senses & Sensation"
+            case .booksKidsBasicConceptsSizeandShape : return "Books|Kids|Basic Concepts|Size & Shape"
+            case .booksKidsBasicConceptsSounds : return "Books|Kids|Basic Concepts|Sounds"
+            case .booksKidsBasicConceptsWords : return "Books|Kids|Basic Concepts|Words"
+            case .booksKidsBiography : return "Books|Kids|Biography"
+            case .booksKidsCareersandOccupations : return "Books|Kids|Careers & Occupations"
+            case .booksKidsComputersandTechnology : return "Books|Kids|Computers & Technology"
+            case .booksKidsCookingandFood : return "Books|Kids|Cooking & Food"
+            case .booksKidsArtsandEntertainment : return "Books|Kids|Arts & Entertainment"
+            case .booksKidsArtsandEntertainmentArt : return "Books|Kids|Arts & Entertainment|Art"
+            case .booksKidsArtsandEntertainmentCrafts : return "Books|Kids|Arts & Entertainment|Crafts"
+            case .booksKidsArtsandEntertainmentMusic : return "Books|Kids|Arts & Entertainment|Music"
+            case .booksKidsArtsandEntertainmentPerformingArts : return "Books|Kids|Arts & Entertainment|Performing Arts"
+            case .booksKidsFamily : return "Books|Kids|Family"
+            case .booksKidsFiction : return "Books|Kids|Fiction"
+            case .booksKidsFictionActionandAdventure : return "Books|Kids|Fiction|Action & Adventure"
+            case .booksKidsFictionAnimals : return "Books|Kids|Fiction|Animals"
+            case .booksKidsFictionClassics : return "Books|Kids|Fiction|Classics"
+            case .booksKidsFictionComicsandGraphicNovels : return "Books|Kids|Fiction|Comics & Graphic Novels"
+            case .booksKidsFictionCulturePlacesandPeople: return "Books|Kids|Fiction|Culture, Places & People"
+            case .booksKidsFictionFamilyandRelationships : return "Books|Kids|Fiction|Family & Relationships"
+            case .booksKidsFictionFantasy : return "Books|Kids|Fiction|Fantasy"
+            case .booksKidsFictionFairyTalesMythsandFables: return "Books|Kids|Fiction|Fairy Tales, Myths & Fables"
+            case .booksKidsFictionFavoriteCharacters : return "Books|Kids|Fiction|Favorite Characters"
+            case .booksKidsFictionHistorical : return "Books|Kids|Fiction|Historical"
+            case .booksKidsFictionHolidaysandCelebrations : return "Books|Kids|Fiction|Holidays & Celebrations"
+            case .booksKidsFictionMonstersandGhosts : return "Books|Kids|Fiction|Monsters & Ghosts"
+            case .booksKidsFictionMysteries : return "Books|Kids|Fiction|Mysteries"
+            case .booksKidsFictionNature : return "Books|Kids|Fiction|Nature"
+            case .booksKidsFictionReligion : return "Books|Kids|Fiction|Religion"
+            case .booksKidsFictionSciFi : return "Books|Kids|Fiction|Sci-Fi"
+            case .booksKidsFictionSocialIssues : return "Books|Kids|Fiction|Social Issues"
+            case .booksKidsFictionSportsandRecreation : return "Books|Kids|Fiction|Sports & Recreation"
+            case .booksKidsFictionTransportation : return "Books|Kids|Fiction|Transportation"
+            case .booksKidsGamesandActivities : return "Books|Kids|Games & Activities"
+            case .booksKidsGeneralNonfiction : return "Books|Kids|General Nonfiction"
+            case .booksKidsHealth : return "Books|Kids|Health"
+            case .booksKidsHistory : return "Books|Kids|History"
+            case .booksKidsHolidaysandCelebrations : return "Books|Kids|Holidays & Celebrations"
+            case .booksKidsHolidaysandCelebrationsBirthdays : return "Books|Kids|Holidays & Celebrations|Birthdays"
+            case .booksKidsHolidaysandCelebrationsChristmasandAdvent : return "Books|Kids|Holidays & Celebrations|Christmas & Advent"
+            case .booksKidsHolidaysandCelebrationsEasterandLent : return "Books|Kids|Holidays & Celebrations|Easter & Lent"
+            case .booksKidsHolidaysandCelebrationsGeneral : return "Books|Kids|Holidays & Celebrations|General"
+            case .booksKidsHolidaysandCelebrationsHalloween : return "Books|Kids|Holidays & Celebrations|Halloween"
+            case .booksKidsHolidaysandCelebrationsHanukkah : return "Books|Kids|Holidays & Celebrations|Hanukkah"
+            case .booksKidsHolidaysandCelebrationsOther : return "Books|Kids|Holidays & Celebrations|Other"
+            case .booksKidsHolidaysandCelebrationsPassover : return "Books|Kids|Holidays & Celebrations|Passover"
+            case .booksKidsHolidaysandCelebrationsPatrioticHolidays : return "Books|Kids|Holidays & Celebrations|Patriotic Holidays"
+            case .booksKidsHolidaysandCelebrationsRamadan : return "Books|Kids|Holidays & Celebrations|Ramadan"
+            case .booksKidsHolidaysandCelebrationsThanksgiving : return "Books|Kids|Holidays & Celebrations|Thanksgiving"
+            case .booksKidsHolidaysandCelebrationsValentinesDay : return "Books|Kids|Holidays & Celebrations|Valentine's Day"
+            case .booksKidsHumor : return "Books|Kids|Humor"
+            case .booksKidsHumorJokesandRiddles : return "Books|Kids|Humor|Jokes & Riddles"
+            case .booksKidsPoetry : return "Books|Kids|Poetry"
+            case .booksKidsLearningtoRead : return "Books|Kids|Learning to Read"
+            case .booksKidsLearningtoReadChapterBooks : return "Books|Kids|Learning to Read|Chapter Books"
+            case .booksKidsLearningtoReadEarlyReaders : return "Books|Kids|Learning to Read|Early Readers"
+            case .booksKidsLearningtoReadIntermediateReaders : return "Books|Kids|Learning to Read|Intermediate Readers"
+            case .booksKidsNurseryRhymes : return "Books|Kids|Nursery Rhymes"
+            case .booksKidsGovernment : return "Books|Kids|Government"
+            case .booksKidsReference : return "Books|Kids|Reference"
+            case .booksKidsReligion : return "Books|Kids|Religion"
+            case .booksKidsScienceandNature : return "Books|Kids|Science & Nature"
+            case .booksKidsSocialIssues : return "Books|Kids|Social Issues"
+            case .booksKidsSocialStudies : return "Books|Kids|Social Studies"
+            case .booksKidsSportsandRecreation : return "Books|Kids|Sports & Recreation"
+            case .booksKidsTransportation : return "Books|Kids|Transportation"
+            case .booksYoungAdult : return "Books|Young Adult"
+            case .booksYoungAdultAnimals : return "Books|Young Adult|Animals"
+            case .booksYoungAdultBiography : return "Books|Young Adult|Biography"
+            case .booksYoungAdultCareersandOccupations : return "Books|Young Adult|Careers & Occupations"
+            case .booksYoungAdultComputersandTechnology : return "Books|Young Adult|Computers & Technology"
+            case .booksYoungAdultCookingandFood : return "Books|Young Adult|Cooking & Food"
+            case .booksYoungAdultArtsandEntertainment : return "Books|Young Adult|Arts & Entertainment"
+            case .booksYoungAdultArtsandEntertainmentArt : return "Books|Young Adult|Arts & Entertainment|Art"
+            case .booksYoungAdultArtsandEntertainmentCrafts : return "Books|Young Adult|Arts & Entertainment|Crafts"
+            case .booksYoungAdultArtsandEntertainmentMusic : return "Books|Young Adult|Arts & Entertainment|Music"
+            case .booksYoungAdultArtsandEntertainmentPerformingArts : return "Books|Young Adult|Arts & Entertainment|Performing Arts"
+            case .booksYoungAdultFamily : return "Books|Young Adult|Family"
+            case .booksYoungAdultFiction : return "Books|Young Adult|Fiction"
+            case .booksYoungAdultFictionActionandAdventure : return "Books|Young Adult|Fiction|Action & Adventure"
+            case .booksYoungAdultFictionAnimals : return "Books|Young Adult|Fiction|Animals"
+            case .booksYoungAdultFictionClassics : return "Books|Young Adult|Fiction|Classics"
+            case .booksYoungAdultFictionComicsandGraphicNovels : return "Books|Young Adult|Fiction|Comics & Graphic Novels"
+            case .booksYoungAdultFictionCulturePlacesandPeople: return "Books|Young Adult|Fiction|Culture, Places & People"
+            case .booksYoungAdultFictionDystopian : return "Books|Young Adult|Fiction|Dystopian"
+            case .booksYoungAdultFictionFamilyandRelationships : return "Books|Young Adult|Fiction|Family & Relationships"
+            case .booksYoungAdultFictionFantasy : return "Books|Young Adult|Fiction|Fantasy"
+            case .booksYoungAdultFictionFairyTalesMythsandFables: return "Books|Young Adult|Fiction|Fairy Tales, Myths & Fables"
+            case .booksYoungAdultFictionFavoriteCharacters : return "Books|Young Adult|Fiction|Favorite Characters"
+            case .booksYoungAdultFictionHistorical : return "Books|Young Adult|Fiction|Historical"
+            case .booksYoungAdultFictionHolidaysandCelebrations : return "Books|Young Adult|Fiction|Holidays & Celebrations"
+            case .booksYoungAdultFictionHorrorMonstersandGhosts: return "Books|Young Adult|Fiction|Horror, Monsters & Ghosts"
+            case .booksYoungAdultFictionCrimeandMystery : return "Books|Young Adult|Fiction|Crime & Mystery"
+            case .booksYoungAdultFictionNature : return "Books|Young Adult|Fiction|Nature"
+            case .booksYoungAdultFictionReligion : return "Books|Young Adult|Fiction|Religion"
+            case .booksYoungAdultFictionRomance : return "Books|Young Adult|Fiction|Romance"
+            case .booksYoungAdultFictionSciFi : return "Books|Young Adult|Fiction|Sci-Fi"
+            case .booksYoungAdultFictionComingofAge : return "Books|Young Adult|Fiction|Coming of Age"
+            case .booksYoungAdultFictionSportsandRecreation : return "Books|Young Adult|Fiction|Sports & Recreation"
+            case .booksYoungAdultFictionTransportation : return "Books|Young Adult|Fiction|Transportation"
+            case .booksYoungAdultGamesandActivities : return "Books|Young Adult|Games & Activities"
+            case .booksYoungAdultGeneralNonfiction : return "Books|Young Adult|General Nonfiction"
+            case .booksYoungAdultHealth : return "Books|Young Adult|Health"
+            case .booksYoungAdultHistory : return "Books|Young Adult|History"
+            case .booksYoungAdultHolidaysandCelebrations : return "Books|Young Adult|Holidays & Celebrations"
+            case .booksYoungAdultHolidaysandCelebrationsBirthdays : return "Books|Young Adult|Holidays & Celebrations|Birthdays"
+            case .booksYoungAdultHolidaysandCelebrationsChristmasandAdvent : return "Books|Young Adult|Holidays & Celebrations|Christmas & Advent"
+            case .booksYoungAdultHolidaysandCelebrationsEasterandLent : return "Books|Young Adult|Holidays & Celebrations|Easter & Lent"
+            case .booksYoungAdultHolidaysandCelebrationsGeneral : return "Books|Young Adult|Holidays & Celebrations|General"
+            case .booksYoungAdultHolidaysandCelebrationsHalloween : return "Books|Young Adult|Holidays & Celebrations|Halloween"
+            case .booksYoungAdultHolidaysandCelebrationsHanukkah : return "Books|Young Adult|Holidays & Celebrations|Hanukkah"
+            case .booksYoungAdultHolidaysandCelebrationsOther : return "Books|Young Adult|Holidays & Celebrations|Other"
+            case .booksYoungAdultHolidaysandCelebrationsPassover : return "Books|Young Adult|Holidays & Celebrations|Passover"
+            case .booksYoungAdultHolidaysandCelebrationsPatrioticHolidays : return "Books|Young Adult|Holidays & Celebrations|Patriotic Holidays"
+            case .booksYoungAdultHolidaysandCelebrationsRamadan : return "Books|Young Adult|Holidays & Celebrations|Ramadan"
+            case .booksYoungAdultHolidaysandCelebrationsThanksgiving : return "Books|Young Adult|Holidays & Celebrations|Thanksgiving"
+            case .booksYoungAdultHolidaysandCelebrationsValentinesDay : return "Books|Young Adult|Holidays & Celebrations|Valentine's Day"
+            case .booksYoungAdultHumor : return "Books|Young Adult|Humor"
+            case .booksYoungAdultHumorJokesandRiddles : return "Books|Young Adult|Humor|Jokes & Riddles"
+            case .booksYoungAdultPoetry : return "Books|Young Adult|Poetry"
+            case .booksYoungAdultPoliticsandGovernment : return "Books|Young Adult|Politics & Government"
+            case .booksYoungAdultReference : return "Books|Young Adult|Reference"
+            case .booksYoungAdultReligion : return "Books|Young Adult|Religion"
+            case .booksYoungAdultScienceandNature : return "Books|Young Adult|Science & Nature"
+            case .booksYoungAdultComingofAge : return "Books|Young Adult|Coming of Age"
+            case .booksYoungAdultSocialStudies : return "Books|Young Adult|Social Studies"
+            case .booksYoungAdultSportsandRecreation : return "Books|Young Adult|Sports & Recreation"
+            case .booksYoungAdultTransportation : return "Books|Young Adult|Transportation"
+            case .booksMilitaryandWarfare : return "Books|Military & Warfare"
+            case .booksRomanceInspirational : return "Books|Romance|Inspirational"
+            case .booksRomanceHoliday : return "Books|Romance|Holiday"
+            case .booksRomanceWholesome : return "Books|Romance|Wholesome"
+            case .booksRomanceMilitary : return "Books|Romance|Military"
+            case .booksArtsandEntertainmentArtHistory : return "Books|Arts & Entertainment|Art History"
+            case .booksArtsandEntertainmentDesign : return "Books|Arts & Entertainment|Design"
+            case .booksBusinessandPersonalFinanceAccounting : return "Books|Business & Personal Finance|Accounting"
+            case .booksBusinessandPersonalFinanceHospitality : return "Books|Business & Personal Finance|Hospitality"
+            case .booksBusinessandPersonalFinanceRealEstate : return "Books|Business & Personal Finance|Real Estate"
+            case .booksHumorJokesandRiddles : return "Books|Humor|Jokes & Riddles"
+            case .booksReligionandSpiritualityComparativeReligion : return "Books|Religion & Spirituality|Comparative Religion"
+            case .booksCookbooksFoodandWineCulinaryArts: return "Books|Cookbooks, Food & Wine|Culinary Arts"
+            case .booksMysteriesandThrillersCozy : return "Books|Mysteries & Thrillers|Cozy"
+            case .booksPoliticsandCurrentEventsCurrentEvents : return "Books|Politics & Current Events|Current Events"
+            case .booksPoliticsandCurrentEventsForeignPolicyandInternationalRelations : return "Books|Politics & Current Events|Foreign Policy & International Relations"
+            case .booksPoliticsandCurrentEventsLocalGovernment : return "Books|Politics & Current Events|Local Government"
+            case .booksPoliticsandCurrentEventsNationalGovernment : return "Books|Politics & Current Events|National Government"
+            case .booksPoliticsandCurrentEventsPoliticalScience : return "Books|Politics & Current Events|Political Science"
+            case .booksPoliticsandCurrentEventsPublicAdministration : return "Books|Politics & Current Events|Public Administration"
+            case .booksPoliticsandCurrentEventsWorldAffairs : return "Books|Politics & Current Events|World Affairs"
+            case .booksNonfictionFamilyandRelationshipsFamilyandChildcare : return "Books|Nonfiction|Family & Relationships|Family & Childcare"
+            case .booksNonfictionFamilyandRelationshipsLoveandRomance : return "Books|Nonfiction|Family & Relationships|Love & Romance"
+            case .booksSciFiandFantasyFantasyUrban : return "Books|Sci-Fi & Fantasy|Fantasy|Urban"
+            case .booksReferenceForeignLanguagesArabic : return "Books|Reference|Foreign Languages|Arabic"
+            case .booksReferenceForeignLanguagesBilingualEditions : return "Books|Reference|Foreign Languages|Bilingual Editions"
+            case .booksReferenceForeignLanguagesAfricanLanguages : return "Books|Reference|Foreign Languages|African Languages"
+            case .booksReferenceForeignLanguagesAncientLanguages : return "Books|Reference|Foreign Languages|Ancient Languages"
+            case .booksReferenceForeignLanguagesChinese : return "Books|Reference|Foreign Languages|Chinese"
+            case .booksReferenceForeignLanguagesEnglish : return "Books|Reference|Foreign Languages|English"
+            case .booksReferenceForeignLanguagesFrench : return "Books|Reference|Foreign Languages|French"
+            case .booksReferenceForeignLanguagesGerman : return "Books|Reference|Foreign Languages|German"
+            case .booksReferenceForeignLanguagesHebrew : return "Books|Reference|Foreign Languages|Hebrew"
+            case .booksReferenceForeignLanguagesHindi : return "Books|Reference|Foreign Languages|Hindi"
+            case .booksReferenceForeignLanguagesItalian : return "Books|Reference|Foreign Languages|Italian"
+            case .booksReferenceForeignLanguagesJapanese : return "Books|Reference|Foreign Languages|Japanese"
+            case .booksReferenceForeignLanguagesKorean : return "Books|Reference|Foreign Languages|Korean"
+            case .booksReferenceForeignLanguagesLinguistics : return "Books|Reference|Foreign Languages|Linguistics"
+            case .booksReferenceForeignLanguagesOtherLanguages : return "Books|Reference|Foreign Languages|Other Languages"
+            case .booksReferenceForeignLanguagesPortuguese : return "Books|Reference|Foreign Languages|Portuguese"
+            case .booksReferenceForeignLanguagesRussian : return "Books|Reference|Foreign Languages|Russian"
+            case .booksReferenceForeignLanguagesSpanish : return "Books|Reference|Foreign Languages|Spanish"
+            case .booksReferenceForeignLanguagesSpeechPathology : return "Books|Reference|Foreign Languages|Speech Pathology"
+            case .booksScienceandNatureMathematicsAdvancedMathematics : return "Books|Science & Nature|Mathematics|Advanced Mathematics"
+            case .booksScienceandNatureMathematicsAlgebra : return "Books|Science & Nature|Mathematics|Algebra"
+            case .booksScienceandNatureMathematicsArithmetic : return "Books|Science & Nature|Mathematics|Arithmetic"
+            case .booksScienceandNatureMathematicsCalculus : return "Books|Science & Nature|Mathematics|Calculus"
+            case .booksScienceandNatureMathematicsGeometry : return "Books|Science & Nature|Mathematics|Geometry"
+            case .booksScienceandNatureMathematicsStatistics : return "Books|Science & Nature|Mathematics|Statistics"
+            case .booksProfessionalandTechnicalMedicalVeterinary : return "Books|Professional & Technical|Medical|Veterinary"
+            case .booksProfessionalandTechnicalMedicalNeuroscience : return "Books|Professional & Technical|Medical|Neuroscience"
+            case .booksProfessionalandTechnicalMedicalImmunology : return "Books|Professional & Technical|Medical|Immunology"
+            case .booksProfessionalandTechnicalMedicalNursing : return "Books|Professional & Technical|Medical|Nursing"
+            case .booksProfessionalandTechnicalMedicalPharmacologyandToxicology : return "Books|Professional & Technical|Medical|Pharmacology & Toxicology"
+            case .booksProfessionalandTechnicalMedicalAnatomyandPhysiology : return "Books|Professional & Technical|Medical|Anatomy & Physiology"
+            case .booksProfessionalandTechnicalMedicalDentistry : return "Books|Professional & Technical|Medical|Dentistry"
+            case .booksProfessionalandTechnicalMedicalEmergencyMedicine : return "Books|Professional & Technical|Medical|Emergency Medicine"
+            case .booksProfessionalandTechnicalMedicalGenetics : return "Books|Professional & Technical|Medical|Genetics"
+            case .booksProfessionalandTechnicalMedicalPsychiatry : return "Books|Professional & Technical|Medical|Psychiatry"
+            case .booksProfessionalandTechnicalMedicalRadiology : return "Books|Professional & Technical|Medical|Radiology"
+            case .booksProfessionalandTechnicalMedicalAlternativeMedicine : return "Books|Professional & Technical|Medical|Alternative Medicine"
+            case .booksNonfictionPhilosophyPoliticalPhilosophy : return "Books|Nonfiction|Philosophy|Political Philosophy"
+            case .booksNonfictionPhilosophyPhilosophyofLanguage : return "Books|Nonfiction|Philosophy|Philosophy of Language"
+            case .booksNonfictionPhilosophyPhilosophyofReligion : return "Books|Nonfiction|Philosophy|Philosophy of Religion"
+            case .booksNonfictionSocialScienceSociology : return "Books|Nonfiction|Social Science|Sociology"
+            case .booksProfessionalandTechnicalEngineeringAeronautics : return "Books|Professional & Technical|Engineering|Aeronautics"
+            case .booksProfessionalandTechnicalEngineeringChemicalandPetroleumEngineering : return "Books|Professional & Technical|Engineering|Chemical & Petroleum Engineering"
+            case .booksProfessionalandTechnicalEngineeringCivilEngineering : return "Books|Professional & Technical|Engineering|Civil Engineering"
+            case .booksProfessionalandTechnicalEngineeringComputerScience : return "Books|Professional & Technical|Engineering|Computer Science"
+            case .booksProfessionalandTechnicalEngineeringElectricalEngineering : return "Books|Professional & Technical|Engineering|Electrical Engineering"
+            case .booksProfessionalandTechnicalEngineeringEnvironmentalEngineering : return "Books|Professional & Technical|Engineering|Environmental Engineering"
+            case .booksProfessionalandTechnicalEngineeringMechanicalEngineering : return "Books|Professional & Technical|Engineering|Mechanical Engineering"
+            case .booksProfessionalandTechnicalEngineeringPowerResources : return "Books|Professional & Technical|Engineering|Power Resources"
+            case .booksComicsandGraphicNovelsMangaBoys : return "Books|Comics & Graphic Novels|Manga|Boys"
+            case .booksComicsandGraphicNovelsMangaMen : return "Books|Comics & Graphic Novels|Manga|Men"
+            case .booksComicsandGraphicNovelsMangaGirls : return "Books|Comics & Graphic Novels|Manga|Girls"
+            case .booksComicsandGraphicNovelsMangaWomen : return "Books|Comics & Graphic Novels|Manga|Women"
+            case .booksComicsandGraphicNovelsMangaOther : return "Books|Comics & Graphic Novels|Manga|Other"
+            case .booksComicsandGraphicNovelsMangaYaoi : return "Books|Comics & Graphic Novels|Manga|Yaoi"
+            case .booksComicsandGraphicNovelsMangaComicEssays : return "Books|Comics & Graphic Novels|Manga|Comic Essays"
+            case .macAppStoreBusiness : return "Mac App Store|Business"
+            case .macAppStoreDeveloperTools : return "Mac App Store|Developer Tools"
+            case .macAppStoreEducation : return "Mac App Store|Education"
+            case .macAppStoreEntertainment : return "Mac App Store|Entertainment"
+            case .macAppStoreFinance : return "Mac App Store|Finance"
+            case .macAppStoreGames : return "Mac App Store|Games"
+            case .macAppStoreHealthandFitness : return "Mac App Store|Health & Fitness"
+            case .macAppStoreLifestyle : return "Mac App Store|Lifestyle"
+            case .macAppStoreMedical : return "Mac App Store|Medical"
+            case .macAppStoreMusic : return "Mac App Store|Music"
+            case .macAppStoreNews : return "Mac App Store|News"
+            case .macAppStorePhotography : return "Mac App Store|Photography"
+            case .macAppStoreProductivity : return "Mac App Store|Productivity"
+            case .macAppStoreReference : return "Mac App Store|Reference"
+            case .macAppStoreSocialNetworking : return "Mac App Store|Social Networking"
+            case .macAppStoreSports : return "Mac App Store|Sports"
+            case .macAppStoreTravel : return "Mac App Store|Travel"
+            case .macAppStoreUtilities : return "Mac App Store|Utilities"
+            case .macAppStoreVideo : return "Mac App Store|Video"
+            case .macAppStoreWeather : return "Mac App Store|Weather"
+            case .macAppStoreGraphicsandDesign : return "Mac App Store|Graphics & Design"
+            case .macAppStoreGamesAction : return "Mac App Store|Games|Action"
+            case .macAppStoreGamesAdventure : return "Mac App Store|Games|Adventure"
+            case .macAppStoreGamesCasual : return "Mac App Store|Games|Casual"
+            case .macAppStoreGamesBoard : return "Mac App Store|Games|Board"
+            case .macAppStoreGamesCard : return "Mac App Store|Games|Card"
+            case .macAppStoreGamesCasino : return "Mac App Store|Games|Casino"
+            case .macAppStoreGamesDice : return "Mac App Store|Games|Dice"
+            case .macAppStoreGamesEducational : return "Mac App Store|Games|Educational"
+            case .macAppStoreGamesFamily : return "Mac App Store|Games|Family"
+            case .macAppStoreGamesKids : return "Mac App Store|Games|Kids"
+            case .macAppStoreGamesMusic : return "Mac App Store|Games|Music"
+            case .macAppStoreGamesPuzzle : return "Mac App Store|Games|Puzzle"
+            case .macAppStoreGamesRacing : return "Mac App Store|Games|Racing"
+            case .macAppStoreGamesRolePlaying : return "Mac App Store|Games|Role Playing"
+            case .macAppStoreGamesSimulation : return "Mac App Store|Games|Simulation"
+            case .macAppStoreGamesSports : return "Mac App Store|Games|Sports"
+            case .macAppStoreGamesStrategy : return "Mac App Store|Games|Strategy"
+            case .macAppStoreGamesTrivia : return "Mac App Store|Games|Trivia"
+            case .macAppStoreGamesWord : return "Mac App Store|Games|Word"
+            case .appStoreMagazinesandNewspapersNewsandPolitics : return "App Store|Magazines & Newspapers|News & Politics"
+            case .appStoreMagazinesandNewspapersFashionandStyle : return "App Store|Magazines & Newspapers|Fashion & Style"
+            case .appStoreMagazinesandNewspapersHomeandGarden : return "App Store|Magazines & Newspapers|Home & Garden"
+            case .appStoreMagazinesandNewspapersOutdoorsandNature : return "App Store|Magazines & Newspapers|Outdoors & Nature"
+            case .appStoreMagazinesandNewspapersSportsandLeisure : return "App Store|Magazines & Newspapers|Sports & Leisure"
+            case .appStoreMagazinesandNewspapersAutomotive : return "App Store|Magazines & Newspapers|Automotive"
+            case .appStoreMagazinesandNewspapersArtsandPhotography : return "App Store|Magazines & Newspapers|Arts & Photography"
+            case .appStoreMagazinesandNewspapersBridesandWeddings : return "App Store|Magazines & Newspapers|Brides & Weddings"
+            case .appStoreMagazinesandNewspapersBusinessandInvesting : return "App Store|Magazines & Newspapers|Business & Investing"
+            case .appStoreMagazinesandNewspapersChildrensMagazines : return "App Store|Magazines & Newspapers|Children's Magazines"
+            case .appStoreMagazinesandNewspapersComputersandInternet : return "App Store|Magazines & Newspapers|Computers & Internet"
+            case .appStoreMagazinesandNewspapersCookingFoodandDrink: return "App Store|Magazines & Newspapers|Cooking, Food & Drink"
+            case .appStoreMagazinesandNewspapersCraftsandHobbies : return "App Store|Magazines & Newspapers|Crafts & Hobbies"
+            case .appStoreMagazinesandNewspapersElectronicsandAudio : return "App Store|Magazines & Newspapers|Electronics & Audio"
+            case .appStoreMagazinesandNewspapersEntertainment : return "App Store|Magazines & Newspapers|Entertainment"
+            case .appStoreMagazinesandNewspapersHealthMindandBody: return "App Store|Magazines & Newspapers|Health, Mind & Body"
+            case .appStoreMagazinesandNewspapersHistory : return "App Store|Magazines & Newspapers|History"
+            case .appStoreMagazinesandNewspapersLiteraryMagazinesandJournals : return "App Store|Magazines & Newspapers|Literary Magazines & Journals"
+            case .appStoreMagazinesandNewspapersMensInterest : return "App Store|Magazines & Newspapers|Men's Interest"
+            case .appStoreMagazinesandNewspapersMoviesandMusic : return "App Store|Magazines & Newspapers|Movies & Music"
+            case .appStoreMagazinesandNewspapersParentingandFamily : return "App Store|Magazines & Newspapers|Parenting & Family"
+            case .appStoreMagazinesandNewspapersPets : return "App Store|Magazines & Newspapers|Pets"
+            case .appStoreMagazinesandNewspapersProfessionalandTrade : return "App Store|Magazines & Newspapers|Professional & Trade"
+            case .appStoreMagazinesandNewspapersRegionalNews : return "App Store|Magazines & Newspapers|Regional News"
+            case .appStoreMagazinesandNewspapersScience : return "App Store|Magazines & Newspapers|Science"
+            case .appStoreMagazinesandNewspapersTeens : return "App Store|Magazines & Newspapers|Teens"
+            case .appStoreMagazinesandNewspapersTravelandRegional : return "App Store|Magazines & Newspapers|Travel & Regional"
+            case .appStoreMagazinesandNewspapersWomensInterest : return "App Store|Magazines & Newspapers|Women's Interest"
+            case .textbooksArtsandEntertainment : return "Textbooks|Arts & Entertainment"
+            case .textbooksArtsandEntertainmentArtandArchitecture : return "Textbooks|Arts & Entertainment|Art & Architecture"
+            case .textbooksArtsandEntertainmentArtandArchitectureUrbanPlanning : return "Textbooks|Arts & Entertainment|Art & Architecture|Urban Planning"
+            case .textbooksArtsandEntertainmentArtHistory : return "Textbooks|Arts & Entertainment|Art History"
+            case .textbooksArtsandEntertainmentDance : return "Textbooks|Arts & Entertainment|Dance"
+            case .textbooksArtsandEntertainmentDesign : return "Textbooks|Arts & Entertainment|Design"
+            case .textbooksArtsandEntertainmentFashion : return "Textbooks|Arts & Entertainment|Fashion"
+            case .textbooksArtsandEntertainmentFilm : return "Textbooks|Arts & Entertainment|Film"
+            case .textbooksArtsandEntertainmentGames : return "Textbooks|Arts & Entertainment|Games"
+            case .textbooksArtsandEntertainmentInteriorDesign : return "Textbooks|Arts & Entertainment|Interior Design"
+            case .textbooksArtsandEntertainmentMediaArts : return "Textbooks|Arts & Entertainment|Media Arts"
+            case .textbooksArtsandEntertainmentMusic : return "Textbooks|Arts & Entertainment|Music"
+            case .textbooksArtsandEntertainmentPerformingArts : return "Textbooks|Arts & Entertainment|Performing Arts"
+            case .textbooksArtsandEntertainmentPhotography : return "Textbooks|Arts & Entertainment|Photography"
+            case .textbooksArtsandEntertainmentTheater : return "Textbooks|Arts & Entertainment|Theater"
+            case .textbooksArtsandEntertainmentTV : return "Textbooks|Arts & Entertainment|TV"
+            case .textbooksArtsandEntertainmentVisualArts : return "Textbooks|Arts & Entertainment|Visual Arts"
+            case .textbooksBiographiesandMemoirs : return "Textbooks|Biographies & Memoirs"
+            case .textbooksBusinessandPersonalFinance : return "Textbooks|Business & Personal Finance"
+            case .textbooksBusinessandPersonalFinanceAccounting : return "Textbooks|Business & Personal Finance|Accounting"
+            case .textbooksBusinessandPersonalFinanceCareers : return "Textbooks|Business & Personal Finance|Careers"
+            case .textbooksBusinessandPersonalFinanceEconomics : return "Textbooks|Business & Personal Finance|Economics"
+            case .textbooksBusinessandPersonalFinanceFinance : return "Textbooks|Business & Personal Finance|Finance"
+            case .textbooksBusinessandPersonalFinanceHospitality : return "Textbooks|Business & Personal Finance|Hospitality"
+            case .textbooksBusinessandPersonalFinanceIndustriesandProfessions : return "Textbooks|Business & Personal Finance|Industries & Professions"
+            case .textbooksBusinessandPersonalFinanceInvesting : return "Textbooks|Business & Personal Finance|Investing"
+            case .textbooksBusinessandPersonalFinanceManagementandLeadership : return "Textbooks|Business & Personal Finance|Management & Leadership"
+            case .textbooksBusinessandPersonalFinanceMarketingandSales : return "Textbooks|Business & Personal Finance|Marketing & Sales"
+            case .textbooksBusinessandPersonalFinancePersonalFinance : return "Textbooks|Business & Personal Finance|Personal Finance"
+            case .textbooksBusinessandPersonalFinanceRealEstate : return "Textbooks|Business & Personal Finance|Real Estate"
+            case .textbooksBusinessandPersonalFinanceReference : return "Textbooks|Business & Personal Finance|Reference"
+            case .textbooksBusinessandPersonalFinanceSmallBusinessandEntrepreneurship : return "Textbooks|Business & Personal Finance|Small Business & Entrepreneurship"
+            case .textbooksChildrenandTeens : return "Textbooks|Children & Teens"
+            case .textbooksChildrenandTeensFiction : return "Textbooks|Children & Teens|Fiction"
+            case .textbooksChildrenandTeensNonfiction : return "Textbooks|Children & Teens|Nonfiction"
+            case .textbooksComicsandGraphicNovels : return "Textbooks|Comics & Graphic Novels"
+            case .textbooksComicsandGraphicNovelsGraphicNovels : return "Textbooks|Comics & Graphic Novels|Graphic Novels"
+            case .textbooksComicsandGraphicNovelsManga : return "Textbooks|Comics & Graphic Novels|Manga"
+            case .textbooksCommunicationsandMedia : return "Textbooks|Communications & Media"
+            case .textbooksCommunicationsandMediaBroadcasting : return "Textbooks|Communications & Media|Broadcasting"
+            case .textbooksCommunicationsandMediaDigitalMedia : return "Textbooks|Communications & Media|Digital Media"
+            case .textbooksCommunicationsandMediaJournalism : return "Textbooks|Communications & Media|Journalism"
+            case .textbooksCommunicationsandMediaPhotojournalism : return "Textbooks|Communications & Media|Photojournalism"
+            case .textbooksCommunicationsandMediaPrint : return "Textbooks|Communications & Media|Print"
+            case .textbooksCommunicationsandMediaSpeech : return "Textbooks|Communications & Media|Speech"
+            case .textbooksCommunicationsandMediaWriting : return "Textbooks|Communications & Media|Writing"
+            case .textbooksComputersandInternet : return "Textbooks|Computers & Internet"
+            case .textbooksComputersandInternetComputers : return "Textbooks|Computers & Internet|Computers"
+            case .textbooksComputersandInternetDatabases : return "Textbooks|Computers & Internet|Databases"
+            case .textbooksComputersandInternetDigitalMedia : return "Textbooks|Computers & Internet|Digital Media"
+            case .textbooksComputersandInternetInternet : return "Textbooks|Computers & Internet|Internet"
+            case .textbooksComputersandInternetNetwork : return "Textbooks|Computers & Internet|Network"
+            case .textbooksComputersandInternetOperatingSystems : return "Textbooks|Computers & Internet|Operating Systems"
+            case .textbooksComputersandInternetProgramming : return "Textbooks|Computers & Internet|Programming"
+            case .textbooksComputersandInternetSoftware : return "Textbooks|Computers & Internet|Software"
+            case .textbooksComputersandInternetSystemAdministration : return "Textbooks|Computers & Internet|System Administration"
+            case .textbooksCookbooksFoodandWine: return "Textbooks|Cookbooks, Food & Wine"
+            case .textbooksCookbooksFoodandWineBeverages: return "Textbooks|Cookbooks, Food & Wine|Beverages"
+            case .textbooksCookbooksFoodandWineCoursesandDishes: return "Textbooks|Cookbooks, Food & Wine|Courses & Dishes"
+            case .textbooksCookbooksFoodandWineCulinaryArts: return "Textbooks|Cookbooks, Food & Wine|Culinary Arts"
+            case .textbooksCookbooksFoodandWineMethods: return "Textbooks|Cookbooks, Food & Wine|Methods"
+            case .textbooksCookbooksFoodandWineReference: return "Textbooks|Cookbooks, Food & Wine|Reference"
+            case .textbooksCookbooksFoodandWineRegionalandEthnic: return "Textbooks|Cookbooks, Food & Wine|Regional & Ethnic"
+            case .textbooksCookbooksFoodandWineSpecialDiet: return "Textbooks|Cookbooks, Food & Wine|Special Diet"
+            case .textbooksCookbooksFoodandWineSpecialOccasions: return "Textbooks|Cookbooks, Food & Wine|Special Occasions"
+            case .textbooksCookbooksFoodandWineSpecificIngredients: return "Textbooks|Cookbooks, Food & Wine|Specific Ingredients"
+            case .textbooksEngineering : return "Textbooks|Engineering"
+            case .textbooksEngineeringAeronautics : return "Textbooks|Engineering|Aeronautics"
+            case .textbooksEngineeringChemicalandPetroleumEngineering : return "Textbooks|Engineering|Chemical & Petroleum Engineering"
+            case .textbooksEngineeringCivilEngineering : return "Textbooks|Engineering|Civil Engineering"
+            case .textbooksEngineeringComputerScience : return "Textbooks|Engineering|Computer Science"
+            case .textbooksEngineeringElectricalEngineering : return "Textbooks|Engineering|Electrical Engineering"
+            case .textbooksEngineeringEnvironmentalEngineering : return "Textbooks|Engineering|Environmental Engineering"
+            case .textbooksEngineeringMechanicalEngineering : return "Textbooks|Engineering|Mechanical Engineering"
+            case .textbooksEngineeringPowerResources : return "Textbooks|Engineering|Power Resources"
+            case .textbooksFictionandLiterature : return "Textbooks|Fiction & Literature"
+            case .textbooksFictionandLiteratureLatino : return "Textbooks|Fiction & Literature|Latino"
+            case .textbooksFictionandLiteratureActionandAdventure : return "Textbooks|Fiction & Literature|Action & Adventure"
+            case .textbooksFictionandLiteratureAfricanAmerican : return "Textbooks|Fiction & Literature|African American"
+            case .textbooksFictionandLiteratureAnthologies : return "Textbooks|Fiction & Literature|Anthologies"
+            case .textbooksFictionandLiteratureClassics : return "Textbooks|Fiction & Literature|Classics"
+            case .textbooksFictionandLiteratureComparativeLiterature : return "Textbooks|Fiction & Literature|Comparative Literature"
+            case .textbooksFictionandLiteratureErotica : return "Textbooks|Fiction & Literature|Erotica"
+            case .textbooksFictionandLiteratureGay : return "Textbooks|Fiction & Literature|Gay"
+            case .textbooksFictionandLiteratureGhost : return "Textbooks|Fiction & Literature|Ghost"
+            case .textbooksFictionandLiteratureHistorical : return "Textbooks|Fiction & Literature|Historical"
+            case .textbooksFictionandLiteratureHorror : return "Textbooks|Fiction & Literature|Horror"
+            case .textbooksFictionandLiteratureLiterary : return "Textbooks|Fiction & Literature|Literary"
+            case .textbooksFictionandLiteratureLiteraryCriticism : return "Textbooks|Fiction & Literature|Literary Criticism"
+            case .textbooksFictionandLiteraturePoetry : return "Textbooks|Fiction & Literature|Poetry"
+            case .textbooksFictionandLiteratureReligious : return "Textbooks|Fiction & Literature|Religious"
+            case .textbooksFictionandLiteratureShortStories : return "Textbooks|Fiction & Literature|Short Stories"
+            case .textbooksHealthMindandBody: return "Textbooks|Health, Mind & Body"
+            case .textbooksHealthMindandBodyFitness: return "Textbooks|Health, Mind & Body|Fitness"
+            case .textbooksHealthMindandBodySelfImprovement: return "Textbooks|Health, Mind & Body|Self-Improvement"
+            case .textbooksHistory : return "Textbooks|History"
+            case .textbooksHistoryAfrica : return "Textbooks|History|Africa"
+            case .textbooksHistoryAmericas : return "Textbooks|History|Americas"
+            case .textbooksHistoryAmericasCanada : return "Textbooks|History|Americas|Canada"
+            case .textbooksHistoryAmericasLatinAmerica : return "Textbooks|History|Americas|Latin America"
+            case .textbooksHistoryAmericasUnitedStates : return "Textbooks|History|Americas|United States"
+            case .textbooksHistoryAncient : return "Textbooks|History|Ancient"
+            case .textbooksHistoryAsia : return "Textbooks|History|Asia"
+            case .textbooksHistoryAustraliaandOceania : return "Textbooks|History|Australia & Oceania"
+            case .textbooksHistoryEurope : return "Textbooks|History|Europe"
+            case .textbooksHistoryMiddleEast : return "Textbooks|History|Middle East"
+            case .textbooksHistoryMilitary : return "Textbooks|History|Military"
+            case .textbooksHistoryWorld : return "Textbooks|History|World"
+            case .textbooksHumor : return "Textbooks|Humor"
+            case .textbooksLanguageStudies : return "Textbooks|Language Studies"
+            case .textbooksLanguageStudiesAfricanLanguages : return "Textbooks|Language Studies|African Languages"
+            case .textbooksLanguageStudiesAncientLanguages : return "Textbooks|Language Studies|Ancient Languages"
+            case .textbooksLanguageStudiesArabic : return "Textbooks|Language Studies|Arabic"
+            case .textbooksLanguageStudiesBilingualEditions : return "Textbooks|Language Studies|Bilingual Editions"
+            case .textbooksLanguageStudiesChinese : return "Textbooks|Language Studies|Chinese"
+            case .textbooksLanguageStudiesEnglish : return "Textbooks|Language Studies|English"
+            case .textbooksLanguageStudiesFrench : return "Textbooks|Language Studies|French"
+            case .textbooksLanguageStudiesGerman : return "Textbooks|Language Studies|German"
+            case .textbooksLanguageStudiesHebrew : return "Textbooks|Language Studies|Hebrew"
+            case .textbooksLanguageStudiesHindi : return "Textbooks|Language Studies|Hindi"
+            case .textbooksLanguageStudiesIndigenousLanguages : return "Textbooks|Language Studies|Indigenous Languages"
+            case .textbooksLanguageStudiesItalian : return "Textbooks|Language Studies|Italian"
+            case .textbooksLanguageStudiesJapanese : return "Textbooks|Language Studies|Japanese"
+            case .textbooksLanguageStudiesKorean : return "Textbooks|Language Studies|Korean"
+            case .textbooksLanguageStudiesLinguistics : return "Textbooks|Language Studies|Linguistics"
+            case .textbooksLanguageStudiesOtherLanguage : return "Textbooks|Language Studies|Other Language"
+            case .textbooksLanguageStudiesPortuguese : return "Textbooks|Language Studies|Portuguese"
+            case .textbooksLanguageStudiesRussian : return "Textbooks|Language Studies|Russian"
+            case .textbooksLanguageStudiesSpanish : return "Textbooks|Language Studies|Spanish"
+            case .textbooksLanguageStudiesSpeechPathology : return "Textbooks|Language Studies|Speech Pathology"
+            case .textbooksLifestyleandHome : return "Textbooks|Lifestyle & Home"
+            case .textbooksLifestyleandHomeAntiquesandCollectibles : return "Textbooks|Lifestyle & Home|Antiques & Collectibles"
+            case .textbooksLifestyleandHomeCraftsandHobbies : return "Textbooks|Lifestyle & Home|Crafts & Hobbies"
+            case .textbooksLifestyleandHomeGardening : return "Textbooks|Lifestyle & Home|Gardening"
+            case .textbooksLifestyleandHomePets : return "Textbooks|Lifestyle & Home|Pets"
+            case .textbooksMathematics : return "Textbooks|Mathematics"
+            case .textbooksMathematicsAdvancedMathematics : return "Textbooks|Mathematics|Advanced Mathematics"
+            case .textbooksMathematicsAlgebra : return "Textbooks|Mathematics|Algebra"
+            case .textbooksMathematicsArithmetic : return "Textbooks|Mathematics|Arithmetic"
+            case .textbooksMathematicsCalculus : return "Textbooks|Mathematics|Calculus"
+            case .textbooksMathematicsGeometry : return "Textbooks|Mathematics|Geometry"
+            case .textbooksMathematicsStatistics : return "Textbooks|Mathematics|Statistics"
+            case .textbooksMedicine : return "Textbooks|Medicine"
+            case .textbooksMedicineAnatomyandPhysiology : return "Textbooks|Medicine|Anatomy & Physiology"
+            case .textbooksMedicineDentistry : return "Textbooks|Medicine|Dentistry"
+            case .textbooksMedicineEmergencyMedicine : return "Textbooks|Medicine|Emergency Medicine"
+            case .textbooksMedicineGenetics : return "Textbooks|Medicine|Genetics"
+            case .textbooksMedicineImmunology : return "Textbooks|Medicine|Immunology"
+            case .textbooksMedicineNeuroscience : return "Textbooks|Medicine|Neuroscience"
+            case .textbooksMedicineNursing : return "Textbooks|Medicine|Nursing"
+            case .textbooksMedicinePharmacologyandToxicology : return "Textbooks|Medicine|Pharmacology & Toxicology"
+            case .textbooksMedicinePsychiatry : return "Textbooks|Medicine|Psychiatry"
+            case .textbooksMedicinePsychology : return "Textbooks|Medicine|Psychology"
+            case .textbooksMedicineRadiology : return "Textbooks|Medicine|Radiology"
+            case .textbooksMedicineVeterinary : return "Textbooks|Medicine|Veterinary"
+            case .textbooksMysteriesandThrillers : return "Textbooks|Mysteries & Thrillers"
+            case .textbooksMysteriesandThrillersBritishDetectives : return "Textbooks|Mysteries & Thrillers|British Detectives"
+            case .textbooksMysteriesandThrillersHardBoiled : return "Textbooks|Mysteries & Thrillers|Hard-Boiled"
+            case .textbooksMysteriesandThrillersHistorical : return "Textbooks|Mysteries & Thrillers|Historical"
+            case .textbooksMysteriesandThrillersPoliceProcedural : return "Textbooks|Mysteries & Thrillers|Police Procedural"
+            case .textbooksMysteriesandThrillersShortStories : return "Textbooks|Mysteries & Thrillers|Short Stories"
+            case .textbooksMysteriesandThrillersWomenSleuths : return "Textbooks|Mysteries & Thrillers|Women Sleuths"
+            case .textbooksNonfiction : return "Textbooks|Nonfiction"
+            case .textbooksNonfictionFamilyandRelationships : return "Textbooks|Nonfiction|Family & Relationships"
+            case .textbooksNonfictionTransportation : return "Textbooks|Nonfiction|Transportation"
+            case .textbooksNonfictionTrueCrime : return "Textbooks|Nonfiction|True Crime"
+            case .textbooksParenting : return "Textbooks|Parenting"
+            case .textbooksPhilosophy : return "Textbooks|Philosophy"
+            case .textbooksPhilosophyAesthetics : return "Textbooks|Philosophy|Aesthetics"
+            case .textbooksPhilosophyEpistemology : return "Textbooks|Philosophy|Epistemology"
+            case .textbooksPhilosophyEthics : return "Textbooks|Philosophy|Ethics"
+            case .textbooksPhilosophyPhilosophyofLanguage : return "Textbooks|Philosophy|Philosophy of Language"
+            case .textbooksPhilosophyLogic : return "Textbooks|Philosophy|Logic"
+            case .textbooksPhilosophyMetaphysics : return "Textbooks|Philosophy|Metaphysics"
+            case .textbooksPhilosophyPoliticalPhilosophy : return "Textbooks|Philosophy|Political Philosophy"
+            case .textbooksPhilosophyPhilosophyofReligion : return "Textbooks|Philosophy|Philosophy of Religion"
+            case .textbooksPoliticsandCurrentEvents : return "Textbooks|Politics & Current Events"
+            case .textbooksPoliticsandCurrentEventsCurrentEvents : return "Textbooks|Politics & Current Events|Current Events"
+            case .textbooksPoliticsandCurrentEventsForeignPolicyandInternationalRelations : return "Textbooks|Politics & Current Events|Foreign Policy & International Relations"
+            case .textbooksPoliticsandCurrentEventsLocalGovernments : return "Textbooks|Politics & Current Events|Local Governments"
+            case .textbooksPoliticsandCurrentEventsNationalGovernments : return "Textbooks|Politics & Current Events|National Governments"
+            case .textbooksPoliticsandCurrentEventsPoliticalScience : return "Textbooks|Politics & Current Events|Political Science"
+            case .textbooksPoliticsandCurrentEventsPublicAdministration : return "Textbooks|Politics & Current Events|Public Administration"
+            case .textbooksPoliticsandCurrentEventsWorldAffairs : return "Textbooks|Politics & Current Events|World Affairs"
+            case .textbooksProfessionalandTechnical : return "Textbooks|Professional & Technical"
+            case .textbooksProfessionalandTechnicalDesign : return "Textbooks|Professional & Technical|Design"
+            case .textbooksProfessionalandTechnicalLanguageArtsandDisciplines : return "Textbooks|Professional & Technical|Language Arts & Disciplines"
+            case .textbooksProfessionalandTechnicalEngineering : return "Textbooks|Professional & Technical|Engineering"
+            case .textbooksProfessionalandTechnicalLaw : return "Textbooks|Professional & Technical|Law"
+            case .textbooksProfessionalandTechnicalMedical : return "Textbooks|Professional & Technical|Medical"
+            case .textbooksReference : return "Textbooks|Reference"
+            case .textbooksReferenceAlmanacsandYearbooks : return "Textbooks|Reference|Almanacs & Yearbooks"
+            case .textbooksReferenceAtlasesandMaps : return "Textbooks|Reference|Atlases & Maps"
+            case .textbooksReferenceCatalogsandDirectories : return "Textbooks|Reference|Catalogs & Directories"
+            case .textbooksReferenceConsumerGuides : return "Textbooks|Reference|Consumer Guides"
+            case .textbooksReferenceDictionariesandThesauruses : return "Textbooks|Reference|Dictionaries & Thesauruses"
+            case .textbooksReferenceEncyclopedias : return "Textbooks|Reference|Encyclopedias"
+            case .textbooksReferenceEtiquette : return "Textbooks|Reference|Etiquette"
+            case .textbooksReferenceQuotations : return "Textbooks|Reference|Quotations"
+            case .textbooksReferenceStudyAids : return "Textbooks|Reference|Study Aids"
+            case .textbooksReferenceWordsandLanguage : return "Textbooks|Reference|Words & Language"
+            case .textbooksReferenceWriting : return "Textbooks|Reference|Writing"
+            case .textbooksReligionandSpirituality : return "Textbooks|Religion & Spirituality"
+            case .textbooksReligionandSpiritualityBibleStudies : return "Textbooks|Religion & Spirituality|Bible Studies"
+            case .textbooksReligionandSpiritualityBibles : return "Textbooks|Religion & Spirituality|Bibles"
+            case .textbooksReligionandSpiritualityBuddhism : return "Textbooks|Religion & Spirituality|Buddhism"
+            case .textbooksReligionandSpiritualityChristianity : return "Textbooks|Religion & Spirituality|Christianity"
+            case .textbooksReligionandSpiritualityComparativeReligion : return "Textbooks|Religion & Spirituality|Comparative Religion"
+            case .textbooksReligionandSpiritualityHinduism : return "Textbooks|Religion & Spirituality|Hinduism"
+            case .textbooksReligionandSpiritualityIslam : return "Textbooks|Religion & Spirituality|Islam"
+            case .textbooksReligionandSpiritualityJudaism : return "Textbooks|Religion & Spirituality|Judaism"
+            case .textbooksReligionandSpiritualitySpirituality : return "Textbooks|Religion & Spirituality|Spirituality"
+            case .textbooksRomance : return "Textbooks|Romance"
+            case .textbooksRomanceContemporary : return "Textbooks|Romance|Contemporary"
+            case .textbooksRomanceEroticRomance : return "Textbooks|Romance|Erotic Romance"
+            case .textbooksRomanceParanormal : return "Textbooks|Romance|Paranormal"
+            case .textbooksRomanceHistorical : return "Textbooks|Romance|Historical"
+            case .textbooksRomanceShortStories : return "Textbooks|Romance|Short Stories"
+            case .textbooksRomanceSuspense : return "Textbooks|Romance|Suspense"
+            case .textbooksRomanceWestern : return "Textbooks|Romance|Western"
+            case .textbooksSciFiandFantasy : return "Textbooks|Sci-Fi & Fantasy"
+            case .textbooksSciFiandFantasyFantasy : return "Textbooks|Sci-Fi & Fantasy|Fantasy"
+            case .textbooksSciFiandFantasyFantasyContemporary : return "Textbooks|Sci-Fi & Fantasy|Fantasy|Contemporary"
+            case .textbooksSciFiandFantasyFantasyEpic : return "Textbooks|Sci-Fi & Fantasy|Fantasy|Epic"
+            case .textbooksSciFiandFantasyFantasyHistorical : return "Textbooks|Sci-Fi & Fantasy|Fantasy|Historical"
+            case .textbooksSciFiandFantasyFantasyParanormal : return "Textbooks|Sci-Fi & Fantasy|Fantasy|Paranormal"
+            case .textbooksSciFiandFantasyFantasyShortStories : return "Textbooks|Sci-Fi & Fantasy|Fantasy|Short Stories"
+            case .textbooksSciFiandFantasyScienceFiction : return "Textbooks|Sci-Fi & Fantasy|Science Fiction"
+            case .textbooksSciFiandFantasyScienceFictionandLiterature : return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature"
+            case .textbooksSciFiandFantasyScienceFictionandLiteratureAdventure : return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature|Adventure"
+            case .textbooksSciFiandFantasyScienceFictionandLiteratureHighTech : return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature|High Tech"
+            case .textbooksSciFiandFantasyScienceFictionandLiteratureShortStories : return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature|Short Stories"
+            case .textbooksScienceandNature : return "Textbooks|Science & Nature"
+            case .textbooksScienceandNatureAgriculture : return "Textbooks|Science & Nature|Agriculture"
+            case .textbooksScienceandNatureAstronomy : return "Textbooks|Science & Nature|Astronomy"
+            case .textbooksScienceandNatureAtmosphere : return "Textbooks|Science & Nature|Atmosphere"
+            case .textbooksScienceandNatureBiology : return "Textbooks|Science & Nature|Biology"
+            case .textbooksScienceandNatureChemistry : return "Textbooks|Science & Nature|Chemistry"
+            case .textbooksScienceandNatureEarthSciences : return "Textbooks|Science & Nature|Earth Sciences"
+            case .textbooksScienceandNatureEcology : return "Textbooks|Science & Nature|Ecology"
+            case .textbooksScienceandNatureEnvironment : return "Textbooks|Science & Nature|Environment"
+            case .textbooksScienceandNatureEssays : return "Textbooks|Science & Nature|Essays"
+            case .textbooksScienceandNatureGeography : return "Textbooks|Science & Nature|Geography"
+            case .textbooksScienceandNatureGeology : return "Textbooks|Science & Nature|Geology"
+            case .textbooksScienceandNatureHistory : return "Textbooks|Science & Nature|History"
+            case .textbooksScienceandNatureLifeSciences : return "Textbooks|Science & Nature|Life Sciences"
+            case .textbooksScienceandNatureNature : return "Textbooks|Science & Nature|Nature"
+            case .textbooksScienceandNaturePhysics : return "Textbooks|Science & Nature|Physics"
+            case .textbooksScienceandNatureReference : return "Textbooks|Science & Nature|Reference"
+            case .textbooksSocialScience : return "Textbooks|Social Science"
+            case .textbooksSocialScienceAnthropology : return "Textbooks|Social Science|Anthropology"
+            case .textbooksSocialScienceArchaeology : return "Textbooks|Social Science|Archaeology"
+            case .textbooksSocialScienceCivics : return "Textbooks|Social Science|Civics"
+            case .textbooksSocialScienceGovernment : return "Textbooks|Social Science|Government"
+            case .textbooksSocialScienceSocialStudies : return "Textbooks|Social Science|Social Studies"
+            case .textbooksSocialScienceSocialWelfare : return "Textbooks|Social Science|Social Welfare"
+            case .textbooksSocialScienceSociety : return "Textbooks|Social Science|Society"
+            case .textbooksSocialScienceSocietyAfricanStudies : return "Textbooks|Social Science|Society|African Studies"
+            case .textbooksSocialScienceSocietyAmericanStudies : return "Textbooks|Social Science|Society|American Studies"
+            case .textbooksSocialScienceSocietyAsiaPacificStudies : return "Textbooks|Social Science|Society|Asia Pacific Studies"
+            case .textbooksSocialScienceSocietyCrossCulturalStudies : return "Textbooks|Social Science|Society|Cross-Cultural Studies"
+            case .textbooksSocialScienceSocietyEuropeanStudies : return "Textbooks|Social Science|Society|European Studies"
+            case .textbooksSocialScienceSocietyImmigrationandEmigration : return "Textbooks|Social Science|Society|Immigration & Emigration"
+            case .textbooksSocialScienceSocietyIndigenousStudies : return "Textbooks|Social Science|Society|Indigenous Studies"
+            case .textbooksSocialScienceSocietyLatinandCaribbeanStudies : return "Textbooks|Social Science|Society|Latin & Caribbean Studies"
+            case .textbooksSocialScienceSocietyMiddleEasternStudies : return "Textbooks|Social Science|Society|Middle Eastern Studies"
+            case .textbooksSocialScienceSocietyRaceandEthnicityStudies : return "Textbooks|Social Science|Society|Race & Ethnicity Studies"
+            case .textbooksSocialScienceSocietySexualityStudies : return "Textbooks|Social Science|Society|Sexuality Studies"
+            case .textbooksSocialScienceSocietyWomensStudies : return "Textbooks|Social Science|Society|Women's Studies"
+            case .textbooksSocialScienceSociology : return "Textbooks|Social Science|Sociology"
+            case .textbooksSportsandOutdoors : return "Textbooks|Sports & Outdoors"
+            case .textbooksSportsandOutdoorsBaseball : return "Textbooks|Sports & Outdoors|Baseball"
+            case .textbooksSportsandOutdoorsBasketball : return "Textbooks|Sports & Outdoors|Basketball"
+            case .textbooksSportsandOutdoorsCoaching : return "Textbooks|Sports & Outdoors|Coaching"
+            case .textbooksSportsandOutdoorsEquestrian : return "Textbooks|Sports & Outdoors|Equestrian"
+            case .textbooksSportsandOutdoorsExtremeSports : return "Textbooks|Sports & Outdoors|Extreme Sports"
+            case .textbooksSportsandOutdoorsFootball : return "Textbooks|Sports & Outdoors|Football"
+            case .textbooksSportsandOutdoorsGolf : return "Textbooks|Sports & Outdoors|Golf"
+            case .textbooksSportsandOutdoorsHockey : return "Textbooks|Sports & Outdoors|Hockey"
+            case .textbooksSportsandOutdoorsMotorSports : return "Textbooks|Sports & Outdoors|Motor Sports"
+            case .textbooksSportsandOutdoorsMountaineering : return "Textbooks|Sports & Outdoors|Mountaineering"
+            case .textbooksSportsandOutdoorsOutdoors : return "Textbooks|Sports & Outdoors|Outdoors"
+            case .textbooksSportsandOutdoorsRacketSports : return "Textbooks|Sports & Outdoors|Racket Sports"
+            case .textbooksSportsandOutdoorsReference : return "Textbooks|Sports & Outdoors|Reference"
+            case .textbooksSportsandOutdoorsSoccer : return "Textbooks|Sports & Outdoors|Soccer"
+            case .textbooksSportsandOutdoorsTraining : return "Textbooks|Sports & Outdoors|Training"
+            case .textbooksSportsandOutdoorsWaterSports : return "Textbooks|Sports & Outdoors|Water Sports"
+            case .textbooksSportsandOutdoorsWinterSports : return "Textbooks|Sports & Outdoors|Winter Sports"
+            case .textbooksTeachingandLearning : return "Textbooks|Teaching & Learning"
+            case .textbooksTeachingandLearningAdultEducation : return "Textbooks|Teaching & Learning|Adult Education"
+            case .textbooksTeachingandLearningCurriculumandTeaching : return "Textbooks|Teaching & Learning|Curriculum & Teaching"
+            case .textbooksTeachingandLearningEducationalLeadership : return "Textbooks|Teaching & Learning|Educational Leadership"
+            case .textbooksTeachingandLearningEducationalTechnology : return "Textbooks|Teaching & Learning|Educational Technology"
+            case .textbooksTeachingandLearningFamilyandChildcare : return "Textbooks|Teaching & Learning|Family & Childcare"
+            case .textbooksTeachingandLearningInformationandLibraryScience : return "Textbooks|Teaching & Learning|Information & Library Science"
+            case .textbooksTeachingandLearningLearningResources : return "Textbooks|Teaching & Learning|Learning Resources"
+            case .textbooksTeachingandLearningPsychologyandResearch : return "Textbooks|Teaching & Learning|Psychology & Research"
+            case .textbooksTeachingandLearningSpecialEducation : return "Textbooks|Teaching & Learning|Special Education"
+            case .textbooksTravelandAdventure : return "Textbooks|Travel & Adventure"
+            case .textbooksTravelandAdventureAfrica : return "Textbooks|Travel & Adventure|Africa"
+            case .textbooksTravelandAdventureAmericas : return "Textbooks|Travel & Adventure|Americas"
+            case .textbooksTravelandAdventureAmericasCanada : return "Textbooks|Travel & Adventure|Americas|Canada"
+            case .textbooksTravelandAdventureAmericasLatinAmerica : return "Textbooks|Travel & Adventure|Americas|Latin America"
+            case .textbooksTravelandAdventureAmericasUnitedStates : return "Textbooks|Travel & Adventure|Americas|United States"
+            case .textbooksTravelandAdventureAsia : return "Textbooks|Travel & Adventure|Asia"
+            case .textbooksTravelandAdventureCaribbean : return "Textbooks|Travel & Adventure|Caribbean"
+            case .textbooksTravelandAdventureEssaysandMemoirs : return "Textbooks|Travel & Adventure|Essays & Memoirs"
+            case .textbooksTravelandAdventureEurope : return "Textbooks|Travel & Adventure|Europe"
+            case .textbooksTravelandAdventureMiddleEast : return "Textbooks|Travel & Adventure|Middle East"
+            case .textbooksTravelandAdventureOceania : return "Textbooks|Travel & Adventure|Oceania"
+            case .textbooksTravelandAdventureSpecialtyTravel : return "Textbooks|Travel & Adventure|Specialty Travel"
+            case .textbooksComicsandGraphicNovelsComics : return "Textbooks|Comics & Graphic Novels|Comics"
+            case .textbooksReferenceManuals : return "Textbooks|Reference|Manuals"
+            case .appStoreStickersEmojiandExpressions : return "App Store|Stickers|Emoji & Expressions"
+            case .appStoreStickersAnimalsandNature : return "App Store|Stickers|Animals & Nature"
+            case .appStoreStickersArt : return "App Store|Stickers|Art"
+            case .appStoreStickersCelebrations : return "App Store|Stickers|Celebrations"
+            case .appStoreStickersCelebrities : return "App Store|Stickers|Celebrities"
+            case .appStoreStickersComicsandCartoons : return "App Store|Stickers|Comics & Cartoons"
+            case .appStoreStickersEatingandDrinking : return "App Store|Stickers|Eating & Drinking"
+            case .appStoreStickersGaming : return "App Store|Stickers|Gaming"
+            case .appStoreStickersMoviesandTV : return "App Store|Stickers|Movies & TV"
+            case .appStoreStickersMusic : return "App Store|Stickers|Music"
+            case .appStoreStickersPeople : return "App Store|Stickers|People"
+            case .appStoreStickersPlacesandObjects : return "App Store|Stickers|Places & Objects"
+            case .appStoreStickersSportsandActivities : return "App Store|Stickers|Sports & Activities"
+            case .appStoreStickersKidsandFamily : return "App Store|Stickers|Kids & Family"
+            case .appStoreStickersFashion : return "App Store|Stickers|Fashion"
+            case .musicClassicalArtSong : return "Music|Classical|Art Song"
+            case .musicClassicalBrassandWoodwinds : return "Music|Classical|Brass & Woodwinds"
+            case .musicClassicalSoloInstrumental : return "Music|Classical|Solo Instrumental"
+            case .musicClassicalContemporaryEra : return "Music|Classical|Contemporary Era"
+            case .musicClassicalOratorio : return "Music|Classical|Oratorio"
+            case .musicClassicalCantata : return "Music|Classical|Cantata"
+            case .musicClassicalElectronic : return "Music|Classical|Electronic"
+            case .musicClassicalSacred : return "Music|Classical|Sacred"
+            case .musicClassicalGuitar : return "Music|Classical|Guitar"
+            case .musicClassicalPiano : return "Music|Classical|Piano"
+            case .musicClassicalViolin : return "Music|Classical|Violin"
+            case .musicClassicalCello : return "Music|Classical|Cello"
+            case .musicClassicalPercussion : return "Music|Classical|Percussion"
+            case .musicElectronicDubstep : return "Music|Electronic|Dubstep"
+            case .musicElectronicBass : return "Music|Electronic|Bass"
+            case .musicHipHopRapUKHipHop : return "Music|Hip-Hop/Rap|UK Hip-Hop"
+            case .musicReggaeLoversRock : return "Music|Reggae|Lovers Rock"
+            case .musicAlternativeEMO : return "Music|Alternative|EMO"
+            case .musicAlternativePopPunk : return "Music|Alternative|Pop Punk"
+            case .musicAlternativeIndiePop : return "Music|Alternative|Indie Pop"
+            case .musicNewAgeYoga : return "Music|New Age|Yoga"
+            case .musicPopTribute : return "Music|Pop|Tribute"
+            case .musicPopShows : return "Music|Pop|Shows"
+            case .musicCuban : return "Music|Cuban"
+            case .musicCubanMambo : return "Music|Cuban|Mambo"
+            case .musicCubanChachacha : return "Music|Cuban|Chachacha"
+            case .musicCubanGuajira : return "Music|Cuban|Guajira"
+            case .musicCubanSon : return "Music|Cuban|Son"
+            case .musicCubanBolero : return "Music|Cuban|Bolero"
+            case .musicCubanGuaracha : return "Music|Cuban|Guaracha"
+            case .musicCubanTimba : return "Music|Cuban|Timba"
+            case .musicSoundtrackVideoGame : return "Music|Soundtrack|Video Game"
+            case .musicIndianRegionalIndianPunjabiPunjabiPop : return "Music|Indian|Regional Indian|Punjabi|Punjabi Pop"
+            case .musicIndianRegionalIndianBengaliRabindraSangeet : return "Music|Indian|Regional Indian|Bengali|Rabindra Sangeet"
+            case .musicIndianRegionalIndianMalayalam : return "Music|Indian|Regional Indian|Malayalam"
+            case .musicIndianRegionalIndianKannada : return "Music|Indian|Regional Indian|Kannada"
+            case .musicIndianRegionalIndianMarathi : return "Music|Indian|Regional Indian|Marathi"
+            case .musicIndianRegionalIndianGujarati : return "Music|Indian|Regional Indian|Gujarati"
+            case .musicIndianRegionalIndianAssamese : return "Music|Indian|Regional Indian|Assamese"
+            case .musicIndianRegionalIndianBhojpuri : return "Music|Indian|Regional Indian|Bhojpuri"
+            case .musicIndianRegionalIndianHaryanvi : return "Music|Indian|Regional Indian|Haryanvi"
+            case .musicIndianRegionalIndianOdia : return "Music|Indian|Regional Indian|Odia"
+            case .musicIndianRegionalIndianRajasthani : return "Music|Indian|Regional Indian|Rajasthani"
+            case .musicIndianRegionalIndianUrdu : return "Music|Indian|Regional Indian|Urdu"
+            case .musicIndianRegionalIndianPunjabi : return "Music|Indian|Regional Indian|Punjabi"
+            case .musicIndianRegionalIndianBengali : return "Music|Indian|Regional Indian|Bengali"
+            case .musicIndianIndianClassicalCarnaticClassical : return "Music|Indian|Indian Classical|Carnatic Classical"
+            case .musicIndianIndianClassicalHindustaniClassical : return "Music|Indian|Indian Classical|Hindustani Classical"
+            case .musicAfricanAfroHouse : return "Music|African|Afro House"
+            case .musicAfricanAfroSoul : return "Music|African|Afro Soul"
+            case .musicAfricanAfrobeats : return "Music|African|Afrobeats"
+            case .musicAfricanBenga : return "Music|African|Benga"
+            case .musicAfricanBongoFlava : return "Music|African|Bongo-Flava"
+            case .musicAfricanCoupeDecale : return "Music|African|Coupe-Decale"
+            case .musicAfricanGqom : return "Music|African|Gqom"
+            case .musicAfricanHighlife : return "Music|African|Highlife"
+            case .musicAfricanKuduro : return "Music|African|Kuduro"
+            case .musicAfricanKizomba : return "Music|African|Kizomba"
+            case .musicAfricanKwaito : return "Music|African|Kwaito"
+            case .musicAfricanMbalax : return "Music|African|Mbalax"
+            case .musicAfricanNdombolo : return "Music|African|Ndombolo"
+            case .musicAfricanShangaanElectro : return "Music|African|Shangaan Electro"
+            case .musicAfricanSoukous : return "Music|African|Soukous"
+            case .musicAfricanTaarab : return "Music|African|Taarab"
+            case .musicAfricanZouglou : return "Music|African|Zouglou"
+            case .musicTurkishOzgun : return "Music|Turkish|Ozgun"
+            case .musicTurkishFantezi : return "Music|Turkish|Fantezi"
+            case .musicTurkishReligious : return "Music|Turkish|Religious"
+            case .musicPopTurkishPop : return "Music|Pop|Turkish Pop"
+            case .musicRockTurkishRock : return "Music|Rock|Turkish Rock"
+            case .musicAlternativeTurkishAlternative : return "Music|Alternative|Turkish Alternative"
+            case .musicHipHopRapTurkishHipHopRap : return "Music|Hip-Hop/Rap|Turkish Hip-Hop/Rap"
+            case .musicAfricanMaskandi : return "Music|African|Maskandi"
+            case .musicRussianRussianRomance : return "Music|Russian|Russian Romance"
+            case .musicRussianRussianBard : return "Music|Russian|Russian Bard"
+            case .musicRussianRussianPop : return "Music|Russian|Russian Pop"
+            case .musicRussianRussianRock : return "Music|Russian|Russian Rock"
+            case .musicRussianRussianHipHop : return "Music|Russian|Russian Hip-Hop"
+            case .musicArabicLevant : return "Music|Arabic|Levant"
+            case .musicArabicLevantDabke : return "Music|Arabic|Levant|Dabke"
+            case .musicArabicMaghrebRai : return "Music|Arabic|Maghreb Rai"
+            case .musicArabicKhaleejiKhaleejiJalsat : return "Music|Arabic|Khaleeji|Khaleeji Jalsat"
+            case .musicArabicKhaleejiKhaleejiShailat : return "Music|Arabic|Khaleeji|Khaleeji Shailat"
+            case .musicTarab : return "Music|Tarab"
+            case .musicTarabIraqiTarab : return "Music|Tarab|Iraqi Tarab"
+            case .musicTarabEgyptianTarab : return "Music|Tarab|Egyptian Tarab"
+            case .musicTarabKhaleejiTarab : return "Music|Tarab|Khaleeji Tarab"
+            case .musicPopLevantPop : return "Music|Pop|Levant Pop"
+            case .musicPopIraqiPop : return "Music|Pop|Iraqi Pop"
+            case .musicPopEgyptianPop : return "Music|Pop|Egyptian Pop"
+            case .musicPopMaghrebPop : return "Music|Pop|Maghreb Pop"
+            case .musicPopKhaleejiPop : return "Music|Pop|Khaleeji Pop"
+            case .musicHipHopRapLevantHipHop : return "Music|Hip-Hop/Rap|Levant Hip-Hop"
+            case .musicHipHopRapEgyptianHipHop : return "Music|Hip-Hop/Rap|Egyptian Hip-Hop"
+            case .musicHipHopRapMaghrebHipHop : return "Music|Hip-Hop/Rap|Maghreb Hip-Hop"
+            case .musicHipHopRapKhaleejiHipHop : return "Music|Hip-Hop/Rap|Khaleeji Hip-Hop"
+            case .musicAlternativeIndieLevant : return "Music|Alternative|Indie Levant"
+            case .musicAlternativeIndieEgyptian : return "Music|Alternative|Indie Egyptian"
+            case .musicAlternativeIndieMaghreb : return "Music|Alternative|Indie Maghreb"
+            case .musicElectronicLevantElectronic : return "Music|Electronic|Levant Electronic"
+            case .musicElectronicElectroChaabi : return "Music|Electronic|Electro-Cha'abi"
+            case .musicElectronicMaghrebElectronic : return "Music|Electronic|Maghreb Electronic"
+            case .musicFolkIraqiFolk : return "Music|Folk|Iraqi Folk"
+            case .musicFolkKhaleejiFolk : return "Music|Folk|Khaleeji Folk"
+            case .musicDanceMaghrebDance : return "Music|Dance|Maghreb Dance"
+            case .iTunesU : return "iTunes U"
+            case .iTunesUBusinessandEconomics : return "iTunes U|Business & Economics"
+            case .iTunesUBusinessandEconomicsEconomics : return "iTunes U|Business & Economics|Economics"
+            case .iTunesUBusinessandEconomicsFinance : return "iTunes U|Business & Economics|Finance"
+            case .iTunesUBusinessandEconomicsHospitality : return "iTunes U|Business & Economics|Hospitality"
+            case .iTunesUBusinessandEconomicsManagement : return "iTunes U|Business & Economics|Management"
+            case .iTunesUBusinessandEconomicsMarketing : return "iTunes U|Business & Economics|Marketing"
+            case .iTunesUBusinessandEconomicsPersonalFinance : return "iTunes U|Business & Economics|Personal Finance"
+            case .iTunesUBusinessandEconomicsRealEstate : return "iTunes U|Business & Economics|Real Estate"
+            case .iTunesUEngineering : return "iTunes U|Engineering"
+            case .iTunesUEngineeringChemicalandPetroleumEngineering : return "iTunes U|Engineering|Chemical & Petroleum Engineering"
+            case .iTunesUEngineeringCivilEngineering : return "iTunes U|Engineering|Civil Engineering"
+            case .iTunesUEngineeringComputerScience : return "iTunes U|Engineering|Computer Science"
+            case .iTunesUEngineeringElectricalEngineering : return "iTunes U|Engineering|Electrical Engineering"
+            case .iTunesUEngineeringEnvironmentalEngineering : return "iTunes U|Engineering|Environmental Engineering"
+            case .iTunesUEngineeringMechanicalEngineering : return "iTunes U|Engineering|Mechanical Engineering"
+            case .iTunesUMusicArtandDesign : return "iTunes U|Music, Art, & Design"
+            case .iTunesUMusicArtandDesignArchitecture : return "iTunes U|Music, Art, & Design|Architecture"
+            case .iTunesUMusicArtandDesignArtHistory : return "iTunes U|Music, Art, & Design|Art History"
+            case .iTunesUMusicArtandDesignDance : return "iTunes U|Music, Art, & Design|Dance"
+            case .iTunesUMusicArtandDesignFilm : return "iTunes U|Music, Art, & Design|Film"
+            case .iTunesUMusicArtandDesignDesign : return "iTunes U|Music, Art, & Design|Design"
+            case .iTunesUMusicArtandDesignInteriorDesign : return "iTunes U|Music, Art, & Design|Interior Design"
+            case .iTunesUMusicArtandDesignMusic : return "iTunes U|Music, Art, & Design|Music"
+            case .iTunesUMusicArtandDesignTheater : return "iTunes U|Music, Art, & Design|Theater"
+            case .iTunesUHealthandMedicine : return "iTunes U|Health & Medicine"
+            case .iTunesUHealthandMedicineAnatomyandPhysiology : return "iTunes U|Health & Medicine|Anatomy & Physiology"
+            case .iTunesUHealthandMedicineBehavioralScience : return "iTunes U|Health & Medicine|Behavioral Science"
+            case .iTunesUHealthandMedicineDentistry : return "iTunes U|Health & Medicine|Dentistry"
+            case .iTunesUHealthandMedicineDietandNutrition : return "iTunes U|Health & Medicine|Diet & Nutrition"
+            case .iTunesUHealthandMedicineEmergencyMedicine : return "iTunes U|Health & Medicine|Emergency Medicine"
+            case .iTunesUHealthandMedicineGenetics : return "iTunes U|Health & Medicine|Genetics"
+            case .iTunesUHealthandMedicineGerontology : return "iTunes U|Health & Medicine|Gerontology"
+            case .iTunesUHealthandMedicineHealthandExerciseScience : return "iTunes U|Health & Medicine|Health & Exercise Science"
+            case .iTunesUHealthandMedicineImmunology : return "iTunes U|Health & Medicine|Immunology"
+            case .iTunesUHealthandMedicineNeuroscience : return "iTunes U|Health & Medicine|Neuroscience"
+            case .iTunesUHealthandMedicinePharmacologyandToxicology : return "iTunes U|Health & Medicine|Pharmacology & Toxicology"
+            case .iTunesUHealthandMedicinePsychiatry : return "iTunes U|Health & Medicine|Psychiatry"
+            case .iTunesUHealthandMedicineGlobalHealth : return "iTunes U|Health & Medicine|Global Health"
+            case .iTunesUHealthandMedicineRadiology : return "iTunes U|Health & Medicine|Radiology"
+            case .iTunesUHistory : return "iTunes U|History"
+            case .iTunesUHistoryAncientHistory : return "iTunes U|History|Ancient History"
+            case .iTunesUHistoryMedievalHistory : return "iTunes U|History|Medieval History"
+            case .iTunesUHistoryMilitaryHistory : return "iTunes U|History|Military History"
+            case .iTunesUHistoryModernHistory : return "iTunes U|History|Modern History"
+            case .iTunesUHistoryAfricanHistory : return "iTunes U|History|African History"
+            case .iTunesUHistoryAsiaPacificHistory : return "iTunes U|History|Asia-Pacific History"
+            case .iTunesUHistoryEuropeanHistory : return "iTunes U|History|European History"
+            case .iTunesUHistoryMiddleEasternHistory : return "iTunes U|History|Middle Eastern History"
+            case .iTunesUHistoryNorthAmericanHistory : return "iTunes U|History|North American History"
+            case .iTunesUHistorySouthAmericanHistory : return "iTunes U|History|South American History"
+            case .iTunesUCommunicationsandJournalism : return "iTunes U|Communications & Journalism"
+            case .iTunesUPhilosophy : return "iTunes U|Philosophy"
+            case .iTunesUReligionandSpirituality : return "iTunes U|Religion & Spirituality"
+            case .iTunesULanguages : return "iTunes U|Languages"
+            case .iTunesULanguagesAfricanLanguages : return "iTunes U|Languages|African Languages"
+            case .iTunesULanguagesAncientLanguages : return "iTunes U|Languages|Ancient Languages"
+            case .iTunesULanguagesEnglish : return "iTunes U|Languages|English"
+            case .iTunesULanguagesFrench : return "iTunes U|Languages|French"
+            case .iTunesULanguagesGerman : return "iTunes U|Languages|German"
+            case .iTunesULanguagesItalian : return "iTunes U|Languages|Italian"
+            case .iTunesULanguagesLinguistics : return "iTunes U|Languages|Linguistics"
+            case .iTunesULanguagesSpanish : return "iTunes U|Languages|Spanish"
+            case .iTunesULanguagesSpeechPathology : return "iTunes U|Languages|Speech Pathology"
+            case .iTunesUWritingandLiterature : return "iTunes U|Writing & Literature"
+            case .iTunesUWritingandLiteratureAnthologies : return "iTunes U|Writing & Literature|Anthologies"
+            case .iTunesUWritingandLiteratureBiography : return "iTunes U|Writing & Literature|Biography"
+            case .iTunesUWritingandLiteratureClassics : return "iTunes U|Writing & Literature|Classics"
+            case .iTunesUWritingandLiteratureLiteraryCriticism : return "iTunes U|Writing & Literature|Literary Criticism"
+            case .iTunesUWritingandLiteratureFiction : return "iTunes U|Writing & Literature|Fiction"
+            case .iTunesUWritingandLiteraturePoetry : return "iTunes U|Writing & Literature|Poetry"
+            case .iTunesUMathematics : return "iTunes U|Mathematics"
+            case .iTunesUMathematicsAdvancedMathematics : return "iTunes U|Mathematics|Advanced Mathematics"
+            case .iTunesUMathematicsAlgebra : return "iTunes U|Mathematics|Algebra"
+            case .iTunesUMathematicsArithmetic : return "iTunes U|Mathematics|Arithmetic"
+            case .iTunesUMathematicsCalculus : return "iTunes U|Mathematics|Calculus"
+            case .iTunesUMathematicsGeometry : return "iTunes U|Mathematics|Geometry"
+            case .iTunesUMathematicsStatistics : return "iTunes U|Mathematics|Statistics"
+            case .iTunesUScience : return "iTunes U|Science"
+            case .iTunesUScienceAgricultural : return "iTunes U|Science|Agricultural"
+            case .iTunesUScienceAstronomy : return "iTunes U|Science|Astronomy"
+            case .iTunesUScienceAtmosphere : return "iTunes U|Science|Atmosphere"
+            case .iTunesUScienceBiology : return "iTunes U|Science|Biology"
+            case .iTunesUScienceChemistry : return "iTunes U|Science|Chemistry"
+            case .iTunesUScienceEcology : return "iTunes U|Science|Ecology"
+            case .iTunesUScienceGeography : return "iTunes U|Science|Geography"
+            case .iTunesUScienceGeology : return "iTunes U|Science|Geology"
+            case .iTunesUSciencePhysics : return "iTunes U|Science|Physics"
+            case .iTunesUSocialScience : return "iTunes U|Social Science"
+            case .iTunesULawandPoliticsLaw : return "iTunes U|Law & Politics|Law"
+            case .iTunesULawandPoliticsPoliticalScience : return "iTunes U|Law & Politics|Political Science"
+            case .iTunesULawandPoliticsPublicAdministration : return "iTunes U|Law & Politics|Public Administration"
+            case .iTunesUSocialSciencePsychology : return "iTunes U|Social Science|Psychology"
+            case .iTunesUSocialScienceSocialWelfare : return "iTunes U|Social Science|Social Welfare"
+            case .iTunesUSocialScienceSociology : return "iTunes U|Social Science|Sociology"
+            case .iTunesUSociety : return "iTunes U|Society"
+            case .iTunesUSocietyAsiaPacificStudies : return "iTunes U|Society|Asia Pacific Studies"
+            case .iTunesUSocietyEuropeanStudies : return "iTunes U|Society|European Studies"
+            case .iTunesUSocietyIndigenousStudies : return "iTunes U|Society|Indigenous Studies"
+            case .iTunesUSocietyLatinandCaribbeanStudies : return "iTunes U|Society|Latin & Caribbean Studies"
+            case .iTunesUSocietyMiddleEasternStudies : return "iTunes U|Society|Middle Eastern Studies"
+            case .iTunesUSocietyWomensStudies : return "iTunes U|Society|Women's Studies"
+            case .iTunesUTeachingandLearning : return "iTunes U|Teaching & Learning"
+            case .iTunesUTeachingandLearningCurriculumandTeaching : return "iTunes U|Teaching & Learning|Curriculum & Teaching"
+            case .iTunesUTeachingandLearningEducationalLeadership : return "iTunes U|Teaching & Learning|Educational Leadership"
+            case .iTunesUTeachingandLearningFamilyandChildcare : return "iTunes U|Teaching & Learning|Family & Childcare"
+            case .iTunesUTeachingandLearningLearningResources : return "iTunes U|Teaching & Learning|Learning Resources"
+            case .iTunesUTeachingandLearningPsychologyandResearch : return "iTunes U|Teaching & Learning|Psychology & Research"
+            case .iTunesUTeachingandLearningSpecialEducation : return "iTunes U|Teaching & Learning|Special Education"
+            case .iTunesUMusicArtandDesignCulinaryArts : return "iTunes U|Music, Art, & Design|Culinary Arts"
+            case .iTunesUMusicArtandDesignFashion : return "iTunes U|Music, Art, & Design|Fashion"
+            case .iTunesUMusicArtandDesignMediaArts : return "iTunes U|Music, Art, & Design|Media Arts"
+            case .iTunesUMusicArtandDesignPhotography : return "iTunes U|Music, Art, & Design|Photography"
+            case .iTunesUMusicArtandDesignVisualArt : return "iTunes U|Music, Art, & Design|Visual Art"
+            case .iTunesUBusinessandEconomicsEntrepreneurship : return "iTunes U|Business & Economics|Entrepreneurship"
+            case .iTunesUCommunicationsandJournalismBroadcasting : return "iTunes U|Communications & Journalism|Broadcasting"
+            case .iTunesUCommunicationsandJournalismDigitalMedia : return "iTunes U|Communications & Journalism|Digital Media"
+            case .iTunesUCommunicationsandJournalismJournalism : return "iTunes U|Communications & Journalism|Journalism"
+            case .iTunesUCommunicationsandJournalismPhotojournalism : return "iTunes U|Communications & Journalism|Photojournalism"
+            case .iTunesUCommunicationsandJournalismPrint : return "iTunes U|Communications & Journalism|Print"
+            case .iTunesUCommunicationsandJournalismSpeech : return "iTunes U|Communications & Journalism|Speech"
+            case .iTunesUCommunicationsandJournalismWriting : return "iTunes U|Communications & Journalism|Writing"
+            case .iTunesUHealthandMedicineNursing : return "iTunes U|Health & Medicine|Nursing"
+            case .iTunesULanguagesArabic : return "iTunes U|Languages|Arabic"
+            case .iTunesULanguagesChinese : return "iTunes U|Languages|Chinese"
+            case .iTunesULanguagesHebrew : return "iTunes U|Languages|Hebrew"
+            case .iTunesULanguagesHindi : return "iTunes U|Languages|Hindi"
+            case .iTunesULanguagesIndigenousLanguages : return "iTunes U|Languages|Indigenous Languages"
+            case .iTunesULanguagesJapanese : return "iTunes U|Languages|Japanese"
+            case .iTunesULanguagesKorean : return "iTunes U|Languages|Korean"
+            case .iTunesULanguagesOtherLanguages : return "iTunes U|Languages|Other Languages"
+            case .iTunesULanguagesPortuguese : return "iTunes U|Languages|Portuguese"
+            case .iTunesULanguagesRussian : return "iTunes U|Languages|Russian"
+            case .iTunesULawandPolitics : return "iTunes U|Law & Politics"
+            case .iTunesULawandPoliticsForeignPolicyandInternationalRelations : return "iTunes U|Law & Politics|Foreign Policy & International Relations"
+            case .iTunesULawandPoliticsLocalGovernments : return "iTunes U|Law & Politics|Local Governments"
+            case .iTunesULawandPoliticsNationalGovernments : return "iTunes U|Law & Politics|National Governments"
+            case .iTunesULawandPoliticsWorldAffairs : return "iTunes U|Law & Politics|World Affairs"
+            case .iTunesUWritingandLiteratureComparativeLiterature : return "iTunes U|Writing & Literature|Comparative Literature"
+            case .iTunesUPhilosophyAesthetics : return "iTunes U|Philosophy|Aesthetics"
+            case .iTunesUPhilosophyEpistemology : return "iTunes U|Philosophy|Epistemology"
+            case .iTunesUPhilosophyEthics : return "iTunes U|Philosophy|Ethics"
+            case .iTunesUPhilosophyMetaphysics : return "iTunes U|Philosophy|Metaphysics"
+            case .iTunesUPhilosophyPoliticalPhilosophy : return "iTunes U|Philosophy|Political Philosophy"
+            case .iTunesUPhilosophyLogic : return "iTunes U|Philosophy|Logic"
+            case .iTunesUPhilosophyPhilosophyofLanguage : return "iTunes U|Philosophy|Philosophy of Language"
+            case .iTunesUPhilosophyPhilosophyofReligion : return "iTunes U|Philosophy|Philosophy of Religion"
+            case .iTunesUSocialScienceArchaeology : return "iTunes U|Social Science|Archaeology"
+            case .iTunesUSocialScienceAnthropology : return "iTunes U|Social Science|Anthropology"
+            case .iTunesUReligionandSpiritualityBuddhism : return "iTunes U|Religion & Spirituality|Buddhism"
+            case .iTunesUReligionandSpiritualityChristianity : return "iTunes U|Religion & Spirituality|Christianity"
+            case .iTunesUReligionandSpiritualityComparativeReligion : return "iTunes U|Religion & Spirituality|Comparative Religion"
+            case .iTunesUReligionandSpiritualityHinduism : return "iTunes U|Religion & Spirituality|Hinduism"
+            case .iTunesUReligionandSpiritualityIslam : return "iTunes U|Religion & Spirituality|Islam"
+            case .iTunesUReligionandSpiritualityJudaism : return "iTunes U|Religion & Spirituality|Judaism"
+            case .iTunesUReligionandSpiritualityOtherReligions : return "iTunes U|Religion & Spirituality|Other Religions"
+            case .iTunesUReligionandSpiritualitySpirituality : return "iTunes U|Religion & Spirituality|Spirituality"
+            case .iTunesUScienceEnvironment : return "iTunes U|Science|Environment"
+            case .iTunesUSocietyAfricanStudies : return "iTunes U|Society|African Studies"
+            case .iTunesUSocietyAmericanStudies : return "iTunes U|Society|American Studies"
+            case .iTunesUSocietyCrossculturalStudies : return "iTunes U|Society|Cross-cultural Studies"
+            case .iTunesUSocietyImmigrationandEmigration : return "iTunes U|Society|Immigration & Emigration"
+            case .iTunesUSocietyRaceandEthnicityStudies : return "iTunes U|Society|Race & Ethnicity Studies"
+            case .iTunesUSocietySexualityStudies : return "iTunes U|Society|Sexuality Studies"
+            case .iTunesUTeachingandLearningEducationalTechnology : return "iTunes U|Teaching & Learning|Educational Technology"
+            case .iTunesUTeachingandLearningInformationLibraryScience : return "iTunes U|Teaching & Learning|Information/Library Science"
+            case .iTunesULanguagesDutch : return "iTunes U|Languages|Dutch"
+            case .iTunesULanguagesLuxembourgish : return "iTunes U|Languages|Luxembourgish"
+            case .iTunesULanguagesSwedish : return "iTunes U|Languages|Swedish"
+            case .iTunesULanguagesNorwegian : return "iTunes U|Languages|Norwegian"
+            case .iTunesULanguagesFinnish : return "iTunes U|Languages|Finnish"
+            case .iTunesULanguagesDanish : return "iTunes U|Languages|Danish"
+            case .iTunesULanguagesPolish : return "iTunes U|Languages|Polish"
+            case .iTunesULanguagesTurkish : return "iTunes U|Languages|Turkish"
+            case .iTunesULanguagesFlemish : return "iTunes U|Languages|Flemish"
+            case .audiobooks : return "Audiobooks"
+            case .audiobooksFiction : return "Audiobooks|Fiction"
+            case .audiobooksArtsandEntertainment : return "Audiobooks|Arts & Entertainment"
+            case .audiobooksBiographiesandMemoirs : return "Audiobooks|Biographies & Memoirs"
+            case .audiobooksBusinessandPersonalFinance : return "Audiobooks|Business & Personal Finance"
+            case .audiobooksKidsandYoungAdults : return "Audiobooks|Kids & Young Adults"
+            case .audiobooksClassics : return "Audiobooks|Classics"
+            case .audiobooksComedy : return "Audiobooks|Comedy"
+            case .audiobooksDramaandPoetry : return "Audiobooks|Drama & Poetry"
+            case .audiobooksSpeakersandStorytellers : return "Audiobooks|Speakers & Storytellers"
+            case .audiobooksHistory : return "Audiobooks|History"
+            case .audiobooksLanguages : return "Audiobooks|Languages"
+            case .audiobooksMysteriesandThrillers : return "Audiobooks|Mysteries & Thrillers"
+            case .audiobooksNonfiction : return "Audiobooks|Nonfiction"
+            case .audiobooksReligionandSpirituality : return "Audiobooks|Religion & Spirituality"
+            case .audiobooksScienceandNature : return "Audiobooks|Science & Nature"
+            case .audiobooksSciFiandFantasy : return "Audiobooks|Sci Fi & Fantasy"
+            case .audiobooksSelfDevelopment : return "Audiobooks|Self-Development"
+            case .audiobooksSportsandOutdoors : return "Audiobooks|Sports & Outdoors"
+            case .audiobooksTechnology : return "Audiobooks|Technology"
+            case .audiobooksTravelandAdventure : return "Audiobooks|Travel & Adventure"
+            case .musicSpokenWord : return "Music|Spoken Word"
+            case .musicDisney : return "Music|Disney"
+            case .musicFrenchPop : return "Music|French Pop"
+            case .musicGermanPop : return "Music|German Pop"
+            case .musicGermanFolk : return "Music|German Folk"
+            case .audiobooksRomance : return "Audiobooks|Romance"
+            case .audiobooksAudiobooksLatino : return "Audiobooks|Audiobooks Latino"
+            case .booksComicsandGraphicNovelsMangaAction : return "Books|Comics & Graphic Novels|Manga|Action"
+            case .booksComicsandGraphicNovelsMangaComedy : return "Books|Comics & Graphic Novels|Manga|Comedy"
+            case .booksComicsandGraphicNovelsMangaErotica : return "Books|Comics & Graphic Novels|Manga|Erotica"
+            case .booksComicsandGraphicNovelsMangaFantasy : return "Books|Comics & Graphic Novels|Manga|Fantasy"
+            case .booksComicsandGraphicNovelsMangaFourCellManga : return "Books|Comics & Graphic Novels|Manga|Four Cell Manga"
+            case .booksComicsandGraphicNovelsMangaGayandLesbian : return "Books|Comics & Graphic Novels|Manga|Gay & Lesbian"
+            case .booksComicsandGraphicNovelsMangaHardBoiled : return "Books|Comics & Graphic Novels|Manga|Hard-Boiled"
+            case .booksComicsandGraphicNovelsMangaHeroes : return "Books|Comics & Graphic Novels|Manga|Heroes"
+            case .booksComicsandGraphicNovelsMangaHistoricalFiction : return "Books|Comics & Graphic Novels|Manga|Historical Fiction"
+            case .booksComicsandGraphicNovelsMangaMecha : return "Books|Comics & Graphic Novels|Manga|Mecha"
+            case .booksComicsandGraphicNovelsMangaMystery : return "Books|Comics & Graphic Novels|Manga|Mystery"
+            case .booksComicsandGraphicNovelsMangaNonfiction : return "Books|Comics & Graphic Novels|Manga|Nonfiction"
+            case .booksComicsandGraphicNovelsMangaReligious : return "Books|Comics & Graphic Novels|Manga|Religious"
+            case .booksComicsandGraphicNovelsMangaRomance : return "Books|Comics & Graphic Novels|Manga|Romance"
+            case .booksComicsandGraphicNovelsMangaRomanticComedy : return "Books|Comics & Graphic Novels|Manga|Romantic Comedy"
+            case .booksComicsandGraphicNovelsMangaScienceFiction : return "Books|Comics & Graphic Novels|Manga|Science Fiction"
+            case .booksComicsandGraphicNovelsMangaSports : return "Books|Comics & Graphic Novels|Manga|Sports"
+            case .booksFictionandLiteratureLightNovels : return "Books|Fiction & Literature|Light Novels"
+            case .booksComicsandGraphicNovelsMangaHorror : return "Books|Comics & Graphic Novels|Manga|Horror"
+            case .booksComicsandGraphicNovelsComics : return "Books|Comics & Graphic Novels|Comics"
+            case .booksRomanceMulticultural : return "Books|Romance|Multicultural"
+            case .audiobooksErotica : return "Audiobooks|Erotica"
+            case .audiobooksLightNovels : return "Audiobooks|Light Novels"
+            default:
+            return nil
+        }
+    }
+    
     static let musicSet = RangeSet([
         2...25,
         27...30,
@@ -2715,2650 +5357,17 @@ public enum Genres: Int, CaseIterable {
         }
     }
     
-    var predefinedGenre: String? {
-        if self.rawValue == 2 { return "Music|Blues" }
-        if self.rawValue == 3 { return "Music|Comedy" }
-        if self.rawValue == 4 { return "Music|Children's Music" }
-        if self.rawValue == 5 { return "Music|Classical" }
-        if self.rawValue == 6 { return "Music|Country" }
-        if self.rawValue == 7 { return "Music|Electronic" }
-        if self.rawValue == 8 { return "Music|Holiday" }
-        if self.rawValue == 9 { return "Music|Classical|Opera" }
-        if self.rawValue == 10 { return "Music|Singer/Songwriter" }
-        if self.rawValue == 11 { return "Music|Jazz" }
-        if self.rawValue == 12 { return "Music|Latino" }
-        if self.rawValue == 13 { return "Music|New Age" }
-        if self.rawValue == 14 { return "Music|Pop" }
-        if self.rawValue == 15 { return "Music|R&B/Soul" }
-        if self.rawValue == 16 { return "Music|Soundtrack" }
-        if self.rawValue == 17 { return "Music|Dance" }
-        if self.rawValue == 18 { return "Music|Hip-Hop/Rap" }
-        if self.rawValue == 19 { return "Music|World" }
-        if self.rawValue == 20 { return "Music|Alternative" }
-        if self.rawValue == 21 { return "Music|Rock" }
-        if self.rawValue == 22 { return "Music|Christian & Gospel" }
-        if self.rawValue == 23 { return "Music|Vocal" }
-        if self.rawValue == 24 { return "Music|Reggae" }
-        if self.rawValue == 25 { return "Music|Easy Listening" }
-        if self.rawValue == 26 { return "Podcasts" }
-        if self.rawValue == 27 { return "Music|J-Pop" }
-        if self.rawValue == 28 { return "Music|Enka" }
-        if self.rawValue == 29 { return "Music|Anime" }
-        if self.rawValue == 30 { return "Music|Kayokyoku" }
-        if self.rawValue == 31 { return "Music Videos" }
-        if self.rawValue == 32 { return "TV Shows" }
-        if self.rawValue == 33 { return "Movies" }
-        if self.rawValue == 34 { return "Music" }
-        if self.rawValue == 35 { return "iPod Games" }
-        if self.rawValue == 36 { return "App Store" }
-        if self.rawValue == 37 { return "Tones" }
-        if self.rawValue == 38 { return "Books" }
-        if self.rawValue == 39 { return "Mac App Store" }
-        if self.rawValue == 40 { return "Textbooks" }
-        if self.rawValue == 50 { return "Music|Fitness & Workout" }
-        if self.rawValue == 51 { return "Music|Pop|K-Pop" }
-        if self.rawValue == 52 { return "Music|Karaoke" }
-        if self.rawValue == 53 { return "Music|Instrumental" }
-        if self.rawValue == 74 { return "Audiobooks|News" }
-        if self.rawValue == 75 { return "Audiobooks|Programs & Performances" }
-        if self.rawValue == 500 { return "Fitness Music" }
-        if self.rawValue == 501 { return "Fitness Music|Pop" }
-        if self.rawValue == 502 { return "Fitness Music|Dance" }
-        if self.rawValue == 503 { return "Fitness Music|Hip-Hop" }
-        if self.rawValue == 504 { return "Fitness Music|Rock" }
-        if self.rawValue == 505 { return "Fitness Music|Alt/Indie" }
-        if self.rawValue == 506 { return "Fitness Music|Latino" }
-        if self.rawValue == 507 { return "Fitness Music|Country" }
-        if self.rawValue == 508 { return "Fitness Music|World" }
-        if self.rawValue == 509 { return "Fitness Music|New Age" }
-        if self.rawValue == 510 { return "Fitness Music|Classical" }
-        if self.rawValue == 1001 { return "Music|Alternative|College Rock" }
-        if self.rawValue == 1002 { return "Music|Alternative|Goth Rock" }
-        if self.rawValue == 1003 { return "Music|Alternative|Grunge" }
-        if self.rawValue == 1004 { return "Music|Alternative|Indie Rock" }
-        if self.rawValue == 1005 { return "Music|Alternative|New Wave" }
-        if self.rawValue == 1006 { return "Music|Alternative|Punk" }
-        if self.rawValue == 1007 { return "Music|Blues|Chicago Blues" }
-        if self.rawValue == 1009 { return "Music|Blues|Classic Blues" }
-        if self.rawValue == 1010 { return "Music|Blues|Contemporary Blues" }
-        if self.rawValue == 1011 { return "Music|Blues|Country Blues" }
-        if self.rawValue == 1012 { return "Music|Blues|Delta Blues" }
-        if self.rawValue == 1013 { return "Music|Blues|Electric Blues" }
-        if self.rawValue == 1014 { return "Music|Children's Music|Lullabies" }
-        if self.rawValue == 1015 { return "Music|Children's Music|Sing-Along" }
-        if self.rawValue == 1016 { return "Music|Children's Music|Stories" }
-        if self.rawValue == 1017 { return "Music|Classical|Avant-Garde" }
-        if self.rawValue == 1018 { return "Music|Classical|Baroque Era" }
-        if self.rawValue == 1019 { return "Music|Classical|Chamber Music" }
-        if self.rawValue == 1020 { return "Music|Classical|Chant" }
-        if self.rawValue == 1021 { return "Music|Classical|Choral" }
-        if self.rawValue == 1022 { return "Music|Classical|Classical Crossover" }
-        if self.rawValue == 1023 { return "Music|Classical|Early Music" }
-        if self.rawValue == 1024 { return "Music|Classical|Impressionist" }
-        if self.rawValue == 1025 { return "Music|Classical|Medieval Era" }
-        if self.rawValue == 1026 { return "Music|Classical|Minimalism" }
-        if self.rawValue == 1027 { return "Music|Classical|Modern Era" }
-        if self.rawValue == 1028 { return "Music|Classical|Opera" }
-        if self.rawValue == 1029 { return "Music|Classical|Orchestral" }
-        if self.rawValue == 1030 { return "Music|Classical|Renaissance" }
-        if self.rawValue == 1031 { return "Music|Classical|Romantic Era" }
-        if self.rawValue == 1032 { return "Music|Classical|Wedding Music" }
-        if self.rawValue == 1033 { return "Music|Country|Alternative Country" }
-        if self.rawValue == 1034 { return "Music|Country|Americana" }
-        if self.rawValue == 1035 { return "Music|Country|Bluegrass" }
-        if self.rawValue == 1036 { return "Music|Country|Contemporary Bluegrass" }
-        if self.rawValue == 1037 { return "Music|Country|Contemporary Country" }
-        if self.rawValue == 1038 { return "Music|Country|Country Gospel" }
-        if self.rawValue == 1039 { return "Music|Country|Honky Tonk" }
-        if self.rawValue == 1040 { return "Music|Country|Outlaw Country" }
-        if self.rawValue == 1041 { return "Music|Country|Traditional Bluegrass" }
-        if self.rawValue == 1042 { return "Music|Country|Traditional Country" }
-        if self.rawValue == 1043 { return "Music|Country|Urban Cowboy" }
-        if self.rawValue == 1044 { return "Music|Dance|Breakbeat" }
-        if self.rawValue == 1045 { return "Music|Dance|Exercise" }
-        if self.rawValue == 1046 { return "Music|Dance|Garage" }
-        if self.rawValue == 1047 { return "Music|Dance|Hardcore" }
-        if self.rawValue == 1048 { return "Music|Dance|House" }
-        if self.rawValue == 1049 { return "Music|Dance|Jungle/Drum'n'bass" }
-        if self.rawValue == 1050 { return "Music|Dance|Techno" }
-        if self.rawValue == 1051 { return "Music|Dance|Trance" }
-        if self.rawValue == 1052 { return "Music|Jazz|Big Band" }
-        if self.rawValue == 1053 { return "Music|Jazz|Bop" }
-        if self.rawValue == 1054 { return "Music|Easy Listening|Lounge" }
-        if self.rawValue == 1055 { return "Music|Easy Listening|Swing" }
-        if self.rawValue == 1056 { return "Music|Electronic|Ambient" }
-        if self.rawValue == 1057 { return "Music|Electronic|Downtempo" }
-        if self.rawValue == 1058 { return "Music|Electronic|Electronica" }
-        if self.rawValue == 1060 { return "Music|Electronic|IDM/Experimental" }
-        if self.rawValue == 1061 { return "Music|Electronic|Industrial" }
-        if self.rawValue == 1062 { return "Music|Singer/Songwriter|Alternative Folk" }
-        if self.rawValue == 1063 { return "Music|Singer/Songwriter|Contemporary Folk" }
-        if self.rawValue == 1064 { return "Music|Singer/Songwriter|Contemporary Singer/Songwriter" }
-        if self.rawValue == 1065 { return "Music|Singer/Songwriter|Folk-Rock" }
-        if self.rawValue == 1066 { return "Music|Singer/Songwriter|New Acoustic" }
-        if self.rawValue == 1067 { return "Music|Singer/Songwriter|Traditional Folk" }
-        if self.rawValue == 1068 { return "Music|Hip-Hop/Rap|Alternative Rap" }
-        if self.rawValue == 1069 { return "Music|Hip-Hop/Rap|Dirty South" }
-        if self.rawValue == 1070 { return "Music|Hip-Hop/Rap|East Coast Rap" }
-        if self.rawValue == 1071 { return "Music|Hip-Hop/Rap|Gangsta Rap" }
-        if self.rawValue == 1072 { return "Music|Hip-Hop/Rap|Hardcore Rap" }
-        if self.rawValue == 1073 { return "Music|Hip-Hop/Rap|Hip-Hop" }
-        if self.rawValue == 1074 { return "Music|Hip-Hop/Rap|Latin Rap" }
-        if self.rawValue == 1075 { return "Music|Hip-Hop/Rap|Old School Rap" }
-        if self.rawValue == 1076 { return "Music|Hip-Hop/Rap|Rap" }
-        if self.rawValue == 1077 { return "Music|Hip-Hop/Rap|Underground Rap" }
-        if self.rawValue == 1078 { return "Music|Hip-Hop/Rap|West Coast Rap" }
-        if self.rawValue == 1079 { return "Music|Holiday|Chanukah" }
-        if self.rawValue == 1080 { return "Music|Holiday|Christmas" }
-        if self.rawValue == 1081 { return "Music|Holiday|Christmas: Children's" }
-        if self.rawValue == 1082 { return "Music|Holiday|Christmas: Classic" }
-        if self.rawValue == 1083 { return "Music|Holiday|Christmas: Classical" }
-        if self.rawValue == 1084 { return "Music|Holiday|Christmas: Jazz" }
-        if self.rawValue == 1085 { return "Music|Holiday|Christmas: Modern" }
-        if self.rawValue == 1086 { return "Music|Holiday|Christmas: Pop" }
-        if self.rawValue == 1087 { return "Music|Holiday|Christmas: R&B" }
-        if self.rawValue == 1088 { return "Music|Holiday|Christmas: Religious" }
-        if self.rawValue == 1089 { return "Music|Holiday|Christmas: Rock" }
-        if self.rawValue == 1090 { return "Music|Holiday|Easter" }
-        if self.rawValue == 1091 { return "Music|Holiday|Halloween" }
-        if self.rawValue == 1092 { return "Music|Holiday|Holiday: Other" }
-        if self.rawValue == 1093 { return "Music|Holiday|Thanksgiving" }
-        if self.rawValue == 1094 { return "Music|Christian & Gospel|CCM" }
-        if self.rawValue == 1095 { return "Music|Christian & Gospel|Christian Metal" }
-        if self.rawValue == 1096 { return "Music|Christian & Gospel|Christian Pop" }
-        if self.rawValue == 1097 { return "Music|Christian & Gospel|Christian Rap" }
-        if self.rawValue == 1098 { return "Music|Christian & Gospel|Christian Rock" }
-        if self.rawValue == 1099 { return "Music|Christian & Gospel|Classic Christian" }
-        if self.rawValue == 1100 { return "Music|Christian & Gospel|Contemporary Gospel" }
-        if self.rawValue == 1101 { return "Music|Christian & Gospel|Gospel" }
-        if self.rawValue == 1103 { return "Music|Christian & Gospel|Praise & Worship" }
-        if self.rawValue == 1104 { return "Music|Christian & Gospel|Southern Gospel" }
-        if self.rawValue == 1105 { return "Music|Christian & Gospel|Traditional Gospel" }
-        if self.rawValue == 1106 { return "Music|Jazz|Avant-Garde Jazz" }
-        if self.rawValue == 1107 { return "Music|Jazz|Contemporary Jazz" }
-        if self.rawValue == 1108 { return "Music|Jazz|Crossover Jazz" }
-        if self.rawValue == 1109 { return "Music|Jazz|Dixieland" }
-        if self.rawValue == 1110 { return "Music|Jazz|Fusion" }
-        if self.rawValue == 1111 { return "Music|Jazz|Latin Jazz" }
-        if self.rawValue == 1112 { return "Music|Jazz|Mainstream Jazz" }
-        if self.rawValue == 1113 { return "Music|Jazz|Ragtime" }
-        if self.rawValue == 1114 { return "Music|Jazz|Smooth Jazz" }
-        if self.rawValue == 1115 { return "Music|Latino|Latin Jazz" }
-        if self.rawValue == 1116 { return "Music|Latino|Contemporary Latin" }
-        if self.rawValue == 1117 { return "Music|Latino|Pop Latino" }
-        if self.rawValue == 1118 { return "Music|Latino|Raices" }
-        if self.rawValue == 1119 { return "Music|Latino|Urbano latino" }
-        if self.rawValue == 1120 { return "Music|Latino|Baladas y Boleros" }
-        if self.rawValue == 1121 { return "Music|Latino|Rock y Alternativo" }
-        if self.rawValue == 1122 { return "Music|Brazilian" }
-        if self.rawValue == 1123 { return "Music|Latino|Musica Mexicana" }
-        if self.rawValue == 1124 { return "Music|Latino|Musica tropical" }
-        if self.rawValue == 1125 { return "Music|New Age|Environmental" }
-        if self.rawValue == 1126 { return "Music|New Age|Healing" }
-        if self.rawValue == 1127 { return "Music|New Age|Meditation" }
-        if self.rawValue == 1128 { return "Music|New Age|Nature" }
-        if self.rawValue == 1129 { return "Music|New Age|Relaxation" }
-        if self.rawValue == 1130 { return "Music|New Age|Travel" }
-        if self.rawValue == 1131 { return "Music|Pop|Adult Contemporary" }
-        if self.rawValue == 1132 { return "Music|Pop|Britpop" }
-        if self.rawValue == 1133 { return "Music|Pop|Pop/Rock" }
-        if self.rawValue == 1134 { return "Music|Pop|Soft Rock" }
-        if self.rawValue == 1135 { return "Music|Pop|Teen Pop" }
-        if self.rawValue == 1136 { return "Music|R&B/Soul|Contemporary R&B" }
-        if self.rawValue == 1137 { return "Music|R&B/Soul|Disco" }
-        if self.rawValue == 1138 { return "Music|R&B/Soul|Doo Wop" }
-        if self.rawValue == 1139 { return "Music|R&B/Soul|Funk" }
-        if self.rawValue == 1140 { return "Music|R&B/Soul|Motown" }
-        if self.rawValue == 1141 { return "Music|R&B/Soul|Neo-Soul" }
-        if self.rawValue == 1142 { return "Music|R&B/Soul|Quiet Storm" }
-        if self.rawValue == 1143 { return "Music|R&B/Soul|Soul" }
-        if self.rawValue == 1144 { return "Music|Rock|Adult Alternative" }
-        if self.rawValue == 1145 { return "Music|Rock|American Trad Rock" }
-        if self.rawValue == 1146 { return "Music|Rock|Arena Rock" }
-        if self.rawValue == 1147 { return "Music|Rock|Blues-Rock" }
-        if self.rawValue == 1148 { return "Music|Rock|British Invasion" }
-        if self.rawValue == 1149 { return "Music|Rock|Death Metal/Black Metal" }
-        if self.rawValue == 1150 { return "Music|Rock|Glam Rock" }
-        if self.rawValue == 1151 { return "Music|Rock|Hair Metal" }
-        if self.rawValue == 1152 { return "Music|Rock|Hard Rock" }
-        if self.rawValue == 1153 { return "Music|Rock|Metal" }
-        if self.rawValue == 1154 { return "Music|Rock|Jam Bands" }
-        if self.rawValue == 1155 { return "Music|Rock|Prog-Rock/Art Rock" }
-        if self.rawValue == 1156 { return "Music|Rock|Psychedelic" }
-        if self.rawValue == 1157 { return "Music|Rock|Rock & Roll" }
-        if self.rawValue == 1158 { return "Music|Rock|Rockabilly" }
-        if self.rawValue == 1159 { return "Music|Rock|Roots Rock" }
-        if self.rawValue == 1160 { return "Music|Rock|Singer/Songwriter" }
-        if self.rawValue == 1161 { return "Music|Rock|Southern Rock" }
-        if self.rawValue == 1162 { return "Music|Rock|Surf" }
-        if self.rawValue == 1163 { return "Music|Rock|Tex-Mex" }
-        if self.rawValue == 1165 { return "Music|Soundtrack|Foreign Cinema" }
-        if self.rawValue == 1166 { return "Music|Soundtrack|Musicals" }
-        if self.rawValue == 1167 { return "Music|Comedy|Novelty" }
-        if self.rawValue == 1168 { return "Music|Soundtrack|Original Score" }
-        if self.rawValue == 1169 { return "Music|Soundtrack|Soundtrack" }
-        if self.rawValue == 1171 { return "Music|Comedy|Standup Comedy" }
-        if self.rawValue == 1172 { return "Music|Soundtrack|TV Soundtrack" }
-        if self.rawValue == 1173 { return "Music|Vocal|Standards" }
-        if self.rawValue == 1174 { return "Music|Vocal|Traditional Pop" }
-        if self.rawValue == 1175 { return "Music|Jazz|Vocal Jazz" }
-        if self.rawValue == 1176 { return "Music|Vocal|Vocal Pop" }
-        if self.rawValue == 1177 { return "Music|African|Afro-Beat" }
-        if self.rawValue == 1178 { return "Music|African|Afro-Pop" }
-        if self.rawValue == 1179 { return "Music|World|Cajun" }
-        if self.rawValue == 1180 { return "Music|World|Celtic" }
-        if self.rawValue == 1181 { return "Music|World|Celtic Folk" }
-        if self.rawValue == 1182 { return "Music|World|Contemporary Celtic" }
-        if self.rawValue == 1183 { return "Music|Reggae|Modern Dancehall" }
-        if self.rawValue == 1184 { return "Music|World|Drinking Songs" }
-        if self.rawValue == 1185 { return "Music|Indian|Indian Pop" }
-        if self.rawValue == 1186 { return "Music|World|Japanese Pop" }
-        if self.rawValue == 1187 { return "Music|World|Klezmer" }
-        if self.rawValue == 1188 { return "Music|World|Polka" }
-        if self.rawValue == 1189 { return "Music|World|Traditional Celtic" }
-        if self.rawValue == 1190 { return "Music|World|Worldbeat" }
-        if self.rawValue == 1191 { return "Music|World|Zydeco" }
-        if self.rawValue == 1192 { return "Music|Reggae|Roots Reggae" }
-        if self.rawValue == 1193 { return "Music|Reggae|Dub" }
-        if self.rawValue == 1194 { return "Music|Reggae|Ska" }
-        if self.rawValue == 1195 { return "Music|World|Caribbean" }
-        if self.rawValue == 1196 { return "Music|World|South America" }
-        if self.rawValue == 1197 { return "Music|Arabic" }
-        if self.rawValue == 1198 { return "Music|World|North America" }
-        if self.rawValue == 1199 { return "Music|World|Hawaii" }
-        if self.rawValue == 1200 { return "Music|World|Australia" }
-        if self.rawValue == 1201 { return "Music|World|Japan" }
-        if self.rawValue == 1202 { return "Music|World|France" }
-        if self.rawValue == 1203 { return "Music|African" }
-        if self.rawValue == 1204 { return "Music|World|Asia" }
-        if self.rawValue == 1205 { return "Music|World|Europe" }
-        if self.rawValue == 1206 { return "Music|World|South Africa" }
-        if self.rawValue == 1207 { return "Music|Jazz|Hard Bop" }
-        if self.rawValue == 1208 { return "Music|Jazz|Trad Jazz" }
-        if self.rawValue == 1209 { return "Music|Jazz|Cool Jazz" }
-        if self.rawValue == 1210 { return "Music|Blues|Acoustic Blues" }
-        if self.rawValue == 1211 { return "Music|Classical|High Classical" }
-        if self.rawValue == 1220 { return "Music|Brazilian|Axe" }
-        if self.rawValue == 1221 { return "Music|Brazilian|Bossa Nova" }
-        if self.rawValue == 1222 { return "Music|Brazilian|Choro" }
-        if self.rawValue == 1223 { return "Music|Brazilian|Forro" }
-        if self.rawValue == 1224 { return "Music|Brazilian|Frevo" }
-        if self.rawValue == 1225 { return "Music|Brazilian|MPB" }
-        if self.rawValue == 1226 { return "Music|Brazilian|Pagode" }
-        if self.rawValue == 1227 { return "Music|Brazilian|Samba" }
-        if self.rawValue == 1228 { return "Music|Brazilian|Sertanejo" }
-        if self.rawValue == 1229 { return "Music|Brazilian|Baile Funk" }
-        if self.rawValue == 1230 { return "Music|Alternative|Chinese Alt" }
-        if self.rawValue == 1231 { return "Music|Alternative|Korean Indie" }
-        if self.rawValue == 1232 { return "Music|Chinese" }
-        if self.rawValue == 1233 { return "Music|Chinese|Chinese Classical" }
-        if self.rawValue == 1234 { return "Music|Chinese|Chinese Flute" }
-        if self.rawValue == 1235 { return "Music|Chinese|Chinese Opera" }
-        if self.rawValue == 1236 { return "Music|Chinese|Chinese Orchestral" }
-        if self.rawValue == 1237 { return "Music|Chinese|Chinese Regional Folk" }
-        if self.rawValue == 1238 { return "Music|Chinese|Chinese Strings" }
-        if self.rawValue == 1239 { return "Music|Chinese|Taiwanese Folk" }
-        if self.rawValue == 1240 { return "Music|Chinese|Tibetan Native Music" }
-        if self.rawValue == 1241 { return "Music|Hip-Hop/Rap|Chinese Hip-Hop" }
-        if self.rawValue == 1242 { return "Music|Hip-Hop/Rap|Korean Hip-Hop" }
-        if self.rawValue == 1243 { return "Music|Korean" }
-        if self.rawValue == 1244 { return "Music|Korean|Korean Classical" }
-        if self.rawValue == 1245 { return "Music|Korean|Korean Trad Song" }
-        if self.rawValue == 1246 { return "Music|Korean|Korean Trad Instrumental" }
-        if self.rawValue == 1247 { return "Music|Korean|Korean Trad Theater" }
-        if self.rawValue == 1248 { return "Music|Rock|Chinese Rock" }
-        if self.rawValue == 1249 { return "Music|Rock|Korean Rock" }
-        if self.rawValue == 1250 { return "Music|Pop|C-Pop" }
-        if self.rawValue == 1251 { return "Music|Pop|Cantopop/HK-Pop" }
-        if self.rawValue == 1252 { return "Music|Pop|Korean Folk-Pop" }
-        if self.rawValue == 1253 { return "Music|Pop|Mandopop" }
-        if self.rawValue == 1254 { return "Music|Pop|Tai-Pop" }
-        if self.rawValue == 1255 { return "Music|Pop|Malaysian Pop" }
-        if self.rawValue == 1256 { return "Music|Pop|Pinoy Pop" }
-        if self.rawValue == 1257 { return "Music|Pop|Original Pilipino Music" }
-        if self.rawValue == 1258 { return "Music|Pop|Manilla Sound" }
-        if self.rawValue == 1259 { return "Music|Pop|Indo Pop" }
-        if self.rawValue == 1260 { return "Music|Pop|Thai Pop" }
-        if self.rawValue == 1261 { return "Music|Vocal|Trot" }
-        if self.rawValue == 1262 { return "Music|Indian" }
-        if self.rawValue == 1263 { return "Music|Indian|Bollywood" }
-        if self.rawValue == 1264 { return "Music|Indian|Regional Indian|Tamil" }
-        if self.rawValue == 1265 { return "Music|Indian|Regional Indian|Telugu" }
-        if self.rawValue == 1266 { return "Music|Indian|Regional Indian" }
-        if self.rawValue == 1267 { return "Music|Indian|Devotional & Spiritual" }
-        if self.rawValue == 1268 { return "Music|Indian|Sufi" }
-        if self.rawValue == 1269 { return "Music|Indian|Indian Classical" }
-        if self.rawValue == 1270 { return "Music|Russian|Russian Chanson" }
-        if self.rawValue == 1271 { return "Music|World|Dini" }
-        if self.rawValue == 1272 { return "Music|Turkish|Halk" }
-        if self.rawValue == 1273 { return "Music|Turkish|Sanat" }
-        if self.rawValue == 1274 { return "Music|World|Dangdut" }
-        if self.rawValue == 1275 { return "Music|World|Indonesian Religious" }
-        if self.rawValue == 1276 { return "Music|World|Calypso" }
-        if self.rawValue == 1277 { return "Music|World|Soca" }
-        if self.rawValue == 1278 { return "Music|Indian|Ghazals" }
-        if self.rawValue == 1279 { return "Music|Indian|Indian Folk" }
-        if self.rawValue == 1280 { return "Music|Turkish|Arabesque" }
-        if self.rawValue == 1281 { return "Music|African|Afrikaans" }
-        if self.rawValue == 1282 { return "Music|World|Farsi" }
-        if self.rawValue == 1283 { return "Music|World|Israeli" }
-        if self.rawValue == 1284 { return "Music|Arabic|Khaleeji" }
-        if self.rawValue == 1285 { return "Music|Arabic|North African" }
-        if self.rawValue == 1286 { return "Music|Arabic|Arabic Pop" }
-        if self.rawValue == 1287 { return "Music|Arabic|Islamic" }
-        if self.rawValue == 1288 { return "Music|Soundtrack|Sound Effects" }
-        if self.rawValue == 1289 { return "Music|Folk" }
-        if self.rawValue == 1290 { return "Music|Orchestral" }
-        if self.rawValue == 1291 { return "Music|Marching" }
-        if self.rawValue == 1293 { return "Music|Pop|Oldies" }
-        if self.rawValue == 1294 { return "Music|Country|Thai Country" }
-        if self.rawValue == 1295 { return "Music|World|Flamenco" }
-        if self.rawValue == 1296 { return "Music|World|Tango" }
-        if self.rawValue == 1297 { return "Music|World|Fado" }
-        if self.rawValue == 1298 { return "Music|World|Iberia" }
-        if self.rawValue == 1299 { return "Music|Russian" }
-        if self.rawValue == 1300 { return "Music|Turkish" }
-        if self.rawValue == 1301 { return "Podcasts|Arts" }
-        if self.rawValue == 1302 { return "Podcasts|Society & Culture|Personal Journals" }
-        if self.rawValue == 1303 { return "Podcasts|Comedy" }
-        if self.rawValue == 1304 { return "Podcasts|Education" }
-        if self.rawValue == 1305 { return "Podcasts|Kids & Family" }
-        if self.rawValue == 1306 { return "Podcasts|Arts|Food" }
-        if self.rawValue == 1307 { return "Podcasts|Health" }
-        if self.rawValue == 1309 { return "Podcasts|TV & Film" }
-        if self.rawValue == 1310 { return "Podcasts|Music" }
-        if self.rawValue == 1311 { return "Podcasts|News & Politics" }
-        if self.rawValue == 1314 { return "Podcasts|Religion & Spirituality" }
-        if self.rawValue == 1315 { return "Podcasts|Science & Medicine" }
-        if self.rawValue == 1316 { return "Podcasts|Sports & Recreation" }
-        if self.rawValue == 1318 { return "Podcasts|Technology" }
-        if self.rawValue == 1320 { return "Podcasts|Society & Culture|Places & Travel" }
-        if self.rawValue == 1321 { return "Podcasts|Business" }
-        if self.rawValue == 1323 { return "Podcasts|Games & Hobbies" }
-        if self.rawValue == 1324 { return "Podcasts|Society & Culture" }
-        if self.rawValue == 1325 { return "Podcasts|Government & Organizations" }
-        if self.rawValue == 1337 { return "Music Videos|Classical|Piano" }
-        if self.rawValue == 1401 { return "Podcasts|Arts|Literature" }
-        if self.rawValue == 1402 { return "Podcasts|Arts|Design" }
-        if self.rawValue == 1404 { return "Podcasts|Games & Hobbies|Video Games" }
-        if self.rawValue == 1405 { return "Podcasts|Arts|Performing Arts" }
-        if self.rawValue == 1406 { return "Podcasts|Arts|Visual Arts" }
-        if self.rawValue == 1410 { return "Podcasts|Business|Careers" }
-        if self.rawValue == 1412 { return "Podcasts|Business|Investing" }
-        if self.rawValue == 1413 { return "Podcasts|Business|Management & Marketing" }
-        if self.rawValue == 1415 { return "Podcasts|Education|K-12" }
-        if self.rawValue == 1416 { return "Podcasts|Education|Higher Education" }
-        if self.rawValue == 1417 { return "Podcasts|Health|Fitness & Nutrition" }
-        if self.rawValue == 1420 { return "Podcasts|Health|Self-Help" }
-        if self.rawValue == 1421 { return "Podcasts|Health|Sexuality" }
-        if self.rawValue == 1438 { return "Podcasts|Religion & Spirituality|Buddhism" }
-        if self.rawValue == 1439 { return "Podcasts|Religion & Spirituality|Christianity" }
-        if self.rawValue == 1440 { return "Podcasts|Religion & Spirituality|Islam" }
-        if self.rawValue == 1441 { return "Podcasts|Religion & Spirituality|Judaism" }
-        if self.rawValue == 1443 { return "Podcasts|Society & Culture|Philosophy" }
-        if self.rawValue == 1444 { return "Podcasts|Religion & Spirituality|Spirituality" }
-        if self.rawValue == 1446 { return "Podcasts|Technology|Gadgets" }
-        if self.rawValue == 1448 { return "Podcasts|Technology|Tech News" }
-        if self.rawValue == 1450 { return "Podcasts|Technology|Podcasting" }
-        if self.rawValue == 1454 { return "Podcasts|Games & Hobbies|Automotive" }
-        if self.rawValue == 1455 { return "Podcasts|Games & Hobbies|Aviation" }
-        if self.rawValue == 1456 { return "Podcasts|Sports & Recreation|Outdoor" }
-        if self.rawValue == 1459 { return "Podcasts|Arts|Fashion & Beauty" }
-        if self.rawValue == 1460 { return "Podcasts|Games & Hobbies|Hobbies" }
-        if self.rawValue == 1461 { return "Podcasts|Games & Hobbies|Other Games" }
-        if self.rawValue == 1462 { return "Podcasts|Society & Culture|History" }
-        if self.rawValue == 1463 { return "Podcasts|Religion & Spirituality|Hinduism" }
-        if self.rawValue == 1464 { return "Podcasts|Religion & Spirituality|Other" }
-        if self.rawValue == 1465 { return "Podcasts|Sports & Recreation|Professional" }
-        if self.rawValue == 1466 { return "Podcasts|Sports & Recreation|College & High School" }
-        if self.rawValue == 1467 { return "Podcasts|Sports & Recreation|Amateur" }
-        if self.rawValue == 1468 { return "Podcasts|Education|Educational Technology" }
-        if self.rawValue == 1469 { return "Podcasts|Education|Language Courses" }
-        if self.rawValue == 1470 { return "Podcasts|Education|Training" }
-        if self.rawValue == 1471 { return "Podcasts|Business|Business News" }
-        if self.rawValue == 1472 { return "Podcasts|Business|Shopping" }
-        if self.rawValue == 1473 { return "Podcasts|Government & Organizations|National" }
-        if self.rawValue == 1474 { return "Podcasts|Government & Organizations|Regional" }
-        if self.rawValue == 1475 { return "Podcasts|Government & Organizations|Local" }
-        if self.rawValue == 1476 { return "Podcasts|Government & Organizations|Non-Profit" }
-        if self.rawValue == 1477 { return "Podcasts|Science & Medicine|Natural Sciences" }
-        if self.rawValue == 1478 { return "Podcasts|Science & Medicine|Medicine" }
-        if self.rawValue == 1479 { return "Podcasts|Science & Medicine|Social Sciences" }
-        if self.rawValue == 1480 { return "Podcasts|Technology|Software How-To" }
-        if self.rawValue == 1481 { return "Podcasts|Health|Alternative Health" }
-        if self.rawValue == 1482 { return "Podcasts|Arts|Books" }
-        if self.rawValue == 1483 { return "Podcasts|Fiction" }
-        if self.rawValue == 1484 { return "Podcasts|Fiction|Drama" }
-        if self.rawValue == 1485 { return "Podcasts|Fiction|Science Fiction" }
-        if self.rawValue == 1486 { return "Podcasts|Fiction|Comedy Fiction" }
-        if self.rawValue == 1487 { return "Podcasts|History" }
-        if self.rawValue == 1488 { return "Podcasts|True Crime" }
-        if self.rawValue == 1489 { return "Podcasts|News" }
-        if self.rawValue == 1490 { return "Podcasts|News|Business News" }
-        if self.rawValue == 1491 { return "Podcasts|Business|Management" }
-        if self.rawValue == 1492 { return "Podcasts|Business|Marketing" }
-        if self.rawValue == 1493 { return "Podcasts|Business|Entrepreneurship" }
-        if self.rawValue == 1494 { return "Podcasts|Business|Non-Profit" }
-        if self.rawValue == 1495 { return "Podcasts|Comedy|Improv" }
-        if self.rawValue == 1496 { return "Podcasts|Comedy|Comedy Interviews" }
-        if self.rawValue == 1497 { return "Podcasts|Comedy|Stand-Up" }
-        if self.rawValue == 1498 { return "Podcasts|Education|Language Learning" }
-        if self.rawValue == 1499 { return "Podcasts|Education|How To" }
-        if self.rawValue == 1500 { return "Podcasts|Education|Self-Improvement" }
-        if self.rawValue == 1501 { return "Podcasts|Education|Courses" }
-        if self.rawValue == 1502 { return "Podcasts|Leisure" }
-        if self.rawValue == 1503 { return "Podcasts|Leisure|Automotive" }
-        if self.rawValue == 1504 { return "Podcasts|Leisure|Aviation" }
-        if self.rawValue == 1505 { return "Podcasts|Leisure|Hobbies" }
-        if self.rawValue == 1506 { return "Podcasts|Leisure|Crafts" }
-        if self.rawValue == 1507 { return "Podcasts|Leisure|Games" }
-        if self.rawValue == 1508 { return "Podcasts|Leisure|Home & Garden" }
-        if self.rawValue == 1509 { return "Podcasts|Leisure|Video Games" }
-        if self.rawValue == 1510 { return "Podcasts|Leisure|Animation & Manga" }
-        if self.rawValue == 1511 { return "Podcasts|Government" }
-        if self.rawValue == 1512 { return "Podcasts|Health & Fitness" }
-        if self.rawValue == 1513 { return "Podcasts|Health & Fitness|Alternative Health" }
-        if self.rawValue == 1514 { return "Podcasts|Health & Fitness|Fitness" }
-        if self.rawValue == 1515 { return "Podcasts|Health & Fitness|Nutrition" }
-        if self.rawValue == 1516 { return "Podcasts|Health & Fitness|Sexuality" }
-        if self.rawValue == 1517 { return "Podcasts|Health & Fitness|Mental Health" }
-        if self.rawValue == 1518 { return "Podcasts|Health & Fitness|Medicine" }
-        if self.rawValue == 1519 { return "Podcasts|Kids & Family|Education for Kids" }
-        if self.rawValue == 1520 { return "Podcasts|Kids & Family|Stories for Kids" }
-        if self.rawValue == 1521 { return "Podcasts|Kids & Family|Parenting" }
-        if self.rawValue == 1522 { return "Podcasts|Kids & Family|Pets & Animals" }
-        if self.rawValue == 1523 { return "Podcasts|Music|Music Commentary" }
-        if self.rawValue == 1524 { return "Podcasts|Music|Music History" }
-        if self.rawValue == 1525 { return "Podcasts|Music|Music Interviews" }
-        if self.rawValue == 1526 { return "Podcasts|News|Daily News" }
-        if self.rawValue == 1527 { return "Podcasts|News|Politics" }
-        if self.rawValue == 1528 { return "Podcasts|News|Tech News" }
-        if self.rawValue == 1529 { return "Podcasts|News|Sports News" }
-        if self.rawValue == 1530 { return "Podcasts|News|News Commentary" }
-        if self.rawValue == 1531 { return "Podcasts|News|Entertainment News" }
-        if self.rawValue == 1532 { return "Podcasts|Religion & Spirituality|Religion" }
-        if self.rawValue == 1533 { return "Podcasts|Science" }
-        if self.rawValue == 1534 { return "Podcasts|Science|Natural Sciences" }
-        if self.rawValue == 1535 { return "Podcasts|Science|Social Sciences" }
-        if self.rawValue == 1536 { return "Podcasts|Science|Mathematics" }
-        if self.rawValue == 1537 { return "Podcasts|Science|Nature" }
-        if self.rawValue == 1538 { return "Podcasts|Science|Astronomy" }
-        if self.rawValue == 1539 { return "Podcasts|Science|Chemistry" }
-        if self.rawValue == 1540 { return "Podcasts|Science|Earth Sciences" }
-        if self.rawValue == 1541 { return "Podcasts|Science|Life Sciences" }
-        if self.rawValue == 1542 { return "Podcasts|Science|Physics" }
-        if self.rawValue == 1543 { return "Podcasts|Society & Culture|Documentary" }
-        if self.rawValue == 1544 { return "Podcasts|Society & Culture|Relationships" }
-        if self.rawValue == 1545 { return "Podcasts|Sports" }
-        if self.rawValue == 1546 { return "Podcasts|Sports|Soccer" }
-        if self.rawValue == 1547 { return "Podcasts|Sports|Football" }
-        if self.rawValue == 1548 { return "Podcasts|Sports|Basketball" }
-        if self.rawValue == 1549 { return "Podcasts|Sports|Baseball" }
-        if self.rawValue == 1550 { return "Podcasts|Sports|Hockey" }
-        if self.rawValue == 1551 { return "Podcasts|Sports|Running" }
-        if self.rawValue == 1552 { return "Podcasts|Sports|Rugby" }
-        if self.rawValue == 1553 { return "Podcasts|Sports|Golf" }
-        if self.rawValue == 1554 { return "Podcasts|Sports|Cricket" }
-        if self.rawValue == 1555 { return "Podcasts|Sports|Wrestling" }
-        if self.rawValue == 1556 { return "Podcasts|Sports|Tennis" }
-        if self.rawValue == 1557 { return "Podcasts|Sports|Volleyball" }
-        if self.rawValue == 1558 { return "Podcasts|Sports|Swimming" }
-        if self.rawValue == 1559 { return "Podcasts|Sports|Wilderness" }
-        if self.rawValue == 1560 { return "Podcasts|Sports|Fantasy Sports" }
-        if self.rawValue == 1561 { return "Podcasts|TV & Film|TV Reviews" }
-        if self.rawValue == 1562 { return "Podcasts|TV & Film|After Shows" }
-        if self.rawValue == 1563 { return "Podcasts|TV & Film|Film Reviews" }
-        if self.rawValue == 1564 { return "Podcasts|TV & Film|Film History" }
-        if self.rawValue == 1565 { return "Podcasts|TV & Film|Film Interviews" }
-        if self.rawValue == 1602 { return "Music Videos|Blues" }
-        if self.rawValue == 1603 { return "Music Videos|Comedy" }
-        if self.rawValue == 1604 { return "Music Videos|Children's Music" }
-        if self.rawValue == 1605 { return "Music Videos|Classical" }
-        if self.rawValue == 1606 { return "Music Videos|Country" }
-        if self.rawValue == 1607 { return "Music Videos|Electronic" }
-        if self.rawValue == 1608 { return "Music Videos|Holiday" }
-        if self.rawValue == 1609 { return "Music Videos|Classical|Opera" }
-        if self.rawValue == 1610 { return "Music Videos|Singer/Songwriter" }
-        if self.rawValue == 1611 { return "Music Videos|Jazz" }
-        if self.rawValue == 1612 { return "Music Videos|Latin" }
-        if self.rawValue == 1613 { return "Music Videos|New Age" }
-        if self.rawValue == 1614 { return "Music Videos|Pop" }
-        if self.rawValue == 1615 { return "Music Videos|R&B/Soul" }
-        if self.rawValue == 1616 { return "Music Videos|Soundtrack" }
-        if self.rawValue == 1617 { return "Music Videos|Dance" }
-        if self.rawValue == 1618 { return "Music Videos|Hip-Hop/Rap" }
-        if self.rawValue == 1619 { return "Music Videos|World" }
-        if self.rawValue == 1620 { return "Music Videos|Alternative" }
-        if self.rawValue == 1621 { return "Music Videos|Rock" }
-        if self.rawValue == 1622 { return "Music Videos|Christian & Gospel" }
-        if self.rawValue == 1623 { return "Music Videos|Vocal" }
-        if self.rawValue == 1624 { return "Music Videos|Reggae" }
-        if self.rawValue == 1625 { return "Music Videos|Easy Listening" }
-        if self.rawValue == 1626 { return "Music Videos|Podcasts" }
-        if self.rawValue == 1627 { return "Music Videos|J-Pop" }
-        if self.rawValue == 1628 { return "Music Videos|Enka" }
-        if self.rawValue == 1629 { return "Music Videos|Anime" }
-        if self.rawValue == 1630 { return "Music Videos|Kayokyoku" }
-        if self.rawValue == 1631 { return "Music Videos|Disney" }
-        if self.rawValue == 1632 { return "Music Videos|French Pop" }
-        if self.rawValue == 1633 { return "Music Videos|German Pop" }
-        if self.rawValue == 1634 { return "Music Videos|German Folk" }
-        if self.rawValue == 1635 { return "Music Videos|Alternative|Chinese Alt" }
-        if self.rawValue == 1636 { return "Music Videos|Alternative|Korean Indie" }
-        if self.rawValue == 1637 { return "Music Videos|Chinese" }
-        if self.rawValue == 1638 { return "Music Videos|Chinese|Chinese Classical" }
-        if self.rawValue == 1639 { return "Music Videos|Chinese|Chinese Flute" }
-        if self.rawValue == 1640 { return "Music Videos|Chinese|Chinese Opera" }
-        if self.rawValue == 1641 { return "Music Videos|Chinese|Chinese Orchestral" }
-        if self.rawValue == 1642 { return "Music Videos|Chinese|Chinese Regional Folk" }
-        if self.rawValue == 1643 { return "Music Videos|Chinese|Chinese Strings" }
-        if self.rawValue == 1644 { return "Music Videos|Chinese|Taiwanese Folk" }
-        if self.rawValue == 1645 { return "Music Videos|Chinese|Tibetan Native Music" }
-        if self.rawValue == 1646 { return "Music Videos|Hip-Hop/Rap|Chinese Hip-Hop" }
-        if self.rawValue == 1647 { return "Music Videos|Hip-Hop/Rap|Korean Hip-Hop" }
-        if self.rawValue == 1648 { return "Music Videos|Korean" }
-        if self.rawValue == 1649 { return "Music Videos|Korean|Korean Classical" }
-        if self.rawValue == 1650 { return "Music Videos|Korean|Korean Trad Song" }
-        if self.rawValue == 1651 { return "Music Videos|Korean|Korean Trad Instrumental" }
-        if self.rawValue == 1652 { return "Music Videos|Korean|Korean Trad Theater" }
-        if self.rawValue == 1653 { return "Music Videos|Rock|Chinese Rock" }
-        if self.rawValue == 1654 { return "Music Videos|Rock|Korean Rock" }
-        if self.rawValue == 1655 { return "Music Videos|Pop|C-Pop" }
-        if self.rawValue == 1656 { return "Music Videos|Pop|Cantopop/HK-Pop" }
-        if self.rawValue == 1657 { return "Music Videos|Pop|Korean Folk-Pop" }
-        if self.rawValue == 1658 { return "Music Videos|Pop|Mandopop" }
-        if self.rawValue == 1659 { return "Music Videos|Pop|Tai-Pop" }
-        if self.rawValue == 1660 { return "Music Videos|Pop|Malaysian Pop" }
-        if self.rawValue == 1661 { return "Music Videos|Pop|Pinoy Pop" }
-        if self.rawValue == 1662 { return "Music Videos|Pop|Original Pilipino Music" }
-        if self.rawValue == 1663 { return "Music Videos|Pop|Manilla Sound" }
-        if self.rawValue == 1664 { return "Music Videos|Pop|Indo Pop" }
-        if self.rawValue == 1665 { return "Music Videos|Pop|Thai Pop" }
-        if self.rawValue == 1666 { return "Music Videos|Vocal|Trot" }
-        if self.rawValue == 1671 { return "Music Videos|Brazilian" }
-        if self.rawValue == 1672 { return "Music Videos|Brazilian|Axe" }
-        if self.rawValue == 1673 { return "Music Videos|Brazilian|Baile Funk" }
-        if self.rawValue == 1674 { return "Music Videos|Brazilian|Bossa Nova" }
-        if self.rawValue == 1675 { return "Music Videos|Brazilian|Choro" }
-        if self.rawValue == 1676 { return "Music Videos|Brazilian|Forro" }
-        if self.rawValue == 1677 { return "Music Videos|Brazilian|Frevo" }
-        if self.rawValue == 1678 { return "Music Videos|Brazilian|MPB" }
-        if self.rawValue == 1679 { return "Music Videos|Brazilian|Pagode" }
-        if self.rawValue == 1680 { return "Music Videos|Brazilian|Samba" }
-        if self.rawValue == 1681 { return "Music Videos|Brazilian|Sertanejo" }
-        if self.rawValue == 1682 { return "Music Videos|Classical|High Classical" }
-        if self.rawValue == 1683 { return "Music Videos|Fitness & Workout" }
-        if self.rawValue == 1684 { return "Music Videos|Instrumental" }
-        if self.rawValue == 1685 { return "Music Videos|Jazz|Big Band" }
-        if self.rawValue == 1686 { return "Music Videos|Pop|K-Pop" }
-        if self.rawValue == 1687 { return "Music Videos|Karaoke" }
-        if self.rawValue == 1688 { return "Music Videos|Rock|Heavy Metal" }
-        if self.rawValue == 1689 { return "Music Videos|Spoken Word" }
-        if self.rawValue == 1690 { return "Music Videos|Indian" }
-        if self.rawValue == 1691 { return "Music Videos|Indian|Bollywood" }
-        if self.rawValue == 1692 { return "Music Videos|Indian|Regional Indian|Tamil" }
-        if self.rawValue == 1693 { return "Music Videos|Indian|Regional Indian|Telugu" }
-        if self.rawValue == 1694 { return "Music Videos|Indian|Regional Indian" }
-        if self.rawValue == 1695 { return "Music Videos|Indian|Devotional & Spiritual" }
-        if self.rawValue == 1696 { return "Music Videos|Indian|Sufi" }
-        if self.rawValue == 1697 { return "Music Videos|Indian|Indian Classical" }
-        if self.rawValue == 1698 { return "Music Videos|Russian|Russian Chanson" }
-        if self.rawValue == 1699 { return "Music Videos|World|Dini" }
-        if self.rawValue == 1700 { return "Music Videos|Turkish|Halk" }
-        if self.rawValue == 1701 { return "Music Videos|Turkish|Sanat" }
-        if self.rawValue == 1702 { return "Music Videos|World|Dangdut" }
-        if self.rawValue == 1703 { return "Music Videos|World|Indonesian Religious" }
-        if self.rawValue == 1704 { return "Music Videos|Indian|Indian Pop" }
-        if self.rawValue == 1705 { return "Music Videos|World|Calypso" }
-        if self.rawValue == 1706 { return "Music Videos|World|Soca" }
-        if self.rawValue == 1707 { return "Music Videos|Indian|Ghazals" }
-        if self.rawValue == 1708 { return "Music Videos|Indian|Indian Folk" }
-        if self.rawValue == 1709 { return "Music Videos|Turkish|Arabesque" }
-        if self.rawValue == 1710 { return "Music Videos|African|Afrikaans" }
-        if self.rawValue == 1711 { return "Music Videos|World|Farsi" }
-        if self.rawValue == 1712 { return "Music Videos|World|Israeli" }
-        if self.rawValue == 1713 { return "Music Videos|Arabic" }
-        if self.rawValue == 1714 { return "Music Videos|Arabic|Khaleeji" }
-        if self.rawValue == 1715 { return "Music Videos|Arabic|North African" }
-        if self.rawValue == 1716 { return "Music Videos|Arabic|Arabic Pop" }
-        if self.rawValue == 1717 { return "Music Videos|Arabic|Islamic" }
-        if self.rawValue == 1718 { return "Music Videos|Soundtrack|Sound Effects" }
-        if self.rawValue == 1719 { return "Music Videos|Folk" }
-        if self.rawValue == 1720 { return "Music Videos|Orchestral" }
-        if self.rawValue == 1721 { return "Music Videos|Marching" }
-        if self.rawValue == 1723 { return "Music Videos|Pop|Oldies" }
-        if self.rawValue == 1724 { return "Music Videos|Country|Thai Country" }
-        if self.rawValue == 1725 { return "Music Videos|World|Flamenco" }
-        if self.rawValue == 1726 { return "Music Videos|World|Tango" }
-        if self.rawValue == 1727 { return "Music Videos|World|Fado" }
-        if self.rawValue == 1728 { return "Music Videos|World|Iberia" }
-        if self.rawValue == 1729 { return "Music Videos|Russian" }
-        if self.rawValue == 1730 { return "Music Videos|Turkish" }
-        if self.rawValue == 1731 { return "Music Videos|Alternative|College Rock" }
-        if self.rawValue == 1732 { return "Music Videos|Alternative|Goth Rock" }
-        if self.rawValue == 1733 { return "Music Videos|Alternative|Grunge" }
-        if self.rawValue == 1734 { return "Music Videos|Alternative|Indie Rock" }
-        if self.rawValue == 1735 { return "Music Videos|Alternative|New Wave" }
-        if self.rawValue == 1736 { return "Music Videos|Alternative|Punk" }
-        if self.rawValue == 1737 { return "Music Videos|Blues|Acoustic Blues" }
-        if self.rawValue == 1738 { return "Music Videos|Blues|Chicago Blues" }
-        if self.rawValue == 1739 { return "Music Videos|Blues|Classic Blues" }
-        if self.rawValue == 1740 { return "Music Videos|Blues|Contemporary Blues" }
-        if self.rawValue == 1741 { return "Music Videos|Blues|Country Blues" }
-        if self.rawValue == 1742 { return "Music Videos|Blues|Delta Blues" }
-        if self.rawValue == 1743 { return "Music Videos|Blues|Electric Blues" }
-        if self.rawValue == 1744 { return "Music Videos|Children's Music|Lullabies" }
-        if self.rawValue == 1745 { return "Music Videos|Children's Music|Sing-Along" }
-        if self.rawValue == 1746 { return "Music Videos|Children's Music|Stories" }
-        if self.rawValue == 1747 { return "Music Videos|Christian & Gospel|CCM" }
-        if self.rawValue == 1748 { return "Music Videos|Christian & Gospel|Christian Metal" }
-        if self.rawValue == 1749 { return "Music Videos|Christian & Gospel|Christian Pop" }
-        if self.rawValue == 1750 { return "Music Videos|Christian & Gospel|Christian Rap" }
-        if self.rawValue == 1751 { return "Music Videos|Christian & Gospel|Christian Rock" }
-        if self.rawValue == 1752 { return "Music Videos|Christian & Gospel|Classic Christian" }
-        if self.rawValue == 1753 { return "Music Videos|Christian & Gospel|Contemporary Gospel" }
-        if self.rawValue == 1754 { return "Music Videos|Christian & Gospel|Gospel" }
-        if self.rawValue == 1755 { return "Music Videos|Christian & Gospel|Praise & Worship" }
-        if self.rawValue == 1756 { return "Music Videos|Christian & Gospel|Southern Gospel" }
-        if self.rawValue == 1757 { return "Music Videos|Christian & Gospel|Traditional Gospel" }
-        if self.rawValue == 1758 { return "Music Videos|Classical|Avant-Garde" }
-        if self.rawValue == 1759 { return "Music Videos|Classical|Baroque Era" }
-        if self.rawValue == 1760 { return "Music Videos|Classical|Chamber Music" }
-        if self.rawValue == 1761 { return "Music Videos|Classical|Chant" }
-        if self.rawValue == 1762 { return "Music Videos|Classical|Choral" }
-        if self.rawValue == 1763 { return "Music Videos|Classical|Classical Crossover" }
-        if self.rawValue == 1764 { return "Music Videos|Classical|Early Music" }
-        if self.rawValue == 1765 { return "Music Videos|Classical|Impressionist" }
-        if self.rawValue == 1766 { return "Music Videos|Classical|Medieval Era" }
-        if self.rawValue == 1767 { return "Music Videos|Classical|Minimalism" }
-        if self.rawValue == 1768 { return "Music Videos|Classical|Modern Era" }
-        if self.rawValue == 1769 { return "Music Videos|Classical|Orchestral" }
-        if self.rawValue == 1770 { return "Music Videos|Classical|Renaissance" }
-        if self.rawValue == 1771 { return "Music Videos|Classical|Romantic Era" }
-        if self.rawValue == 1772 { return "Music Videos|Classical|Wedding Music" }
-        if self.rawValue == 1773 { return "Music Videos|Comedy|Novelty" }
-        if self.rawValue == 1774 { return "Music Videos|Comedy|Standup Comedy" }
-        if self.rawValue == 1775 { return "Music Videos|Country|Alternative Country" }
-        if self.rawValue == 1776 { return "Music Videos|Country|Americana" }
-        if self.rawValue == 1777 { return "Music Videos|Country|Bluegrass" }
-        if self.rawValue == 1778 { return "Music Videos|Country|Contemporary Bluegrass" }
-        if self.rawValue == 1779 { return "Music Videos|Country|Contemporary Country" }
-        if self.rawValue == 1780 { return "Music Videos|Country|Country Gospel" }
-        if self.rawValue == 1781 { return "Music Videos|Country|Honky Tonk" }
-        if self.rawValue == 1782 { return "Music Videos|Country|Outlaw Country" }
-        if self.rawValue == 1783 { return "Music Videos|Country|Traditional Bluegrass" }
-        if self.rawValue == 1784 { return "Music Videos|Country|Traditional Country" }
-        if self.rawValue == 1785 { return "Music Videos|Country|Urban Cowboy" }
-        if self.rawValue == 1786 { return "Music Videos|Dance|Breakbeat" }
-        if self.rawValue == 1787 { return "Music Videos|Dance|Exercise" }
-        if self.rawValue == 1788 { return "Music Videos|Dance|Garage" }
-        if self.rawValue == 1789 { return "Music Videos|Dance|Hardcore" }
-        if self.rawValue == 1790 { return "Music Videos|Dance|House" }
-        if self.rawValue == 1791 { return "Music Videos|Dance|Jungle/Drum'n'bass" }
-        if self.rawValue == 1792 { return "Music Videos|Dance|Techno" }
-        if self.rawValue == 1793 { return "Music Videos|Dance|Trance" }
-        if self.rawValue == 1794 { return "Music Videos|Easy Listening|Lounge" }
-        if self.rawValue == 1795 { return "Music Videos|Easy Listening|Swing" }
-        if self.rawValue == 1796 { return "Music Videos|Electronic|Ambient" }
-        if self.rawValue == 1797 { return "Music Videos|Electronic|Downtempo" }
-        if self.rawValue == 1798 { return "Music Videos|Electronic|Electronica" }
-        if self.rawValue == 1799 { return "Music Videos|Electronic|IDM/Experimental" }
-        if self.rawValue == 1800 { return "Music Videos|Electronic|Industrial" }
-        if self.rawValue == 1801 { return "Music Videos|Hip-Hop/Rap|Alternative Rap" }
-        if self.rawValue == 1802 { return "Music Videos|Hip-Hop/Rap|Dirty South" }
-        if self.rawValue == 1803 { return "Music Videos|Hip-Hop/Rap|East Coast Rap" }
-        if self.rawValue == 1804 { return "Music Videos|Hip-Hop/Rap|Gangsta Rap" }
-        if self.rawValue == 1805 { return "Music Videos|Hip-Hop/Rap|Hardcore Rap" }
-        if self.rawValue == 1806 { return "Music Videos|Hip-Hop/Rap|Hip-Hop" }
-        if self.rawValue == 1807 { return "Music Videos|Hip-Hop/Rap|Latin Rap" }
-        if self.rawValue == 1808 { return "Music Videos|Hip-Hop/Rap|Old School Rap" }
-        if self.rawValue == 1809 { return "Music Videos|Hip-Hop/Rap|Rap" }
-        if self.rawValue == 1810 { return "Music Videos|Hip-Hop/Rap|Underground Rap" }
-        if self.rawValue == 1811 { return "Music Videos|Hip-Hop/Rap|West Coast Rap" }
-        if self.rawValue == 1812 { return "Music Videos|Holiday|Chanukah" }
-        if self.rawValue == 1813 { return "Music Videos|Holiday|Christmas" }
-        if self.rawValue == 1814 { return "Music Videos|Holiday|Christmas: Children's" }
-        if self.rawValue == 1815 { return "Music Videos|Holiday|Christmas: Classic" }
-        if self.rawValue == 1816 { return "Music Videos|Holiday|Christmas: Classical" }
-        if self.rawValue == 1817 { return "Music Videos|Holiday|Christmas: Jazz" }
-        if self.rawValue == 1818 { return "Music Videos|Holiday|Christmas: Modern" }
-        if self.rawValue == 1819 { return "Music Videos|Holiday|Christmas: Pop" }
-        if self.rawValue == 1820 { return "Music Videos|Holiday|Christmas: R&B" }
-        if self.rawValue == 1821 { return "Music Videos|Holiday|Christmas: Religious" }
-        if self.rawValue == 1822 { return "Music Videos|Holiday|Christmas: Rock" }
-        if self.rawValue == 1823 { return "Music Videos|Holiday|Easter" }
-        if self.rawValue == 1824 { return "Music Videos|Holiday|Halloween" }
-        if self.rawValue == 1825 { return "Music Videos|Holiday|Thanksgiving" }
-        if self.rawValue == 1826 { return "Music Videos|Jazz|Avant-Garde Jazz" }
-        if self.rawValue == 1828 { return "Music Videos|Jazz|Bop" }
-        if self.rawValue == 1829 { return "Music Videos|Jazz|Contemporary Jazz" }
-        if self.rawValue == 1830 { return "Music Videos|Jazz|Cool Jazz" }
-        if self.rawValue == 1831 { return "Music Videos|Jazz|Crossover Jazz" }
-        if self.rawValue == 1832 { return "Music Videos|Jazz|Dixieland" }
-        if self.rawValue == 1833 { return "Music Videos|Jazz|Fusion" }
-        if self.rawValue == 1834 { return "Music Videos|Jazz|Hard Bop" }
-        if self.rawValue == 1835 { return "Music Videos|Jazz|Latin Jazz" }
-        if self.rawValue == 1836 { return "Music Videos|Jazz|Mainstream Jazz" }
-        if self.rawValue == 1837 { return "Music Videos|Jazz|Ragtime" }
-        if self.rawValue == 1838 { return "Music Videos|Jazz|Smooth Jazz" }
-        if self.rawValue == 1839 { return "Music Videos|Jazz|Trad Jazz" }
-        if self.rawValue == 1840 { return "Music Videos|Latin|Alternative & Rock in Spanish" }
-        if self.rawValue == 1841 { return "Music Videos|Latin|Baladas y Boleros" }
-        if self.rawValue == 1842 { return "Music Videos|Latin|Contemporary Latin" }
-        if self.rawValue == 1843 { return "Music Videos|Latin|Latin Jazz" }
-        if self.rawValue == 1844 { return "Music Videos|Latin|Latin Urban" }
-        if self.rawValue == 1845 { return "Music Videos|Latin|Pop in Spanish" }
-        if self.rawValue == 1846 { return "Music Videos|Latin|Raices" }
-        if self.rawValue == 1847 { return "Music Videos|Latin|Musica Mexicana" }
-        if self.rawValue == 1848 { return "Music Videos|Latin|Salsa y Tropical" }
-        if self.rawValue == 1849 { return "Music Videos|New Age|Healing" }
-        if self.rawValue == 1850 { return "Music Videos|New Age|Meditation" }
-        if self.rawValue == 1851 { return "Music Videos|New Age|Nature" }
-        if self.rawValue == 1852 { return "Music Videos|New Age|Relaxation" }
-        if self.rawValue == 1853 { return "Music Videos|New Age|Travel" }
-        if self.rawValue == 1854 { return "Music Videos|Pop|Adult Contemporary" }
-        if self.rawValue == 1855 { return "Music Videos|Pop|Britpop" }
-        if self.rawValue == 1856 { return "Music Videos|Pop|Pop/Rock" }
-        if self.rawValue == 1857 { return "Music Videos|Pop|Soft Rock" }
-        if self.rawValue == 1858 { return "Music Videos|Pop|Teen Pop" }
-        if self.rawValue == 1859 { return "Music Videos|R&B/Soul|Contemporary R&B" }
-        if self.rawValue == 1860 { return "Music Videos|R&B/Soul|Disco" }
-        if self.rawValue == 1861 { return "Music Videos|R&B/Soul|Doo Wop" }
-        if self.rawValue == 1862 { return "Music Videos|R&B/Soul|Funk" }
-        if self.rawValue == 1863 { return "Music Videos|R&B/Soul|Motown" }
-        if self.rawValue == 1864 { return "Music Videos|R&B/Soul|Neo-Soul" }
-        if self.rawValue == 1865 { return "Music Videos|R&B/Soul|Soul" }
-        if self.rawValue == 1866 { return "Music Videos|Reggae|Modern Dancehall" }
-        if self.rawValue == 1867 { return "Music Videos|Reggae|Dub" }
-        if self.rawValue == 1868 { return "Music Videos|Reggae|Roots Reggae" }
-        if self.rawValue == 1869 { return "Music Videos|Reggae|Ska" }
-        if self.rawValue == 1870 { return "Music Videos|Rock|Adult Alternative" }
-        if self.rawValue == 1871 { return "Music Videos|Rock|American Trad Rock" }
-        if self.rawValue == 1872 { return "Music Videos|Rock|Arena Rock" }
-        if self.rawValue == 1873 { return "Music Videos|Rock|Blues-Rock" }
-        if self.rawValue == 1874 { return "Music Videos|Rock|British Invasion" }
-        if self.rawValue == 1875 { return "Music Videos|Rock|Death Metal/Black Metal" }
-        if self.rawValue == 1876 { return "Music Videos|Rock|Glam Rock" }
-        if self.rawValue == 1877 { return "Music Videos|Rock|Hair Metal" }
-        if self.rawValue == 1878 { return "Music Videos|Rock|Hard Rock" }
-        if self.rawValue == 1879 { return "Music Videos|Rock|Jam Bands" }
-        if self.rawValue == 1880 { return "Music Videos|Rock|Prog-Rock/Art Rock" }
-        if self.rawValue == 1881 { return "Music Videos|Rock|Psychedelic" }
-        if self.rawValue == 1882 { return "Music Videos|Rock|Rock & Roll" }
-        if self.rawValue == 1883 { return "Music Videos|Rock|Rockabilly" }
-        if self.rawValue == 1884 { return "Music Videos|Rock|Roots Rock" }
-        if self.rawValue == 1885 { return "Music Videos|Rock|Singer/Songwriter" }
-        if self.rawValue == 1886 { return "Music Videos|Rock|Southern Rock" }
-        if self.rawValue == 1887 { return "Music Videos|Rock|Surf" }
-        if self.rawValue == 1888 { return "Music Videos|Rock|Tex-Mex" }
-        if self.rawValue == 1889 { return "Music Videos|Singer/Songwriter|Alternative Folk" }
-        if self.rawValue == 1890 { return "Music Videos|Singer/Songwriter|Contemporary Folk" }
-        if self.rawValue == 1891 { return "Music Videos|Singer/Songwriter|Contemporary Singer/Songwriter" }
-        if self.rawValue == 1892 { return "Music Videos|Singer/Songwriter|Folk-Rock" }
-        if self.rawValue == 1893 { return "Music Videos|Singer/Songwriter|New Acoustic" }
-        if self.rawValue == 1894 { return "Music Videos|Singer/Songwriter|Traditional Folk" }
-        if self.rawValue == 1895 { return "Music Videos|Soundtrack|Foreign Cinema" }
-        if self.rawValue == 1896 { return "Music Videos|Soundtrack|Musicals" }
-        if self.rawValue == 1897 { return "Music Videos|Soundtrack|Original Score" }
-        if self.rawValue == 1898 { return "Music Videos|Soundtrack|Soundtrack" }
-        if self.rawValue == 1899 { return "Music Videos|Soundtrack|TV Soundtrack" }
-        if self.rawValue == 1900 { return "Music Videos|Vocal|Standards" }
-        if self.rawValue == 1901 { return "Music Videos|Vocal|Traditional Pop" }
-        if self.rawValue == 1902 { return "Music Videos|Jazz|Vocal Jazz" }
-        if self.rawValue == 1903 { return "Music Videos|Vocal|Vocal Pop" }
-        if self.rawValue == 1904 { return "Music Videos|African" }
-        if self.rawValue == 1905 { return "Music Videos|African|Afro-Beat" }
-        if self.rawValue == 1906 { return "Music Videos|African|Afro-Pop" }
-        if self.rawValue == 1907 { return "Music Videos|World|Asia" }
-        if self.rawValue == 1908 { return "Music Videos|World|Australia" }
-        if self.rawValue == 1909 { return "Music Videos|World|Cajun" }
-        if self.rawValue == 1910 { return "Music Videos|World|Caribbean" }
-        if self.rawValue == 1911 { return "Music Videos|World|Celtic" }
-        if self.rawValue == 1912 { return "Music Videos|World|Celtic Folk" }
-        if self.rawValue == 1913 { return "Music Videos|World|Contemporary Celtic" }
-        if self.rawValue == 1914 { return "Music Videos|World|Europe" }
-        if self.rawValue == 1915 { return "Music Videos|World|France" }
-        if self.rawValue == 1916 { return "Music Videos|World|Hawaii" }
-        if self.rawValue == 1917 { return "Music Videos|World|Japan" }
-        if self.rawValue == 1918 { return "Music Videos|World|Klezmer" }
-        if self.rawValue == 1919 { return "Music Videos|World|North America" }
-        if self.rawValue == 1920 { return "Music Videos|World|Polka" }
-        if self.rawValue == 1921 { return "Music Videos|World|South Africa" }
-        if self.rawValue == 1922 { return "Music Videos|World|South America" }
-        if self.rawValue == 1923 { return "Music Videos|World|Traditional Celtic" }
-        if self.rawValue == 1924 { return "Music Videos|World|Worldbeat" }
-        if self.rawValue == 1925 { return "Music Videos|World|Zydeco" }
-        if self.rawValue == 1926 { return "Music Videos|Christian & Gospel" }
-        if self.rawValue == 1928 { return "Music Videos|Classical|Art Song" }
-        if self.rawValue == 1929 { return "Music Videos|Classical|Brass & Woodwinds" }
-        if self.rawValue == 1930 { return "Music Videos|Classical|Solo Instrumental" }
-        if self.rawValue == 1931 { return "Music Videos|Classical|Contemporary Era" }
-        if self.rawValue == 1932 { return "Music Videos|Classical|Oratorio" }
-        if self.rawValue == 1933 { return "Music Videos|Classical|Cantata" }
-        if self.rawValue == 1934 { return "Music Videos|Classical|Electronic" }
-        if self.rawValue == 1935 { return "Music Videos|Classical|Sacred" }
-        if self.rawValue == 1936 { return "Music Videos|Classical|Guitar" }
-        if self.rawValue == 1938 { return "Music Videos|Classical|Violin" }
-        if self.rawValue == 1939 { return "Music Videos|Classical|Cello" }
-        if self.rawValue == 1940 { return "Music Videos|Classical|Percussion" }
-        if self.rawValue == 1941 { return "Music Videos|Electronic|Dubstep" }
-        if self.rawValue == 1942 { return "Music Videos|Electronic|Bass" }
-        if self.rawValue == 1943 { return "Music Videos|Hip-Hop/Rap|UK Hip-Hop" }
-        if self.rawValue == 1944 { return "Music Videos|Reggae|Lovers Rock" }
-        if self.rawValue == 1945 { return "Music Videos|Alternative|EMO" }
-        if self.rawValue == 1946 { return "Music Videos|Alternative|Pop Punk" }
-        if self.rawValue == 1947 { return "Music Videos|Alternative|Indie Pop" }
-        if self.rawValue == 1948 { return "Music Videos|New Age|Yoga" }
-        if self.rawValue == 1949 { return "Music Videos|Pop|Tribute" }
-        if self.rawValue == 1950 { return "Music Videos|Pop|Shows" }
-        if self.rawValue == 1951 { return "Music Videos|Cuban" }
-        if self.rawValue == 1952 { return "Music Videos|Cuban|Mambo" }
-        if self.rawValue == 1953 { return "Music Videos|Cuban|Chachacha" }
-        if self.rawValue == 1954 { return "Music Videos|Cuban|Guajira" }
-        if self.rawValue == 1955 { return "Music Videos|Cuban|Son" }
-        if self.rawValue == 1956 { return "Music Videos|Cuban|Bolero" }
-        if self.rawValue == 1957 { return "Music Videos|Cuban|Guaracha" }
-        if self.rawValue == 1958 { return "Music Videos|Cuban|Timba" }
-        if self.rawValue == 1959 { return "Music Videos|Soundtrack|Video Game" }
-        if self.rawValue == 1960 { return "Music Videos|Indian|Regional Indian|Punjabi|Punjabi Pop" }
-        if self.rawValue == 1961 { return "Music Videos|Indian|Regional Indian|Bengali|Rabindra Sangeet" }
-        if self.rawValue == 1962 { return "Music Videos|Indian|Regional Indian|Malayalam" }
-        if self.rawValue == 1963 { return "Music Videos|Indian|Regional Indian|Kannada" }
-        if self.rawValue == 1964 { return "Music Videos|Indian|Regional Indian|Marathi" }
-        if self.rawValue == 1965 { return "Music Videos|Indian|Regional Indian|Gujarati" }
-        if self.rawValue == 1966 { return "Music Videos|Indian|Regional Indian|Assamese" }
-        if self.rawValue == 1967 { return "Music Videos|Indian|Regional Indian|Bhojpuri" }
-        if self.rawValue == 1968 { return "Music Videos|Indian|Regional Indian|Haryanvi" }
-        if self.rawValue == 1969 { return "Music Videos|Indian|Regional Indian|Odia" }
-        if self.rawValue == 1970 { return "Music Videos|Indian|Regional Indian|Rajasthani" }
-        if self.rawValue == 1971 { return "Music Videos|Indian|Regional Indian|Urdu" }
-        if self.rawValue == 1972 { return "Music Videos|Indian|Regional Indian|Punjabi" }
-        if self.rawValue == 1973 { return "Music Videos|Indian|Regional Indian|Bengali" }
-        if self.rawValue == 1974 { return "Music Videos|Indian|Indian Classical|Carnatic Classical" }
-        if self.rawValue == 1975 { return "Music Videos|Indian|Indian Classical|Hindustani Classical" }
-        if self.rawValue == 1976 { return "Music Videos|African|Afro House" }
-        if self.rawValue == 1977 { return "Music Videos|African|Afro Soul" }
-        if self.rawValue == 1978 { return "Music Videos|African|Afrobeats" }
-        if self.rawValue == 1979 { return "Music Videos|African|Benga" }
-        if self.rawValue == 1980 { return "Music Videos|African|Bongo-Flava" }
-        if self.rawValue == 1981 { return "Music Videos|African|Coupe-Decale" }
-        if self.rawValue == 1982 { return "Music Videos|African|Gqom" }
-        if self.rawValue == 1983 { return "Music Videos|African|Highlife" }
-        if self.rawValue == 1984 { return "Music Videos|African|Kuduro" }
-        if self.rawValue == 1985 { return "Music Videos|African|Kizomba" }
-        if self.rawValue == 1986 { return "Music Videos|African|Kwaito" }
-        if self.rawValue == 1987 { return "Music Videos|African|Mbalax" }
-        if self.rawValue == 1988 { return "Music Videos|African|Ndombolo" }
-        if self.rawValue == 1989 { return "Music Videos|African|Shangaan Electro" }
-        if self.rawValue == 1990 { return "Music Videos|African|Soukous" }
-        if self.rawValue == 1991 { return "Music Videos|African|Taarab" }
-        if self.rawValue == 1992 { return "Music Videos|African|Zouglou" }
-        if self.rawValue == 1993 { return "Music Videos|Turkish|Ozgun" }
-        if self.rawValue == 1994 { return "Music Videos|Turkish|Fantezi" }
-        if self.rawValue == 1995 { return "Music Videos|Turkish|Religious" }
-        if self.rawValue == 1996 { return "Music Videos|Pop|Turkish Pop" }
-        if self.rawValue == 1997 { return "Music Videos|Rock|Turkish Rock" }
-        if self.rawValue == 1998 { return "Music Videos|Alternative|Turkish Alternative" }
-        if self.rawValue == 1999 { return "Music Videos|Hip-Hop/Rap|Turkish Hip-Hop/Rap" }
-        if self.rawValue == 2000 { return "Music Videos|African|Maskandi" }
-        if self.rawValue == 2001 { return "Music Videos|Russian|Russian Romance" }
-        if self.rawValue == 2002 { return "Music Videos|Russian|Russian Bard" }
-        if self.rawValue == 2003 { return "Music Videos|Russian|Russian Pop" }
-        if self.rawValue == 2004 { return "Music Videos|Russian|Russian Rock" }
-        if self.rawValue == 2005 { return "Music Videos|Russian|Russian Hip-Hop" }
-        if self.rawValue == 2006 { return "Music Videos|Arabic|Levant" }
-        if self.rawValue == 2007 { return "Music Videos|Arabic|Levant|Dabke" }
-        if self.rawValue == 2008 { return "Music Videos|Arabic|Maghreb Rai" }
-        if self.rawValue == 2009 { return "Music Videos|Arabic|Khaleeji|Khaleeji Jalsat" }
-        if self.rawValue == 2010 { return "Music Videos|Arabic|Khaleeji|Khaleeji Shailat" }
-        if self.rawValue == 2011 { return "Music Videos|Tarab" }
-        if self.rawValue == 2012 { return "Music Videos|Tarab|Iraqi Tarab" }
-        if self.rawValue == 2013 { return "Music Videos|Tarab|Egyptian Tarab" }
-        if self.rawValue == 2014 { return "Music Videos|Tarab|Khaleeji Tarab" }
-        if self.rawValue == 2015 { return "Music Videos|Pop|Levant Pop" }
-        if self.rawValue == 2016 { return "Music Videos|Pop|Iraqi Pop" }
-        if self.rawValue == 2017 { return "Music Videos|Pop|Egyptian Pop" }
-        if self.rawValue == 2018 { return "Music Videos|Pop|Maghreb Pop" }
-        if self.rawValue == 2019 { return "Music Videos|Pop|Khaleeji Pop" }
-        if self.rawValue == 2020 { return "Music Videos|Hip-Hop/Rap|Levant Hip-Hop" }
-        if self.rawValue == 2021 { return "Music Videos|Hip-Hop/Rap|Egyptian Hip-Hop" }
-        if self.rawValue == 2022 { return "Music Videos|Hip-Hop/Rap|Maghreb Hip-Hop" }
-        if self.rawValue == 2023 { return "Music Videos|Hip-Hop/Rap|Khaleeji Hip-Hop" }
-        if self.rawValue == 2024 { return "Music Videos|Alternative|Indie Levant" }
-        if self.rawValue == 2025 { return "Music Videos|Alternative|Indie Egyptian" }
-        if self.rawValue == 2026 { return "Music Videos|Alternative|Indie Maghreb" }
-        if self.rawValue == 2027 { return "Music Videos|Electronic|Levant Electronic" }
-        if self.rawValue == 2028 { return "Music Videos|Electronic|Electro-Cha'abi" }
-        if self.rawValue == 2029 { return "Music Videos|Electronic|Maghreb Electronic" }
-        if self.rawValue == 2030 { return "Music Videos|Folk|Iraqi Folk" }
-        if self.rawValue == 2031 { return "Music Videos|Folk|Khaleeji Folk" }
-        if self.rawValue == 2032 { return "Music Videos|Dance|Maghreb Dance" }
-        if self.rawValue == 4000 { return "TV Shows|Comedy" }
-        if self.rawValue == 4001 { return "TV Shows|Drama" }
-        if self.rawValue == 4002 { return "TV Shows|Animation" }
-        if self.rawValue == 4003 { return "TV Shows|Action & Adventure" }
-        if self.rawValue == 4004 { return "TV Shows|Classics" }
-        if self.rawValue == 4005 { return "TV Shows|Kids & Family" }
-        if self.rawValue == 4006 { return "TV Shows|Nonfiction" }
-        if self.rawValue == 4007 { return "TV Shows|Reality TV" }
-        if self.rawValue == 4008 { return "TV Shows|Sci-Fi & Fantasy" }
-        if self.rawValue == 4009 { return "TV Shows|Sports" }
-        if self.rawValue == 4010 { return "TV Shows|Teens" }
-        if self.rawValue == 4011 { return "TV Shows|Latino TV" }
-        if self.rawValue == 4401 { return "Movies|Action & Adventure" }
-        if self.rawValue == 4402 { return "Movies|Anime" }
-        if self.rawValue == 4403 { return "Movies|Classics" }
-        if self.rawValue == 4404 { return "Movies|Comedy" }
-        if self.rawValue == 4405 { return "Movies|Documentary" }
-        if self.rawValue == 4406 { return "Movies|Drama" }
-        if self.rawValue == 4407 { return "Movies|Foreign" }
-        if self.rawValue == 4408 { return "Movies|Horror" }
-        if self.rawValue == 4409 { return "Movies|Independent" }
-        if self.rawValue == 4410 { return "Movies|Kids & Family" }
-        if self.rawValue == 4411 { return "Movies|Musicals" }
-        if self.rawValue == 4412 { return "Movies|Romance" }
-        if self.rawValue == 4413 { return "Movies|Sci-Fi & Fantasy" }
-        if self.rawValue == 4414 { return "Movies|Short Films" }
-        if self.rawValue == 4415 { return "Movies|Special Interest" }
-        if self.rawValue == 4416 { return "Movies|Thriller" }
-        if self.rawValue == 4417 { return "Movies|Sports" }
-        if self.rawValue == 4418 { return "Movies|Western" }
-        if self.rawValue == 4419 { return "Movies|Urban" }
-        if self.rawValue == 4420 { return "Movies|Holiday" }
-        if self.rawValue == 4421 { return "Movies|Made for TV" }
-        if self.rawValue == 4422 { return "Movies|Concert Films" }
-        if self.rawValue == 4423 { return "Movies|Music Documentaries" }
-        if self.rawValue == 4424 { return "Movies|Music Feature Films" }
-        if self.rawValue == 4425 { return "Movies|Japanese Cinema" }
-        if self.rawValue == 4426 { return "Movies|Jidaigeki" }
-        if self.rawValue == 4427 { return "Movies|Tokusatsu" }
-        if self.rawValue == 4428 { return "Movies|Korean Cinema" }
-        if self.rawValue == 4429 { return "Movies|Russian" }
-        if self.rawValue == 4430 { return "Movies|Turkish" }
-        if self.rawValue == 4431 { return "Movies|Bollywood" }
-        if self.rawValue == 4432 { return "Movies|Regional Indian" }
-        if self.rawValue == 4433 { return "Movies|Middle Eastern" }
-        if self.rawValue == 4434 { return "Movies|African" }
-        if self.rawValue == 6000 { return "App Store|Business" }
-        if self.rawValue == 6001 { return "App Store|Weather" }
-        if self.rawValue == 6002 { return "App Store|Utilities" }
-        if self.rawValue == 6003 { return "App Store|Travel" }
-        if self.rawValue == 6004 { return "App Store|Sports" }
-        if self.rawValue == 6005 { return "App Store|Social Networking" }
-        if self.rawValue == 6006 { return "App Store|Reference" }
-        if self.rawValue == 6007 { return "App Store|Productivity" }
-        if self.rawValue == 6008 { return "App Store|Photo & Video" }
-        if self.rawValue == 6009 { return "App Store|News" }
-        if self.rawValue == 6010 { return "App Store|Navigation" }
-        if self.rawValue == 6011 { return "App Store|Music" }
-        if self.rawValue == 6012 { return "App Store|Lifestyle" }
-        if self.rawValue == 6013 { return "App Store|Health & Fitness" }
-        if self.rawValue == 6014 { return "App Store|Games" }
-        if self.rawValue == 6015 { return "App Store|Finance" }
-        if self.rawValue == 6016 { return "App Store|Entertainment" }
-        if self.rawValue == 6017 { return "App Store|Education" }
-        if self.rawValue == 6018 { return "App Store|Books" }
-        if self.rawValue == 6020 { return "App Store|Medical" }
-        if self.rawValue == 6021 { return "App Store|Magazines & Newspapers" }
-        if self.rawValue == 6022 { return "App Store|Catalogs" }
-        if self.rawValue == 6023 { return "App Store|Food & Drink" }
-        if self.rawValue == 6024 { return "App Store|Shopping" }
-        if self.rawValue == 6025 { return "App Store|Stickers" }
-        if self.rawValue == 6026 { return "App Store|Developer Tools" }
-        if self.rawValue == 6027 { return "App Store|Graphics & Design" }
-        if self.rawValue == 7001 { return "App Store|Games|Action" }
-        if self.rawValue == 7002 { return "App Store|Games|Adventure" }
-        if self.rawValue == 7003 { return "App Store|Games|Casual" }
-        if self.rawValue == 7004 { return "App Store|Games|Board" }
-        if self.rawValue == 7005 { return "App Store|Games|Card" }
-        if self.rawValue == 7006 { return "App Store|Games|Casino" }
-        if self.rawValue == 7007 { return "App Store|Games|Dice" }
-        if self.rawValue == 7008 { return "App Store|Games|Educational" }
-        if self.rawValue == 7009 { return "App Store|Games|Family" }
-        if self.rawValue == 7011 { return "App Store|Games|Music" }
-        if self.rawValue == 7012 { return "App Store|Games|Puzzle" }
-        if self.rawValue == 7013 { return "App Store|Games|Racing" }
-        if self.rawValue == 7014 { return "App Store|Games|Role Playing" }
-        if self.rawValue == 7015 { return "App Store|Games|Simulation" }
-        if self.rawValue == 7016 { return "App Store|Games|Sports" }
-        if self.rawValue == 7017 { return "App Store|Games|Strategy" }
-        if self.rawValue == 7018 { return "App Store|Games|Trivia" }
-        if self.rawValue == 7019 { return "App Store|Games|Word" }
-        if self.rawValue == 8001 { return "Tones|Ringtones|Alternative" }
-        if self.rawValue == 8002 { return "Tones|Ringtones|Blues" }
-        if self.rawValue == 8003 { return "Tones|Ringtones|Children's Music" }
-        if self.rawValue == 8004 { return "Tones|Ringtones|Classical" }
-        if self.rawValue == 8005 { return "Tones|Ringtones|Comedy" }
-        if self.rawValue == 8006 { return "Tones|Ringtones|Country" }
-        if self.rawValue == 8007 { return "Tones|Ringtones|Dance" }
-        if self.rawValue == 8008 { return "Tones|Ringtones|Electronic" }
-        if self.rawValue == 8009 { return "Tones|Ringtones|Enka" }
-        if self.rawValue == 8010 { return "Tones|Ringtones|French Pop" }
-        if self.rawValue == 8011 { return "Tones|Ringtones|German Folk" }
-        if self.rawValue == 8012 { return "Tones|Ringtones|German Pop" }
-        if self.rawValue == 8013 { return "Tones|Ringtones|Hip-Hop/Rap" }
-        if self.rawValue == 8014 { return "Tones|Ringtones|Holiday" }
-        if self.rawValue == 8015 { return "Tones|Ringtones|Inspirational" }
-        if self.rawValue == 8016 { return "Tones|Ringtones|J-Pop" }
-        if self.rawValue == 8017 { return "Tones|Ringtones|Jazz" }
-        if self.rawValue == 8018 { return "Tones|Ringtones|Kayokyoku" }
-        if self.rawValue == 8019 { return "Tones|Ringtones|Latin" }
-        if self.rawValue == 8020 { return "Tones|Ringtones|New Age" }
-        if self.rawValue == 8021 { return "Tones|Ringtones|Classical|Opera" }
-        if self.rawValue == 8022 { return "Tones|Ringtones|Pop" }
-        if self.rawValue == 8023 { return "Tones|Ringtones|R&B/Soul" }
-        if self.rawValue == 8024 { return "Tones|Ringtones|Reggae" }
-        if self.rawValue == 8025 { return "Tones|Ringtones|Rock" }
-        if self.rawValue == 8026 { return "Tones|Ringtones|Singer/Songwriter" }
-        if self.rawValue == 8027 { return "Tones|Ringtones|Soundtrack" }
-        if self.rawValue == 8028 { return "Tones|Ringtones|Spoken Word" }
-        if self.rawValue == 8029 { return "Tones|Ringtones|Vocal" }
-        if self.rawValue == 8030 { return "Tones|Ringtones|World" }
-        if self.rawValue == 8050 { return "Tones|Alert Tones|Sound Effects" }
-        if self.rawValue == 8051 { return "Tones|Alert Tones|Dialogue" }
-        if self.rawValue == 8052 { return "Tones|Alert Tones|Music" }
-        if self.rawValue == 8053 { return "Tones|Ringtones" }
-        if self.rawValue == 8054 { return "Tones|Alert Tones" }
-        if self.rawValue == 8055 { return "Tones|Ringtones|Alternative|Chinese Alt" }
-        if self.rawValue == 8056 { return "Tones|Ringtones|Alternative|College Rock" }
-        if self.rawValue == 8057 { return "Tones|Ringtones|Alternative|Goth Rock" }
-        if self.rawValue == 8058 { return "Tones|Ringtones|Alternative|Grunge" }
-        if self.rawValue == 8059 { return "Tones|Ringtones|Alternative|Indie Rock" }
-        if self.rawValue == 8060 { return "Tones|Ringtones|Alternative|Korean Indie" }
-        if self.rawValue == 8061 { return "Tones|Ringtones|Alternative|New Wave" }
-        if self.rawValue == 8062 { return "Tones|Ringtones|Alternative|Punk" }
-        if self.rawValue == 8063 { return "Tones|Ringtones|Anime" }
-        if self.rawValue == 8064 { return "Tones|Ringtones|Arabic" }
-        if self.rawValue == 8065 { return "Tones|Ringtones|Arabic|Arabic Pop" }
-        if self.rawValue == 8066 { return "Tones|Ringtones|Arabic|Islamic" }
-        if self.rawValue == 8067 { return "Tones|Ringtones|Arabic|Khaleeji" }
-        if self.rawValue == 8068 { return "Tones|Ringtones|Arabic|North African" }
-        if self.rawValue == 8069 { return "Tones|Ringtones|Blues|Acoustic Blues" }
-        if self.rawValue == 8070 { return "Tones|Ringtones|Blues|Chicago Blues" }
-        if self.rawValue == 8071 { return "Tones|Ringtones|Blues|Classic Blues" }
-        if self.rawValue == 8072 { return "Tones|Ringtones|Blues|Contemporary Blues" }
-        if self.rawValue == 8073 { return "Tones|Ringtones|Blues|Country Blues" }
-        if self.rawValue == 8074 { return "Tones|Ringtones|Blues|Delta Blues" }
-        if self.rawValue == 8075 { return "Tones|Ringtones|Blues|Electric Blues" }
-        if self.rawValue == 8076 { return "Tones|Ringtones|Brazilian" }
-        if self.rawValue == 8077 { return "Tones|Ringtones|Brazilian|Axe" }
-        if self.rawValue == 8078 { return "Tones|Ringtones|Brazilian|Baile Funk" }
-        if self.rawValue == 8079 { return "Tones|Ringtones|Brazilian|Bossa Nova" }
-        if self.rawValue == 8080 { return "Tones|Ringtones|Brazilian|Choro" }
-        if self.rawValue == 8081 { return "Tones|Ringtones|Brazilian|Forro" }
-        if self.rawValue == 8082 { return "Tones|Ringtones|Brazilian|Frevo" }
-        if self.rawValue == 8083 { return "Tones|Ringtones|Brazilian|MPB" }
-        if self.rawValue == 8084 { return "Tones|Ringtones|Brazilian|Pagode" }
-        if self.rawValue == 8085 { return "Tones|Ringtones|Brazilian|Samba" }
-        if self.rawValue == 8086 { return "Tones|Ringtones|Brazilian|Sertanejo" }
-        if self.rawValue == 8087 { return "Tones|Ringtones|Children's Music|Lullabies" }
-        if self.rawValue == 8088 { return "Tones|Ringtones|Children's Music|Sing-Along" }
-        if self.rawValue == 8089 { return "Tones|Ringtones|Children's Music|Stories" }
-        if self.rawValue == 8090 { return "Tones|Ringtones|Chinese" }
-        if self.rawValue == 8091 { return "Tones|Ringtones|Chinese|Chinese Classical" }
-        if self.rawValue == 8092 { return "Tones|Ringtones|Chinese|Chinese Flute" }
-        if self.rawValue == 8093 { return "Tones|Ringtones|Chinese|Chinese Opera" }
-        if self.rawValue == 8094 { return "Tones|Ringtones|Chinese|Chinese Orchestral" }
-        if self.rawValue == 8095 { return "Tones|Ringtones|Chinese|Chinese Regional Folk" }
-        if self.rawValue == 8096 { return "Tones|Ringtones|Chinese|Chinese Strings" }
-        if self.rawValue == 8097 { return "Tones|Ringtones|Chinese|Taiwanese Folk" }
-        if self.rawValue == 8098 { return "Tones|Ringtones|Chinese|Tibetan Native Music" }
-        if self.rawValue == 8099 { return "Tones|Ringtones|Christian & Gospel" }
-        if self.rawValue == 8100 { return "Tones|Ringtones|Christian & Gospel|CCM" }
-        if self.rawValue == 8101 { return "Tones|Ringtones|Christian & Gospel|Christian Metal" }
-        if self.rawValue == 8102 { return "Tones|Ringtones|Christian & Gospel|Christian Pop" }
-        if self.rawValue == 8103 { return "Tones|Ringtones|Christian & Gospel|Christian Rap" }
-        if self.rawValue == 8104 { return "Tones|Ringtones|Christian & Gospel|Christian Rock" }
-        if self.rawValue == 8105 { return "Tones|Ringtones|Christian & Gospel|Classic Christian" }
-        if self.rawValue == 8106 { return "Tones|Ringtones|Christian & Gospel|Contemporary Gospel" }
-        if self.rawValue == 8107 { return "Tones|Ringtones|Christian & Gospel|Gospel" }
-        if self.rawValue == 8108 { return "Tones|Ringtones|Christian & Gospel|Praise & Worship" }
-        if self.rawValue == 8109 { return "Tones|Ringtones|Christian & Gospel|Southern Gospel" }
-        if self.rawValue == 8110 { return "Tones|Ringtones|Christian & Gospel|Traditional Gospel" }
-        if self.rawValue == 8111 { return "Tones|Ringtones|Classical|Avant-Garde" }
-        if self.rawValue == 8112 { return "Tones|Ringtones|Classical|Baroque Era" }
-        if self.rawValue == 8113 { return "Tones|Ringtones|Classical|Chamber Music" }
-        if self.rawValue == 8114 { return "Tones|Ringtones|Classical|Chant" }
-        if self.rawValue == 8115 { return "Tones|Ringtones|Classical|Choral" }
-        if self.rawValue == 8116 { return "Tones|Ringtones|Classical|Classical Crossover" }
-        if self.rawValue == 8117 { return "Tones|Ringtones|Classical|Early Music" }
-        if self.rawValue == 8118 { return "Tones|Ringtones|Classical|High Classical" }
-        if self.rawValue == 8119 { return "Tones|Ringtones|Classical|Impressionist" }
-        if self.rawValue == 8120 { return "Tones|Ringtones|Classical|Medieval Era" }
-        if self.rawValue == 8121 { return "Tones|Ringtones|Classical|Minimalism" }
-        if self.rawValue == 8122 { return "Tones|Ringtones|Classical|Modern Era" }
-        if self.rawValue == 8123 { return "Tones|Ringtones|Classical|Orchestral" }
-        if self.rawValue == 8124 { return "Tones|Ringtones|Classical|Renaissance" }
-        if self.rawValue == 8125 { return "Tones|Ringtones|Classical|Romantic Era" }
-        if self.rawValue == 8126 { return "Tones|Ringtones|Classical|Wedding Music" }
-        if self.rawValue == 8127 { return "Tones|Ringtones|Comedy|Novelty" }
-        if self.rawValue == 8128 { return "Tones|Ringtones|Comedy|Standup Comedy" }
-        if self.rawValue == 8129 { return "Tones|Ringtones|Country|Alternative Country" }
-        if self.rawValue == 8130 { return "Tones|Ringtones|Country|Americana" }
-        if self.rawValue == 8131 { return "Tones|Ringtones|Country|Bluegrass" }
-        if self.rawValue == 8132 { return "Tones|Ringtones|Country|Contemporary Bluegrass" }
-        if self.rawValue == 8133 { return "Tones|Ringtones|Country|Contemporary Country" }
-        if self.rawValue == 8134 { return "Tones|Ringtones|Country|Country Gospel" }
-        if self.rawValue == 8135 { return "Tones|Ringtones|Country|Honky Tonk" }
-        if self.rawValue == 8136 { return "Tones|Ringtones|Country|Outlaw Country" }
-        if self.rawValue == 8137 { return "Tones|Ringtones|Country|Thai Country" }
-        if self.rawValue == 8138 { return "Tones|Ringtones|Country|Traditional Bluegrass" }
-        if self.rawValue == 8139 { return "Tones|Ringtones|Country|Traditional Country" }
-        if self.rawValue == 8140 { return "Tones|Ringtones|Country|Urban Cowboy" }
-        if self.rawValue == 8141 { return "Tones|Ringtones|Dance|Breakbeat" }
-        if self.rawValue == 8142 { return "Tones|Ringtones|Dance|Exercise" }
-        if self.rawValue == 8143 { return "Tones|Ringtones|Dance|Garage" }
-        if self.rawValue == 8144 { return "Tones|Ringtones|Dance|Hardcore" }
-        if self.rawValue == 8145 { return "Tones|Ringtones|Dance|House" }
-        if self.rawValue == 8146 { return "Tones|Ringtones|Dance|Jungle/Drum'n'bass" }
-        if self.rawValue == 8147 { return "Tones|Ringtones|Dance|Techno" }
-        if self.rawValue == 8148 { return "Tones|Ringtones|Dance|Trance" }
-        if self.rawValue == 8149 { return "Tones|Ringtones|Disney" }
-        if self.rawValue == 8150 { return "Tones|Ringtones|Easy Listening" }
-        if self.rawValue == 8151 { return "Tones|Ringtones|Easy Listening|Lounge" }
-        if self.rawValue == 8152 { return "Tones|Ringtones|Easy Listening|Swing" }
-        if self.rawValue == 8153 { return "Tones|Ringtones|Electronic|Ambient" }
-        if self.rawValue == 8154 { return "Tones|Ringtones|Electronic|Downtempo" }
-        if self.rawValue == 8155 { return "Tones|Ringtones|Electronic|Electronica" }
-        if self.rawValue == 8156 { return "Tones|Ringtones|Electronic|IDM/Experimental" }
-        if self.rawValue == 8157 { return "Tones|Ringtones|Electronic|Industrial" }
-        if self.rawValue == 8158 { return "Tones|Ringtones|Fitness & Workout" }
-        if self.rawValue == 8159 { return "Tones|Ringtones|Folk" }
-        if self.rawValue == 8160 { return "Tones|Ringtones|Hip-Hop/Rap|Alternative Rap" }
-        if self.rawValue == 8161 { return "Tones|Ringtones|Hip-Hop/Rap|Chinese Hip-Hop" }
-        if self.rawValue == 8162 { return "Tones|Ringtones|Hip-Hop/Rap|Dirty South" }
-        if self.rawValue == 8163 { return "Tones|Ringtones|Hip-Hop/Rap|East Coast Rap" }
-        if self.rawValue == 8164 { return "Tones|Ringtones|Hip-Hop/Rap|Gangsta Rap" }
-        if self.rawValue == 8165 { return "Tones|Ringtones|Hip-Hop/Rap|Hardcore Rap" }
-        if self.rawValue == 8166 { return "Tones|Ringtones|Hip-Hop/Rap|Hip-Hop" }
-        if self.rawValue == 8167 { return "Tones|Ringtones|Hip-Hop/Rap|Korean Hip-Hop" }
-        if self.rawValue == 8168 { return "Tones|Ringtones|Hip-Hop/Rap|Latin Rap" }
-        if self.rawValue == 8169 { return "Tones|Ringtones|Hip-Hop/Rap|Old School Rap" }
-        if self.rawValue == 8170 { return "Tones|Ringtones|Hip-Hop/Rap|Rap" }
-        if self.rawValue == 8171 { return "Tones|Ringtones|Hip-Hop/Rap|Underground Rap" }
-        if self.rawValue == 8172 { return "Tones|Ringtones|Hip-Hop/Rap|West Coast Rap" }
-        if self.rawValue == 8173 { return "Tones|Ringtones|Holiday|Chanukah" }
-        if self.rawValue == 8174 { return "Tones|Ringtones|Holiday|Christmas" }
-        if self.rawValue == 8175 { return "Tones|Ringtones|Holiday|Christmas: Children's" }
-        if self.rawValue == 8176 { return "Tones|Ringtones|Holiday|Christmas: Classic" }
-        if self.rawValue == 8177 { return "Tones|Ringtones|Holiday|Christmas: Classical" }
-        if self.rawValue == 8178 { return "Tones|Ringtones|Holiday|Christmas: Jazz" }
-        if self.rawValue == 8179 { return "Tones|Ringtones|Holiday|Christmas: Modern" }
-        if self.rawValue == 8180 { return "Tones|Ringtones|Holiday|Christmas: Pop" }
-        if self.rawValue == 8181 { return "Tones|Ringtones|Holiday|Christmas: R&B" }
-        if self.rawValue == 8182 { return "Tones|Ringtones|Holiday|Christmas: Religious" }
-        if self.rawValue == 8183 { return "Tones|Ringtones|Holiday|Christmas: Rock" }
-        if self.rawValue == 8184 { return "Tones|Ringtones|Holiday|Easter" }
-        if self.rawValue == 8185 { return "Tones|Ringtones|Holiday|Halloween" }
-        if self.rawValue == 8186 { return "Tones|Ringtones|Holiday|Thanksgiving" }
-        if self.rawValue == 8187 { return "Tones|Ringtones|Indian" }
-        if self.rawValue == 8188 { return "Tones|Ringtones|Indian|Bollywood" }
-        if self.rawValue == 8189 { return "Tones|Ringtones|Indian|Devotional & Spiritual" }
-        if self.rawValue == 8190 { return "Tones|Ringtones|Indian|Ghazals" }
-        if self.rawValue == 8191 { return "Tones|Ringtones|Indian|Indian Classical" }
-        if self.rawValue == 8192 { return "Tones|Ringtones|Indian|Indian Folk" }
-        if self.rawValue == 8193 { return "Tones|Ringtones|Indian|Indian Pop" }
-        if self.rawValue == 8194 { return "Tones|Ringtones|Indian|Regional Indian" }
-        if self.rawValue == 8195 { return "Tones|Ringtones|Indian|Sufi" }
-        if self.rawValue == 8196 { return "Tones|Ringtones|Indian|Regional Indian|Tamil" }
-        if self.rawValue == 8197 { return "Tones|Ringtones|Indian|Regional Indian|Telugu" }
-        if self.rawValue == 8198 { return "Tones|Ringtones|Instrumental" }
-        if self.rawValue == 8199 { return "Tones|Ringtones|Jazz|Avant-Garde Jazz" }
-        if self.rawValue == 8201 { return "Tones|Ringtones|Jazz|Big Band" }
-        if self.rawValue == 8202 { return "Tones|Ringtones|Jazz|Bop" }
-        if self.rawValue == 8203 { return "Tones|Ringtones|Jazz|Contemporary Jazz" }
-        if self.rawValue == 8204 { return "Tones|Ringtones|Jazz|Cool Jazz" }
-        if self.rawValue == 8205 { return "Tones|Ringtones|Jazz|Crossover Jazz" }
-        if self.rawValue == 8206 { return "Tones|Ringtones|Jazz|Dixieland" }
-        if self.rawValue == 8207 { return "Tones|Ringtones|Jazz|Fusion" }
-        if self.rawValue == 8208 { return "Tones|Ringtones|Jazz|Hard Bop" }
-        if self.rawValue == 8209 { return "Tones|Ringtones|Jazz|Latin Jazz" }
-        if self.rawValue == 8210 { return "Tones|Ringtones|Jazz|Mainstream Jazz" }
-        if self.rawValue == 8211 { return "Tones|Ringtones|Jazz|Ragtime" }
-        if self.rawValue == 8212 { return "Tones|Ringtones|Jazz|Smooth Jazz" }
-        if self.rawValue == 8213 { return "Tones|Ringtones|Jazz|Trad Jazz" }
-        if self.rawValue == 8214 { return "Tones|Ringtones|Pop|K-Pop" }
-        if self.rawValue == 8215 { return "Tones|Ringtones|Karaoke" }
-        if self.rawValue == 8216 { return "Tones|Ringtones|Korean" }
-        if self.rawValue == 8217 { return "Tones|Ringtones|Korean|Korean Classical" }
-        if self.rawValue == 8218 { return "Tones|Ringtones|Korean|Korean Trad Instrumental" }
-        if self.rawValue == 8219 { return "Tones|Ringtones|Korean|Korean Trad Song" }
-        if self.rawValue == 8220 { return "Tones|Ringtones|Korean|Korean Trad Theater" }
-        if self.rawValue == 8221 { return "Tones|Ringtones|Latin|Alternative & Rock in Spanish" }
-        if self.rawValue == 8222 { return "Tones|Ringtones|Latin|Baladas y Boleros" }
-        if self.rawValue == 8223 { return "Tones|Ringtones|Latin|Contemporary Latin" }
-        if self.rawValue == 8224 { return "Tones|Ringtones|Latin|Latin Jazz" }
-        if self.rawValue == 8225 { return "Tones|Ringtones|Latin|Latin Urban" }
-        if self.rawValue == 8226 { return "Tones|Ringtones|Latin|Pop in Spanish" }
-        if self.rawValue == 8227 { return "Tones|Ringtones|Latin|Raices" }
-        if self.rawValue == 8228 { return "Tones|Ringtones|Latin|Musica Mexicana" }
-        if self.rawValue == 8229 { return "Tones|Ringtones|Latin|Salsa y Tropical" }
-        if self.rawValue == 8230 { return "Tones|Ringtones|Marching Bands" }
-        if self.rawValue == 8231 { return "Tones|Ringtones|New Age|Healing" }
-        if self.rawValue == 8232 { return "Tones|Ringtones|New Age|Meditation" }
-        if self.rawValue == 8233 { return "Tones|Ringtones|New Age|Nature" }
-        if self.rawValue == 8234 { return "Tones|Ringtones|New Age|Relaxation" }
-        if self.rawValue == 8235 { return "Tones|Ringtones|New Age|Travel" }
-        if self.rawValue == 8236 { return "Tones|Ringtones|Orchestral" }
-        if self.rawValue == 8237 { return "Tones|Ringtones|Pop|Adult Contemporary" }
-        if self.rawValue == 8238 { return "Tones|Ringtones|Pop|Britpop" }
-        if self.rawValue == 8239 { return "Tones|Ringtones|Pop|C-Pop" }
-        if self.rawValue == 8240 { return "Tones|Ringtones|Pop|Cantopop/HK-Pop" }
-        if self.rawValue == 8241 { return "Tones|Ringtones|Pop|Indo Pop" }
-        if self.rawValue == 8242 { return "Tones|Ringtones|Pop|Korean Folk-Pop" }
-        if self.rawValue == 8243 { return "Tones|Ringtones|Pop|Malaysian Pop" }
-        if self.rawValue == 8244 { return "Tones|Ringtones|Pop|Mandopop" }
-        if self.rawValue == 8245 { return "Tones|Ringtones|Pop|Manilla Sound" }
-        if self.rawValue == 8246 { return "Tones|Ringtones|Pop|Oldies" }
-        if self.rawValue == 8247 { return "Tones|Ringtones|Pop|Original Pilipino Music" }
-        if self.rawValue == 8248 { return "Tones|Ringtones|Pop|Pinoy Pop" }
-        if self.rawValue == 8249 { return "Tones|Ringtones|Pop|Pop/Rock" }
-        if self.rawValue == 8250 { return "Tones|Ringtones|Pop|Soft Rock" }
-        if self.rawValue == 8251 { return "Tones|Ringtones|Pop|Tai-Pop" }
-        if self.rawValue == 8252 { return "Tones|Ringtones|Pop|Teen Pop" }
-        if self.rawValue == 8253 { return "Tones|Ringtones|Pop|Thai Pop" }
-        if self.rawValue == 8254 { return "Tones|Ringtones|R&B/Soul|Contemporary R&B" }
-        if self.rawValue == 8255 { return "Tones|Ringtones|R&B/Soul|Disco" }
-        if self.rawValue == 8256 { return "Tones|Ringtones|R&B/Soul|Doo Wop" }
-        if self.rawValue == 8257 { return "Tones|Ringtones|R&B/Soul|Funk" }
-        if self.rawValue == 8258 { return "Tones|Ringtones|R&B/Soul|Motown" }
-        if self.rawValue == 8259 { return "Tones|Ringtones|R&B/Soul|Neo-Soul" }
-        if self.rawValue == 8260 { return "Tones|Ringtones|R&B/Soul|Soul" }
-        if self.rawValue == 8261 { return "Tones|Ringtones|Reggae|Modern Dancehall" }
-        if self.rawValue == 8262 { return "Tones|Ringtones|Reggae|Dub" }
-        if self.rawValue == 8263 { return "Tones|Ringtones|Reggae|Roots Reggae" }
-        if self.rawValue == 8264 { return "Tones|Ringtones|Reggae|Ska" }
-        if self.rawValue == 8265 { return "Tones|Ringtones|Rock|Adult Alternative" }
-        if self.rawValue == 8266 { return "Tones|Ringtones|Rock|American Trad Rock" }
-        if self.rawValue == 8267 { return "Tones|Ringtones|Rock|Arena Rock" }
-        if self.rawValue == 8268 { return "Tones|Ringtones|Rock|Blues-Rock" }
-        if self.rawValue == 8269 { return "Tones|Ringtones|Rock|British Invasion" }
-        if self.rawValue == 8270 { return "Tones|Ringtones|Rock|Chinese Rock" }
-        if self.rawValue == 8271 { return "Tones|Ringtones|Rock|Death Metal/Black Metal" }
-        if self.rawValue == 8272 { return "Tones|Ringtones|Rock|Glam Rock" }
-        if self.rawValue == 8273 { return "Tones|Ringtones|Rock|Hair Metal" }
-        if self.rawValue == 8274 { return "Tones|Ringtones|Rock|Hard Rock" }
-        if self.rawValue == 8275 { return "Tones|Ringtones|Rock|Metal" }
-        if self.rawValue == 8276 { return "Tones|Ringtones|Rock|Jam Bands" }
-        if self.rawValue == 8277 { return "Tones|Ringtones|Rock|Korean Rock" }
-        if self.rawValue == 8278 { return "Tones|Ringtones|Rock|Prog-Rock/Art Rock" }
-        if self.rawValue == 8279 { return "Tones|Ringtones|Rock|Psychedelic" }
-        if self.rawValue == 8280 { return "Tones|Ringtones|Rock|Rock & Roll" }
-        if self.rawValue == 8281 { return "Tones|Ringtones|Rock|Rockabilly" }
-        if self.rawValue == 8282 { return "Tones|Ringtones|Rock|Roots Rock" }
-        if self.rawValue == 8283 { return "Tones|Ringtones|Rock|Singer/Songwriter" }
-        if self.rawValue == 8284 { return "Tones|Ringtones|Rock|Southern Rock" }
-        if self.rawValue == 8285 { return "Tones|Ringtones|Rock|Surf" }
-        if self.rawValue == 8286 { return "Tones|Ringtones|Rock|Tex-Mex" }
-        if self.rawValue == 8287 { return "Tones|Ringtones|Singer/Songwriter|Alternative Folk" }
-        if self.rawValue == 8288 { return "Tones|Ringtones|Singer/Songwriter|Contemporary Folk" }
-        if self.rawValue == 8289 { return "Tones|Ringtones|Singer/Songwriter|Contemporary Singer/Songwriter" }
-        if self.rawValue == 8290 { return "Tones|Ringtones|Singer/Songwriter|Folk-Rock" }
-        if self.rawValue == 8291 { return "Tones|Ringtones|Singer/Songwriter|New Acoustic" }
-        if self.rawValue == 8292 { return "Tones|Ringtones|Singer/Songwriter|Traditional Folk" }
-        if self.rawValue == 8293 { return "Tones|Ringtones|Soundtrack|Foreign Cinema" }
-        if self.rawValue == 8294 { return "Tones|Ringtones|Soundtrack|Musicals" }
-        if self.rawValue == 8295 { return "Tones|Ringtones|Soundtrack|Original Score" }
-        if self.rawValue == 8296 { return "Tones|Ringtones|Soundtrack|Sound Effects" }
-        if self.rawValue == 8297 { return "Tones|Ringtones|Soundtrack|Soundtrack" }
-        if self.rawValue == 8298 { return "Tones|Ringtones|Soundtrack|TV Soundtrack" }
-        if self.rawValue == 8299 { return "Tones|Ringtones|Vocal|Standards" }
-        if self.rawValue == 8300 { return "Tones|Ringtones|Vocal|Traditional Pop" }
-        if self.rawValue == 8301 { return "Tones|Ringtones|Vocal|Trot" }
-        if self.rawValue == 8302 { return "Tones|Ringtones|Jazz|Vocal Jazz" }
-        if self.rawValue == 8303 { return "Tones|Ringtones|Vocal|Vocal Pop" }
-        if self.rawValue == 8304 { return "Tones|Ringtones|African" }
-        if self.rawValue == 8305 { return "Tones|Ringtones|African|Afrikaans" }
-        if self.rawValue == 8306 { return "Tones|Ringtones|African|Afro-Beat" }
-        if self.rawValue == 8307 { return "Tones|Ringtones|African|Afro-Pop" }
-        if self.rawValue == 8308 { return "Tones|Ringtones|Turkish|Arabesque" }
-        if self.rawValue == 8309 { return "Tones|Ringtones|World|Asia" }
-        if self.rawValue == 8310 { return "Tones|Ringtones|World|Australia" }
-        if self.rawValue == 8311 { return "Tones|Ringtones|World|Cajun" }
-        if self.rawValue == 8312 { return "Tones|Ringtones|World|Calypso" }
-        if self.rawValue == 8313 { return "Tones|Ringtones|World|Caribbean" }
-        if self.rawValue == 8314 { return "Tones|Ringtones|World|Celtic" }
-        if self.rawValue == 8315 { return "Tones|Ringtones|World|Celtic Folk" }
-        if self.rawValue == 8316 { return "Tones|Ringtones|World|Contemporary Celtic" }
-        if self.rawValue == 8317 { return "Tones|Ringtones|World|Dangdut" }
-        if self.rawValue == 8318 { return "Tones|Ringtones|World|Dini" }
-        if self.rawValue == 8319 { return "Tones|Ringtones|World|Europe" }
-        if self.rawValue == 8320 { return "Tones|Ringtones|World|Fado" }
-        if self.rawValue == 8321 { return "Tones|Ringtones|World|Farsi" }
-        if self.rawValue == 8322 { return "Tones|Ringtones|World|Flamenco" }
-        if self.rawValue == 8323 { return "Tones|Ringtones|World|France" }
-        if self.rawValue == 8324 { return "Tones|Ringtones|Turkish|Halk" }
-        if self.rawValue == 8325 { return "Tones|Ringtones|World|Hawaii" }
-        if self.rawValue == 8326 { return "Tones|Ringtones|World|Iberia" }
-        if self.rawValue == 8327 { return "Tones|Ringtones|World|Indonesian Religious" }
-        if self.rawValue == 8328 { return "Tones|Ringtones|World|Israeli" }
-        if self.rawValue == 8329 { return "Tones|Ringtones|World|Japan" }
-        if self.rawValue == 8330 { return "Tones|Ringtones|World|Klezmer" }
-        if self.rawValue == 8331 { return "Tones|Ringtones|World|North America" }
-        if self.rawValue == 8332 { return "Tones|Ringtones|World|Polka" }
-        if self.rawValue == 8333 { return "Tones|Ringtones|Russian" }
-        if self.rawValue == 8334 { return "Tones|Ringtones|Russian|Russian Chanson" }
-        if self.rawValue == 8335 { return "Tones|Ringtones|Turkish|Sanat" }
-        if self.rawValue == 8336 { return "Tones|Ringtones|World|Soca" }
-        if self.rawValue == 8337 { return "Tones|Ringtones|World|South Africa" }
-        if self.rawValue == 8338 { return "Tones|Ringtones|World|South America" }
-        if self.rawValue == 8339 { return "Tones|Ringtones|World|Tango" }
-        if self.rawValue == 8340 { return "Tones|Ringtones|World|Traditional Celtic" }
-        if self.rawValue == 8341 { return "Tones|Ringtones|Turkish" }
-        if self.rawValue == 8342 { return "Tones|Ringtones|World|Worldbeat" }
-        if self.rawValue == 8343 { return "Tones|Ringtones|World|Zydeco" }
-        if self.rawValue == 8345 { return "Tones|Ringtones|Classical|Art Song" }
-        if self.rawValue == 8346 { return "Tones|Ringtones|Classical|Brass & Woodwinds" }
-        if self.rawValue == 8347 { return "Tones|Ringtones|Classical|Solo Instrumental" }
-        if self.rawValue == 8348 { return "Tones|Ringtones|Classical|Contemporary Era" }
-        if self.rawValue == 8349 { return "Tones|Ringtones|Classical|Oratorio" }
-        if self.rawValue == 8350 { return "Tones|Ringtones|Classical|Cantata" }
-        if self.rawValue == 8351 { return "Tones|Ringtones|Classical|Electronic" }
-        if self.rawValue == 8352 { return "Tones|Ringtones|Classical|Sacred" }
-        if self.rawValue == 8353 { return "Tones|Ringtones|Classical|Guitar" }
-        if self.rawValue == 8354 { return "Tones|Ringtones|Classical|Piano" }
-        if self.rawValue == 8355 { return "Tones|Ringtones|Classical|Violin" }
-        if self.rawValue == 8356 { return "Tones|Ringtones|Classical|Cello" }
-        if self.rawValue == 8357 { return "Tones|Ringtones|Classical|Percussion" }
-        if self.rawValue == 8358 { return "Tones|Ringtones|Electronic|Dubstep" }
-        if self.rawValue == 8359 { return "Tones|Ringtones|Electronic|Bass" }
-        if self.rawValue == 8360 { return "Tones|Ringtones|Hip-Hop/Rap|UK Hip Hop" }
-        if self.rawValue == 8361 { return "Tones|Ringtones|Reggae|Lovers Rock" }
-        if self.rawValue == 8362 { return "Tones|Ringtones|Alternative|EMO" }
-        if self.rawValue == 8363 { return "Tones|Ringtones|Alternative|Pop Punk" }
-        if self.rawValue == 8364 { return "Tones|Ringtones|Alternative|Indie Pop" }
-        if self.rawValue == 8365 { return "Tones|Ringtones|New Age|Yoga" }
-        if self.rawValue == 8366 { return "Tones|Ringtones|Pop|Tribute" }
-        if self.rawValue == 8367 { return "Tones|Ringtones|Pop|Shows" }
-        if self.rawValue == 8368 { return "Tones|Ringtones|Cuban" }
-        if self.rawValue == 8369 { return "Tones|Ringtones|Cuban|Mambo" }
-        if self.rawValue == 8370 { return "Tones|Ringtones|Cuban|Chachacha" }
-        if self.rawValue == 8371 { return "Tones|Ringtones|Cuban|Guajira" }
-        if self.rawValue == 8372 { return "Tones|Ringtones|Cuban|Son" }
-        if self.rawValue == 8373 { return "Tones|Ringtones|Cuban|Bolero" }
-        if self.rawValue == 8374 { return "Tones|Ringtones|Cuban|Guaracha" }
-        if self.rawValue == 8375 { return "Tones|Ringtones|Cuban|Timba" }
-        if self.rawValue == 8376 { return "Tones|Ringtones|Soundtrack|Video Game" }
-        if self.rawValue == 8377 { return "Tones|Ringtones|Indian|Regional Indian|Punjabi|Punjabi Pop" }
-        if self.rawValue == 8378 { return "Tones|Ringtones|Indian|Regional Indian|Bengali|Rabindra Sangeet" }
-        if self.rawValue == 8379 { return "Tones|Ringtones|Indian|Regional Indian|Malayalam" }
-        if self.rawValue == 8380 { return "Tones|Ringtones|Indian|Regional Indian|Kannada" }
-        if self.rawValue == 8381 { return "Tones|Ringtones|Indian|Regional Indian|Marathi" }
-        if self.rawValue == 8382 { return "Tones|Ringtones|Indian|Regional Indian|Gujarati" }
-        if self.rawValue == 8383 { return "Tones|Ringtones|Indian|Regional Indian|Assamese" }
-        if self.rawValue == 8384 { return "Tones|Ringtones|Indian|Regional Indian|Bhojpuri" }
-        if self.rawValue == 8385 { return "Tones|Ringtones|Indian|Regional Indian|Haryanvi" }
-        if self.rawValue == 8386 { return "Tones|Ringtones|Indian|Regional Indian|Odia" }
-        if self.rawValue == 8387 { return "Tones|Ringtones|Indian|Regional Indian|Rajasthani" }
-        if self.rawValue == 8388 { return "Tones|Ringtones|Indian|Regional Indian|Urdu" }
-        if self.rawValue == 8389 { return "Tones|Ringtones|Indian|Regional Indian|Punjabi" }
-        if self.rawValue == 8390 { return "Tones|Ringtones|Indian|Regional Indian|Bengali" }
-        if self.rawValue == 8391 { return "Tones|Ringtones|Indian|Indian Classical|Carnatic Classical" }
-        if self.rawValue == 8392 { return "Tones|Ringtones|Indian|Indian Classical|Hindustani Classical" }
-        if self.rawValue == 8393 { return "Tones|Ringtones|African|Afro House" }
-        if self.rawValue == 8394 { return "Tones|Ringtones|African|Afro Soul" }
-        if self.rawValue == 8395 { return "Tones|Ringtones|African|Afrobeats" }
-        if self.rawValue == 8396 { return "Tones|Ringtones|African|Benga" }
-        if self.rawValue == 8397 { return "Tones|Ringtones|African|Bongo-Flava" }
-        if self.rawValue == 8398 { return "Tones|Ringtones|African|Coupe-Decale" }
-        if self.rawValue == 8399 { return "Tones|Ringtones|African|Gqom" }
-        if self.rawValue == 8400 { return "Tones|Ringtones|African|Highlife" }
-        if self.rawValue == 8401 { return "Tones|Ringtones|African|Kuduro" }
-        if self.rawValue == 8402 { return "Tones|Ringtones|African|Kizomba" }
-        if self.rawValue == 8403 { return "Tones|Ringtones|African|Kwaito" }
-        if self.rawValue == 8404 { return "Tones|Ringtones|African|Mbalax" }
-        if self.rawValue == 8405 { return "Tones|Ringtones|African|Ndombolo" }
-        if self.rawValue == 8406 { return "Tones|Ringtones|African|Shangaan Electro" }
-        if self.rawValue == 8407 { return "Tones|Ringtones|African|Soukous" }
-        if self.rawValue == 8408 { return "Tones|Ringtones|African|Taarab" }
-        if self.rawValue == 8409 { return "Tones|Ringtones|African|Zouglou" }
-        if self.rawValue == 8410 { return "Tones|Ringtones|Turkish|Ozgun" }
-        if self.rawValue == 8411 { return "Tones|Ringtones|Turkish|Fantezi" }
-        if self.rawValue == 8412 { return "Tones|Ringtones|Turkish|Religious" }
-        if self.rawValue == 8413 { return "Tones|Ringtones|Pop|Turkish Pop" }
-        if self.rawValue == 8414 { return "Tones|Ringtones|Rock|Turkish Rock" }
-        if self.rawValue == 8415 { return "Tones|Ringtones|Alternative|Turkish Alternative" }
-        if self.rawValue == 8416 { return "Tones|Ringtones|Hip-Hop/Rap|Turkish Hip-Hop/Rap" }
-        if self.rawValue == 8417 { return "Tones|Ringtones|African|Maskandi" }
-        if self.rawValue == 8418 { return "Tones|Ringtones|Russian|Russian Romance" }
-        if self.rawValue == 8419 { return "Tones|Ringtones|Russian|Russian Bard" }
-        if self.rawValue == 8420 { return "Tones|Ringtones|Russian|Russian Pop" }
-        if self.rawValue == 8421 { return "Tones|Ringtones|Russian|Russian Rock" }
-        if self.rawValue == 8422 { return "Tones|Ringtones|Russian|Russian Hip-Hop" }
-        if self.rawValue == 8423 { return "Tones|Ringtones|Arabic|Levant" }
-        if self.rawValue == 8424 { return "Tones|Ringtones|Arabic|Levant|Dabke" }
-        if self.rawValue == 8425 { return "Tones|Ringtones|Arabic|Maghreb Rai" }
-        if self.rawValue == 8426 { return "Tones|Ringtones|Arabic|Khaleeji|Khaleeji Jalsat" }
-        if self.rawValue == 8427 { return "Tones|Ringtones|Arabic|Khaleeji|Khaleeji Shailat" }
-        if self.rawValue == 8428 { return "Tones|Ringtones|Tarab" }
-        if self.rawValue == 8429 { return "Tones|Ringtones|Tarab|Iraqi Tarab" }
-        if self.rawValue == 8430 { return "Tones|Ringtones|Tarab|Egyptian Tarab" }
-        if self.rawValue == 8431 { return "Tones|Ringtones|Tarab|Khaleeji Tarab" }
-        if self.rawValue == 8432 { return "Tones|Ringtones|Pop|Levant Pop" }
-        if self.rawValue == 8433 { return "Tones|Ringtones|Pop|Iraqi Pop" }
-        if self.rawValue == 8434 { return "Tones|Ringtones|Pop|Egyptian Pop" }
-        if self.rawValue == 8435 { return "Tones|Ringtones|Pop|Maghreb Pop" }
-        if self.rawValue == 8436 { return "Tones|Ringtones|Pop|Khaleeji Pop" }
-        if self.rawValue == 8437 { return "Tones|Ringtones|Hip-Hop/Rap|Levant Hip-Hop" }
-        if self.rawValue == 8438 { return "Tones|Ringtones|Hip-Hop/Rap|Egyptian Hip-Hop" }
-        if self.rawValue == 8439 { return "Tones|Ringtones|Hip-Hop/Rap|Maghreb Hip-Hop" }
-        if self.rawValue == 8440 { return "Tones|Ringtones|Hip-Hop/Rap|Khaleeji Hip-Hop" }
-        if self.rawValue == 8441 { return "Tones|Ringtones|Alternative|Indie Levant" }
-        if self.rawValue == 8442 { return "Tones|Ringtones|Alternative|Indie Egyptian" }
-        if self.rawValue == 8443 { return "Tones|Ringtones|Alternative|Indie Maghreb" }
-        if self.rawValue == 8444 { return "Tones|Ringtones|Electronic|Levant Electronic" }
-        if self.rawValue == 8445 { return "Tones|Ringtones|Electronic|Electro-Cha'abi" }
-        if self.rawValue == 8446 { return "Tones|Ringtones|Electronic|Maghreb Electronic" }
-        if self.rawValue == 8447 { return "Tones|Ringtones|Folk|Iraqi Folk" }
-        if self.rawValue == 8448 { return "Tones|Ringtones|Folk|Khaleeji Folk" }
-        if self.rawValue == 8449 { return "Tones|Ringtones|Dance|Maghreb Dance" }
-        if self.rawValue == 9002 { return "Books|Nonfiction" }
-        if self.rawValue == 9003 { return "Books|Romance" }
-        if self.rawValue == 9004 { return "Books|Travel & Adventure" }
-        if self.rawValue == 9007 { return "Books|Arts & Entertainment" }
-        if self.rawValue == 9008 { return "Books|Biographies & Memoirs" }
-        if self.rawValue == 9009 { return "Books|Business & Personal Finance" }
-        if self.rawValue == 9010 { return "Books|Children & Teens" }
-        if self.rawValue == 9012 { return "Books|Humor" }
-        if self.rawValue == 9015 { return "Books|History" }
-        if self.rawValue == 9018 { return "Books|Religion & Spirituality" }
-        if self.rawValue == 9019 { return "Books|Science & Nature" }
-        if self.rawValue == 9020 { return "Books|Sci-Fi & Fantasy" }
-        if self.rawValue == 9024 { return "Books|Lifestyle & Home" }
-        if self.rawValue == 9025 { return "Books|Self-Development" }
-        if self.rawValue == 9026 { return "Books|Comics & Graphic Novels" }
-        if self.rawValue == 9027 { return "Books|Computers & Internet" }
-        if self.rawValue == 9028 { return "Books|Cookbooks, Food & Wine" }
-        if self.rawValue == 9029 { return "Books|Professional & Technical" }
-        if self.rawValue == 9030 { return "Books|Parenting" }
-        if self.rawValue == 9031 { return "Books|Fiction & Literature" }
-        if self.rawValue == 9032 { return "Books|Mysteries & Thrillers" }
-        if self.rawValue == 9033 { return "Books|Reference" }
-        if self.rawValue == 9034 { return "Books|Politics & Current Events" }
-        if self.rawValue == 9035 { return "Books|Sports & Outdoors" }
-        if self.rawValue == 10001 { return "Books|Lifestyle & Home|Antiques & Collectibles" }
-        if self.rawValue == 10002 { return "Books|Arts & Entertainment|Art & Architecture" }
-        if self.rawValue == 10003 { return "Books|Religion & Spirituality|Bibles" }
-        if self.rawValue == 10004 { return "Books|Self-Development|Spirituality" }
-        if self.rawValue == 10005 { return "Books|Business & Personal Finance|Industries & Professions" }
-        if self.rawValue == 10006 { return "Books|Business & Personal Finance|Marketing & Sales" }
-        if self.rawValue == 10007 { return "Books|Business & Personal Finance|Small Business & Entrepreneurship" }
-        if self.rawValue == 10008 { return "Books|Business & Personal Finance|Personal Finance" }
-        if self.rawValue == 10009 { return "Books|Business & Personal Finance|Reference" }
-        if self.rawValue == 10010 { return "Books|Business & Personal Finance|Careers" }
-        if self.rawValue == 10011 { return "Books|Business & Personal Finance|Economics" }
-        if self.rawValue == 10012 { return "Books|Business & Personal Finance|Investing" }
-        if self.rawValue == 10013 { return "Books|Business & Personal Finance|Finance" }
-        if self.rawValue == 10014 { return "Books|Business & Personal Finance|Management & Leadership" }
-        if self.rawValue == 10015 { return "Books|Comics & Graphic Novels|Graphic Novels" }
-        if self.rawValue == 10016 { return "Books|Comics & Graphic Novels|Manga" }
-        if self.rawValue == 10017 { return "Books|Computers & Internet|Computers" }
-        if self.rawValue == 10018 { return "Books|Computers & Internet|Databases" }
-        if self.rawValue == 10019 { return "Books|Computers & Internet|Digital Media" }
-        if self.rawValue == 10020 { return "Books|Computers & Internet|Internet" }
-        if self.rawValue == 10021 { return "Books|Computers & Internet|Network" }
-        if self.rawValue == 10022 { return "Books|Computers & Internet|Operating Systems" }
-        if self.rawValue == 10023 { return "Books|Computers & Internet|Programming" }
-        if self.rawValue == 10024 { return "Books|Computers & Internet|Software" }
-        if self.rawValue == 10025 { return "Books|Computers & Internet|System Administration" }
-        if self.rawValue == 10026 { return "Books|Cookbooks, Food & Wine|Beverages" }
-        if self.rawValue == 10027 { return "Books|Cookbooks, Food & Wine|Courses & Dishes" }
-        if self.rawValue == 10028 { return "Books|Cookbooks, Food & Wine|Special Diet" }
-        if self.rawValue == 10029 { return "Books|Cookbooks, Food & Wine|Special Occasions" }
-        if self.rawValue == 10030 { return "Books|Cookbooks, Food & Wine|Methods" }
-        if self.rawValue == 10031 { return "Books|Cookbooks, Food & Wine|Reference" }
-        if self.rawValue == 10032 { return "Books|Cookbooks, Food & Wine|Regional & Ethnic" }
-        if self.rawValue == 10033 { return "Books|Cookbooks, Food & Wine|Specific Ingredients" }
-        if self.rawValue == 10034 { return "Books|Lifestyle & Home|Crafts & Hobbies" }
-        if self.rawValue == 10035 { return "Books|Professional & Technical|Design" }
-        if self.rawValue == 10036 { return "Books|Arts & Entertainment|Theater" }
-        if self.rawValue == 10037 { return "Books|Professional & Technical|Education" }
-        if self.rawValue == 10038 { return "Books|Nonfiction|Family & Relationships" }
-        if self.rawValue == 10039 { return "Books|Fiction & Literature|Action & Adventure" }
-        if self.rawValue == 10040 { return "Books|Fiction & Literature|African American" }
-        if self.rawValue == 10041 { return "Books|Fiction & Literature|Religious" }
-        if self.rawValue == 10042 { return "Books|Fiction & Literature|Classics" }
-        if self.rawValue == 10043 { return "Books|Fiction & Literature|Erotica" }
-        if self.rawValue == 10044 { return "Books|Sci-Fi & Fantasy|Fantasy" }
-        if self.rawValue == 10045 { return "Books|Fiction & Literature|Gay" }
-        if self.rawValue == 10046 { return "Books|Fiction & Literature|Ghost" }
-        if self.rawValue == 10047 { return "Books|Fiction & Literature|Historical" }
-        if self.rawValue == 10048 { return "Books|Fiction & Literature|Horror" }
-        if self.rawValue == 10049 { return "Books|Fiction & Literature|Literary" }
-        if self.rawValue == 10050 { return "Books|Mysteries & Thrillers|Hard-Boiled" }
-        if self.rawValue == 10051 { return "Books|Mysteries & Thrillers|Historical" }
-        if self.rawValue == 10052 { return "Books|Mysteries & Thrillers|Police Procedural" }
-        if self.rawValue == 10053 { return "Books|Mysteries & Thrillers|Short Stories" }
-        if self.rawValue == 10054 { return "Books|Mysteries & Thrillers|British Detectives" }
-        if self.rawValue == 10055 { return "Books|Mysteries & Thrillers|Women Sleuths" }
-        if self.rawValue == 10056 { return "Books|Romance|Erotic Romance" }
-        if self.rawValue == 10057 { return "Books|Romance|Contemporary" }
-        if self.rawValue == 10058 { return "Books|Romance|Paranormal" }
-        if self.rawValue == 10059 { return "Books|Romance|Historical" }
-        if self.rawValue == 10060 { return "Books|Romance|Short Stories" }
-        if self.rawValue == 10061 { return "Books|Romance|Suspense" }
-        if self.rawValue == 10062 { return "Books|Romance|Western" }
-        if self.rawValue == 10063 { return "Books|Sci-Fi & Fantasy|Science Fiction" }
-        if self.rawValue == 10064 { return "Books|Sci-Fi & Fantasy|Science Fiction & Literature" }
-        if self.rawValue == 10065 { return "Books|Fiction & Literature|Short Stories" }
-        if self.rawValue == 10066 { return "Books|Reference|Foreign Languages" }
-        if self.rawValue == 10067 { return "Books|Arts & Entertainment|Games" }
-        if self.rawValue == 10068 { return "Books|Lifestyle & Home|Gardening" }
-        if self.rawValue == 10069 { return "Books|Self-Development|Health & Fitness" }
-        if self.rawValue == 10070 { return "Books|History|Africa" }
-        if self.rawValue == 10071 { return "Books|History|Americas" }
-        if self.rawValue == 10072 { return "Books|History|Ancient" }
-        if self.rawValue == 10073 { return "Books|History|Asia" }
-        if self.rawValue == 10074 { return "Books|History|Australia & Oceania" }
-        if self.rawValue == 10075 { return "Books|History|Europe" }
-        if self.rawValue == 10076 { return "Books|History|Latin America" }
-        if self.rawValue == 10077 { return "Books|History|Middle East" }
-        if self.rawValue == 10078 { return "Books|History|Military" }
-        if self.rawValue == 10079 { return "Books|History|United States" }
-        if self.rawValue == 10080 { return "Books|History|World" }
-        if self.rawValue == 10081 { return "Books|Children & Teens|Children's Fiction" }
-        if self.rawValue == 10082 { return "Books|Children & Teens|Children's Nonfiction" }
-        if self.rawValue == 10083 { return "Books|Professional & Technical|Law" }
-        if self.rawValue == 10084 { return "Books|Fiction & Literature|Literary Criticism" }
-        if self.rawValue == 10085 { return "Books|Science & Nature|Mathematics" }
-        if self.rawValue == 10086 { return "Books|Professional & Technical|Medical" }
-        if self.rawValue == 10087 { return "Books|Arts & Entertainment|Music" }
-        if self.rawValue == 10088 { return "Books|Science & Nature|Nature" }
-        if self.rawValue == 10089 { return "Books|Arts & Entertainment|Performing Arts" }
-        if self.rawValue == 10090 { return "Books|Lifestyle & Home|Pets" }
-        if self.rawValue == 10091 { return "Books|Nonfiction|Philosophy" }
-        if self.rawValue == 10092 { return "Books|Arts & Entertainment|Photography" }
-        if self.rawValue == 10093 { return "Books|Fiction & Literature|Poetry" }
-        if self.rawValue == 10094 { return "Books|Self-Development|Psychology" }
-        if self.rawValue == 10095 { return "Books|Reference|Almanacs & Yearbooks" }
-        if self.rawValue == 10096 { return "Books|Reference|Atlases & Maps" }
-        if self.rawValue == 10097 { return "Books|Reference|Catalogs & Directories" }
-        if self.rawValue == 10098 { return "Books|Reference|Consumer Guides" }
-        if self.rawValue == 10099 { return "Books|Reference|Dictionaries & Thesauruses" }
-        if self.rawValue == 10100 { return "Books|Reference|Encyclopedias" }
-        if self.rawValue == 10101 { return "Books|Reference|Etiquette" }
-        if self.rawValue == 10102 { return "Books|Reference|Quotations" }
-        if self.rawValue == 10103 { return "Books|Reference|Words & Language" }
-        if self.rawValue == 10104 { return "Books|Reference|Writing" }
-        if self.rawValue == 10105 { return "Books|Religion & Spirituality|Bible Studies" }
-        if self.rawValue == 10106 { return "Books|Religion & Spirituality|Buddhism" }
-        if self.rawValue == 10107 { return "Books|Religion & Spirituality|Christianity" }
-        if self.rawValue == 10108 { return "Books|Religion & Spirituality|Hinduism" }
-        if self.rawValue == 10109 { return "Books|Religion & Spirituality|Islam" }
-        if self.rawValue == 10110 { return "Books|Religion & Spirituality|Judaism" }
-        if self.rawValue == 10111 { return "Books|Science & Nature|Astronomy" }
-        if self.rawValue == 10112 { return "Books|Science & Nature|Chemistry" }
-        if self.rawValue == 10113 { return "Books|Science & Nature|Earth Sciences" }
-        if self.rawValue == 10114 { return "Books|Science & Nature|Essays" }
-        if self.rawValue == 10115 { return "Books|Science & Nature|History" }
-        if self.rawValue == 10116 { return "Books|Science & Nature|Life Sciences" }
-        if self.rawValue == 10117 { return "Books|Science & Nature|Physics" }
-        if self.rawValue == 10118 { return "Books|Science & Nature|Reference" }
-        if self.rawValue == 10119 { return "Books|Self-Development|Self-Improvement" }
-        if self.rawValue == 10120 { return "Books|Nonfiction|Social Science" }
-        if self.rawValue == 10121 { return "Books|Sports & Outdoors|Baseball" }
-        if self.rawValue == 10122 { return "Books|Sports & Outdoors|Basketball" }
-        if self.rawValue == 10123 { return "Books|Sports & Outdoors|Coaching" }
-        if self.rawValue == 10124 { return "Books|Sports & Outdoors|Extreme Sports" }
-        if self.rawValue == 10125 { return "Books|Sports & Outdoors|Football" }
-        if self.rawValue == 10126 { return "Books|Sports & Outdoors|Golf" }
-        if self.rawValue == 10127 { return "Books|Sports & Outdoors|Hockey" }
-        if self.rawValue == 10128 { return "Books|Sports & Outdoors|Mountaineering" }
-        if self.rawValue == 10129 { return "Books|Sports & Outdoors|Outdoors" }
-        if self.rawValue == 10130 { return "Books|Sports & Outdoors|Racket Sports" }
-        if self.rawValue == 10131 { return "Books|Sports & Outdoors|Reference" }
-        if self.rawValue == 10132 { return "Books|Sports & Outdoors|Soccer" }
-        if self.rawValue == 10133 { return "Books|Sports & Outdoors|Training" }
-        if self.rawValue == 10134 { return "Books|Sports & Outdoors|Water Sports" }
-        if self.rawValue == 10135 { return "Books|Sports & Outdoors|Winter Sports" }
-        if self.rawValue == 10136 { return "Books|Reference|Study Aids" }
-        if self.rawValue == 10137 { return "Books|Professional & Technical|Engineering" }
-        if self.rawValue == 10138 { return "Books|Nonfiction|Transportation" }
-        if self.rawValue == 10139 { return "Books|Travel & Adventure|Africa" }
-        if self.rawValue == 10140 { return "Books|Travel & Adventure|Asia" }
-        if self.rawValue == 10141 { return "Books|Travel & Adventure|Specialty Travel" }
-        if self.rawValue == 10142 { return "Books|Travel & Adventure|Canada" }
-        if self.rawValue == 10143 { return "Books|Travel & Adventure|Caribbean" }
-        if self.rawValue == 10144 { return "Books|Travel & Adventure|Latin America" }
-        if self.rawValue == 10145 { return "Books|Travel & Adventure|Essays & Memoirs" }
-        if self.rawValue == 10146 { return "Books|Travel & Adventure|Europe" }
-        if self.rawValue == 10147 { return "Books|Travel & Adventure|Middle East" }
-        if self.rawValue == 10148 { return "Books|Travel & Adventure|United States" }
-        if self.rawValue == 10149 { return "Books|Nonfiction|True Crime" }
-        if self.rawValue == 11001 { return "Books|Sci-Fi & Fantasy|Fantasy|Contemporary" }
-        if self.rawValue == 11002 { return "Books|Sci-Fi & Fantasy|Fantasy|Epic" }
-        if self.rawValue == 11003 { return "Books|Sci-Fi & Fantasy|Fantasy|Historical" }
-        if self.rawValue == 11004 { return "Books|Sci-Fi & Fantasy|Fantasy|Paranormal" }
-        if self.rawValue == 11005 { return "Books|Sci-Fi & Fantasy|Fantasy|Short Stories" }
-        if self.rawValue == 11006 { return "Books|Sci-Fi & Fantasy|Science Fiction & Literature|Adventure" }
-        if self.rawValue == 11007 { return "Books|Sci-Fi & Fantasy|Science Fiction & Literature|High Tech" }
-        if self.rawValue == 11008 { return "Books|Sci-Fi & Fantasy|Science Fiction & Literature|Short Stories" }
-        if self.rawValue == 11009 { return "Books|Professional & Technical|Education|Language Arts & Disciplines" }
-        if self.rawValue == 11010 { return "Books|Communications & Media" }
-        if self.rawValue == 11011 { return "Books|Communications & Media|Broadcasting" }
-        if self.rawValue == 11012 { return "Books|Communications & Media|Digital Media" }
-        if self.rawValue == 11013 { return "Books|Communications & Media|Journalism" }
-        if self.rawValue == 11014 { return "Books|Communications & Media|Photojournalism" }
-        if self.rawValue == 11015 { return "Books|Communications & Media|Print" }
-        if self.rawValue == 11016 { return "Books|Communications & Media|Speech" }
-        if self.rawValue == 11017 { return "Books|Communications & Media|Writing" }
-        if self.rawValue == 11018 { return "Books|Arts & Entertainment|Art & Architecture|Urban Planning" }
-        if self.rawValue == 11019 { return "Books|Arts & Entertainment|Dance" }
-        if self.rawValue == 11020 { return "Books|Arts & Entertainment|Fashion" }
-        if self.rawValue == 11021 { return "Books|Arts & Entertainment|Film" }
-        if self.rawValue == 11022 { return "Books|Arts & Entertainment|Interior Design" }
-        if self.rawValue == 11023 { return "Books|Arts & Entertainment|Media Arts" }
-        if self.rawValue == 11024 { return "Books|Arts & Entertainment|Radio" }
-        if self.rawValue == 11025 { return "Books|Arts & Entertainment|TV" }
-        if self.rawValue == 11026 { return "Books|Arts & Entertainment|Visual Arts" }
-        if self.rawValue == 11027 { return "Books|Biographies & Memoirs|Arts & Entertainment" }
-        if self.rawValue == 11028 { return "Books|Biographies & Memoirs|Business" }
-        if self.rawValue == 11029 { return "Books|Biographies & Memoirs|Culinary" }
-        if self.rawValue == 11030 { return "Books|Biographies & Memoirs|Gay & Lesbian" }
-        if self.rawValue == 11031 { return "Books|Biographies & Memoirs|Historical" }
-        if self.rawValue == 11032 { return "Books|Biographies & Memoirs|Literary" }
-        if self.rawValue == 11033 { return "Books|Biographies & Memoirs|Media & Journalism" }
-        if self.rawValue == 11034 { return "Books|Biographies & Memoirs|Military" }
-        if self.rawValue == 11035 { return "Books|Biographies & Memoirs|Politics" }
-        if self.rawValue == 11036 { return "Books|Biographies & Memoirs|Religious" }
-        if self.rawValue == 11037 { return "Books|Biographies & Memoirs|Science & Technology" }
-        if self.rawValue == 11038 { return "Books|Biographies & Memoirs|Sports" }
-        if self.rawValue == 11039 { return "Books|Biographies & Memoirs|Women" }
-        if self.rawValue == 11040 { return "Books|Romance|New Adult" }
-        if self.rawValue == 11042 { return "Books|Romance|Romantic Comedy" }
-        if self.rawValue == 11043 { return "Books|Romance|Gay & Lesbian" }
-        if self.rawValue == 11044 { return "Books|Fiction & Literature|Essays" }
-        if self.rawValue == 11045 { return "Books|Fiction & Literature|Anthologies" }
-        if self.rawValue == 11046 { return "Books|Fiction & Literature|Comparative Literature" }
-        if self.rawValue == 11047 { return "Books|Fiction & Literature|Drama" }
-        if self.rawValue == 11049 { return "Books|Fiction & Literature|Fairy Tales, Myths & Fables" }
-        if self.rawValue == 11050 { return "Books|Fiction & Literature|Family" }
-        if self.rawValue == 11051 { return "Books|Comics & Graphic Novels|Manga|School Drama" }
-        if self.rawValue == 11052 { return "Books|Comics & Graphic Novels|Manga|Human Drama" }
-        if self.rawValue == 11053 { return "Books|Comics & Graphic Novels|Manga|Family Drama" }
-        if self.rawValue == 11054 { return "Books|Sports & Outdoors|Boxing" }
-        if self.rawValue == 11055 { return "Books|Sports & Outdoors|Cricket" }
-        if self.rawValue == 11056 { return "Books|Sports & Outdoors|Cycling" }
-        if self.rawValue == 11057 { return "Books|Sports & Outdoors|Equestrian" }
-        if self.rawValue == 11058 { return "Books|Sports & Outdoors|Martial Arts & Self Defense" }
-        if self.rawValue == 11059 { return "Books|Sports & Outdoors|Motor Sports" }
-        if self.rawValue == 11060 { return "Books|Sports & Outdoors|Rugby" }
-        if self.rawValue == 11061 { return "Books|Sports & Outdoors|Running" }
-        if self.rawValue == 11062 { return "Books|Self-Development|Diet & Nutrition" }
-        if self.rawValue == 11063 { return "Books|Science & Nature|Agriculture" }
-        if self.rawValue == 11064 { return "Books|Science & Nature|Atmosphere" }
-        if self.rawValue == 11065 { return "Books|Science & Nature|Biology" }
-        if self.rawValue == 11066 { return "Books|Science & Nature|Ecology" }
-        if self.rawValue == 11067 { return "Books|Science & Nature|Environment" }
-        if self.rawValue == 11068 { return "Books|Science & Nature|Geography" }
-        if self.rawValue == 11069 { return "Books|Science & Nature|Geology" }
-        if self.rawValue == 11070 { return "Books|Nonfiction|Social Science|Anthropology" }
-        if self.rawValue == 11071 { return "Books|Nonfiction|Social Science|Archaeology" }
-        if self.rawValue == 11072 { return "Books|Nonfiction|Social Science|Civics" }
-        if self.rawValue == 11073 { return "Books|Nonfiction|Social Science|Government" }
-        if self.rawValue == 11074 { return "Books|Nonfiction|Social Science|Social Studies" }
-        if self.rawValue == 11075 { return "Books|Nonfiction|Social Science|Social Welfare" }
-        if self.rawValue == 11076 { return "Books|Nonfiction|Social Science|Society" }
-        if self.rawValue == 11077 { return "Books|Nonfiction|Philosophy|Aesthetics" }
-        if self.rawValue == 11078 { return "Books|Nonfiction|Philosophy|Epistemology" }
-        if self.rawValue == 11079 { return "Books|Nonfiction|Philosophy|Ethics" }
-        if self.rawValue == 11080 { return "Books|Nonfiction|Philosophy|Language" }
-        if self.rawValue == 11081 { return "Books|Nonfiction|Philosophy|Logic" }
-        if self.rawValue == 11082 { return "Books|Nonfiction|Philosophy|Metaphysics" }
-        if self.rawValue == 11083 { return "Books|Nonfiction|Philosophy|Political" }
-        if self.rawValue == 11084 { return "Books|Nonfiction|Philosophy|Religion" }
-        if self.rawValue == 11085 { return "Books|Reference|Manuals" }
-        if self.rawValue == 11086 { return "Books|Kids" }
-        if self.rawValue == 11087 { return "Books|Kids|Animals" }
-        if self.rawValue == 11088 { return "Books|Kids|Basic Concepts" }
-        if self.rawValue == 11089 { return "Books|Kids|Basic Concepts|Alphabet" }
-        if self.rawValue == 11090 { return "Books|Kids|Basic Concepts|Body" }
-        if self.rawValue == 11091 { return "Books|Kids|Basic Concepts|Colors" }
-        if self.rawValue == 11092 { return "Books|Kids|Basic Concepts|Counting & Numbers" }
-        if self.rawValue == 11093 { return "Books|Kids|Basic Concepts|Date & Time" }
-        if self.rawValue == 11094 { return "Books|Kids|Basic Concepts|General" }
-        if self.rawValue == 11095 { return "Books|Kids|Basic Concepts|Money" }
-        if self.rawValue == 11096 { return "Books|Kids|Basic Concepts|Opposites" }
-        if self.rawValue == 11097 { return "Books|Kids|Basic Concepts|Seasons" }
-        if self.rawValue == 11098 { return "Books|Kids|Basic Concepts|Senses & Sensation" }
-        if self.rawValue == 11099 { return "Books|Kids|Basic Concepts|Size & Shape" }
-        if self.rawValue == 11100 { return "Books|Kids|Basic Concepts|Sounds" }
-        if self.rawValue == 11101 { return "Books|Kids|Basic Concepts|Words" }
-        if self.rawValue == 11102 { return "Books|Kids|Biography" }
-        if self.rawValue == 11103 { return "Books|Kids|Careers & Occupations" }
-        if self.rawValue == 11104 { return "Books|Kids|Computers & Technology" }
-        if self.rawValue == 11105 { return "Books|Kids|Cooking & Food" }
-        if self.rawValue == 11106 { return "Books|Kids|Arts & Entertainment" }
-        if self.rawValue == 11107 { return "Books|Kids|Arts & Entertainment|Art" }
-        if self.rawValue == 11108 { return "Books|Kids|Arts & Entertainment|Crafts" }
-        if self.rawValue == 11109 { return "Books|Kids|Arts & Entertainment|Music" }
-        if self.rawValue == 11110 { return "Books|Kids|Arts & Entertainment|Performing Arts" }
-        if self.rawValue == 11111 { return "Books|Kids|Family" }
-        if self.rawValue == 11112 { return "Books|Kids|Fiction" }
-        if self.rawValue == 11113 { return "Books|Kids|Fiction|Action & Adventure" }
-        if self.rawValue == 11114 { return "Books|Kids|Fiction|Animals" }
-        if self.rawValue == 11115 { return "Books|Kids|Fiction|Classics" }
-        if self.rawValue == 11116 { return "Books|Kids|Fiction|Comics & Graphic Novels" }
-        if self.rawValue == 11117 { return "Books|Kids|Fiction|Culture, Places & People" }
-        if self.rawValue == 11118 { return "Books|Kids|Fiction|Family & Relationships" }
-        if self.rawValue == 11119 { return "Books|Kids|Fiction|Fantasy" }
-        if self.rawValue == 11120 { return "Books|Kids|Fiction|Fairy Tales, Myths & Fables" }
-        if self.rawValue == 11121 { return "Books|Kids|Fiction|Favorite Characters" }
-        if self.rawValue == 11122 { return "Books|Kids|Fiction|Historical" }
-        if self.rawValue == 11123 { return "Books|Kids|Fiction|Holidays & Celebrations" }
-        if self.rawValue == 11124 { return "Books|Kids|Fiction|Monsters & Ghosts" }
-        if self.rawValue == 11125 { return "Books|Kids|Fiction|Mysteries" }
-        if self.rawValue == 11126 { return "Books|Kids|Fiction|Nature" }
-        if self.rawValue == 11127 { return "Books|Kids|Fiction|Religion" }
-        if self.rawValue == 11128 { return "Books|Kids|Fiction|Sci-Fi" }
-        if self.rawValue == 11129 { return "Books|Kids|Fiction|Social Issues" }
-        if self.rawValue == 11130 { return "Books|Kids|Fiction|Sports & Recreation" }
-        if self.rawValue == 11131 { return "Books|Kids|Fiction|Transportation" }
-        if self.rawValue == 11132 { return "Books|Kids|Games & Activities" }
-        if self.rawValue == 11133 { return "Books|Kids|General Nonfiction" }
-        if self.rawValue == 11134 { return "Books|Kids|Health" }
-        if self.rawValue == 11135 { return "Books|Kids|History" }
-        if self.rawValue == 11136 { return "Books|Kids|Holidays & Celebrations" }
-        if self.rawValue == 11137 { return "Books|Kids|Holidays & Celebrations|Birthdays" }
-        if self.rawValue == 11138 { return "Books|Kids|Holidays & Celebrations|Christmas & Advent" }
-        if self.rawValue == 11139 { return "Books|Kids|Holidays & Celebrations|Easter & Lent" }
-        if self.rawValue == 11140 { return "Books|Kids|Holidays & Celebrations|General" }
-        if self.rawValue == 11141 { return "Books|Kids|Holidays & Celebrations|Halloween" }
-        if self.rawValue == 11142 { return "Books|Kids|Holidays & Celebrations|Hanukkah" }
-        if self.rawValue == 11143 { return "Books|Kids|Holidays & Celebrations|Other" }
-        if self.rawValue == 11144 { return "Books|Kids|Holidays & Celebrations|Passover" }
-        if self.rawValue == 11145 { return "Books|Kids|Holidays & Celebrations|Patriotic Holidays" }
-        if self.rawValue == 11146 { return "Books|Kids|Holidays & Celebrations|Ramadan" }
-        if self.rawValue == 11147 { return "Books|Kids|Holidays & Celebrations|Thanksgiving" }
-        if self.rawValue == 11148 { return "Books|Kids|Holidays & Celebrations|Valentine's Day" }
-        if self.rawValue == 11149 { return "Books|Kids|Humor" }
-        if self.rawValue == 11150 { return "Books|Kids|Humor|Jokes & Riddles" }
-        if self.rawValue == 11151 { return "Books|Kids|Poetry" }
-        if self.rawValue == 11152 { return "Books|Kids|Learning to Read" }
-        if self.rawValue == 11153 { return "Books|Kids|Learning to Read|Chapter Books" }
-        if self.rawValue == 11154 { return "Books|Kids|Learning to Read|Early Readers" }
-        if self.rawValue == 11155 { return "Books|Kids|Learning to Read|Intermediate Readers" }
-        if self.rawValue == 11156 { return "Books|Kids|Nursery Rhymes" }
-        if self.rawValue == 11157 { return "Books|Kids|Government" }
-        if self.rawValue == 11158 { return "Books|Kids|Reference" }
-        if self.rawValue == 11159 { return "Books|Kids|Religion" }
-        if self.rawValue == 11160 { return "Books|Kids|Science & Nature" }
-        if self.rawValue == 11161 { return "Books|Kids|Social Issues" }
-        if self.rawValue == 11162 { return "Books|Kids|Social Studies" }
-        if self.rawValue == 11163 { return "Books|Kids|Sports & Recreation" }
-        if self.rawValue == 11164 { return "Books|Kids|Transportation" }
-        if self.rawValue == 11165 { return "Books|Young Adult" }
-        if self.rawValue == 11166 { return "Books|Young Adult|Animals" }
-        if self.rawValue == 11167 { return "Books|Young Adult|Biography" }
-        if self.rawValue == 11168 { return "Books|Young Adult|Careers & Occupations" }
-        if self.rawValue == 11169 { return "Books|Young Adult|Computers & Technology" }
-        if self.rawValue == 11170 { return "Books|Young Adult|Cooking & Food" }
-        if self.rawValue == 11171 { return "Books|Young Adult|Arts & Entertainment" }
-        if self.rawValue == 11172 { return "Books|Young Adult|Arts & Entertainment|Art" }
-        if self.rawValue == 11173 { return "Books|Young Adult|Arts & Entertainment|Crafts" }
-        if self.rawValue == 11174 { return "Books|Young Adult|Arts & Entertainment|Music" }
-        if self.rawValue == 11175 { return "Books|Young Adult|Arts & Entertainment|Performing Arts" }
-        if self.rawValue == 11176 { return "Books|Young Adult|Family" }
-        if self.rawValue == 11177 { return "Books|Young Adult|Fiction" }
-        if self.rawValue == 11178 { return "Books|Young Adult|Fiction|Action & Adventure" }
-        if self.rawValue == 11179 { return "Books|Young Adult|Fiction|Animals" }
-        if self.rawValue == 11180 { return "Books|Young Adult|Fiction|Classics" }
-        if self.rawValue == 11181 { return "Books|Young Adult|Fiction|Comics & Graphic Novels" }
-        if self.rawValue == 11182 { return "Books|Young Adult|Fiction|Culture, Places & People" }
-        if self.rawValue == 11183 { return "Books|Young Adult|Fiction|Dystopian" }
-        if self.rawValue == 11184 { return "Books|Young Adult|Fiction|Family & Relationships" }
-        if self.rawValue == 11185 { return "Books|Young Adult|Fiction|Fantasy" }
-        if self.rawValue == 11186 { return "Books|Young Adult|Fiction|Fairy Tales, Myths & Fables" }
-        if self.rawValue == 11187 { return "Books|Young Adult|Fiction|Favorite Characters" }
-        if self.rawValue == 11188 { return "Books|Young Adult|Fiction|Historical" }
-        if self.rawValue == 11189 { return "Books|Young Adult|Fiction|Holidays & Celebrations" }
-        if self.rawValue == 11190 { return "Books|Young Adult|Fiction|Horror, Monsters & Ghosts" }
-        if self.rawValue == 11191 { return "Books|Young Adult|Fiction|Crime & Mystery" }
-        if self.rawValue == 11192 { return "Books|Young Adult|Fiction|Nature" }
-        if self.rawValue == 11193 { return "Books|Young Adult|Fiction|Religion" }
-        if self.rawValue == 11194 { return "Books|Young Adult|Fiction|Romance" }
-        if self.rawValue == 11195 { return "Books|Young Adult|Fiction|Sci-Fi" }
-        if self.rawValue == 11196 { return "Books|Young Adult|Fiction|Coming of Age" }
-        if self.rawValue == 11197 { return "Books|Young Adult|Fiction|Sports & Recreation" }
-        if self.rawValue == 11198 { return "Books|Young Adult|Fiction|Transportation" }
-        if self.rawValue == 11199 { return "Books|Young Adult|Games & Activities" }
-        if self.rawValue == 11200 { return "Books|Young Adult|General Nonfiction" }
-        if self.rawValue == 11201 { return "Books|Young Adult|Health" }
-        if self.rawValue == 11202 { return "Books|Young Adult|History" }
-        if self.rawValue == 11203 { return "Books|Young Adult|Holidays & Celebrations" }
-        if self.rawValue == 11204 { return "Books|Young Adult|Holidays & Celebrations|Birthdays" }
-        if self.rawValue == 11205 { return "Books|Young Adult|Holidays & Celebrations|Christmas & Advent" }
-        if self.rawValue == 11206 { return "Books|Young Adult|Holidays & Celebrations|Easter & Lent" }
-        if self.rawValue == 11207 { return "Books|Young Adult|Holidays & Celebrations|General" }
-        if self.rawValue == 11208 { return "Books|Young Adult|Holidays & Celebrations|Halloween" }
-        if self.rawValue == 11209 { return "Books|Young Adult|Holidays & Celebrations|Hanukkah" }
-        if self.rawValue == 11210 { return "Books|Young Adult|Holidays & Celebrations|Other" }
-        if self.rawValue == 11211 { return "Books|Young Adult|Holidays & Celebrations|Passover" }
-        if self.rawValue == 11212 { return "Books|Young Adult|Holidays & Celebrations|Patriotic Holidays" }
-        if self.rawValue == 11213 { return "Books|Young Adult|Holidays & Celebrations|Ramadan" }
-        if self.rawValue == 11214 { return "Books|Young Adult|Holidays & Celebrations|Thanksgiving" }
-        if self.rawValue == 11215 { return "Books|Young Adult|Holidays & Celebrations|Valentine's Day" }
-        if self.rawValue == 11216 { return "Books|Young Adult|Humor" }
-        if self.rawValue == 11217 { return "Books|Young Adult|Humor|Jokes & Riddles" }
-        if self.rawValue == 11218 { return "Books|Young Adult|Poetry" }
-        if self.rawValue == 11219 { return "Books|Young Adult|Politics & Government" }
-        if self.rawValue == 11220 { return "Books|Young Adult|Reference" }
-        if self.rawValue == 11221 { return "Books|Young Adult|Religion" }
-        if self.rawValue == 11222 { return "Books|Young Adult|Science & Nature" }
-        if self.rawValue == 11223 { return "Books|Young Adult|Coming of Age" }
-        if self.rawValue == 11224 { return "Books|Young Adult|Social Studies" }
-        if self.rawValue == 11225 { return "Books|Young Adult|Sports & Recreation" }
-        if self.rawValue == 11226 { return "Books|Young Adult|Transportation" }
-        if self.rawValue == 11227 { return "Books|Communications & Media" }
-        if self.rawValue == 11228 { return "Books|Military & Warfare" }
-        if self.rawValue == 11229 { return "Books|Romance|Inspirational" }
-        if self.rawValue == 11231 { return "Books|Romance|Holiday" }
-        if self.rawValue == 11232 { return "Books|Romance|Wholesome" }
-        if self.rawValue == 11233 { return "Books|Romance|Military" }
-        if self.rawValue == 11234 { return "Books|Arts & Entertainment|Art History" }
-        if self.rawValue == 11236 { return "Books|Arts & Entertainment|Design" }
-        if self.rawValue == 11243 { return "Books|Business & Personal Finance|Accounting" }
-        if self.rawValue == 11244 { return "Books|Business & Personal Finance|Hospitality" }
-        if self.rawValue == 11245 { return "Books|Business & Personal Finance|Real Estate" }
-        if self.rawValue == 11246 { return "Books|Humor|Jokes & Riddles" }
-        if self.rawValue == 11247 { return "Books|Religion & Spirituality|Comparative Religion" }
-        if self.rawValue == 11255 { return "Books|Cookbooks, Food & Wine|Culinary Arts" }
-        if self.rawValue == 11259 { return "Books|Mysteries & Thrillers|Cozy" }
-        if self.rawValue == 11260 { return "Books|Politics & Current Events|Current Events" }
-        if self.rawValue == 11261 { return "Books|Politics & Current Events|Foreign Policy & International Relations" }
-        if self.rawValue == 11262 { return "Books|Politics & Current Events|Local Government" }
-        if self.rawValue == 11263 { return "Books|Politics & Current Events|National Government" }
-        if self.rawValue == 11264 { return "Books|Politics & Current Events|Political Science" }
-        if self.rawValue == 11265 { return "Books|Politics & Current Events|Public Administration" }
-        if self.rawValue == 11266 { return "Books|Politics & Current Events|World Affairs" }
-        if self.rawValue == 11273 { return "Books|Nonfiction|Family & Relationships|Family & Childcare" }
-        if self.rawValue == 11274 { return "Books|Nonfiction|Family & Relationships|Love & Romance" }
-        if self.rawValue == 11275 { return "Books|Sci-Fi & Fantasy|Fantasy|Urban" }
-        if self.rawValue == 11276 { return "Books|Reference|Foreign Languages|Arabic" }
-        if self.rawValue == 11277 { return "Books|Reference|Foreign Languages|Bilingual Editions" }
-        if self.rawValue == 11278 { return "Books|Reference|Foreign Languages|African Languages" }
-        if self.rawValue == 11279 { return "Books|Reference|Foreign Languages|Ancient Languages" }
-        if self.rawValue == 11280 { return "Books|Reference|Foreign Languages|Chinese" }
-        if self.rawValue == 11281 { return "Books|Reference|Foreign Languages|English" }
-        if self.rawValue == 11282 { return "Books|Reference|Foreign Languages|French" }
-        if self.rawValue == 11283 { return "Books|Reference|Foreign Languages|German" }
-        if self.rawValue == 11284 { return "Books|Reference|Foreign Languages|Hebrew" }
-        if self.rawValue == 11285 { return "Books|Reference|Foreign Languages|Hindi" }
-        if self.rawValue == 11286 { return "Books|Reference|Foreign Languages|Italian" }
-        if self.rawValue == 11287 { return "Books|Reference|Foreign Languages|Japanese" }
-        if self.rawValue == 11288 { return "Books|Reference|Foreign Languages|Korean" }
-        if self.rawValue == 11289 { return "Books|Reference|Foreign Languages|Linguistics" }
-        if self.rawValue == 11290 { return "Books|Reference|Foreign Languages|Other Languages" }
-        if self.rawValue == 11291 { return "Books|Reference|Foreign Languages|Portuguese" }
-        if self.rawValue == 11292 { return "Books|Reference|Foreign Languages|Russian" }
-        if self.rawValue == 11293 { return "Books|Reference|Foreign Languages|Spanish" }
-        if self.rawValue == 11294 { return "Books|Reference|Foreign Languages|Speech Pathology" }
-        if self.rawValue == 11295 { return "Books|Science & Nature|Mathematics|Advanced Mathematics" }
-        if self.rawValue == 11296 { return "Books|Science & Nature|Mathematics|Algebra" }
-        if self.rawValue == 11297 { return "Books|Science & Nature|Mathematics|Arithmetic" }
-        if self.rawValue == 11298 { return "Books|Science & Nature|Mathematics|Calculus" }
-        if self.rawValue == 11299 { return "Books|Science & Nature|Mathematics|Geometry" }
-        if self.rawValue == 11300 { return "Books|Science & Nature|Mathematics|Statistics" }
-        if self.rawValue == 11301 { return "Books|Professional & Technical|Medical|Veterinary" }
-        if self.rawValue == 11302 { return "Books|Professional & Technical|Medical|Neuroscience" }
-        if self.rawValue == 11303 { return "Books|Professional & Technical|Medical|Immunology" }
-        if self.rawValue == 11304 { return "Books|Professional & Technical|Medical|Nursing" }
-        if self.rawValue == 11305 { return "Books|Professional & Technical|Medical|Pharmacology & Toxicology" }
-        if self.rawValue == 11306 { return "Books|Professional & Technical|Medical|Anatomy & Physiology" }
-        if self.rawValue == 11307 { return "Books|Professional & Technical|Medical|Dentistry" }
-        if self.rawValue == 11308 { return "Books|Professional & Technical|Medical|Emergency Medicine" }
-        if self.rawValue == 11309 { return "Books|Professional & Technical|Medical|Genetics" }
-        if self.rawValue == 11310 { return "Books|Professional & Technical|Medical|Psychiatry" }
-        if self.rawValue == 11311 { return "Books|Professional & Technical|Medical|Radiology" }
-        if self.rawValue == 11312 { return "Books|Professional & Technical|Medical|Alternative Medicine" }
-        if self.rawValue == 11317 { return "Books|Nonfiction|Philosophy|Political Philosophy" }
-        if self.rawValue == 11319 { return "Books|Nonfiction|Philosophy|Philosophy of Language" }
-        if self.rawValue == 11320 { return "Books|Nonfiction|Philosophy|Philosophy of Religion" }
-        if self.rawValue == 11327 { return "Books|Nonfiction|Social Science|Sociology" }
-        if self.rawValue == 11329 { return "Books|Professional & Technical|Engineering|Aeronautics" }
-        if self.rawValue == 11330 { return "Books|Professional & Technical|Engineering|Chemical & Petroleum Engineering" }
-        if self.rawValue == 11331 { return "Books|Professional & Technical|Engineering|Civil Engineering" }
-        if self.rawValue == 11332 { return "Books|Professional & Technical|Engineering|Computer Science" }
-        if self.rawValue == 11333 { return "Books|Professional & Technical|Engineering|Electrical Engineering" }
-        if self.rawValue == 11334 { return "Books|Professional & Technical|Engineering|Environmental Engineering" }
-        if self.rawValue == 11335 { return "Books|Professional & Technical|Engineering|Mechanical Engineering" }
-        if self.rawValue == 11336 { return "Books|Professional & Technical|Engineering|Power Resources" }
-        if self.rawValue == 11337 { return "Books|Comics & Graphic Novels|Manga|Boys" }
-        if self.rawValue == 11338 { return "Books|Comics & Graphic Novels|Manga|Men" }
-        if self.rawValue == 11339 { return "Books|Comics & Graphic Novels|Manga|Girls" }
-        if self.rawValue == 11340 { return "Books|Comics & Graphic Novels|Manga|Women" }
-        if self.rawValue == 11341 { return "Books|Comics & Graphic Novels|Manga|Other" }
-        if self.rawValue == 11342 { return "Books|Comics & Graphic Novels|Manga|Yaoi" }
-        if self.rawValue == 11343 { return "Books|Comics & Graphic Novels|Manga|Comic Essays" }
-        if self.rawValue == 12001 { return "Mac App Store|Business" }
-        if self.rawValue == 12002 { return "Mac App Store|Developer Tools" }
-        if self.rawValue == 12003 { return "Mac App Store|Education" }
-        if self.rawValue == 12004 { return "Mac App Store|Entertainment" }
-        if self.rawValue == 12005 { return "Mac App Store|Finance" }
-        if self.rawValue == 12006 { return "Mac App Store|Games" }
-        if self.rawValue == 12007 { return "Mac App Store|Health & Fitness" }
-        if self.rawValue == 12008 { return "Mac App Store|Lifestyle" }
-        if self.rawValue == 12010 { return "Mac App Store|Medical" }
-        if self.rawValue == 12011 { return "Mac App Store|Music" }
-        if self.rawValue == 12012 { return "Mac App Store|News" }
-        if self.rawValue == 12013 { return "Mac App Store|Photography" }
-        if self.rawValue == 12014 { return "Mac App Store|Productivity" }
-        if self.rawValue == 12015 { return "Mac App Store|Reference" }
-        if self.rawValue == 12016 { return "Mac App Store|Social Networking" }
-        if self.rawValue == 12017 { return "Mac App Store|Sports" }
-        if self.rawValue == 12018 { return "Mac App Store|Travel" }
-        if self.rawValue == 12019 { return "Mac App Store|Utilities" }
-        if self.rawValue == 12020 { return "Mac App Store|Video" }
-        if self.rawValue == 12021 { return "Mac App Store|Weather" }
-        if self.rawValue == 12022 { return "Mac App Store|Graphics & Design" }
-        if self.rawValue == 12201 { return "Mac App Store|Games|Action" }
-        if self.rawValue == 12202 { return "Mac App Store|Games|Adventure" }
-        if self.rawValue == 12203 { return "Mac App Store|Games|Casual" }
-        if self.rawValue == 12204 { return "Mac App Store|Games|Board" }
-        if self.rawValue == 12205 { return "Mac App Store|Games|Card" }
-        if self.rawValue == 12206 { return "Mac App Store|Games|Casino" }
-        if self.rawValue == 12207 { return "Mac App Store|Games|Dice" }
-        if self.rawValue == 12208 { return "Mac App Store|Games|Educational" }
-        if self.rawValue == 12209 { return "Mac App Store|Games|Family" }
-        if self.rawValue == 12210 { return "Mac App Store|Games|Kids" }
-        if self.rawValue == 12211 { return "Mac App Store|Games|Music" }
-        if self.rawValue == 12212 { return "Mac App Store|Games|Puzzle" }
-        if self.rawValue == 12213 { return "Mac App Store|Games|Racing" }
-        if self.rawValue == 12214 { return "Mac App Store|Games|Role Playing" }
-        if self.rawValue == 12215 { return "Mac App Store|Games|Simulation" }
-        if self.rawValue == 12216 { return "Mac App Store|Games|Sports" }
-        if self.rawValue == 12217 { return "Mac App Store|Games|Strategy" }
-        if self.rawValue == 12218 { return "Mac App Store|Games|Trivia" }
-        if self.rawValue == 12219 { return "Mac App Store|Games|Word" }
-        if self.rawValue == 13001 { return "App Store|Magazines & Newspapers|News & Politics" }
-        if self.rawValue == 13002 { return "App Store|Magazines & Newspapers|Fashion & Style" }
-        if self.rawValue == 13003 { return "App Store|Magazines & Newspapers|Home & Garden" }
-        if self.rawValue == 13004 { return "App Store|Magazines & Newspapers|Outdoors & Nature" }
-        if self.rawValue == 13005 { return "App Store|Magazines & Newspapers|Sports & Leisure" }
-        if self.rawValue == 13006 { return "App Store|Magazines & Newspapers|Automotive" }
-        if self.rawValue == 13007 { return "App Store|Magazines & Newspapers|Arts & Photography" }
-        if self.rawValue == 13008 { return "App Store|Magazines & Newspapers|Brides & Weddings" }
-        if self.rawValue == 13009 { return "App Store|Magazines & Newspapers|Business & Investing" }
-        if self.rawValue == 13010 { return "App Store|Magazines & Newspapers|Children's Magazines" }
-        if self.rawValue == 13011 { return "App Store|Magazines & Newspapers|Computers & Internet" }
-        if self.rawValue == 13012 { return "App Store|Magazines & Newspapers|Cooking, Food & Drink" }
-        if self.rawValue == 13013 { return "App Store|Magazines & Newspapers|Crafts & Hobbies" }
-        if self.rawValue == 13014 { return "App Store|Magazines & Newspapers|Electronics & Audio" }
-        if self.rawValue == 13015 { return "App Store|Magazines & Newspapers|Entertainment" }
-        if self.rawValue == 13017 { return "App Store|Magazines & Newspapers|Health, Mind & Body" }
-        if self.rawValue == 13018 { return "App Store|Magazines & Newspapers|History" }
-        if self.rawValue == 13019 { return "App Store|Magazines & Newspapers|Literary Magazines & Journals" }
-        if self.rawValue == 13020 { return "App Store|Magazines & Newspapers|Men's Interest" }
-        if self.rawValue == 13021 { return "App Store|Magazines & Newspapers|Movies & Music" }
-        if self.rawValue == 13023 { return "App Store|Magazines & Newspapers|Parenting & Family" }
-        if self.rawValue == 13024 { return "App Store|Magazines & Newspapers|Pets" }
-        if self.rawValue == 13025 { return "App Store|Magazines & Newspapers|Professional & Trade" }
-        if self.rawValue == 13026 { return "App Store|Magazines & Newspapers|Regional News" }
-        if self.rawValue == 13027 { return "App Store|Magazines & Newspapers|Science" }
-        if self.rawValue == 13028 { return "App Store|Magazines & Newspapers|Teens" }
-        if self.rawValue == 13029 { return "App Store|Magazines & Newspapers|Travel & Regional" }
-        if self.rawValue == 13030 { return "App Store|Magazines & Newspapers|Women's Interest" }
-        if self.rawValue == 15000 { return "Textbooks|Arts & Entertainment" }
-        if self.rawValue == 15001 { return "Textbooks|Arts & Entertainment|Art & Architecture" }
-        if self.rawValue == 15002 { return "Textbooks|Arts & Entertainment|Art & Architecture|Urban Planning" }
-        if self.rawValue == 15003 { return "Textbooks|Arts & Entertainment|Art History" }
-        if self.rawValue == 15004 { return "Textbooks|Arts & Entertainment|Dance" }
-        if self.rawValue == 15005 { return "Textbooks|Arts & Entertainment|Design" }
-        if self.rawValue == 15006 { return "Textbooks|Arts & Entertainment|Fashion" }
-        if self.rawValue == 15007 { return "Textbooks|Arts & Entertainment|Film" }
-        if self.rawValue == 15008 { return "Textbooks|Arts & Entertainment|Games" }
-        if self.rawValue == 15009 { return "Textbooks|Arts & Entertainment|Interior Design" }
-        if self.rawValue == 15010 { return "Textbooks|Arts & Entertainment|Media Arts" }
-        if self.rawValue == 15011 { return "Textbooks|Arts & Entertainment|Music" }
-        if self.rawValue == 15012 { return "Textbooks|Arts & Entertainment|Performing Arts" }
-        if self.rawValue == 15013 { return "Textbooks|Arts & Entertainment|Photography" }
-        if self.rawValue == 15014 { return "Textbooks|Arts & Entertainment|Theater" }
-        if self.rawValue == 15015 { return "Textbooks|Arts & Entertainment|TV" }
-        if self.rawValue == 15016 { return "Textbooks|Arts & Entertainment|Visual Arts" }
-        if self.rawValue == 15017 { return "Textbooks|Biographies & Memoirs" }
-        if self.rawValue == 15018 { return "Textbooks|Business & Personal Finance" }
-        if self.rawValue == 15019 { return "Textbooks|Business & Personal Finance|Accounting" }
-        if self.rawValue == 15020 { return "Textbooks|Business & Personal Finance|Careers" }
-        if self.rawValue == 15021 { return "Textbooks|Business & Personal Finance|Economics" }
-        if self.rawValue == 15022 { return "Textbooks|Business & Personal Finance|Finance" }
-        if self.rawValue == 15023 { return "Textbooks|Business & Personal Finance|Hospitality" }
-        if self.rawValue == 15024 { return "Textbooks|Business & Personal Finance|Industries & Professions" }
-        if self.rawValue == 15025 { return "Textbooks|Business & Personal Finance|Investing" }
-        if self.rawValue == 15026 { return "Textbooks|Business & Personal Finance|Management & Leadership" }
-        if self.rawValue == 15027 { return "Textbooks|Business & Personal Finance|Marketing & Sales" }
-        if self.rawValue == 15028 { return "Textbooks|Business & Personal Finance|Personal Finance" }
-        if self.rawValue == 15029 { return "Textbooks|Business & Personal Finance|Real Estate" }
-        if self.rawValue == 15030 { return "Textbooks|Business & Personal Finance|Reference" }
-        if self.rawValue == 15031 { return "Textbooks|Business & Personal Finance|Small Business & Entrepreneurship" }
-        if self.rawValue == 15032 { return "Textbooks|Children & Teens" }
-        if self.rawValue == 15033 { return "Textbooks|Children & Teens|Fiction" }
-        if self.rawValue == 15034 { return "Textbooks|Children & Teens|Nonfiction" }
-        if self.rawValue == 15035 { return "Textbooks|Comics & Graphic Novels" }
-        if self.rawValue == 15036 { return "Textbooks|Comics & Graphic Novels|Graphic Novels" }
-        if self.rawValue == 15037 { return "Textbooks|Comics & Graphic Novels|Manga" }
-        if self.rawValue == 15038 { return "Textbooks|Communications & Media" }
-        if self.rawValue == 15039 { return "Textbooks|Communications & Media|Broadcasting" }
-        if self.rawValue == 15040 { return "Textbooks|Communications & Media|Digital Media" }
-        if self.rawValue == 15041 { return "Textbooks|Communications & Media|Journalism" }
-        if self.rawValue == 15042 { return "Textbooks|Communications & Media|Photojournalism" }
-        if self.rawValue == 15043 { return "Textbooks|Communications & Media|Print" }
-        if self.rawValue == 15044 { return "Textbooks|Communications & Media|Speech" }
-        if self.rawValue == 15045 { return "Textbooks|Communications & Media|Writing" }
-        if self.rawValue == 15046 { return "Textbooks|Computers & Internet" }
-        if self.rawValue == 15047 { return "Textbooks|Computers & Internet|Computers" }
-        if self.rawValue == 15048 { return "Textbooks|Computers & Internet|Databases" }
-        if self.rawValue == 15049 { return "Textbooks|Computers & Internet|Digital Media" }
-        if self.rawValue == 15050 { return "Textbooks|Computers & Internet|Internet" }
-        if self.rawValue == 15051 { return "Textbooks|Computers & Internet|Network" }
-        if self.rawValue == 15052 { return "Textbooks|Computers & Internet|Operating Systems" }
-        if self.rawValue == 15053 { return "Textbooks|Computers & Internet|Programming" }
-        if self.rawValue == 15054 { return "Textbooks|Computers & Internet|Software" }
-        if self.rawValue == 15055 { return "Textbooks|Computers & Internet|System Administration" }
-        if self.rawValue == 15056 { return "Textbooks|Cookbooks, Food & Wine" }
-        if self.rawValue == 15057 { return "Textbooks|Cookbooks, Food & Wine|Beverages" }
-        if self.rawValue == 15058 { return "Textbooks|Cookbooks, Food & Wine|Courses & Dishes" }
-        if self.rawValue == 15059 { return "Textbooks|Cookbooks, Food & Wine|Culinary Arts" }
-        if self.rawValue == 15060 { return "Textbooks|Cookbooks, Food & Wine|Methods" }
-        if self.rawValue == 15061 { return "Textbooks|Cookbooks, Food & Wine|Reference" }
-        if self.rawValue == 15062 { return "Textbooks|Cookbooks, Food & Wine|Regional & Ethnic" }
-        if self.rawValue == 15063 { return "Textbooks|Cookbooks, Food & Wine|Special Diet" }
-        if self.rawValue == 15064 { return "Textbooks|Cookbooks, Food & Wine|Special Occasions" }
-        if self.rawValue == 15065 { return "Textbooks|Cookbooks, Food & Wine|Specific Ingredients" }
-        if self.rawValue == 15066 { return "Textbooks|Engineering" }
-        if self.rawValue == 15067 { return "Textbooks|Engineering|Aeronautics" }
-        if self.rawValue == 15068 { return "Textbooks|Engineering|Chemical & Petroleum Engineering" }
-        if self.rawValue == 15069 { return "Textbooks|Engineering|Civil Engineering" }
-        if self.rawValue == 15070 { return "Textbooks|Engineering|Computer Science" }
-        if self.rawValue == 15071 { return "Textbooks|Engineering|Electrical Engineering" }
-        if self.rawValue == 15072 { return "Textbooks|Engineering|Environmental Engineering" }
-        if self.rawValue == 15073 { return "Textbooks|Engineering|Mechanical Engineering" }
-        if self.rawValue == 15074 { return "Textbooks|Engineering|Power Resources" }
-        if self.rawValue == 15075 { return "Textbooks|Fiction & Literature" }
-        if self.rawValue == 15076 { return "Textbooks|Fiction & Literature|Latino" }
-        if self.rawValue == 15077 { return "Textbooks|Fiction & Literature|Action & Adventure" }
-        if self.rawValue == 15078 { return "Textbooks|Fiction & Literature|African American" }
-        if self.rawValue == 15079 { return "Textbooks|Fiction & Literature|Anthologies" }
-        if self.rawValue == 15080 { return "Textbooks|Fiction & Literature|Classics" }
-        if self.rawValue == 15081 { return "Textbooks|Fiction & Literature|Comparative Literature" }
-        if self.rawValue == 15082 { return "Textbooks|Fiction & Literature|Erotica" }
-        if self.rawValue == 15083 { return "Textbooks|Fiction & Literature|Gay" }
-        if self.rawValue == 15084 { return "Textbooks|Fiction & Literature|Ghost" }
-        if self.rawValue == 15085 { return "Textbooks|Fiction & Literature|Historical" }
-        if self.rawValue == 15086 { return "Textbooks|Fiction & Literature|Horror" }
-        if self.rawValue == 15087 { return "Textbooks|Fiction & Literature|Literary" }
-        if self.rawValue == 15088 { return "Textbooks|Fiction & Literature|Literary Criticism" }
-        if self.rawValue == 15089 { return "Textbooks|Fiction & Literature|Poetry" }
-        if self.rawValue == 15090 { return "Textbooks|Fiction & Literature|Religious" }
-        if self.rawValue == 15091 { return "Textbooks|Fiction & Literature|Short Stories" }
-        if self.rawValue == 15092 { return "Textbooks|Health, Mind & Body" }
-        if self.rawValue == 15093 { return "Textbooks|Health, Mind & Body|Fitness" }
-        if self.rawValue == 15094 { return "Textbooks|Health, Mind & Body|Self-Improvement" }
-        if self.rawValue == 15095 { return "Textbooks|History" }
-        if self.rawValue == 15096 { return "Textbooks|History|Africa" }
-        if self.rawValue == 15097 { return "Textbooks|History|Americas" }
-        if self.rawValue == 15098 { return "Textbooks|History|Americas|Canada" }
-        if self.rawValue == 15099 { return "Textbooks|History|Americas|Latin America" }
-        if self.rawValue == 15100 { return "Textbooks|History|Americas|United States" }
-        if self.rawValue == 15101 { return "Textbooks|History|Ancient" }
-        if self.rawValue == 15102 { return "Textbooks|History|Asia" }
-        if self.rawValue == 15103 { return "Textbooks|History|Australia & Oceania" }
-        if self.rawValue == 15104 { return "Textbooks|History|Europe" }
-        if self.rawValue == 15105 { return "Textbooks|History|Middle East" }
-        if self.rawValue == 15106 { return "Textbooks|History|Military" }
-        if self.rawValue == 15107 { return "Textbooks|History|World" }
-        if self.rawValue == 15108 { return "Textbooks|Humor" }
-        if self.rawValue == 15109 { return "Textbooks|Language Studies" }
-        if self.rawValue == 15110 { return "Textbooks|Language Studies|African Languages" }
-        if self.rawValue == 15111 { return "Textbooks|Language Studies|Ancient Languages" }
-        if self.rawValue == 15112 { return "Textbooks|Language Studies|Arabic" }
-        if self.rawValue == 15113 { return "Textbooks|Language Studies|Bilingual Editions" }
-        if self.rawValue == 15114 { return "Textbooks|Language Studies|Chinese" }
-        if self.rawValue == 15115 { return "Textbooks|Language Studies|English" }
-        if self.rawValue == 15116 { return "Textbooks|Language Studies|French" }
-        if self.rawValue == 15117 { return "Textbooks|Language Studies|German" }
-        if self.rawValue == 15118 { return "Textbooks|Language Studies|Hebrew" }
-        if self.rawValue == 15119 { return "Textbooks|Language Studies|Hindi" }
-        if self.rawValue == 15120 { return "Textbooks|Language Studies|Indigenous Languages" }
-        if self.rawValue == 15121 { return "Textbooks|Language Studies|Italian" }
-        if self.rawValue == 15122 { return "Textbooks|Language Studies|Japanese" }
-        if self.rawValue == 15123 { return "Textbooks|Language Studies|Korean" }
-        if self.rawValue == 15124 { return "Textbooks|Language Studies|Linguistics" }
-        if self.rawValue == 15125 { return "Textbooks|Language Studies|Other Language" }
-        if self.rawValue == 15126 { return "Textbooks|Language Studies|Portuguese" }
-        if self.rawValue == 15127 { return "Textbooks|Language Studies|Russian" }
-        if self.rawValue == 15128 { return "Textbooks|Language Studies|Spanish" }
-        if self.rawValue == 15129 { return "Textbooks|Language Studies|Speech Pathology" }
-        if self.rawValue == 15130 { return "Textbooks|Lifestyle & Home" }
-        if self.rawValue == 15131 { return "Textbooks|Lifestyle & Home|Antiques & Collectibles" }
-        if self.rawValue == 15132 { return "Textbooks|Lifestyle & Home|Crafts & Hobbies" }
-        if self.rawValue == 15133 { return "Textbooks|Lifestyle & Home|Gardening" }
-        if self.rawValue == 15134 { return "Textbooks|Lifestyle & Home|Pets" }
-        if self.rawValue == 15135 { return "Textbooks|Mathematics" }
-        if self.rawValue == 15136 { return "Textbooks|Mathematics|Advanced Mathematics" }
-        if self.rawValue == 15137 { return "Textbooks|Mathematics|Algebra" }
-        if self.rawValue == 15138 { return "Textbooks|Mathematics|Arithmetic" }
-        if self.rawValue == 15139 { return "Textbooks|Mathematics|Calculus" }
-        if self.rawValue == 15140 { return "Textbooks|Mathematics|Geometry" }
-        if self.rawValue == 15141 { return "Textbooks|Mathematics|Statistics" }
-        if self.rawValue == 15142 { return "Textbooks|Medicine" }
-        if self.rawValue == 15143 { return "Textbooks|Medicine|Anatomy & Physiology" }
-        if self.rawValue == 15144 { return "Textbooks|Medicine|Dentistry" }
-        if self.rawValue == 15145 { return "Textbooks|Medicine|Emergency Medicine" }
-        if self.rawValue == 15146 { return "Textbooks|Medicine|Genetics" }
-        if self.rawValue == 15147 { return "Textbooks|Medicine|Immunology" }
-        if self.rawValue == 15148 { return "Textbooks|Medicine|Neuroscience" }
-        if self.rawValue == 15149 { return "Textbooks|Medicine|Nursing" }
-        if self.rawValue == 15150 { return "Textbooks|Medicine|Pharmacology & Toxicology" }
-        if self.rawValue == 15151 { return "Textbooks|Medicine|Psychiatry" }
-        if self.rawValue == 15152 { return "Textbooks|Medicine|Psychology" }
-        if self.rawValue == 15153 { return "Textbooks|Medicine|Radiology" }
-        if self.rawValue == 15154 { return "Textbooks|Medicine|Veterinary" }
-        if self.rawValue == 15155 { return "Textbooks|Mysteries & Thrillers" }
-        if self.rawValue == 15156 { return "Textbooks|Mysteries & Thrillers|British Detectives" }
-        if self.rawValue == 15157 { return "Textbooks|Mysteries & Thrillers|Hard-Boiled" }
-        if self.rawValue == 15158 { return "Textbooks|Mysteries & Thrillers|Historical" }
-        if self.rawValue == 15159 { return "Textbooks|Mysteries & Thrillers|Police Procedural" }
-        if self.rawValue == 15160 { return "Textbooks|Mysteries & Thrillers|Short Stories" }
-        if self.rawValue == 15161 { return "Textbooks|Mysteries & Thrillers|Women Sleuths" }
-        if self.rawValue == 15162 { return "Textbooks|Nonfiction" }
-        if self.rawValue == 15163 { return "Textbooks|Nonfiction|Family & Relationships" }
-        if self.rawValue == 15164 { return "Textbooks|Nonfiction|Transportation" }
-        if self.rawValue == 15165 { return "Textbooks|Nonfiction|True Crime" }
-        if self.rawValue == 15166 { return "Textbooks|Parenting" }
-        if self.rawValue == 15167 { return "Textbooks|Philosophy" }
-        if self.rawValue == 15168 { return "Textbooks|Philosophy|Aesthetics" }
-        if self.rawValue == 15169 { return "Textbooks|Philosophy|Epistemology" }
-        if self.rawValue == 15170 { return "Textbooks|Philosophy|Ethics" }
-        if self.rawValue == 15171 { return "Textbooks|Philosophy|Philosophy of Language" }
-        if self.rawValue == 15172 { return "Textbooks|Philosophy|Logic" }
-        if self.rawValue == 15173 { return "Textbooks|Philosophy|Metaphysics" }
-        if self.rawValue == 15174 { return "Textbooks|Philosophy|Political Philosophy" }
-        if self.rawValue == 15175 { return "Textbooks|Philosophy|Philosophy of Religion" }
-        if self.rawValue == 15176 { return "Textbooks|Politics & Current Events" }
-        if self.rawValue == 15177 { return "Textbooks|Politics & Current Events|Current Events" }
-        if self.rawValue == 15178 { return "Textbooks|Politics & Current Events|Foreign Policy & International Relations" }
-        if self.rawValue == 15179 { return "Textbooks|Politics & Current Events|Local Governments" }
-        if self.rawValue == 15180 { return "Textbooks|Politics & Current Events|National Governments" }
-        if self.rawValue == 15181 { return "Textbooks|Politics & Current Events|Political Science" }
-        if self.rawValue == 15182 { return "Textbooks|Politics & Current Events|Public Administration" }
-        if self.rawValue == 15183 { return "Textbooks|Politics & Current Events|World Affairs" }
-        if self.rawValue == 15184 { return "Textbooks|Professional & Technical" }
-        if self.rawValue == 15185 { return "Textbooks|Professional & Technical|Design" }
-        if self.rawValue == 15186 { return "Textbooks|Professional & Technical|Language Arts & Disciplines" }
-        if self.rawValue == 15187 { return "Textbooks|Professional & Technical|Engineering" }
-        if self.rawValue == 15188 { return "Textbooks|Professional & Technical|Law" }
-        if self.rawValue == 15189 { return "Textbooks|Professional & Technical|Medical" }
-        if self.rawValue == 15190 { return "Textbooks|Reference" }
-        if self.rawValue == 15191 { return "Textbooks|Reference|Almanacs & Yearbooks" }
-        if self.rawValue == 15192 { return "Textbooks|Reference|Atlases & Maps" }
-        if self.rawValue == 15193 { return "Textbooks|Reference|Catalogs & Directories" }
-        if self.rawValue == 15194 { return "Textbooks|Reference|Consumer Guides" }
-        if self.rawValue == 15195 { return "Textbooks|Reference|Dictionaries & Thesauruses" }
-        if self.rawValue == 15196 { return "Textbooks|Reference|Encyclopedias" }
-        if self.rawValue == 15197 { return "Textbooks|Reference|Etiquette" }
-        if self.rawValue == 15198 { return "Textbooks|Reference|Quotations" }
-        if self.rawValue == 15199 { return "Textbooks|Reference|Study Aids" }
-        if self.rawValue == 15200 { return "Textbooks|Reference|Words & Language" }
-        if self.rawValue == 15201 { return "Textbooks|Reference|Writing" }
-        if self.rawValue == 15202 { return "Textbooks|Religion & Spirituality" }
-        if self.rawValue == 15203 { return "Textbooks|Religion & Spirituality|Bible Studies" }
-        if self.rawValue == 15204 { return "Textbooks|Religion & Spirituality|Bibles" }
-        if self.rawValue == 15205 { return "Textbooks|Religion & Spirituality|Buddhism" }
-        if self.rawValue == 15206 { return "Textbooks|Religion & Spirituality|Christianity" }
-        if self.rawValue == 15207 { return "Textbooks|Religion & Spirituality|Comparative Religion" }
-        if self.rawValue == 15208 { return "Textbooks|Religion & Spirituality|Hinduism" }
-        if self.rawValue == 15209 { return "Textbooks|Religion & Spirituality|Islam" }
-        if self.rawValue == 15210 { return "Textbooks|Religion & Spirituality|Judaism" }
-        if self.rawValue == 15211 { return "Textbooks|Religion & Spirituality|Spirituality" }
-        if self.rawValue == 15212 { return "Textbooks|Romance" }
-        if self.rawValue == 15213 { return "Textbooks|Romance|Contemporary" }
-        if self.rawValue == 15214 { return "Textbooks|Romance|Erotic Romance" }
-        if self.rawValue == 15215 { return "Textbooks|Romance|Paranormal" }
-        if self.rawValue == 15216 { return "Textbooks|Romance|Historical" }
-        if self.rawValue == 15217 { return "Textbooks|Romance|Short Stories" }
-        if self.rawValue == 15218 { return "Textbooks|Romance|Suspense" }
-        if self.rawValue == 15219 { return "Textbooks|Romance|Western" }
-        if self.rawValue == 15220 { return "Textbooks|Sci-Fi & Fantasy" }
-        if self.rawValue == 15221 { return "Textbooks|Sci-Fi & Fantasy|Fantasy" }
-        if self.rawValue == 15222 { return "Textbooks|Sci-Fi & Fantasy|Fantasy|Contemporary" }
-        if self.rawValue == 15223 { return "Textbooks|Sci-Fi & Fantasy|Fantasy|Epic" }
-        if self.rawValue == 15224 { return "Textbooks|Sci-Fi & Fantasy|Fantasy|Historical" }
-        if self.rawValue == 15225 { return "Textbooks|Sci-Fi & Fantasy|Fantasy|Paranormal" }
-        if self.rawValue == 15226 { return "Textbooks|Sci-Fi & Fantasy|Fantasy|Short Stories" }
-        if self.rawValue == 15227 { return "Textbooks|Sci-Fi & Fantasy|Science Fiction" }
-        if self.rawValue == 15228 { return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature" }
-        if self.rawValue == 15229 { return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature|Adventure" }
-        if self.rawValue == 15230 { return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature|High Tech" }
-        if self.rawValue == 15231 { return "Textbooks|Sci-Fi & Fantasy|Science Fiction & Literature|Short Stories" }
-        if self.rawValue == 15232 { return "Textbooks|Science & Nature" }
-        if self.rawValue == 15233 { return "Textbooks|Science & Nature|Agriculture" }
-        if self.rawValue == 15234 { return "Textbooks|Science & Nature|Astronomy" }
-        if self.rawValue == 15235 { return "Textbooks|Science & Nature|Atmosphere" }
-        if self.rawValue == 15236 { return "Textbooks|Science & Nature|Biology" }
-        if self.rawValue == 15237 { return "Textbooks|Science & Nature|Chemistry" }
-        if self.rawValue == 15238 { return "Textbooks|Science & Nature|Earth Sciences" }
-        if self.rawValue == 15239 { return "Textbooks|Science & Nature|Ecology" }
-        if self.rawValue == 15240 { return "Textbooks|Science & Nature|Environment" }
-        if self.rawValue == 15241 { return "Textbooks|Science & Nature|Essays" }
-        if self.rawValue == 15242 { return "Textbooks|Science & Nature|Geography" }
-        if self.rawValue == 15243 { return "Textbooks|Science & Nature|Geology" }
-        if self.rawValue == 15244 { return "Textbooks|Science & Nature|History" }
-        if self.rawValue == 15245 { return "Textbooks|Science & Nature|Life Sciences" }
-        if self.rawValue == 15246 { return "Textbooks|Science & Nature|Nature" }
-        if self.rawValue == 15247 { return "Textbooks|Science & Nature|Physics" }
-        if self.rawValue == 15248 { return "Textbooks|Science & Nature|Reference" }
-        if self.rawValue == 15249 { return "Textbooks|Social Science" }
-        if self.rawValue == 15250 { return "Textbooks|Social Science|Anthropology" }
-        if self.rawValue == 15251 { return "Textbooks|Social Science|Archaeology" }
-        if self.rawValue == 15252 { return "Textbooks|Social Science|Civics" }
-        if self.rawValue == 15253 { return "Textbooks|Social Science|Government" }
-        if self.rawValue == 15254 { return "Textbooks|Social Science|Social Studies" }
-        if self.rawValue == 15255 { return "Textbooks|Social Science|Social Welfare" }
-        if self.rawValue == 15256 { return "Textbooks|Social Science|Society" }
-        if self.rawValue == 15257 { return "Textbooks|Social Science|Society|African Studies" }
-        if self.rawValue == 15258 { return "Textbooks|Social Science|Society|American Studies" }
-        if self.rawValue == 15259 { return "Textbooks|Social Science|Society|Asia Pacific Studies" }
-        if self.rawValue == 15260 { return "Textbooks|Social Science|Society|Cross-Cultural Studies" }
-        if self.rawValue == 15261 { return "Textbooks|Social Science|Society|European Studies" }
-        if self.rawValue == 15262 { return "Textbooks|Social Science|Society|Immigration & Emigration" }
-        if self.rawValue == 15263 { return "Textbooks|Social Science|Society|Indigenous Studies" }
-        if self.rawValue == 15264 { return "Textbooks|Social Science|Society|Latin & Caribbean Studies" }
-        if self.rawValue == 15265 { return "Textbooks|Social Science|Society|Middle Eastern Studies" }
-        if self.rawValue == 15266 { return "Textbooks|Social Science|Society|Race & Ethnicity Studies" }
-        if self.rawValue == 15267 { return "Textbooks|Social Science|Society|Sexuality Studies" }
-        if self.rawValue == 15268 { return "Textbooks|Social Science|Society|Women's Studies" }
-        if self.rawValue == 15269 { return "Textbooks|Social Science|Sociology" }
-        if self.rawValue == 15270 { return "Textbooks|Sports & Outdoors" }
-        if self.rawValue == 15271 { return "Textbooks|Sports & Outdoors|Baseball" }
-        if self.rawValue == 15272 { return "Textbooks|Sports & Outdoors|Basketball" }
-        if self.rawValue == 15273 { return "Textbooks|Sports & Outdoors|Coaching" }
-        if self.rawValue == 15274 { return "Textbooks|Sports & Outdoors|Equestrian" }
-        if self.rawValue == 15275 { return "Textbooks|Sports & Outdoors|Extreme Sports" }
-        if self.rawValue == 15276 { return "Textbooks|Sports & Outdoors|Football" }
-        if self.rawValue == 15277 { return "Textbooks|Sports & Outdoors|Golf" }
-        if self.rawValue == 15278 { return "Textbooks|Sports & Outdoors|Hockey" }
-        if self.rawValue == 15279 { return "Textbooks|Sports & Outdoors|Motor Sports" }
-        if self.rawValue == 15280 { return "Textbooks|Sports & Outdoors|Mountaineering" }
-        if self.rawValue == 15281 { return "Textbooks|Sports & Outdoors|Outdoors" }
-        if self.rawValue == 15282 { return "Textbooks|Sports & Outdoors|Racket Sports" }
-        if self.rawValue == 15283 { return "Textbooks|Sports & Outdoors|Reference" }
-        if self.rawValue == 15284 { return "Textbooks|Sports & Outdoors|Soccer" }
-        if self.rawValue == 15285 { return "Textbooks|Sports & Outdoors|Training" }
-        if self.rawValue == 15286 { return "Textbooks|Sports & Outdoors|Water Sports" }
-        if self.rawValue == 15287 { return "Textbooks|Sports & Outdoors|Winter Sports" }
-        if self.rawValue == 15288 { return "Textbooks|Teaching & Learning" }
-        if self.rawValue == 15289 { return "Textbooks|Teaching & Learning|Adult Education" }
-        if self.rawValue == 15290 { return "Textbooks|Teaching & Learning|Curriculum & Teaching" }
-        if self.rawValue == 15291 { return "Textbooks|Teaching & Learning|Educational Leadership" }
-        if self.rawValue == 15292 { return "Textbooks|Teaching & Learning|Educational Technology" }
-        if self.rawValue == 15293 { return "Textbooks|Teaching & Learning|Family & Childcare" }
-        if self.rawValue == 15294 { return "Textbooks|Teaching & Learning|Information & Library Science" }
-        if self.rawValue == 15295 { return "Textbooks|Teaching & Learning|Learning Resources" }
-        if self.rawValue == 15296 { return "Textbooks|Teaching & Learning|Psychology & Research" }
-        if self.rawValue == 15297 { return "Textbooks|Teaching & Learning|Special Education" }
-        if self.rawValue == 15298 { return "Textbooks|Travel & Adventure" }
-        if self.rawValue == 15299 { return "Textbooks|Travel & Adventure|Africa" }
-        if self.rawValue == 15300 { return "Textbooks|Travel & Adventure|Americas" }
-        if self.rawValue == 15301 { return "Textbooks|Travel & Adventure|Americas|Canada" }
-        if self.rawValue == 15302 { return "Textbooks|Travel & Adventure|Americas|Latin America" }
-        if self.rawValue == 15303 { return "Textbooks|Travel & Adventure|Americas|United States" }
-        if self.rawValue == 15304 { return "Textbooks|Travel & Adventure|Asia" }
-        if self.rawValue == 15305 { return "Textbooks|Travel & Adventure|Caribbean" }
-        if self.rawValue == 15306 { return "Textbooks|Travel & Adventure|Essays & Memoirs" }
-        if self.rawValue == 15307 { return "Textbooks|Travel & Adventure|Europe" }
-        if self.rawValue == 15308 { return "Textbooks|Travel & Adventure|Middle East" }
-        if self.rawValue == 15309 { return "Textbooks|Travel & Adventure|Oceania" }
-        if self.rawValue == 15310 { return "Textbooks|Travel & Adventure|Specialty Travel" }
-        if self.rawValue == 15311 { return "Textbooks|Comics & Graphic Novels|Comics" }
-        if self.rawValue == 15312 { return "Textbooks|Reference|Manuals" }
-        if self.rawValue == 16001 { return "App Store|Stickers|Emoji & Expressions" }
-        if self.rawValue == 16003 { return "App Store|Stickers|Animals & Nature" }
-        if self.rawValue == 16005 { return "App Store|Stickers|Art" }
-        if self.rawValue == 16006 { return "App Store|Stickers|Celebrations" }
-        if self.rawValue == 16007 { return "App Store|Stickers|Celebrities" }
-        if self.rawValue == 16008 { return "App Store|Stickers|Comics & Cartoons" }
-        if self.rawValue == 16009 { return "App Store|Stickers|Eating & Drinking" }
-        if self.rawValue == 16010 { return "App Store|Stickers|Gaming" }
-        if self.rawValue == 16014 { return "App Store|Stickers|Movies & TV" }
-        if self.rawValue == 16015 { return "App Store|Stickers|Music" }
-        if self.rawValue == 16017 { return "App Store|Stickers|People" }
-        if self.rawValue == 16019 { return "App Store|Stickers|Places & Objects" }
-        if self.rawValue == 16021 { return "App Store|Stickers|Sports & Activities" }
-        if self.rawValue == 16025 { return "App Store|Stickers|Kids & Family" }
-        if self.rawValue == 16026 { return "App Store|Stickers|Fashion" }
-        if self.rawValue == 100000 { return "Music|Christian & Gospel" }
-        if self.rawValue == 100001 { return "Music|Classical|Art Song" }
-        if self.rawValue == 100002 { return "Music|Classical|Brass & Woodwinds" }
-        if self.rawValue == 100003 { return "Music|Classical|Solo Instrumental" }
-        if self.rawValue == 100004 { return "Music|Classical|Contemporary Era" }
-        if self.rawValue == 100005 { return "Music|Classical|Oratorio" }
-        if self.rawValue == 100006 { return "Music|Classical|Cantata" }
-        if self.rawValue == 100007 { return "Music|Classical|Electronic" }
-        if self.rawValue == 100008 { return "Music|Classical|Sacred" }
-        if self.rawValue == 100009 { return "Music|Classical|Guitar" }
-        if self.rawValue == 100010 { return "Music|Classical|Piano" }
-        if self.rawValue == 100011 { return "Music|Classical|Violin" }
-        if self.rawValue == 100012 { return "Music|Classical|Cello" }
-        if self.rawValue == 100013 { return "Music|Classical|Percussion" }
-        if self.rawValue == 100014 { return "Music|Electronic|Dubstep" }
-        if self.rawValue == 100015 { return "Music|Electronic|Bass" }
-        if self.rawValue == 100016 { return "Music|Hip-Hop/Rap|UK Hip-Hop" }
-        if self.rawValue == 100017 { return "Music|Reggae|Lovers Rock" }
-        if self.rawValue == 100018 { return "Music|Alternative|EMO" }
-        if self.rawValue == 100019 { return "Music|Alternative|Pop Punk" }
-        if self.rawValue == 100020 { return "Music|Alternative|Indie Pop" }
-        if self.rawValue == 100021 { return "Music|New Age|Yoga" }
-        if self.rawValue == 100022 { return "Music|Pop|Tribute" }
-        if self.rawValue == 100023 { return "Music|Pop|Shows" }
-        if self.rawValue == 100024 { return "Music|Cuban" }
-        if self.rawValue == 100025 { return "Music|Cuban|Mambo" }
-        if self.rawValue == 100026 { return "Music|Cuban|Chachacha" }
-        if self.rawValue == 100027 { return "Music|Cuban|Guajira" }
-        if self.rawValue == 100028 { return "Music|Cuban|Son" }
-        if self.rawValue == 100029 { return "Music|Cuban|Bolero" }
-        if self.rawValue == 100030 { return "Music|Cuban|Guaracha" }
-        if self.rawValue == 100031 { return "Music|Cuban|Timba" }
-        if self.rawValue == 100032 { return "Music|Soundtrack|Video Game" }
-        if self.rawValue == 100033 { return "Music|Indian|Regional Indian|Punjabi|Punjabi Pop" }
-        if self.rawValue == 100034 { return "Music|Indian|Regional Indian|Bengali|Rabindra Sangeet" }
-        if self.rawValue == 100035 { return "Music|Indian|Regional Indian|Malayalam" }
-        if self.rawValue == 100036 { return "Music|Indian|Regional Indian|Kannada" }
-        if self.rawValue == 100037 { return "Music|Indian|Regional Indian|Marathi" }
-        if self.rawValue == 100038 { return "Music|Indian|Regional Indian|Gujarati" }
-        if self.rawValue == 100039 { return "Music|Indian|Regional Indian|Assamese" }
-        if self.rawValue == 100040 { return "Music|Indian|Regional Indian|Bhojpuri" }
-        if self.rawValue == 100041 { return "Music|Indian|Regional Indian|Haryanvi" }
-        if self.rawValue == 100042 { return "Music|Indian|Regional Indian|Odia" }
-        if self.rawValue == 100043 { return "Music|Indian|Regional Indian|Rajasthani" }
-        if self.rawValue == 100044 { return "Music|Indian|Regional Indian|Urdu" }
-        if self.rawValue == 100045 { return "Music|Indian|Regional Indian|Punjabi" }
-        if self.rawValue == 100046 { return "Music|Indian|Regional Indian|Bengali" }
-        if self.rawValue == 100047 { return "Music|Indian|Indian Classical|Carnatic Classical" }
-        if self.rawValue == 100048 { return "Music|Indian|Indian Classical|Hindustani Classical" }
-        if self.rawValue == 100049 { return "Music|African|Afro House" }
-        if self.rawValue == 100050 { return "Music|African|Afro Soul" }
-        if self.rawValue == 100051 { return "Music|African|Afrobeats" }
-        if self.rawValue == 100052 { return "Music|African|Benga" }
-        if self.rawValue == 100053 { return "Music|African|Bongo-Flava" }
-        if self.rawValue == 100054 { return "Music|African|Coupe-Decale" }
-        if self.rawValue == 100055 { return "Music|African|Gqom" }
-        if self.rawValue == 100056 { return "Music|African|Highlife" }
-        if self.rawValue == 100057 { return "Music|African|Kuduro" }
-        if self.rawValue == 100058 { return "Music|African|Kizomba" }
-        if self.rawValue == 100059 { return "Music|African|Kwaito" }
-        if self.rawValue == 100060 { return "Music|African|Mbalax" }
-        if self.rawValue == 100061 { return "Music|African|Ndombolo" }
-        if self.rawValue == 100062 { return "Music|African|Shangaan Electro" }
-        if self.rawValue == 100063 { return "Music|African|Soukous" }
-        if self.rawValue == 100064 { return "Music|African|Taarab" }
-        if self.rawValue == 100065 { return "Music|African|Zouglou" }
-        if self.rawValue == 100066 { return "Music|Turkish|Ozgun" }
-        if self.rawValue == 100067 { return "Music|Turkish|Fantezi" }
-        if self.rawValue == 100068 { return "Music|Turkish|Religious" }
-        if self.rawValue == 100069 { return "Music|Pop|Turkish Pop" }
-        if self.rawValue == 100070 { return "Music|Rock|Turkish Rock" }
-        if self.rawValue == 100071 { return "Music|Alternative|Turkish Alternative" }
-        if self.rawValue == 100072 { return "Music|Hip-Hop/Rap|Turkish Hip-Hop/Rap" }
-        if self.rawValue == 100073 { return "Music|African|Maskandi" }
-        if self.rawValue == 100074 { return "Music|Russian|Russian Romance" }
-        if self.rawValue == 100075 { return "Music|Russian|Russian Bard" }
-        if self.rawValue == 100076 { return "Music|Russian|Russian Pop" }
-        if self.rawValue == 100077 { return "Music|Russian|Russian Rock" }
-        if self.rawValue == 100078 { return "Music|Russian|Russian Hip-Hop" }
-        if self.rawValue == 100079 { return "Music|Arabic|Levant" }
-        if self.rawValue == 100080 { return "Music|Arabic|Levant|Dabke" }
-        if self.rawValue == 100081 { return "Music|Arabic|Maghreb Rai" }
-        if self.rawValue == 100082 { return "Music|Arabic|Khaleeji|Khaleeji Jalsat" }
-        if self.rawValue == 100083 { return "Music|Arabic|Khaleeji|Khaleeji Shailat" }
-        if self.rawValue == 100084 { return "Music|Tarab" }
-        if self.rawValue == 100085 { return "Music|Tarab|Iraqi Tarab" }
-        if self.rawValue == 100086 { return "Music|Tarab|Egyptian Tarab" }
-        if self.rawValue == 100087 { return "Music|Tarab|Khaleeji Tarab" }
-        if self.rawValue == 100088 { return "Music|Pop|Levant Pop" }
-        if self.rawValue == 100089 { return "Music|Pop|Iraqi Pop" }
-        if self.rawValue == 100090 { return "Music|Pop|Egyptian Pop" }
-        if self.rawValue == 100091 { return "Music|Pop|Maghreb Pop" }
-        if self.rawValue == 100092 { return "Music|Pop|Khaleeji Pop" }
-        if self.rawValue == 100093 { return "Music|Hip-Hop/Rap|Levant Hip-Hop" }
-        if self.rawValue == 100094 { return "Music|Hip-Hop/Rap|Egyptian Hip-Hop" }
-        if self.rawValue == 100095 { return "Music|Hip-Hop/Rap|Maghreb Hip-Hop" }
-        if self.rawValue == 100096 { return "Music|Hip-Hop/Rap|Khaleeji Hip-Hop" }
-        if self.rawValue == 100097 { return "Music|Alternative|Indie Levant" }
-        if self.rawValue == 100098 { return "Music|Alternative|Indie Egyptian" }
-        if self.rawValue == 100099 { return "Music|Alternative|Indie Maghreb" }
-        if self.rawValue == 100100 { return "Music|Electronic|Levant Electronic" }
-        if self.rawValue == 100101 { return "Music|Electronic|Electro-Cha'abi" }
-        if self.rawValue == 100102 { return "Music|Electronic|Maghreb Electronic" }
-        if self.rawValue == 100103 { return "Music|Folk|Iraqi Folk" }
-        if self.rawValue == 100104 { return "Music|Folk|Khaleeji Folk" }
-        if self.rawValue == 100105 { return "Music|Dance|Maghreb Dance" }
-        if self.rawValue == 40000000 { return "iTunes U" }
-        if self.rawValue == 40000001 { return "iTunes U|Business & Economics" }
-        if self.rawValue == 40000002 { return "iTunes U|Business & Economics|Economics" }
-        if self.rawValue == 40000003 { return "iTunes U|Business & Economics|Finance" }
-        if self.rawValue == 40000004 { return "iTunes U|Business & Economics|Hospitality" }
-        if self.rawValue == 40000005 { return "iTunes U|Business & Economics|Management" }
-        if self.rawValue == 40000006 { return "iTunes U|Business & Economics|Marketing" }
-        if self.rawValue == 40000007 { return "iTunes U|Business & Economics|Personal Finance" }
-        if self.rawValue == 40000008 { return "iTunes U|Business & Economics|Real Estate" }
-        if self.rawValue == 40000009 { return "iTunes U|Engineering" }
-        if self.rawValue == 40000010 { return "iTunes U|Engineering|Chemical & Petroleum Engineering" }
-        if self.rawValue == 40000011 { return "iTunes U|Engineering|Civil Engineering" }
-        if self.rawValue == 40000012 { return "iTunes U|Engineering|Computer Science" }
-        if self.rawValue == 40000013 { return "iTunes U|Engineering|Electrical Engineering" }
-        if self.rawValue == 40000014 { return "iTunes U|Engineering|Environmental Engineering" }
-        if self.rawValue == 40000015 { return "iTunes U|Engineering|Mechanical Engineering" }
-        if self.rawValue == 40000016 { return "iTunes U|Music, Art, & Design" }
-        if self.rawValue == 40000017 { return "iTunes U|Music, Art, & Design|Architecture" }
-        if self.rawValue == 40000019 { return "iTunes U|Music, Art, & Design|Art History" }
-        if self.rawValue == 40000020 { return "iTunes U|Music, Art, & Design|Dance" }
-        if self.rawValue == 40000021 { return "iTunes U|Music, Art, & Design|Film" }
-        if self.rawValue == 40000022 { return "iTunes U|Music, Art, & Design|Design" }
-        if self.rawValue == 40000023 { return "iTunes U|Music, Art, & Design|Interior Design" }
-        if self.rawValue == 40000024 { return "iTunes U|Music, Art, & Design|Music" }
-        if self.rawValue == 40000025 { return "iTunes U|Music, Art, & Design|Theater" }
-        if self.rawValue == 40000026 { return "iTunes U|Health & Medicine" }
-        if self.rawValue == 40000027 { return "iTunes U|Health & Medicine|Anatomy & Physiology" }
-        if self.rawValue == 40000028 { return "iTunes U|Health & Medicine|Behavioral Science" }
-        if self.rawValue == 40000029 { return "iTunes U|Health & Medicine|Dentistry" }
-        if self.rawValue == 40000030 { return "iTunes U|Health & Medicine|Diet & Nutrition" }
-        if self.rawValue == 40000031 { return "iTunes U|Health & Medicine|Emergency Medicine" }
-        if self.rawValue == 40000032 { return "iTunes U|Health & Medicine|Genetics" }
-        if self.rawValue == 40000033 { return "iTunes U|Health & Medicine|Gerontology" }
-        if self.rawValue == 40000034 { return "iTunes U|Health & Medicine|Health & Exercise Science" }
-        if self.rawValue == 40000035 { return "iTunes U|Health & Medicine|Immunology" }
-        if self.rawValue == 40000036 { return "iTunes U|Health & Medicine|Neuroscience" }
-        if self.rawValue == 40000037 { return "iTunes U|Health & Medicine|Pharmacology & Toxicology" }
-        if self.rawValue == 40000038 { return "iTunes U|Health & Medicine|Psychiatry" }
-        if self.rawValue == 40000039 { return "iTunes U|Health & Medicine|Global Health" }
-        if self.rawValue == 40000040 { return "iTunes U|Health & Medicine|Radiology" }
-        if self.rawValue == 40000041 { return "iTunes U|History" }
-        if self.rawValue == 40000042 { return "iTunes U|History|Ancient History" }
-        if self.rawValue == 40000043 { return "iTunes U|History|Medieval History" }
-        if self.rawValue == 40000044 { return "iTunes U|History|Military History" }
-        if self.rawValue == 40000045 { return "iTunes U|History|Modern History" }
-        if self.rawValue == 40000046 { return "iTunes U|History|African History" }
-        if self.rawValue == 40000047 { return "iTunes U|History|Asia-Pacific History" }
-        if self.rawValue == 40000048 { return "iTunes U|History|European History" }
-        if self.rawValue == 40000049 { return "iTunes U|History|Middle Eastern History" }
-        if self.rawValue == 40000050 { return "iTunes U|History|North American History" }
-        if self.rawValue == 40000051 { return "iTunes U|History|South American History" }
-        if self.rawValue == 40000053 { return "iTunes U|Communications & Journalism" }
-        if self.rawValue == 40000054 { return "iTunes U|Philosophy" }
-        if self.rawValue == 40000055 { return "iTunes U|Religion & Spirituality" }
-        if self.rawValue == 40000056 { return "iTunes U|Languages" }
-        if self.rawValue == 40000057 { return "iTunes U|Languages|African Languages" }
-        if self.rawValue == 40000058 { return "iTunes U|Languages|Ancient Languages" }
-        if self.rawValue == 40000061 { return "iTunes U|Languages|English" }
-        if self.rawValue == 40000063 { return "iTunes U|Languages|French" }
-        if self.rawValue == 40000064 { return "iTunes U|Languages|German" }
-        if self.rawValue == 40000065 { return "iTunes U|Languages|Italian" }
-        if self.rawValue == 40000066 { return "iTunes U|Languages|Linguistics" }
-        if self.rawValue == 40000068 { return "iTunes U|Languages|Spanish" }
-        if self.rawValue == 40000069 { return "iTunes U|Languages|Speech Pathology" }
-        if self.rawValue == 40000070 { return "iTunes U|Writing & Literature" }
-        if self.rawValue == 40000071 { return "iTunes U|Writing & Literature|Anthologies" }
-        if self.rawValue == 40000072 { return "iTunes U|Writing & Literature|Biography" }
-        if self.rawValue == 40000073 { return "iTunes U|Writing & Literature|Classics" }
-        if self.rawValue == 40000074 { return "iTunes U|Writing & Literature|Literary Criticism" }
-        if self.rawValue == 40000075 { return "iTunes U|Writing & Literature|Fiction" }
-        if self.rawValue == 40000076 { return "iTunes U|Writing & Literature|Poetry" }
-        if self.rawValue == 40000077 { return "iTunes U|Mathematics" }
-        if self.rawValue == 40000078 { return "iTunes U|Mathematics|Advanced Mathematics" }
-        if self.rawValue == 40000079 { return "iTunes U|Mathematics|Algebra" }
-        if self.rawValue == 40000080 { return "iTunes U|Mathematics|Arithmetic" }
-        if self.rawValue == 40000081 { return "iTunes U|Mathematics|Calculus" }
-        if self.rawValue == 40000082 { return "iTunes U|Mathematics|Geometry" }
-        if self.rawValue == 40000083 { return "iTunes U|Mathematics|Statistics" }
-        if self.rawValue == 40000084 { return "iTunes U|Science" }
-        if self.rawValue == 40000085 { return "iTunes U|Science|Agricultural" }
-        if self.rawValue == 40000086 { return "iTunes U|Science|Astronomy" }
-        if self.rawValue == 40000087 { return "iTunes U|Science|Atmosphere" }
-        if self.rawValue == 40000088 { return "iTunes U|Science|Biology" }
-        if self.rawValue == 40000089 { return "iTunes U|Science|Chemistry" }
-        if self.rawValue == 40000090 { return "iTunes U|Science|Ecology" }
-        if self.rawValue == 40000091 { return "iTunes U|Science|Geography" }
-        if self.rawValue == 40000092 { return "iTunes U|Science|Geology" }
-        if self.rawValue == 40000093 { return "iTunes U|Science|Physics" }
-        if self.rawValue == 40000094 { return "iTunes U|Social Science" }
-        if self.rawValue == 40000095 { return "iTunes U|Law & Politics|Law" }
-        if self.rawValue == 40000096 { return "iTunes U|Law & Politics|Political Science" }
-        if self.rawValue == 40000097 { return "iTunes U|Law & Politics|Public Administration" }
-        if self.rawValue == 40000098 { return "iTunes U|Social Science|Psychology" }
-        if self.rawValue == 40000099 { return "iTunes U|Social Science|Social Welfare" }
-        if self.rawValue == 40000100 { return "iTunes U|Social Science|Sociology" }
-        if self.rawValue == 40000101 { return "iTunes U|Society" }
-        if self.rawValue == 40000103 { return "iTunes U|Society|Asia Pacific Studies" }
-        if self.rawValue == 40000104 { return "iTunes U|Society|European Studies" }
-        if self.rawValue == 40000105 { return "iTunes U|Society|Indigenous Studies" }
-        if self.rawValue == 40000106 { return "iTunes U|Society|Latin & Caribbean Studies" }
-        if self.rawValue == 40000107 { return "iTunes U|Society|Middle Eastern Studies" }
-        if self.rawValue == 40000108 { return "iTunes U|Society|Women's Studies" }
-        if self.rawValue == 40000109 { return "iTunes U|Teaching & Learning" }
-        if self.rawValue == 40000110 { return "iTunes U|Teaching & Learning|Curriculum & Teaching" }
-        if self.rawValue == 40000111 { return "iTunes U|Teaching & Learning|Educational Leadership" }
-        if self.rawValue == 40000112 { return "iTunes U|Teaching & Learning|Family & Childcare" }
-        if self.rawValue == 40000113 { return "iTunes U|Teaching & Learning|Learning Resources" }
-        if self.rawValue == 40000114 { return "iTunes U|Teaching & Learning|Psychology & Research" }
-        if self.rawValue == 40000115 { return "iTunes U|Teaching & Learning|Special Education" }
-        if self.rawValue == 40000116 { return "iTunes U|Music, Art, & Design|Culinary Arts" }
-        if self.rawValue == 40000117 { return "iTunes U|Music, Art, & Design|Fashion" }
-        if self.rawValue == 40000118 { return "iTunes U|Music, Art, & Design|Media Arts" }
-        if self.rawValue == 40000119 { return "iTunes U|Music, Art, & Design|Photography" }
-        if self.rawValue == 40000120 { return "iTunes U|Music, Art, & Design|Visual Art" }
-        if self.rawValue == 40000121 { return "iTunes U|Business & Economics|Entrepreneurship" }
-        if self.rawValue == 40000122 { return "iTunes U|Communications & Journalism|Broadcasting" }
-        if self.rawValue == 40000123 { return "iTunes U|Communications & Journalism|Digital Media" }
-        if self.rawValue == 40000124 { return "iTunes U|Communications & Journalism|Journalism" }
-        if self.rawValue == 40000125 { return "iTunes U|Communications & Journalism|Photojournalism" }
-        if self.rawValue == 40000126 { return "iTunes U|Communications & Journalism|Print" }
-        if self.rawValue == 40000127 { return "iTunes U|Communications & Journalism|Speech" }
-        if self.rawValue == 40000128 { return "iTunes U|Communications & Journalism|Writing" }
-        if self.rawValue == 40000129 { return "iTunes U|Health & Medicine|Nursing" }
-        if self.rawValue == 40000130 { return "iTunes U|Languages|Arabic" }
-        if self.rawValue == 40000131 { return "iTunes U|Languages|Chinese" }
-        if self.rawValue == 40000132 { return "iTunes U|Languages|Hebrew" }
-        if self.rawValue == 40000133 { return "iTunes U|Languages|Hindi" }
-        if self.rawValue == 40000134 { return "iTunes U|Languages|Indigenous Languages" }
-        if self.rawValue == 40000135 { return "iTunes U|Languages|Japanese" }
-        if self.rawValue == 40000136 { return "iTunes U|Languages|Korean" }
-        if self.rawValue == 40000137 { return "iTunes U|Languages|Other Languages" }
-        if self.rawValue == 40000138 { return "iTunes U|Languages|Portuguese" }
-        if self.rawValue == 40000139 { return "iTunes U|Languages|Russian" }
-        if self.rawValue == 40000140 { return "iTunes U|Law & Politics" }
-        if self.rawValue == 40000141 { return "iTunes U|Law & Politics|Foreign Policy & International Relations" }
-        if self.rawValue == 40000142 { return "iTunes U|Law & Politics|Local Governments" }
-        if self.rawValue == 40000143 { return "iTunes U|Law & Politics|National Governments" }
-        if self.rawValue == 40000144 { return "iTunes U|Law & Politics|World Affairs" }
-        if self.rawValue == 40000145 { return "iTunes U|Writing & Literature|Comparative Literature" }
-        if self.rawValue == 40000146 { return "iTunes U|Philosophy|Aesthetics" }
-        if self.rawValue == 40000147 { return "iTunes U|Philosophy|Epistemology" }
-        if self.rawValue == 40000148 { return "iTunes U|Philosophy|Ethics" }
-        if self.rawValue == 40000149 { return "iTunes U|Philosophy|Metaphysics" }
-        if self.rawValue == 40000150 { return "iTunes U|Philosophy|Political Philosophy" }
-        if self.rawValue == 40000151 { return "iTunes U|Philosophy|Logic" }
-        if self.rawValue == 40000152 { return "iTunes U|Philosophy|Philosophy of Language" }
-        if self.rawValue == 40000153 { return "iTunes U|Philosophy|Philosophy of Religion" }
-        if self.rawValue == 40000154 { return "iTunes U|Social Science|Archaeology" }
-        if self.rawValue == 40000155 { return "iTunes U|Social Science|Anthropology" }
-        if self.rawValue == 40000156 { return "iTunes U|Religion & Spirituality|Buddhism" }
-        if self.rawValue == 40000157 { return "iTunes U|Religion & Spirituality|Christianity" }
-        if self.rawValue == 40000158 { return "iTunes U|Religion & Spirituality|Comparative Religion" }
-        if self.rawValue == 40000159 { return "iTunes U|Religion & Spirituality|Hinduism" }
-        if self.rawValue == 40000160 { return "iTunes U|Religion & Spirituality|Islam" }
-        if self.rawValue == 40000161 { return "iTunes U|Religion & Spirituality|Judaism" }
-        if self.rawValue == 40000162 { return "iTunes U|Religion & Spirituality|Other Religions" }
-        if self.rawValue == 40000163 { return "iTunes U|Religion & Spirituality|Spirituality" }
-        if self.rawValue == 40000164 { return "iTunes U|Science|Environment" }
-        if self.rawValue == 40000165 { return "iTunes U|Society|African Studies" }
-        if self.rawValue == 40000166 { return "iTunes U|Society|American Studies" }
-        if self.rawValue == 40000167 { return "iTunes U|Society|Cross-cultural Studies" }
-        if self.rawValue == 40000168 { return "iTunes U|Society|Immigration & Emigration" }
-        if self.rawValue == 40000169 { return "iTunes U|Society|Race & Ethnicity Studies" }
-        if self.rawValue == 40000170 { return "iTunes U|Society|Sexuality Studies" }
-        if self.rawValue == 40000171 { return "iTunes U|Teaching & Learning|Educational Technology" }
-        if self.rawValue == 40000172 { return "iTunes U|Teaching & Learning|Information/Library Science" }
-        if self.rawValue == 40000173 { return "iTunes U|Languages|Dutch" }
-        if self.rawValue == 40000174 { return "iTunes U|Languages|Luxembourgish" }
-        if self.rawValue == 40000175 { return "iTunes U|Languages|Swedish" }
-        if self.rawValue == 40000176 { return "iTunes U|Languages|Norwegian" }
-        if self.rawValue == 40000177 { return "iTunes U|Languages|Finnish" }
-        if self.rawValue == 40000178 { return "iTunes U|Languages|Danish" }
-        if self.rawValue == 40000179 { return "iTunes U|Languages|Polish" }
-        if self.rawValue == 40000180 { return "iTunes U|Languages|Turkish" }
-        if self.rawValue == 40000181 { return "iTunes U|Languages|Flemish" }
-        if self.rawValue == 50000024 { return "Audiobooks" }
-        if self.rawValue == 50000040 { return "Audiobooks|Fiction" }
-        if self.rawValue == 50000041 { return "Audiobooks|Arts & Entertainment" }
-        if self.rawValue == 50000042 { return "Audiobooks|Biographies & Memoirs" }
-        if self.rawValue == 50000043 { return "Audiobooks|Business & Personal Finance" }
-        if self.rawValue == 50000044 { return "Audiobooks|Kids & Young Adults" }
-        if self.rawValue == 50000045 { return "Audiobooks|Classics" }
-        if self.rawValue == 50000046 { return "Audiobooks|Comedy" }
-        if self.rawValue == 50000047 { return "Audiobooks|Drama & Poetry" }
-        if self.rawValue == 50000048 { return "Audiobooks|Speakers & Storytellers" }
-        if self.rawValue == 50000049 { return "Audiobooks|History" }
-        if self.rawValue == 50000050 { return "Audiobooks|Languages" }
-        if self.rawValue == 50000051 { return "Audiobooks|Mysteries & Thrillers" }
-        if self.rawValue == 50000052 { return "Audiobooks|Nonfiction" }
-        if self.rawValue == 50000053 { return "Audiobooks|Religion & Spirituality" }
-        if self.rawValue == 50000054 { return "Audiobooks|Science & Nature" }
-        if self.rawValue == 50000055 { return "Audiobooks|Sci Fi & Fantasy" }
-        if self.rawValue == 50000056 { return "Audiobooks|Self-Development" }
-        if self.rawValue == 50000057 { return "Audiobooks|Sports & Outdoors" }
-        if self.rawValue == 50000058 { return "Audiobooks|Technology" }
-        if self.rawValue == 50000059 { return "Audiobooks|Travel & Adventure" }
-        if self.rawValue == 50000061 { return "Music|Spoken Word" }
-        if self.rawValue == 50000063 { return "Music|Disney" }
-        if self.rawValue == 50000064 { return "Music|French Pop" }
-        if self.rawValue == 50000066 { return "Music|German Pop" }
-        if self.rawValue == 50000068 { return "Music|German Folk" }
-        if self.rawValue == 50000069 { return "Audiobooks|Romance" }
-        if self.rawValue == 50000070 { return "Audiobooks|Audiobooks Latino" }
-        if self.rawValue == 50000071 { return "Books|Comics & Graphic Novels|Manga|Action" }
-        if self.rawValue == 50000072 { return "Books|Comics & Graphic Novels|Manga|Comedy" }
-        if self.rawValue == 50000073 { return "Books|Comics & Graphic Novels|Manga|Erotica" }
-        if self.rawValue == 50000074 { return "Books|Comics & Graphic Novels|Manga|Fantasy" }
-        if self.rawValue == 50000075 { return "Books|Comics & Graphic Novels|Manga|Four Cell Manga" }
-        if self.rawValue == 50000076 { return "Books|Comics & Graphic Novels|Manga|Gay & Lesbian" }
-        if self.rawValue == 50000077 { return "Books|Comics & Graphic Novels|Manga|Hard-Boiled" }
-        if self.rawValue == 50000078 { return "Books|Comics & Graphic Novels|Manga|Heroes" }
-        if self.rawValue == 50000079 { return "Books|Comics & Graphic Novels|Manga|Historical Fiction" }
-        if self.rawValue == 50000080 { return "Books|Comics & Graphic Novels|Manga|Mecha" }
-        if self.rawValue == 50000081 { return "Books|Comics & Graphic Novels|Manga|Mystery" }
-        if self.rawValue == 50000082 { return "Books|Comics & Graphic Novels|Manga|Nonfiction" }
-        if self.rawValue == 50000083 { return "Books|Comics & Graphic Novels|Manga|Religious" }
-        if self.rawValue == 50000084 { return "Books|Comics & Graphic Novels|Manga|Romance" }
-        if self.rawValue == 50000085 { return "Books|Comics & Graphic Novels|Manga|Romantic Comedy" }
-        if self.rawValue == 50000086 { return "Books|Comics & Graphic Novels|Manga|Science Fiction" }
-        if self.rawValue == 50000087 { return "Books|Comics & Graphic Novels|Manga|Sports" }
-        if self.rawValue == 50000088 { return "Books|Fiction & Literature|Light Novels" }
-        if self.rawValue == 50000089 { return "Books|Comics & Graphic Novels|Manga|Horror" }
-        if self.rawValue == 50000090 { return "Books|Comics & Graphic Novels|Comics" }
-        if self.rawValue == 50000091 { return "Books|Romance|Multicultural" }
-        if self.rawValue == 50000092 { return "Audiobooks|Erotica" }
-        if self.rawValue == 50000093 { return "Audiobooks|Light Novels" }
-        else { return nil }
+    static let nameMapping: [String: Genres] = {
+        var mapping: [String: Genres] = [:]
+        for genre in Genres.allCases {
+            let name = genre.predefinedGenres
+            mapping[name ?? ""] = genre
+        }
+        return mapping
+    }()
+
+    init?(genreName: String) {
+        self = Genres.nameMapping[genreName] ?? .unknown
     }
 
 }
