@@ -20,65 +20,174 @@ public struct Tag {
     }
 }
 
+@available(OSX 10.13, *)
 extension Tag {
     
     private func string(for identifier: Metadata) -> String? {
         let items = AVMetadataItem.metadataItems(
             from: self.metadata,
-            filteredByIdentifier: identifier.identifier)
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
         if let item = items.first {
             return item.stringValue
-        } else {
-            return nil
-        }
+        }; return nil
     }
-
+    
+    private func stringFromData(for identifier: Metadata) -> String? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            if let data = item.dataValue {
+                return String(decoding: data, as: UTF8.self)
+            }
+        }; return nil
+    }
+    
     private func integer(for identifier: Metadata) -> Int? {
         let items = AVMetadataItem.metadataItems(
             from: self.metadata,
-            filteredByIdentifier: identifier.identifier)
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
         if let item = items.first {
             return item.numberValue as? Int
-        } else {
-            return nil
-        }
+        }; return nil
     }
-
+    
+    private func intArrayFromData(for identifier: Metadata) -> [Int]? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            if let data = item.dataValue {
+                let firstRange: Range<Int>
+                let lastRange: Range<Int>
+                if data.count > 4 {
+                    firstRange = 2..<4
+                    lastRange = 4..<6
+                } else {
+                    firstRange = 0..<2
+                    lastRange = 2..<4
+                }
+                let firstData = item.dataValue?.subdata(in: firstRange)
+                let lastData = item.dataValue?.subdata(in: lastRange)
+                let firstUInt16 = firstData?.uint16.bigEndian ?? 0x0000
+                let lastUInt16 = lastData?.uint16.bigEndian ?? 0x0000
+                let first = Int(firstUInt16)
+                let last = Int(lastUInt16)
+                return [first, last]
+            }
+        }; return nil
+    }
+    
     private func boolean(for identifier: Metadata) -> Bool? {
         let items = AVMetadataItem.metadataItems(
             from: self.metadata,
-            filteredByIdentifier: identifier.identifier)
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
         if let item = items.first {
             return item.numberValue?.boolValue
-        } else {
-            return nil
-        }
+        }; return nil
     }
-
+    
+    private func data(for identifier: Metadata) -> Data? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            return item.dataValue
+        }; return nil
+    }
+    
+    private func date(for identifier: Metadata) -> Date? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            return item.dateValue
+        }; return nil
+    }
+    
     private mutating func set(metadataItem: Metadata, to string: String) {
         let item = AVMutableMetadataItem()
         item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.key as NSString
+        item.key = metadataItem.rawValue as NSString
         item.value = string as NSString
         self.metadata.append(item)
     }
-
+    
+    private mutating func set(metadataItem: Metadata, to data: Data) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.rawValue as NSString
+        item.value = data as NSData
+        self.metadata.append(item)
+    }
+    
     private mutating func set(metadataItem: Metadata, to integer: Int) {
         let item = AVMutableMetadataItem()
         item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.key as NSString
+        item.key = metadataItem.rawValue as NSString
         item.value = integer as NSNumber
         self.metadata.append(item)
     }
-
+    
     private mutating func set(metadataItem: Metadata, to boolean: Bool) {
         let item = AVMutableMetadataItem()
         item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.key as NSString
+        item.key = metadataItem.rawValue as NSString
         item.value = boolean as NSNumber
         self.metadata.append(item)
     }
-
+    
+    private mutating func set(metadataItem: Metadata, to stringArray: [String]) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.rawValue as NSString
+        item.value = stringArray.joined(separator: ";") as NSString
+        self.metadata.append(item)
+    }
+    
+    private mutating func set(metadataItem: Metadata, to intArray: [Int]) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.rawValue as NSString
+        var data = Data()
+        if let firstInt = intArray.first {
+            // the data starts with two zero bytes
+            data.append(contentsOf: [0x0, 0x0])
+            let uInt16 = UInt16(firstInt).bigEndian
+            let firstData = uInt16.data
+            data.append(firstData)
+        }
+        if let lastInt = intArray.last {
+            let uInt16 = UInt16(lastInt).bigEndian
+            let lastData = uInt16.data
+            // disc number is 6 bytes, track number is 8 bytes
+            if metadataItem == .discNumber {
+                data.append(lastData)
+            } else {
+                data.append(lastData)
+                data.append(contentsOf: [0x0, 0x0])
+            }
+        }
+        item.value = data as NSData
+        self.metadata.append(item)
+    }
+    
+    private mutating func set(metadataItem: Metadata, to date: Date) {
+        let item = AVMutableMetadataItem()
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.rawValue as NSString
+        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
+        item.value = formatter.string(from: date) as NSString
+        self.metadata.append(item)
+    }
+    
     var acknowledgment: String? {
         get { string(for: .acknowledgment) }
         set { set(metadataItem: .acknowledgment, to: newValue ?? "") }
@@ -93,57 +202,126 @@ extension Tag {
         get { string(for: .albumArtist) }
         set { set(metadataItem: .albumArtist, to: newValue ?? "") }
     }
-
+    
+    var albumArtistSort: String? {
+        get { string(for: .albumArtistSort) }
+        set { set(metadataItem: .albumArtistSort, to: newValue ?? "") }
+    }
+    
+    var albumSort: String? {
+        get { string(for: .albumSort) }
+        set { set(metadataItem: .albumSort, to: newValue ?? "") }
+    }
+    
     var arranger: String? {
         get { string(for: .arranger) }
         set { set(metadataItem: .arranger, to: newValue ?? "") }
     }
-
+    
     var artDirector: String? {
         get { string(for: .artDirector) }
         set { set(metadataItem: .artDirector, to: newValue ?? "") }
     }
-
+    
     var artist: String? {
         get { string(for: .artist) }
         set { set(metadataItem: .artist, to: newValue ?? "") }
     }
-
+    
+    var artistSort: String? {
+        get { string(for: .artistSort) }
+        set { set(metadataItem: .artistSort, to: newValue ?? "") }
+    }
+    
+    var artistWebpage: String? {
+        get { string(for: .artistWebpage) }
+        set { set(metadataItem: .artistWebpage, to: newValue ?? "") }
+    }
+    
+    var audioFileWebpage: String? {
+        get {
+            if let str = string(for: .audioFileWebpageYate) {
+                return str
+            } else if let str = string(for: .audioFileWebpageKid3) {
+                return str
+            }; return nil
+        }
+        set {
+            set(metadataItem: .audioFileWebpageYate, to: newValue ?? "")
+            set(metadataItem: .audioFileWebpageKid3, to: newValue ?? "")
+        }
+    }
+    
+    var audioSourceWebpage: String? {
+        get {
+            if let str = string(for: .audioSourceWebpageYate) {
+                return str
+            } else if let str = string(for: .audioSourceWebpageKid3) {
+                return str
+            }; return nil
+        }
+        set {
+            set(metadataItem: .audioSourceWebpageYate, to: newValue ?? "")
+            set(metadataItem: .audioSourceWebpageKid3, to: newValue ?? "")
+        }
+    }
+    
     var bpm: Int? {
         get { integer(for: .bpm) }
         set { set(metadataItem: .bpm, to: newValue ?? 0) }
     }
-
+    
     var comment: String? {
         get { string(for: .comment) }
         set { set(metadataItem: .comment, to: newValue ?? "") }
     }
-
-    #warning("This doesn't work on the writing side. Now sure if it's due to the Bool -> NSNumber conversion or what")
+    
     var compilation: Bool? {
         get { boolean(for: .compilation) }
-        set { set(metadataItem: .bpm, to: newValue ?? false) }
+        set {
+            if newValue == true {
+                set(metadataItem: .compilation, to: 1)
+            } else {
+                set(metadataItem: .compilation, to: 0)
+            }
+        }
     }
-
+    
     var composer: String? {
         get { string(for: .composer) }
         set { set(metadataItem: .composer, to: newValue ?? "") }
     }
-
+    
+    var composerSort: String? {
+        get { string(for: .composerSort) }
+        set { set(metadataItem: .composerSort, to: newValue ?? "") }
+    }
+    
     var conductor: String? {
         get { string(for: .conductor) }
         set { set(metadataItem: .conductor, to: newValue ?? "") }
     }
-
+    
+    var contentAdvisory: ContentAdvisory? {
+        get {
+            let stringValue = string(for: .contentAdvisory) ?? ""
+            if let rating = ContentAdvisory(rawValue: stringValue) {
+                return rating
+            }; return nil
+        }
+        set {
+            if let new = newValue {
+                set(metadataItem: .contentAdvisory, to: new.rawValue)
+            }
+        }
+    }
+    
     var contentRating: ContentRating? {
         get {
-            guard let int = integer(for: .contentRating)
-                else { return ContentRating(rawValue: 0) }
+            let int = integer(for: .contentRating) ?? 0
             if let rating = ContentRating(rawValue: int) {
                 return rating
-            } else {
-                return nil
-            }
+            }; return nil
         }
         set {
             if let new = newValue {
@@ -151,249 +329,357 @@ extension Tag {
             }
         }
     }
-
+    
     var copyright: String? {
         get { string(for: .copyright) }
         set { set(metadataItem: .copyright, to: newValue ?? "") }
     }
-
+    
+    var copyrightWebpage: String? {
+        get { string(for: .copyrightWebpage) }
+        set { set(metadataItem: .copyrightWebpage, to: newValue ?? "") }
+    }
+    
     var description: String? {
         get { string(for: .description) }
         set { set(metadataItem: .description, to: newValue ?? "") }
     }
-
+    
     var director: String? {
         get { string(for: .director) }
         set { set(metadataItem: .director, to: newValue ?? "") }
     }
     
     var discNumber: [Int]? {
+        get { intArrayFromData(for: .discNumber) }
+        set { set(metadataItem: .discNumber, to: newValue ?? [])
+        }
+    }
+    
+    var encodedBy: String? {
+        get { string(for: .encodedBy) }
+        set { set(metadataItem: .encodedBy, to: newValue ?? "") }
+    }
+    
+    var encodingTool: String? {
+        get { string(for: .encodingTool) }
+        set { set(metadataItem: .encodingTool, to: newValue ?? "") }
+    }
+
+    var encodingTime: Date? {
+        get { date(for: .encodingTime) }
+        set { set(metadataItem: .encodingTime, to: newValue ?? Date.distantPast) }
+    }
+
+    var encodingSettings: String? {
+        get { string(for: .encodingSettings) }
+        set { set(metadataItem: .encodingSettings, to: newValue ?? "") }
+    }
+
+    var episodeNumber: Int? {
+        get { integer(for: .episodeNumber) }
+        set { set(metadataItem: .episodeNumber, to: newValue ?? 0) }
+    }
+    
+    var episodeTitle: String? {
+        get { string(for: .episodeTitle) }
+        set { set(metadataItem: .episodeTitle, to: newValue ?? "") }
+    }
+    
+    var executiveProducer: String? {
+        get { string(for: .executiveProducer) }
+        set { set(metadataItem: .executiveProducer, to: newValue ?? "") }
+    }
+        
+    var genre: String? {
+        get { string(for: .genre) }
+        set { set(metadataItem: .genre, to: newValue ?? "") }
+    }
+    
+    var genreID: Genres? {
         get {
-            let items = AVMetadataItem.metadataItems(
-                from: self.metadata,
-                filteredByIdentifier: Metadata.disc.identifier)
-            if let item = items.first {
-                let itemData = item.dataValue
-                
+            let int = integer(for: .genreID) ?? 0
+            if let genre = Genres(rawValue: int) {
+                return genre
             } else {
                 return nil
             }
         }
+        set {
+            if let new = newValue {
+                set(metadataItem: .genreID, to: new.rawValue)
+            }
+        }
+    }
+
+    var initialKey: KeySignature? {
+        get {
+            if let str = string(for: .initialKeyYate) {
+                if let key = KeySignature(rawValue: str) {
+                    return key
+                }; return nil
+            } else if let str = string(for: .initialKeyKid3) {
+                if let key = KeySignature(rawValue: str) {
+                    return key
+                }; return nil
+            }; return nil
+        }
+        set {
+            if let new = newValue {
+                set(metadataItem: .initialKeyYate, to: new.rawValue)
+                set(metadataItem: .initialKeyKid3, to: new.rawValue)
+            }
+        }
     }
     
+    var isrc: Int? {
+        get { integer(for: .isrc) }
+        set { set(metadataItem: .isrc, to: newValue ?? 0) }
+    }
+    
+    #warning("make this a string array")
+    var language: ISO6392Codes? {
+        get {
+            let str = string(for: .language) ?? "und"
+            if let language = ISO6392Codes(rawValue: str) {
+                return language
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(metadataItem: .language, to: new.rawValue)
+            }
+        }
+    }
+    
+    var linerNotes: String? {
+        get { string(for: .linerNotes) }
+        set { set(metadataItem: .linerNotes, to: newValue ?? "") }
+    }
+    
+    var longDescription: String? {
+        get { string(for: .longDescription) }
+        set { set(metadataItem: .longDescription, to: newValue ?? "") }
+    }
+    
+    var lyricist: String? {
+        get { string(for: .lyricist) }
+        set { set(metadataItem: .lyricist, to: newValue ?? "") }
+    }
+    
+    var lyrics: String? {
+        get { string(for: .lyrics) }
+        set { set(metadataItem: .lyrics, to: newValue ?? "") }
+    }
+    
+    var mediaType: MediaType? {
+        get {
+            if let mediaType = self.genreID?.mediaType {
+                return mediaType
+            } else {
+                let int = integer(for: .mediaType) ?? 0
+                if let type = MediaType(rawValue: int) {
+                    return type
+                }; return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(metadataItem: .mediaType, to: new.rawValue)
+            }
+        }
+    }
+    
+    var mood: String? {
+        get { string(for: .mood) }
+        set { set(metadataItem: .mood, to: newValue ?? "") }
+    }
+
+    var movementName: String? {
+        get { string(for: .movementName) }
+        set { set(metadataItem: .movementName, to: newValue ?? "") }
+    }
+
+    var movementNumber: Int? {
+        get { integer(for: .movementNumber) }
+        set { set(metadataItem: .movementNumber, to: newValue ?? 0) }
+    }
+    
+    var totalMovements: Int? {
+        get { integer(for: .movementTotal) }
+        set { set(metadataItem: .movementTotal, to: newValue ?? 0) }
+    }
+    
+    var narrator: String? {
+        get { string(for: .narrator) }
+        set { set(metadataItem: .narrator, to: newValue ?? "") }
+    }
+    
+    var network: String? {
+        get { string(for: .network) }
+        set { set(metadataItem: .network, to: newValue ?? "") }
+    }
+    
+    var onlineExtras: String? {
+        get { string(for: .onlineExtras) }
+        set { set(metadataItem: .onlineExtras, to: newValue ?? "") }
+    }
+
+    var originalAlbum: String? {
+        get {
+            if let str = string(for: .originalAlbumYate) {
+                return str
+            } else if let str = string(for: .originalAlbumKid3) {
+                return str
+            } else {
+                return nil
+            }
+        }
+        set {
+            set(metadataItem: .originalAlbumYate, to: newValue ?? "")
+            set(metadataItem: .originalAlbumKid3, to: newValue ?? "")
+        }
+    }
+    
+    var originalArtist: String? {
+        get { string(for: .originalArtist) }
+        set { set(metadataItem: .originalArtist, to: newValue ?? "") }
+    }
+    
+    var originalFilename: String? {
+        get { string(for: .originalFilename) }
+        set { set(metadataItem: .originalFilename, to: newValue ?? "") }
+    }
+    
+    var originalLyricist: String? {
+        get { string(for: .originalLyricist) }
+        set { set(metadataItem: .originalLyricist, to: newValue ?? "") }
+    }
+    
+    var originalReleaseDate: Date? {
+        get {
+            if let date = date(for: .originalYearYate) {
+                return date
+            } else if let date = date(for: .originalYearKid3) {
+                return date
+            }; return nil
+        }
+        set {
+            set(metadataItem: .originalYearYate, to: newValue ?? Date.distantPast)
+            set(metadataItem: .originalYearKid3, to: newValue ?? Date.distantPast)
+        }
+    }
+
+    var paymentWebpage: String? {
+        get { string(for: .paymentWebpage) }
+        set { set(metadataItem: .paymentWebpage, to: newValue ?? "") }
+    }
+    
+    var performer: String? {
+        get { string(for: .performer) }
+        set { set(metadataItem: .performer, to: newValue ?? "") }
+    }
+    
+    var phonogramRights: String? {
+        get { string(for: .phonogramRights) }
+        set { set(metadataItem: .phonogramRights, to: newValue ?? "") }
+    }
+    
+    var podcast: Bool? {
+        get { boolean(for: .podcast) }
+        set {
+            if newValue == true {
+                set(metadataItem: .podcast, to: 1)
+            } else {
+                set(metadataItem: .podcast, to: 0)
+            }
+        }
+    }
+    
+    var podcastCategory: String? {
+        get { string(for: .podcastCategory) }
+        set { set(metadataItem: .podcastCategory, to: newValue ?? "") }
+    }
+
+    var podcastDescription: String? {
+        get { string(for: .podcastDescription) }
+        set { set(metadataItem: .podcastDescription, to: newValue ?? "") }
+    }
+
+    var podcastID: String? {
+        get { string(for: .podcastID) }
+        set { set(metadataItem: .podcastID, to: newValue ?? "") }
+    }
+
+    #warning("make this an array if it will work")
+    var podcastKeywords: String? {
+        get { string(for: .podcastKeywords) }
+        set { set(metadataItem: .podcastKeywords, to: newValue ?? "") }
+    }
+
+    var podcastUrl: String? {
+        get {
+            if let str = stringFromData(for: .podcastUrl) {
+                return str
+            } else if let str = string(for: .podcastUrl) {
+                return str
+            }; return nil
+        }
+        set {
+            if let new = newValue {
+                let newData = new.encodedASCII()
+                set(metadataItem: .podcastUrl, to: newData)
+            }
+        }
+    }
+    
+    var producer: String? {
+        get { string(for: .producer) }
+        set { set(metadataItem: .producer, to: newValue ?? "") }
+    }
+    
+    var publisher: String? {
+        get { string(for: .publisher) }
+        set { set(metadataItem: .publisher, to: newValue ?? "") }
+    }
+    
+    var recordCompany: String? {
+        get { string(for: .recordCompany) }
+        set { set(metadataItem: .recordCompany, to: newValue ?? "") }
+    }
+    
+    /// date needs to be in ISO8601 format yyyy-MM-dd
+    var releaseDate: Date? {
+        get { date(for: .releaseDate) }
+        set { set(metadataItem: .releaseDate, to: newValue ?? Date.distantPast) }
+    }
+    
+    var soloist: String? {
+        get { string(for: .soloist) }
+        set { set(metadataItem: .soloist, to: newValue ?? "") }
+    }
+    
+    var soundEngineer: String? {
+        get { string(for: .soundEngineer) }
+        set { set(metadataItem: .soundEngineer, to: newValue ?? "") }
+    }
+    
+    var sourceCredit: String? {
+        get { string(for: .sourceCredit) }
+        set { set(metadataItem: .sourceCredit, to: newValue ?? "") }
+    }
+    
+    var trackNumber: [Int]? {
+        get { intArrayFromData(for: .trackNumber) }
+        set { set(metadataItem: .trackNumber, to: newValue ?? [])
+        }
+    }
+
+    var trackSubtitle: String? {
+        get { string(for: .trackSubtitle) }
+        set { set(metadataItem: .trackSubtitle, to: newValue ?? "") }
+    }
 }
 
-//@available(OSX 10.12, *)
-//extension Tag {
-//
-//    private func string(for identifier: MetadataIdentifier) -> String? {
-//        if identifier.keyFormat == .string {
-//            let key = identifier.rawValue
-//            let items = AVMetadataItem.metadataItems(
-//                from: self.metadata,
-//                withKey: key,
-//                keySpace: identifier.keyspace)
-//            if let item = items.first {
-//                return item.stringValue
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    private func stringFromData(for identifier: MetadataIdentifier) -> String? {
-//        if identifier.keyFormat == .data && identifier.rawValue == .init("purl") {
-//            let key = identifier.rawValue
-//            let items = AVMetadataItem.metadataItems(
-//                from: self.metadata,
-//                withKey: key,
-//                keySpace: identifier.keyspace)
-//            if let item = items.first {
-//                return String(decoding: item.dataValue!, as: UTF8.self)
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    private mutating func set(_ identifier: MetadataIdentifier, to string: NSString) {
-//        if identifier.keyFormat == .string {
-//            let metadataItem = AVMutableMetadataItem()
-//            metadataItem.keySpace = identifier.keyspace
-//            metadataItem.key = AVMetadataKey(rawValue: identifier.rawValue) as NSString
-//            metadataItem.value = string
-//            self.metadata.append(metadataItem)
-//        } else {
-//            return
-//        }
-//    }
-//
-//    private func integer(for identifier: MetadataIdentifier) -> Int? {
-//        if identifier.keyFormat == .integer {
-//            let key = identifier.rawValue
-//            let items = AVMetadataItem.metadataItems(
-//                from: self.metadata,
-//                withKey: key,
-//                keySpace: identifier.keyspace)
-//            if let item = items.first {
-//                return item.numberValue as? Int
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    private func intArrayFromData(for identifier: MetadataIdentifier) -> [Int]? {
-//        if identifier.keyFormat == .data &&
-//            (identifier == .trackNumber || identifier == .discNumber) {
-//            let key = identifier.rawValue
-//            let items = AVMetadataItem.metadataItems(
-//                from: self.metadata,
-//                withKey: key,
-//                keySpace: identifier.keyspace)
-//            if let item = items.first {
-//                #warning("this doesn't work yet")
-//                // disc data is 0 0 0 3 0 4
-//                // track data is 0 0 0 1 0 2 0 0
-//                // need to figure out how to predict and parse that
-//                let itemArray = NSArray(object: item.dataValue ?? [])
-//                return itemArray as? [Int]
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    private mutating func set(_ identifier: MetadataIdentifier, to integer: NSNumber) {
-//        if identifier.keyFormat == .integer {
-//            let metadataItem = AVMutableMetadataItem()
-//            metadataItem.keySpace = identifier.keyspace
-//            metadataItem.key = AVMetadataKey(rawValue: identifier.rawValue) as NSString
-//            metadataItem.value = integer
-//            self.metadata.append(metadataItem)
-//        } else {
-//            return
-//        }
-//    }
-//
-//    private func boolean(for identifier: MetadataIdentifier) -> Bool? {
-//        if identifier.keyFormat == .boolean {
-//            let key = identifier.rawValue
-//            let items = AVMetadataItem.metadataItems(
-//                from: self.metadata,
-//                withKey: key,
-//                keySpace: identifier.keyspace)
-//            if let item = items.first {
-//                return item.numberValue as? Bool
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    private func set(_ identifier: MetadataIdentifier, to value: Bool) {
-//        if identifier.keyFormat == .boolean {
-//            let metadataItem = AVMutableMetadataItem()
-//            metadataItem.keySpace = identifier.keyspace
-//            metadataItem.key = identifier.rawValue as NSString
-//            var valueInt: Int = 0
-//            switch value {
-//                case true: valueInt = 1
-//                case false: valueInt = 0
-//            }
-//            metadataItem.value = valueInt as NSNumber
-//        } else {
-//            return
-//        }
-//    }
-    
-    //    private func image(for identifier: MetadataIdentifier) -> NSImage? {
-    //        if identifier.keyFormat == .image {
-    //            let key = identifier.key
-    //            let items = AVMetadataItem.metadataItems(
-    //                from: self.metadata,
-    //                withKey: key,
-    //                keySpace: .iTunes)
-    //            if let item = items.first {
-    //                guard let itemData = item.dataValue else { return nil }
-    //                return NSImage(data: itemData)
-    //            } else {
-    //                return nil
-    //            }
-    //        } else {
-    //            return nil
-    //        }
-    //    }
-    
-    //    private mutating func set(_ identifier: MetadataIdentifier, to imageData: NSImage) {
-    //        if identifier.keyFormat == .image {
-    //            let metadataItem = AVMutableMetadataItem()
-    //            metadataItem.keySpace = .iTunes
-    //            metadataItem.key = identifier.key as NSString
-    //            metadataItem.value = imageData
-    //            self.metadata.append(metadataItem)
-    //        }
-    //    }
-    
-//    private mutating func set(_ identifier: MetadataIdentifier, to intArray: [Int]) {
-//        if identifier.keyFormat == .data && (identifier == .trackNumber || identifier == .discNumber) {
-//            let metadataItem = AVMutableMetadataItem()
-//            metadataItem.keySpace = identifier.keyspace
-//            metadataItem.key = identifier.rawValue as NSString
-//            var dataArray = Data()
-//            for int in intArray {
-//                dataArray.append(int.truncatedUInt32.bigEndianData)
-//            }
-//            metadataItem.value = dataArray as NSData
-//            self.metadata.append(metadataItem)
-//        }
-//    }
-//
-//    private func date(for identifier: MetadataIdentifier) -> Date? {
-//        if identifier.keyFormat == .date {
-//            let key = identifier.rawValue
-//            let items = AVMetadataItem.metadataItems(
-//                from: self.metadata,
-//                withKey: key,
-//                keySpace: .iTunes)
-//            if let item = items.first {
-//                if let itemDate = item.dateValue {
-//                    return itemDate // item can be coerced to date
-//                } else {
-//                    // try to parse a date out of a string in ISO8602 format
-//                    if let itemDateAsString = item.stringValue {
-//                        let date = ISO8601DateFormatter().date(from: itemDateAsString)!
-//                        return date
-//                    } else {
-//                        return nil // if it can't be formatted, scrap it
-//                    }
-//                }
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    private mutating func set(_ identifier: MetadataIdentifier, to date: Date) {
-//        if identifier.keyFormat == .date {
-//            let metadataItem = AVMutableMetadataItem()
-//            metadataItem.keySpace = .iTunes
-//            metadataItem.key = identifier.rawValue as NSString
-//            metadataItem.value = date as NSDate
-//            metadata.append(metadataItem)
-//
-//        }
-//    }
-    

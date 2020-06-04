@@ -1,251 +1,251 @@
 Keyspace: itsk:
 ////////////////////////////////////////////
 (RAW DATA)
-Identifier: trkn
+Identifier: trkn (TrackNumber)
 Value: <00 00 00 01 00 02 00 00> // 0 0 0 1 0 2 0 0
 DataType: raw-data
 
-Identifier: disk
+Identifier: disk (DiscNumber)
 Value: <00 00 00 03 00 04> // 0 0 0 3 0 4
 DataType: raw-data
 
-Identifier: purl
+Identifier: purl (PodcastURL)
 Value: <68747470 3a2f2f70 6f646361 73746665 65642e75 726c>
 DataType: raw-data
 
 ///////////////////////////////////////////
 (INT)
-Identifier: stik
+Identifier: stik (MediaKind)
 Value: 1
 DataType: int8
 
-Identifier: rtng
+Identifier: rtng (ContentRating)
 Value: 2
 DataType: int8
 
-Identifier: cpil
+Identifier: cpil (Compilation)
 Value: 1
 DataType: int8
 
-Identifier: ©mvi
+Identifier: ©mvi (MovementNumber)
 Value: 7
 DataType: int16
 
-Identifier: ©mvc
+Identifier: ©mvc (MovementCount)
 Value: 8
 DataType: int16
 
-Identifier: tmpo
+Identifier: tmpo (BPM)
 Value: 99
 DataType: int16
 
-Identifier: tves
+Identifier: tves (TV Episode Number)
 Value: 5
 DataType: int32
 
-Identifier: tvsn
+Identifier: tvsn (TV Season)
 Value: 6
 DataType: int32
 
 //////////////////////////////////////////
 DATE:
 
-Identifier: ©day
+Identifier: ©day (Release Date)
 Value: 1999-05-08T07:00:00Z
 DataType: UTF-8
 
-Identifier: purd
+Identifier: purd (Purchase Date)
 Value: 1999-06-08
 DataType: UTF-8
 
 //////////////////////////////////////////
 (STRING)
-Identifier: ©nam
+Identifier: ©nam (Title)
 Value: Title
 DataType: UTF-8
 
-Identifier: ©ART
+Identifier: ©ART (Artist)
 Value: Artist
 DataType: UTF-8
 
-Identifier: aART
+Identifier: aART (Album Artist)
 Value: AlbumArtist
 DataType: UTF-8
 
-Identifier: ©alb
+Identifier: ©alb (Album)
 Value: Album
 DataType: UTF-8
 
-Identifier: ©grp
+Identifier: ©grp (Grouping)
 Value: Grouping
 DataType: UTF-8
 
-Identifier: ©wrt
+Identifier: ©wrt (Composer)
 Value: Composer
 DataType: UTF-8
 
-Identifier: ©gen
+Identifier: ©gen (Genre)
 Value: Genre
 DataType: UTF-8
 
-Identifier: sonm
+Identifier: sonm (TitleSort)
 Value: SortName
 DataType: UTF-8
 
-Identifier: soar
+Identifier: soar (ArtistSort)
 Value: SortArtist
 DataType: UTF-8
 
-Identifier: soaa
+Identifier: soaa (AlbumArtistSort)
 Value: SortAlbumArtist
 DataType: UTF-8
 
-Identifier: soal
+Identifier: soal (AlbumSort)
 Value: SortAlbum
 DataType: UTF-8
 
-Identifier: soco
+Identifier: soco (ComposerSort)
 Value: SortComposer
 DataType: UTF-8
 
-Identifier: cprt
+Identifier: cprt (Copyright)
 Value: 2020 Copyright
 DataType: UTF-8
 
-Identifier: ©too
+Identifier: ©too (EncodingTool)
 Value: EncodedBy
 DataType: UTF-8
 
-Identifier: desc
+Identifier: desc (Description)
 Value: Description
 DataType: UTF-8
 
-Identifier: ldes
+Identifier: ldes (Long Description)
 Value: LongDescription
 DataType: UTF-8
 
-Identifier: sdes
+Identifier: sdes (Series Description)
 Value: SongDescription
 DataType: UTF-8
 
-Identifier: tvnn
+Identifier: tvnn (TV Network)
 Value: Network
 DataType: UTF-8
 
-Identifier: tvsh
+Identifier: tvsh (TV Show)
 Value: SeriesTitle
 DataType: UTF-8
 
-Identifier: sosn
+Identifier: sosn (Sort TV Show)
 Value: SortSeries
 DataType: UTF-8
 
-Identifier: tven
+Identifier: tven (TV Episode Title)
 Value: EpisodeTitle
 DataType: UTF-8
 
-Identifier: ©wrk
+Identifier: ©wrk (Work)
 Value: WorkName
 DataType: UTF-8
 
-Identifier: ©mvn
+Identifier: ©mvn (Movement)
 Value: MovementName
 DataType: UTF-8
 
-Identifier: ©cmt
+Identifier: ©cmt (Comments)
 Value: Comments
 DataType: UTF-8
 
-Identifier: ©lyr
+Identifier: ©lyr (Lyrics)
 Value: Lyrics
 DataType: UTF-8
 
-Identifier: ©ard
+Identifier: ©ard (Art Director)
 Value: ArtDirector
 DataType: UTF-8
 
-Identifier: ©arg
+Identifier: ©arg (Arranger)
 Value: Arranger
 DataType: UTF-8
 
-Identifier: ©aut
+Identifier: ©aut (Lyricist)
 Value: Lyricist
 DataType: UTF-8
 
-Identifier: ©cak
+Identifier: ©cak (Acknowledgment)
 Value: Acknowledgment
 DataType: UTF-8
 
-Identifier: ©con
+Identifier: ©con (Conductor)
 Value: Conductor
 DataType: UTF-8
 
-Identifier: ©des
+Identifier: ©des (Description)
 Value: SongDescription
 DataType: UTF-8
 
-Identifier: ©lnt
+Identifier: ©lnt (Liner Notes)
 Value: LinerNotes
 DataType: UTF-8
 
-Identifier: ©mak
+Identifier: ©mak (Label/RecordCompany)
 Value: Label
 DataType: UTF-8
 
-Identifier: ©ope
+Identifier: ©ope (Original Artist)
 Value: OriginalArtist
 DataType: UTF-8
 
-Identifier: ©prd
+Identifier: ©prd (Song Producer)
 Value: SongProducer
 DataType: UTF-8
 
-Identifier: ©prf
+Identifier: ©prf (Performer)
 Value: Performer
 DataType: UTF-8
 
-Identifier: ©pub
+Identifier: ©pub (Publisher)
 Value: Publisher
 DataType: UTF-8
 
-Identifier: ©sne
+Identifier: ©sne (Sound Engineer)
 Value: SoundEngineer
 DataType: UTF-8
 
-Identifier: ©sol
+Identifier: ©sol (Soloist)
 Value: Soloist
 DataType: UTF-8
 
-Identifier: ©src
+Identifier: ©src (Source Credit)
 Value: Credits
 DataType: UTF-8
 
-Identifier: ©st3
+Identifier: ©st3 (Subtitle)
 Value: Subtitle
 DataType: UTF-8
 
-Identifier: ©thx
+Identifier: ©thx (Thanks)
 Value: Thanks
 DataType: UTF-8
 
-Identifier: ©url
+Identifier: ©url (Online Extras)
 Value: www.onlineextras.com
 DataType: UTF-8
 
-Identifier: ©xpd
+Identifier: ©xpd (Executive Producer)
 Value: ExecutiveProducer
 DataType: UTF-8
 
-Identifier: keyw
+Identifier: keyw (Keywords (podcast))
 Value: Keywords
 DataType: UTF-8
 
-Identifier: catg
+Identifier: catg (Category (podcast))
 Value: Category
 DataType: UTF-8
 
 ///////////////////////////////////////
-Keyspace: itlk
+Keyspace: itlk -- these are non-standard, cusom atoms
 
 Identifier: "com.apple.iTunes.ENCODING"
 Value: EncoderSettings
@@ -335,11 +335,11 @@ Identifier: "com.apple.iTunes.URL_OFFICIAL_ARTIST_SITE"
 Value: http://artist.url
 DataType: UTF-8
 
-Identifier: "com.apple.iTunes.iTunEXTC"
+Identifier: "com.apple.iTunes.iTunEXTC" (Content Advisory)
 Value: mpaa|Unrated|???|RatingAnnotation
 DataType: UTF-8
 
-Identifier: "com.apple.iTunes.iTunMOVI"
+Identifier: "com.apple.iTunes.iTunMOVI" (Movie credits)
 Value: Optional(<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">

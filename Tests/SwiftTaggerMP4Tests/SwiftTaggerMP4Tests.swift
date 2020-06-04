@@ -1,50 +1,151 @@
 import XCTest
 @testable import SwiftTaggerMP4
 
+@available(OSX 10.13, *)
 final class SwiftTaggerMP4Tests: XCTestCase {
-    @available(OSX 10.12, *)
     func testReading() throws {
         let reading = try tag(withMeta: true)
         
         XCTAssertEqual(reading.acknowledgment, "Acknowledgment")
         XCTAssertEqual(reading.album, "Album")
         XCTAssertEqual(reading.albumArtist, "AlbumArtist")
+        XCTAssertEqual(reading.albumArtistSort, "SortAlbumArtist")
+        XCTAssertEqual(reading.albumSort, "SortAlbum")
         XCTAssertEqual(reading.arranger, "Arranger")
         XCTAssertEqual(reading.artDirector, "ArtDirector")
         XCTAssertEqual(reading.artist, "Artist")
+        XCTAssertEqual(reading.artistSort, "SortArtist")
+        XCTAssertEqual(reading.artistWebpage, "http://artist.url")
+        XCTAssertEqual(reading.audioFileWebpage, "http://audiofile.url")
+        XCTAssertEqual(reading.audioSourceWebpage, "http://audiosource.url")
         XCTAssertEqual(reading.bpm, 99)
         XCTAssertEqual(reading.comment, "Comments")
         XCTAssertEqual(reading.compilation, true)
         XCTAssertEqual(reading.composer, "Composer")
+        XCTAssertEqual(reading.composerSort, "SortComposer")
         XCTAssertEqual(reading.conductor, "Conductor")
         XCTAssertEqual(reading.contentRating, .clean)
         XCTAssertEqual(reading.copyright, "2020 Copyright")
+        XCTAssertEqual(reading.copyrightWebpage, "http://copyright.url")
         XCTAssertEqual(reading.description, "Description")
-//        XCTAssertEqual(reading.director, "Director")
-
+        XCTAssertEqual(reading.discNumber, [3,4])
+        XCTAssertEqual(reading.encodingTool, "EncodedBy")
+        XCTAssertEqual(reading.encodingSettings, "EncoderSettings")
+        XCTAssertEqual(reading.episodeNumber, 5)
+        XCTAssertEqual(reading.episodeTitle, "EpisodeTitle")
+        XCTAssertEqual(reading.executiveProducer, "ExecutiveProducer")
+        XCTAssertEqual(reading.genre, "Genre")
+        XCTAssertEqual(reading.initialKey, nil)
+        XCTAssertEqual(reading.language, .eng)
+        XCTAssertEqual(reading.linerNotes, "LinerNotes")
+        XCTAssertEqual(reading.longDescription, "LongDescription")
+        XCTAssertEqual(reading.lyrics, "Lyrics")
+        XCTAssertEqual(reading.mediaType, .music)
+        XCTAssertEqual(reading.movementName, "MovementName")
+        XCTAssertEqual(reading.movementNumber, 7)
+        XCTAssertEqual(reading.totalMovements, 8)
+        XCTAssertEqual(reading.network, "Network")
+        XCTAssertEqual(reading.onlineExtras, "www.onlineextras.com")
+        XCTAssertEqual(reading.originalAlbum, "OriginalAlbum")
+        XCTAssertEqual(reading.originalArtist, "OriginalArtist")
+        XCTAssertEqual(reading.originalFilename, "OriginalFilename")
+        XCTAssertEqual(reading.originalLyricist, "OriginalLyricist")
+        XCTAssertEqual(reading.paymentWebpage, "http://payment.url")
+        XCTAssertEqual(reading.performer, "Performer")
+        XCTAssertEqual(reading.podcast, true)
+        XCTAssertEqual(reading.podcastCategory, "Category")
+        XCTAssertEqual(reading.podcastKeywords, "Keywords")
+        XCTAssertEqual(reading.podcastUrl, "http://podcastfeed.url")
+        XCTAssertEqual(reading.phonogramRights, "PhonogramRights")
+        XCTAssertEqual(reading.publisher, "Publisher")
+        XCTAssertEqual(reading.recordCompany, "Label")
+        XCTAssertEqual(reading.soloist, "Soloist")
+        XCTAssertEqual(reading.soundEngineer, "SoundEngineer")
+        XCTAssertEqual(reading.sourceCredit, "Credits")
+        XCTAssertEqual(reading.trackNumber, [1,2])
+        
+        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
+//        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
+        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
+//        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
     }
     
-    @available(OSX 10.12, *)
     func testWriting() throws {
         var writing = try tag(withMeta: false)
+        
+        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
         
         writing.acknowledgment = "ACKNOWLEDGMENT"
         writing.album = "ALBUM"
         writing.albumArtist = "ALBUMARTIST"
+        writing.albumArtistSort = "SORTALBUMARTIST"
+        writing.albumSort = "SORTALBUM"
         writing.arranger = "ARRANGER"
         writing.artDirector = "ARTDIRECTOR"
         writing.artist = "ARTIST"
+        writing.artistSort = "SORTARTIST"
+        writing.artistWebpage = "WWW.ARTIST.URL"
+        writing.audioFileWebpage = "WWW.AUDIOF.URL"
+        writing.audioSourceWebpage = "WWW.AUDIOS.URL"
         writing.bpm = 97
         writing.comment = "COMMENT"
         writing.compilation = true
         writing.composer = "COMPOSER"
+        writing.composerSort = "SORTCOMPOSER"
         writing.conductor = "CONDUCTOR"
+        writing.contentAdvisory = .ustvUnrated
         writing.contentRating = .clean
         writing.copyright = "2020 COPYRIGHT"
         writing.description = "DESCRIPTION"
         writing.director = "DIRECTOR"
-        
-        let output = try localDirectory(fileName: "tesfile", fileExtension: "m4a")
+        writing.discNumber = [1,2]
+        writing.encodedBy = "ENCODED BY"
+        writing.encodingTime = formatter.date(from: "1998-06-09")
+        writing.encodingTool = "ENCODING TOOL"
+        writing.episodeNumber = 3
+        writing.episodeTitle = "EPISODE TITLE"
+        writing.executiveProducer = "EXEC PRODUCER"
+        writing.genre = "GENRE"
+        writing.genreID = .audiobooks
+        writing.initialKey = .aMajor
+        writing.isrc = 123456789012
+        writing.language = .eng
+        writing.linerNotes = "LINER NOTES"
+        writing.longDescription = "LONG DESCRIPTION"
+        writing.lyrics = "LYRICS"
+        writing.mediaType = .audiobook
+        writing.mood = "MOOD"
+        writing.movementName = "MOVEMENT NAME"
+        writing.movementNumber = 5
+        writing.totalMovements = 6
+        writing.narrator = "NARRATOR"
+        writing.network = "NETWORK"
+        writing.onlineExtras = "HTTP://ONLINEEXTRAS.URL"
+        writing.originalAlbum = "ORIGINAL ALBUM"
+        writing.originalArtist = "ORIGINAL ARTIST"
+        writing.originalFilename = "ORIGINAL FILENAME"
+        writing.originalLyricist = "ORIGINAL LYRICIST"
+        writing.originalReleaseDate = formatter.date(from: "1997-07-10")
+        writing.paymentWebpage = "WWW.PAYMENT.URL"
+        writing.performer = "PERFORMER"
+        writing.phonogramRights = "PHONOGRAM RIGHTS"
+        writing.podcast = true
+        writing.podcastCategory = "PODCAST CATEGORY"
+        writing.podcastKeywords = "PODCAST KEYWORDS"
+        writing.podcastID = "PODCAST ID"
+        writing.podcastDescription = "PODCAST DESCRIPTION"
+        writing.podcastUrl = "WWW.PODCAST.URL"
+        writing.producer = "PRODUCER"
+        writing.publisher = "PUBLISHER"
+        writing.recordCompany = "RECORD COMPANY"
+        writing.soloist = "SOLOIST"
+        writing.soundEngineer = "SOUND ENGINEER"
+        writing.sourceCredit = "SOURCE CREDIT"
+        writing.trackNumber = [7,8]
+        writing.trackSubtitle = "TRACK SUBTITLE"
+        writing.releaseDate = formatter.date(from: "1999-05-08")
+
+        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
 //        try FileManager.default.removeItem(at: output)
         let file = try mp4File(withMeta: false)
         try file.write(to: output, writingTag: writing)
@@ -56,18 +157,72 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.acknowledgment, "ACKNOWLEDGMENT")
         XCTAssertEqual(testing.album, "ALBUM")
         XCTAssertEqual(testing.albumArtist, "ALBUMARTIST")
+        XCTAssertEqual(testing.albumArtistSort, "SORTALBUMARTIST")
+        XCTAssertEqual(testing.albumSort, "SORTALBUM")
         XCTAssertEqual(testing.arranger, "ARRANGER")
         XCTAssertEqual(testing.artDirector, "ARTDIRECTOR")
         XCTAssertEqual(testing.artist, "ARTIST")
+        XCTAssertEqual(testing.artistSort, "SORTARTIST")
+        XCTAssertEqual(testing.artistWebpage, "WWW.ARTIST.URL")
+        XCTAssertEqual(testing.audioFileWebpage, "WWW.AUDIOF.URL")
+        XCTAssertEqual(testing.audioSourceWebpage, "WWW.AUDIOS.URL")
         XCTAssertEqual(testing.bpm, 97)
         XCTAssertEqual(testing.comment, "COMMENT")
-//        XCTAssertEqual(testing.compilation, true) // fails "XCTAssertEqual failed: ("nil") is not equal to ("Optional(true)")"
+        XCTAssertEqual(testing.compilation, true)
         XCTAssertEqual(testing.composer, "COMPOSER")
+        XCTAssertEqual(testing.composerSort, "SORTCOMPOSER")
         XCTAssertEqual(testing.conductor, "CONDUCTOR")
+        XCTAssertEqual(testing.contentAdvisory, .ustvUnrated)
         XCTAssertEqual(testing.contentRating, .clean)
         XCTAssertEqual(testing.copyright, "2020 COPYRIGHT")
         XCTAssertEqual(testing.description, "DESCRIPTION")
         XCTAssertEqual(testing.director, "DIRECTOR")
-
+        XCTAssertEqual(testing.discNumber, [1,2])
+        XCTAssertEqual(testing.encodedBy, "ENCODED BY")
+        XCTAssertEqual(testing.encodingTool, "ENCODING TOOL")
+//        XCTAssertEqual(testing.encodingTime, formatter.date(from: "1998-06-09"))
+        XCTAssertEqual(testing.episodeNumber, 3)
+        XCTAssertEqual(testing.episodeTitle, "EPISODE TITLE")
+        XCTAssertEqual(testing.executiveProducer, "EXEC PRODUCER")
+        XCTAssertEqual(testing.genre, "GENRE")
+        XCTAssertEqual(testing.genreID, .audiobooks)
+        XCTAssertEqual(testing.initialKey, .aMajor)
+        XCTAssertEqual(testing.isrc, 123456789012)
+        XCTAssertEqual(testing.language, .eng)
+        XCTAssertEqual(testing.linerNotes, "LINER NOTES")
+        XCTAssertEqual(testing.longDescription, "LONG DESCRIPTION")
+        XCTAssertEqual(testing.lyrics, "LYRICS")
+        XCTAssertEqual(testing.mediaType, .audiobook)
+        XCTAssertEqual(testing.mood, "MOOD")
+        XCTAssertEqual(testing.movementName, "MOVEMENT NAME")
+        XCTAssertEqual(testing.movementNumber, 5)
+        XCTAssertEqual(testing.totalMovements, 6)
+        XCTAssertEqual(testing.narrator, "NARRATOR")
+        XCTAssertEqual(testing.network, "NETWORK")
+        XCTAssertEqual(testing.onlineExtras, "HTTP://ONLINEEXTRAS.URL")
+        XCTAssertEqual(testing.originalArtist, "ORIGINAL ARTIST")
+        XCTAssertEqual(testing.originalAlbum, "ORIGINAL ALBUM")
+        XCTAssertEqual(testing.originalFilename, "ORIGINAL FILENAME")
+        XCTAssertEqual(testing.originalLyricist, "ORIGINAL LYRICIST")
+//        XCTAssertEqual(testing.originalReleaseDate, formatter.date(from: "1997-07-10"))
+        XCTAssertEqual(testing.paymentWebpage, "WWW.PAYMENT.URL")
+        XCTAssertEqual(testing.performer, "PERFORMER")
+        XCTAssertEqual(testing.phonogramRights, "PHONOGRAM RIGHTS")
+        XCTAssertEqual(testing.podcast, true)
+        XCTAssertEqual(testing.podcastCategory, "PODCAST CATEGORY")
+        XCTAssertEqual(testing.podcastDescription, "PODCAST DESCRIPTION")
+        XCTAssertEqual(testing.podcastID, "PODCAST ID")
+        XCTAssertEqual(testing.podcastKeywords, "PODCAST KEYWORDS")
+        XCTAssertEqual(testing.podcastUrl, "WWW.PODCAST.URL")
+        XCTAssertEqual(testing.producer, "PRODUCER")
+        XCTAssertEqual(testing.publisher, "PUBLISHER")
+        XCTAssertEqual(testing.recordCompany, "RECORD COMPANY")
+//        XCTAssertEqual(testing.releaseDate, formatter.date(from: "1999-05-08"))
+        XCTAssertEqual(testing.soloist, "SOLOIST")
+        XCTAssertEqual(testing.soundEngineer, "SOUND ENGINEER")
+        XCTAssertEqual(testing.sourceCredit, "SOURCE CREDIT")
+        XCTAssertEqual(testing.trackNumber, [7,8])
+        XCTAssertEqual(testing.trackSubtitle, "TRACK SUBTITLE")
+        
     }
 }
