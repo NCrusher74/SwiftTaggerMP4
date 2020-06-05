@@ -19,14 +19,22 @@ public struct Tag {
         let formatsKey = "availableMetadataFormats"
         
         var loadedMetadata: [AVMetadataItem] = []
+        var done = false
+        if file.writingInProgress == true {
+            done = false
+        }
         asset.loadValuesAsynchronously(forKeys: [formatsKey]) {
             var error: NSError? = nil
             let status = asset.statusOfValue(forKey: formatsKey, error: &error)
             if status == .loaded {
                 for format in asset.availableMetadataFormats {
                     loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
+                    done = true
                 }
             }
+        }
+        while !done {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
         }
         self.metadata = loadedMetadata
     }

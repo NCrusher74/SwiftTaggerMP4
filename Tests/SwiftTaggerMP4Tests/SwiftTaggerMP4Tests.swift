@@ -72,11 +72,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.title, "Title")
         XCTAssertEqual(reading.titleSort, "SortName")
 
-//        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
-//        XCTAssertEqual(reading.recordingDate, formatter.date(from: "1999-05-08"))
-//        XCTAssertEqual(reading.encodingTime, formatter.date(from: "1996-08-09"))
-//        XCTAssertEqual(reading.releaseDate, formatter.date(from: "1999-05-08"))
-//        XCTAssertEqual(reading.originalReleaseDate, formatter.date(from: "1998-03-04"))
     }
     
     func testWriting() throws {
@@ -189,8 +184,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
         try FileManager.default.removeItem(at: output)
-        let file = try mp4File(withMeta: false)
-        try file.write(using: writing, writingTo: output)
+        var file = try mp4File(withMeta: false)
+        try file.write(using: writing, writingTo: output, fileType: .m4a)
         
         let testFile = try Mp4File(location: output)
         let testing = Tag(from: testFile)
@@ -330,9 +325,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.year = 1994
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-//        try FileManager.default.removeItem(at: output)
-        let file = try mp4File(withMeta: false)
-        try file.write(using: writing, writingTo: output)
+        try FileManager.default.removeItem(at: output)
+        var file = try mp4File(withMeta: false)
+        XCTAssertNoThrow(try file.write(using: writing, writingTo: output, fileType: .m4a))
         
         let testFile = try Mp4File(location: output)
         let testing = Tag(from: testFile)
