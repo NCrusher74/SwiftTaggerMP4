@@ -53,7 +53,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.performer, "Performer")
         XCTAssertEqual(reading.podcast, true)
         XCTAssertEqual(reading.podcastCategory, "Category")
-        XCTAssertEqual(reading.podcastKeywords, "Keywords")
+        XCTAssertEqual(reading.podcastKeywords, ["Keywords"])
         XCTAssertEqual(reading.podcastUrl, "http://podcastfeed.url")
         XCTAssertEqual(reading.phonogramRights, "PhonogramRights")
         XCTAssertEqual(reading.publisher, "Publisher")
@@ -137,7 +137,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.phonogramRights = "PHONOGRAM RIGHTS"
         writing.podcast = true
         writing.podcastCategory = "PODCAST CATEGORY"
-        writing.podcastKeywords = "PODCAST KEYWORDS"
+        writing.podcastKeywords = ["PODCAST","KEYWORDS"]
         writing.podcastID = "PODCAST ID"
         writing.podcastDescription = "PODCAST DESCRIPTION"
         writing.podcastUrl = "WWW.PODCAST.URL"
@@ -190,7 +190,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
         try FileManager.default.removeItem(at: output)
         let file = try mp4File(withMeta: false)
-        try file.write(to: output, writingTag: writing)
+        try file.write(using: writing, writingTo: output)
         
         let testFile = try Mp4File(location: output)
         let testing = Tag(from: testFile)
@@ -252,7 +252,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.podcastCategory, "PODCAST CATEGORY")
         XCTAssertEqual(testing.podcastDescription, "PODCAST DESCRIPTION")
         XCTAssertEqual(testing.podcastID, "PODCAST ID")
-        XCTAssertEqual(testing.podcastKeywords, "PODCAST KEYWORDS")
+        XCTAssertEqual(testing.podcastKeywords, ["PODCAST", "KEYWORDS"])
         XCTAssertEqual(testing.podcastUrl, "WWW.PODCAST.URL")
         XCTAssertEqual(testing.predefinedGenre, .audiobooksNews)
         XCTAssertEqual(testing.producer, "PRODUCER")
@@ -332,7 +332,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
 //        try FileManager.default.removeItem(at: output)
         let file = try mp4File(withMeta: false)
-        try file.write(to: output, writingTag: writing)
+        try file.write(using: writing, writingTo: output)
         
         let testFile = try Mp4File(location: output)
         let testing = Tag(from: testFile)

@@ -19,7 +19,6 @@ public struct Tag {
         let formatsKey = "availableMetadataFormats"
         
         var loadedMetadata: [AVMetadataItem] = []
-        var done = false
         asset.loadValuesAsynchronously(forKeys: [formatsKey]) {
             var error: NSError? = nil
             let status = asset.statusOfValue(forKey: formatsKey, error: &error)
@@ -27,15 +26,8 @@ public struct Tag {
                 for format in asset.availableMetadataFormats {
                     loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
                 }
-                print("A")
             }
-            print("B")
-            done = true
         }
-        while !done {
-            RunLoop.current.run(until: Date(timeIntervalSinceNow: 1))
-        }
-        print("C")
         self.metadata = loadedMetadata
     }
 }
@@ -112,7 +104,7 @@ extension Tag {
             return item.numberValue?.boolValue
         }; return nil
     }
-        
+    
     private func date(for identifier: Metadata) -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         let items = AVMetadataItem.metadataItems(
             from: self.metadata,
@@ -385,7 +377,7 @@ extension Tag {
         get { string(for: .encodingTool) }
         set { set(metadataItem: .encodingTool, to: newValue ?? "") }
     }
-
+    
     var encodingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
             return date(for: .encodingTime)
@@ -406,12 +398,12 @@ extension Tag {
             set(metadataItem: .encodingTime, to: year, month: month, day: day, hour: hour, minute: minute)
         }
     }
-
+    
     var encodingSettings: String? {
         get { string(for: .encodingSettings) }
         set { set(metadataItem: .encodingSettings, to: newValue ?? "") }
     }
-
+    
     var episodeNumber: Int? {
         get { integer(for: .episodeNumber) }
         set { set(metadataItem: .episodeNumber, to: newValue ?? 0) }
@@ -426,7 +418,7 @@ extension Tag {
         get { string(for: .executiveProducer) }
         set { set(metadataItem: .executiveProducer, to: newValue ?? "") }
     }
-        
+    
     var genre: String? {
         get { string(for: .genre) }
         set { set(metadataItem: .genre, to: newValue ?? "") }
@@ -447,7 +439,7 @@ extension Tag {
             }
         }
     }
-
+    
     var initialKey: KeySignature? {
         get {
             if let str = string(for: .initialKey) {
@@ -534,12 +526,12 @@ extension Tag {
         get { string(for: .mood) }
         set { set(metadataItem: .mood, to: newValue ?? "") }
     }
-
+    
     var movementName: String? {
         get { string(for: .movementName) }
         set { set(metadataItem: .movementName, to: newValue ?? "") }
     }
-
+    
     var movementNumber: Int? {
         get { integer(for: .movementNumber) }
         set { set(metadataItem: .movementNumber, to: newValue ?? 0) }
@@ -564,7 +556,7 @@ extension Tag {
         get { string(for: .onlineExtras) }
         set { set(metadataItem: .onlineExtras, to: newValue ?? "") }
     }
-
+    
     var originalAlbum: String? {
         get {
             if let str = string(for: .originalAlbum) {
@@ -599,7 +591,7 @@ extension Tag {
             set(metadataItem: .originalYear, to: newValue, month: nil, day: nil, hour: nil, minute: nil)
         }
     }
-
+    
     var paymentWebpage: String? {
         get { string(for: .paymentWebpage) }
         set { set(metadataItem: .paymentWebpage, to: newValue ?? "") }
@@ -630,21 +622,29 @@ extension Tag {
         get { string(for: .podcastCategory) }
         set { set(metadataItem: .podcastCategory, to: newValue ?? "") }
     }
-
+    
     var podcastDescription: String? {
         get { string(for: .podcastDescription) }
         set { set(metadataItem: .podcastDescription, to: newValue ?? "") }
     }
-
+    
     var podcastID: String? {
         get { string(for: .podcastID) }
         set { set(metadataItem: .podcastID, to: newValue ?? "") }
     }
-
-    #warning("make this an array if it will work")
-    var podcastKeywords: String? {
-        get { string(for: .podcastKeywords) }
-        set { set(metadataItem: .podcastKeywords, to: newValue ?? "") }
+    
+    var podcastKeywords: [String]? {
+        get {
+            if let str = string(for: .podcastKeywords) {
+                return str.components(separatedBy: ",")
+            }; return nil
+        }
+        set {
+            if let new = newValue {
+                let string = new.joined(separator: ",")
+                set(metadataItem: .podcastKeywords, to: string)
+            }
+        }
     }
 
     var podcastUrl: String? {
@@ -676,7 +676,7 @@ extension Tag {
             set(metadataItem: .predefinedGenre, to: newValue?.predefinedGenres ?? "")
         }
     }
-
+    
     var producer: String? {
         get { string(for: .producer) }
         set { set(metadataItem: .producer, to: newValue ?? "") }
@@ -686,7 +686,7 @@ extension Tag {
         get { string(for: .publisher) }
         set { set(metadataItem: .publisher, to: newValue ?? "") }
     }
-
+    
     var publisherWebpage: String? {
         get { string(for: .publisherWebpage) }
         set { set(metadataItem: .publisherWebpage, to: newValue ?? "") }
@@ -851,12 +851,12 @@ extension Tag {
         set { set(metadataItem: .trackNumber, to: newValue ?? [])
         }
     }
-
+    
     var trackSubtitle: String? {
         get { string(for: .trackSubtitle) }
         set { set(metadataItem: .trackSubtitle, to: newValue ?? "") }
     }
-
+    
     var work: String? {
         get { string(for: .work) }
         set { set(metadataItem: .work, to: newValue ?? "") }
