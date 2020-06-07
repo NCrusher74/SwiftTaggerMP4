@@ -22,5 +22,7 @@ extension Mp4File {
         case WritingError
         /// Error thrown when the metadata loading operation fails
         case LoadingError
+        /// Error thrown when the metadata loading operation has been cancelled
+        case LoadingCancelled
     }
 }

@@ -47,11 +47,11 @@ public struct Tag {
                     case .loaded:
                         for format in asset.availableMetadataFormats {
                             loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
-                            inProgress = false
-                        }
-                    case .loading: inProgress = true
-                    case .cancelled: inProgress = false
-                    case .unknown: break
+                         }
+                        inProgress = false
+                    case .loading: fatalError("Status 'loading' should not coincide with result 'success'")
+                    case .cancelled: throw Mp4File.Error.LoadingCancelled
+                    case .unknown: fatalError("Status 'unknown' should not coincide with result 'success'")
                     case .failed: throw Mp4File.Error.LoadingError
                     @unknown default: inProgress = false
             }
@@ -153,6 +153,43 @@ extension Tag {
         }
     }
     
+    private func dateFromString(for identifier: Metadata) -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            let string = item.stringValue ?? ""
+            let formatterA = ISO8601DateFormatter().withInternetDateTimeAndGMT0
+            let formatterB = ISO8601DateFormatter().withDashAndGMT0
+            if let date = formatterA.date(from: string) {
+                
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
+            } else if let date = formatterB.date(from: string) {
+                
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
+            } else {
+                return (nil, nil, nil, nil, nil)
+            }
+        } else {
+            return (nil, nil, nil, nil, nil)
+        }
+    }
+    
     // MARK: Private Helpers - setters
     private mutating func set(metadataItem: Metadata, to string: String) {
         let item = AVMutableMetadataItem()
@@ -226,8 +263,16 @@ extension Tag {
                                             day: day,
                                             hour: hour,
                                             minute: minute)
+        /*
+        print(dateComponents)
+
+        calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1995 isLeapMonth: false
+        calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1995 month: 9 day: 1 hour: 0 minute: 0 isLeapMonth: false
+        calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1995 month: 1 day: 12 hour: 0 minute: 0 isLeapMonth: false
+        */
+
         if let date = calendar.date(from: dateComponents) {
-            let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
+            let formatter = ISO8601DateFormatter()
             item.value = formatter.string(from: date) as NSString
         }
         self.metadata.append(item)
@@ -408,22 +453,15 @@ extension Tag {
     
     var encodingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            return date(for: .encodingTime)
+            return dateFromString(for: .encodingTime)
         }
         set {
-            var year: Int? = nil
-            var month: Int? = nil
-            var day: Int? = nil
-            var hour: Int? = nil
-            var minute: Int? = nil
-            if let new = newValue {
-                if let newYear = new.year { year = newYear }
-                if let newMonth = new.month { month = newMonth }
-                if let newDay = new.day { day = newDay }
-                if let newHour = new.hour { hour = newHour }
-                if let newMinute = new.minute { minute = newMinute }
-            }
-            set(metadataItem: .encodingTime, to: year, month: month, day: day, hour: hour, minute: minute)
+            set(metadataItem: .encodingTime,
+                to: newValue?.year,
+                month: newValue?.month,
+                day: newValue?.day,
+                hour: newValue?.hour,
+                minute: newValue?.minute)
         }
     }
     
@@ -613,7 +651,7 @@ extension Tag {
     
     var originalReleaseYear: Int? {
         get {
-            return date(for: .originalYear)?.year
+            return dateFromString(for: .originalYear)?.year
         }
         set {
             set(metadataItem: .originalYear, to: newValue, month: nil, day: nil, hour: nil, minute: nil)
@@ -722,22 +760,15 @@ extension Tag {
     
     var purchaseDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .purchaseDate)
+            dateFromString(for: .purchaseDate)
         }
         set {
-            var year: Int? = nil
-            var month: Int? = nil
-            var day: Int? = nil
-            var hour: Int? = nil
-            var minute: Int? = nil
-            if let new = newValue {
-                if let newYear = new.year { year = newYear }
-                if let newMonth = new.month { month = newMonth }
-                if let newDay = new.day { day = newDay }
-                if let newHour = new.hour { hour = newHour }
-                if let newMinute = new.minute { minute = newMinute }
-            }
-            set(metadataItem: .purchaseDate, to: year, month: month, day: day, hour: hour, minute: minute)
+            set(metadataItem: .purchaseDate,
+                to: newValue?.year,
+                month: newValue?.month,
+                day: newValue?.day,
+                hour: newValue?.hour,
+                minute: newValue?.minute)
         }
     }
     
@@ -766,40 +797,26 @@ extension Tag {
             date(for: .recordingDate)
         }
         set {
-            var year: Int? = nil
-            var month: Int? = nil
-            var day: Int? = nil
-            var hour: Int? = nil
-            var minute: Int? = nil
-            if let new = newValue {
-                if let newYear = new.year { year = newYear }
-                if let newMonth = new.month { month = newMonth }
-                if let newDay = new.day { day = newDay }
-                if let newHour = new.hour { hour = newHour }
-                if let newMinute = new.minute { minute = newMinute }
-            }
-            set(metadataItem: .recordingDate, to: year, month: month, day: day, hour: hour, minute: minute)
+            set(metadataItem: .recordingDate,
+                to: newValue?.year,
+                month: newValue?.month,
+                day: newValue?.day,
+                hour: newValue?.hour,
+                minute: newValue?.minute)
         }
     }
     
     var releaseDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .releaseDate)
+            dateFromString(for: .releaseDate)
         }
         set {
-            var year: Int? = nil
-            var month: Int? = nil
-            var day: Int? = nil
-            var hour: Int? = nil
-            var minute: Int? = nil
-            if let new = newValue {
-                if let newYear = new.year { year = newYear }
-                if let newMonth = new.month { month = newMonth }
-                if let newDay = new.day { day = newDay }
-                if let newHour = new.hour { hour = newHour }
-                if let newMinute = new.minute { minute = newMinute }
-            }
-            set(metadataItem: .releaseDate, to: year, month: month, day: day, hour: hour, minute: minute)
+            set(metadataItem: .releaseDate,
+                to: newValue?.year,
+                month: newValue?.month,
+                day: newValue?.day,
+                hour: newValue?.hour,
+                minute: newValue?.minute)
         }
     }
     
@@ -840,22 +857,22 @@ extension Tag {
     
     var taggingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .taggingTime)
+            dateFromString(for: .taggingTime)
         }
         set {
-            var year: Int? = nil
-            var month: Int? = nil
-            var day: Int? = nil
-            var hour: Int? = nil
-            var minute: Int? = nil
-            if let new = newValue {
-                if let newYear = new.year { year = newYear }
-                if let newMonth = new.month { month = newMonth }
-                if let newDay = new.day { day = newDay }
-                if let newHour = new.hour { hour = newHour }
-                if let newMinute = new.minute { minute = newMinute }
-            }
-            set(metadataItem: .taggingTime, to: year, month: month, day: day, hour: hour, minute: minute)
+/*
+             print("YEAR: \(newValue?.year) MONTH: \(newValue?.month) DAY: \(newValue?.day) HOUR: \(newValue?.hour) MINUTE: \(newValue?.minute)")
+
+            YEAR: Optional(1995) MONTH: nil DAY: nil HOUR: nil MINUTE: nil
+            YEAR: Optional(1995) MONTH: Optional(9) DAY: Optional(1) HOUR: Optional(0) MINUTE: Optional(0)
+            YEAR: Optional(1995) MONTH: Optional(1) DAY: Optional(12) HOUR: Optional(0) MINUTE: Optional(0)
+*/
+            set(metadataItem: .taggingTime,
+                to: newValue?.year,
+                month: newValue?.month,
+                day: newValue?.day,
+                hour: newValue?.hour,
+                minute: newValue?.minute)
         }
     }
     
@@ -892,7 +909,7 @@ extension Tag {
     
     var year: Int? {
         get {
-            return date(for: .year)?.year
+            return dateFromString(for: .year)?.year
         }
         set {
             set(metadataItem: .year, to: newValue, month: nil, day: nil, hour: nil, minute: nil)

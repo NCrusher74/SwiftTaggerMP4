@@ -15,4 +15,11 @@ extension ISO8601DateFormatter {
         self.formatOptions = [.withInternetDateTime]
         return self
     }
+    
+    var withDashAndGMT0: ISO8601DateFormatter {
+        self.timeZone = TimeZone(secondsFromGMT: 0)
+        self.formatOptions = [.withFullDate, .withDashSeparatorInDate]
+        return self
+    }
+
 }

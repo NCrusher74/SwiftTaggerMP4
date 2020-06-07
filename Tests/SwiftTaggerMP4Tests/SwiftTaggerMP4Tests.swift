@@ -72,6 +72,26 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(reading.title, "Title")
         XCTAssertEqual(reading.titleSort, "SortName")
 
+        XCTAssertEqual(reading.releaseDate?.year, 1999)
+        XCTAssertEqual(reading.releaseDate?.month, 05)
+        XCTAssertEqual(reading.releaseDate?.day, 08)
+
+        XCTAssertEqual(reading.recordingDate?.year, 1999)
+        XCTAssertEqual(reading.recordingDate?.month, 05)
+        XCTAssertEqual(reading.recordingDate?.day, 08)
+
+        XCTAssertEqual(reading.purchaseDate?.year, 1999)
+        XCTAssertEqual(reading.purchaseDate?.month, 06)
+        XCTAssertEqual(reading.purchaseDate?.day, 08)
+
+        XCTAssertEqual(reading.taggingTime?.year, 1997)
+        XCTAssertEqual(reading.taggingTime?.month, 06)
+        XCTAssertEqual(reading.taggingTime?.day, 07)
+
+        XCTAssertEqual(reading.encodingTime?.year, 1996)
+        XCTAssertEqual(reading.encodingTime?.month, 08)
+        XCTAssertEqual(reading.encodingTime?.day, 09)
+        
     }
     
     func testWriting() throws {
