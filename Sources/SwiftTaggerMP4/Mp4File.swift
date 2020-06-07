@@ -13,7 +13,6 @@ public struct Mp4File {
     
     public let location: URL
     var asset: AVAsset
-    var writingInProgress: Bool = false
     
     public init(location: URL) throws {
         let validExtensions = ["mp4","aac", "m4a", "m4b"]
@@ -28,7 +27,11 @@ public struct Mp4File {
     
     public mutating func write(using tag: Tag, writingTo url: URL, fileType: AVFileType) throws {
         var error: Bool = false
-        var inProgress: Bool = false
+        var inProgress: Bool = true
+
+        if FileManager.default.fileExists(atPath: url.path) {
+            try FileManager.default.removeItem(at: url)
+        }
 
         let exportSession = AVAssetExportSession(
             asset: self.asset,
@@ -37,16 +40,18 @@ public struct Mp4File {
         exportSession?.outputFileType = fileType
         exportSession?.metadata = tag.metadata
         exportSession?.exportAsynchronously(completionHandler: {
-            inProgress = true
             if exportSession?.status == .failed {
                 error = true
             }
             inProgress = false
         })
 
+        while inProgress {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+
         if error == true {
             throw Mp4File.Error.WritingError
         }
-        writingInProgress = inProgress
     }
 }

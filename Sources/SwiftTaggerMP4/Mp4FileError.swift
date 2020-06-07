@@ -20,5 +20,7 @@ extension Mp4File {
         case ImageDataNotFound
         /// Error thrown when the writing operation fails
         case WritingError
+        /// Error thrown when the metadata loading operation fails
+        case LoadingError
     }
 }

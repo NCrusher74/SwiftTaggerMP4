@@ -14,27 +14,47 @@ public struct Tag {
     
     var metadata: [AVMetadataItem]
     
-    public init(from file: Mp4File) {
+    public init(from file: Mp4File) throws {
         let asset = file.asset
         let formatsKey = "availableMetadataFormats"
         
-        var loadedMetadata: [AVMetadataItem] = []
-        var done = false
-        if file.writingInProgress == true {
-            done = false
-        }
+        // Asynchronous weirdness begins here.
+        var result: Result<AVKeyValueStatus, Error> = .success(.loaded)
+        var inProgress = true
+
         asset.loadValuesAsynchronously(forKeys: [formatsKey]) {
+            defer { inProgress = false }
+            
             var error: NSError? = nil
             let status = asset.statusOfValue(forKey: formatsKey, error: &error)
-            if status == .loaded {
-                for format in asset.availableMetadataFormats {
-                    loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
-                    done = true
-                }
+            if let failure = error {
+                result = .failure(failure)
+            } else {
+                result = .success(status)
             }
         }
-        while !done {
+        while inProgress {
             RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+        // Asynchronous weirdness ends here.
+        
+        var loadedMetadata: [AVMetadataItem] = []
+        switch result {
+            case .failure(let error):
+                throw error
+            case .success(let status):
+                switch status {
+                    case .loaded:
+                        for format in asset.availableMetadataFormats {
+                            loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
+                            inProgress = false
+                        }
+                    case .loading: inProgress = true
+                    case .cancelled: inProgress = false
+                    case .unknown: break
+                    case .failed: throw Mp4File.Error.LoadingError
+                    @unknown default: inProgress = false
+            }
         }
         self.metadata = loadedMetadata
     }

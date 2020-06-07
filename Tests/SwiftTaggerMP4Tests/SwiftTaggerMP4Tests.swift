@@ -183,12 +183,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.year = 1994
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-        try FileManager.default.removeItem(at: output)
         var file = try mp4File(withMeta: false)
         try file.write(using: writing, writingTo: output, fileType: .m4a)
         
         let testFile = try Mp4File(location: output)
-        let testing = Tag(from: testFile)
+        let testing = try Tag(from: testFile)
         
         XCTAssertEqual(testing.acknowledgment, "ACKNOWLEDGMENT")
         XCTAssertEqual(testing.album, "ALBUM")
@@ -325,12 +324,13 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.year = 1994
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-        try FileManager.default.removeItem(at: output)
         var file = try mp4File(withMeta: false)
         XCTAssertNoThrow(try file.write(using: writing, writingTo: output, fileType: .m4a))
         
+        XCTAssertNoThrow(try Mp4File(location: output))
         let testFile = try Mp4File(location: output)
-        let testing = Tag(from: testFile)
+        XCTAssertNoThrow(try Tag(from: testFile))
+        let testing = try Tag(from: testFile)
                 
         XCTAssertEqual(testing.encodingTime?.year,2000)
         XCTAssertEqual(testing.encodingTime?.month, 10)
