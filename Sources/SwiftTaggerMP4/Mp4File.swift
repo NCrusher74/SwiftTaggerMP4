@@ -25,21 +25,33 @@ public struct Mp4File {
         self.asset = AVAsset(url: location)
     }
     
-    public func read() throws {
-        _ = Tag(from: self)
-    }
-    
-    public func write(to outputLocation: URL, writingTag: Tag) throws {
-        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
-        exportSession?.outputURL = outputLocation
-        exportSession?.outputFileType = AVFileType.m4a
-        exportSession?.metadata = writingTag.metadata
+    public mutating func write(using tag: Tag, writingTo url: URL, fileType: AVFileType) throws {
+        var error: Bool = false
+        var inProgress: Bool = true
+
+        if FileManager.default.fileExists(atPath: url.path) {
+            try FileManager.default.removeItem(at: url)
+        }
+
+        let exportSession = AVAssetExportSession(
+            asset: self.asset,
+            presetName: AVAssetExportPresetPassthrough)
+        exportSession?.outputURL = url
+        exportSession?.outputFileType = fileType
+        exportSession?.metadata = tag.metadata
         exportSession?.exportAsynchronously(completionHandler: {
-            if exportSession?.error != nil {
-                print(exportSession?.error as Any)
-            }else{
-                print("success creating m4b")
+            if exportSession?.status == .failed {
+                error = true
             }
+            inProgress = false
         })
+
+        while inProgress {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+
+        if error == true {
+            throw Mp4File.Error.WritingError
+        }
     }
 }

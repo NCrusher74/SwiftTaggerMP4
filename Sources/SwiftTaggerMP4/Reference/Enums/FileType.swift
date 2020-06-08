@@ -101,6 +101,7 @@ public enum FileType: String {
     case sdv
     case ssc1
     case ssc2
+    case unknown = ""
     
     var fullName: String {
         switch self {
@@ -196,6 +197,7 @@ public enum FileType: String {
             case .sdv  : return "SD Memory Card Video"
             case .ssc1 : return "Samsung stereoscopic, single stream"
             case .ssc2 : return "Samsung stereoscopic, dual stream"
+            case .unknown : return ""
 
         }
     }

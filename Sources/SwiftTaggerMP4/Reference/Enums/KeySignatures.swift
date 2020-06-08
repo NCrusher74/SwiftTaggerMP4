@@ -9,6 +9,7 @@ import Foundation
 
 public enum KeySignature: String {
     
+    case unknown = ""
     case cMajor = "C"
     case gMajor = "G"
     case dMajor = "D"

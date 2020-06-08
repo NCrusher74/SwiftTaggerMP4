@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 extension Mp4File {
     
@@ -17,5 +18,11 @@ extension Mp4File {
         case InvalidMetadataIdentifierForFormat
         /// Error thrown when cover image can't be found
         case ImageDataNotFound
+        /// Error thrown when the writing operation fails
+        case WritingError
+        /// Error thrown when the metadata loading operation fails
+        case LoadingError
+        /// Error thrown when the metadata loading operation has been cancelled
+        case LoadingCancelled
     }
 }
