@@ -80,7 +80,14 @@ extension Tag {
             let dateString = formatter.string(from: date)
             item.value = dateString as NSString
         }
-        self.metadata.append(item)
+        var metadata = self.metadata
+        for (index, dataItem) in metadata.enumerated() {
+            if dataItem.key as! NSString == item.key as! NSString {
+                metadata.remove(at: index)
+            }
+        }
+        metadata.append(item)
+        self.metadata = metadata
     }
     
     var encodingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
