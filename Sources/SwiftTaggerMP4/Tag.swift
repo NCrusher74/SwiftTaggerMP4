@@ -60,6 +60,7 @@ public struct Tag {
     }
 }
 
+
 @available(OSX 10.13, *)
 extension Tag {
     
@@ -133,63 +134,6 @@ extension Tag {
         }; return nil
     }
     
-    private func date(for identifier: Metadata) -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            let date = item.dateValue ?? Date.distantPast
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-            let components = calendar.dateComponents(in: timeZone, from: date)
-            return (components.year,
-                    components.month,
-                    components.day,
-                    components.hour,
-                    components.minute)
-        } else {
-            return (nil, nil, nil, nil, nil)
-        }
-    }
-    
-    private func dateFromString(for identifier: Metadata) -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            let string = item.stringValue ?? ""
-            let formatterA = ISO8601DateFormatter().withInternetDateTimeAndGMT0
-            let formatterB = ISO8601DateFormatter().withDashAndGMT0
-            if let date = formatterA.date(from: string) {
-                
-                let calendar = Calendar(identifier: .iso8601)
-                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                let components = calendar.dateComponents(in: timeZone, from: date)
-                return (components.year,
-                        components.month,
-                        components.day,
-                        components.hour,
-                        components.minute)
-            } else if let date = formatterB.date(from: string) {
-                
-                let calendar = Calendar(identifier: .iso8601)
-                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                let components = calendar.dateComponents(in: timeZone, from: date)
-                return (components.year,
-                        components.month,
-                        components.day,
-                        components.hour,
-                        components.minute)
-            } else {
-                return (nil, nil, nil, nil, nil)
-            }
-        } else {
-            return (nil, nil, nil, nil, nil)
-        }
-    }
-    
     // MARK: Private Helpers - setters
     private mutating func set(metadataItem: Metadata, to string: String) {
         let item = AVMutableMetadataItem()
@@ -250,34 +194,7 @@ extension Tag {
         self.metadata.append(item)
     }
     
-    private mutating func set(metadataItem: Metadata, to year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        let calendar = Calendar(identifier: .iso8601)
-        let timeZone = TimeZone(secondsFromGMT: 0)
-        let dateComponents = DateComponents(calendar: calendar,
-                                            timeZone: timeZone,
-                                            year: year,
-                                            month: month,
-                                            day: day,
-                                            hour: hour,
-                                            minute: minute)
-        /*
-        print(dateComponents)
 
-        calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1995 isLeapMonth: false
-        calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1995 month: 9 day: 1 hour: 0 minute: 0 isLeapMonth: false
-        calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1995 month: 1 day: 12 hour: 0 minute: 0 isLeapMonth: false
-        */
-
-        if let date = calendar.date(from: dateComponents) {
-            let formatter = ISO8601DateFormatter()
-            item.value = formatter.string(from: date) as NSString
-        }
-        self.metadata.append(item)
-    }
-    
     // MARK: Convenience getter/setters
     var acknowledgment: String? {
         get { string(for: .acknowledgment) }
@@ -449,20 +366,6 @@ extension Tag {
     var encodingTool: String? {
         get { string(for: .encodingTool) }
         set { set(metadataItem: .encodingTool, to: newValue ?? "") }
-    }
-    
-    var encodingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            return dateFromString(for: .encodingTime)
-        }
-        set {
-            set(metadataItem: .encodingTime,
-                to: newValue?.year,
-                month: newValue?.month,
-                day: newValue?.day,
-                hour: newValue?.hour,
-                minute: newValue?.minute)
-        }
     }
     
     var encodingSettings: String? {
@@ -649,15 +552,6 @@ extension Tag {
         set { set(metadataItem: .originalLyricist, to: newValue ?? "") }
     }
     
-    var originalReleaseYear: Int? {
-        get {
-            return dateFromString(for: .originalYear)?.year
-        }
-        set {
-            set(metadataItem: .originalYear, to: newValue, month: nil, day: nil, hour: nil, minute: nil)
-        }
-    }
-    
     var paymentWebpage: String? {
         get { string(for: .paymentWebpage) }
         set { set(metadataItem: .paymentWebpage, to: newValue ?? "") }
@@ -758,20 +652,6 @@ extension Tag {
         set { set(metadataItem: .publisherWebpage, to: newValue ?? "") }
     }
     
-    var purchaseDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            dateFromString(for: .purchaseDate)
-        }
-        set {
-            set(metadataItem: .purchaseDate,
-                to: newValue?.year,
-                month: newValue?.month,
-                day: newValue?.day,
-                hour: newValue?.hour,
-                minute: newValue?.minute)
-        }
-    }
-    
     var radioStation: String? {
         get { string(for: .radioStation) }
         set { set(metadataItem: .radioStation, to: newValue ?? "") }
@@ -790,34 +670,6 @@ extension Tag {
     var recordCompany: String? {
         get { string(for: .recordCompany) }
         set { set(metadataItem: .recordCompany, to: newValue ?? "") }
-    }
-    
-    var recordingDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            date(for: .recordingDate)
-        }
-        set {
-            set(metadataItem: .recordingDate,
-                to: newValue?.year,
-                month: newValue?.month,
-                day: newValue?.day,
-                hour: newValue?.hour,
-                minute: newValue?.minute)
-        }
-    }
-    
-    var releaseDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            dateFromString(for: .releaseDate)
-        }
-        set {
-            set(metadataItem: .releaseDate,
-                to: newValue?.year,
-                month: newValue?.month,
-                day: newValue?.day,
-                hour: newValue?.hour,
-                minute: newValue?.minute)
-        }
     }
     
     var season: Int? {
@@ -855,27 +707,6 @@ extension Tag {
         set { set(metadataItem: .sourceCredit, to: newValue ?? "") }
     }
     
-    var taggingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            dateFromString(for: .taggingTime)
-        }
-        set {
-/*
-             print("YEAR: \(newValue?.year) MONTH: \(newValue?.month) DAY: \(newValue?.day) HOUR: \(newValue?.hour) MINUTE: \(newValue?.minute)")
-
-            YEAR: Optional(1995) MONTH: nil DAY: nil HOUR: nil MINUTE: nil
-            YEAR: Optional(1995) MONTH: Optional(9) DAY: Optional(1) HOUR: Optional(0) MINUTE: Optional(0)
-            YEAR: Optional(1995) MONTH: Optional(1) DAY: Optional(12) HOUR: Optional(0) MINUTE: Optional(0)
-*/
-            set(metadataItem: .taggingTime,
-                to: newValue?.year,
-                month: newValue?.month,
-                day: newValue?.day,
-                hour: newValue?.hour,
-                minute: newValue?.minute)
-        }
-    }
-    
     var thanks: String? {
         get { string(for: .thanks) }
         set { set(metadataItem: .thanks, to: newValue ?? "") }
@@ -907,13 +738,5 @@ extension Tag {
         set { set(metadataItem: .work, to: newValue ?? "") }
     }
     
-    var year: Int? {
-        get {
-            return dateFromString(for: .year)?.year
-        }
-        set {
-            set(metadataItem: .year, to: newValue, month: nil, day: nil, hour: nil, minute: nil)
-        }
-    }
 }
 
