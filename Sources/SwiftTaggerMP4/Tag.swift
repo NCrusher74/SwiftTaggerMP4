@@ -345,6 +345,7 @@ extension Tag {
         }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var bpm: Int? {
         get { integer(for: .bpm) }
         set { set(metadataItem: .bpm, to: newValue ?? 0) }
@@ -355,6 +356,7 @@ extension Tag {
         set { set(metadataItem: .comment, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var compilation: Bool? {
         get { boolean(for: .compilation) }
         set {
@@ -381,6 +383,7 @@ extension Tag {
         set { set(metadataItem: .conductor, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var contentAdvisory: ContentAdvisory? {
         get {
             let stringValue = string(for: .contentAdvisory) ?? ""
@@ -395,6 +398,7 @@ extension Tag {
         }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var contentRating: ContentRating? {
         get {
             let int = integer(for: .contentRating) ?? 0
@@ -450,6 +454,7 @@ extension Tag {
         set { set(metadataItem: .encodingSettings, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var episodeNumber: Int? {
         get { integer(for: .episodeNumber) }
         set { set(metadataItem: .episodeNumber, to: newValue ?? 0) }
@@ -470,6 +475,7 @@ extension Tag {
         set { set(metadataItem: .genre, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var genreID: Genres? {
         get {
             let int = integer(for: .genreID) ?? 0
@@ -550,6 +556,7 @@ extension Tag {
         set { set(metadataItem: .lyrics, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var mediaType: MediaType? {
         get {
             if let mediaType = self.genreID?.mediaType {
@@ -578,11 +585,13 @@ extension Tag {
         set { set(metadataItem: .movementName, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var movementNumber: Int? {
         get { integer(for: .movementNumber) }
         set { set(metadataItem: .movementNumber, to: newValue ?? 0) }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var totalMovements: Int? {
         get { integer(for: .movementTotal) }
         set { set(metadataItem: .movementTotal, to: newValue ?? 0) }
@@ -644,6 +653,7 @@ extension Tag {
         set { set(metadataItem: .phonogramRights, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var podcast: Bool? {
         get { boolean(for: .podcast) }
         set {
@@ -749,6 +759,7 @@ extension Tag {
         set { set(metadataItem: .recordCompany, to: newValue ?? "") }
     }
     
+    #warning("doesn't work in subler and/or yate")
     var season: Int? {
         get { integer(for: .season) }
         set { set(metadataItem: .season, to: newValue ?? 0) }
