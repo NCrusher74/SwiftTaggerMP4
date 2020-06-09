@@ -181,7 +181,7 @@ extension Tag {
                 return (year,month,day,hour,minute)
             }; return (nil, nil, nil, nil, nil)
     }
-    
+        
     // MARK: Private Helpers - setters
     private mutating func set(metadataItem: Metadata, to string: String) {
         let item = AVMutableMetadataItem()
@@ -203,7 +203,22 @@ extension Tag {
         let item = AVMutableMetadataItem()
         item.keySpace = metadataItem.keySpace
         item.key = metadataItem.rawValue as NSString
-        item.value = integer as NSNumber
+        let int8Items: [Metadata] = [.compilation, .contentRating, .mediaType, .podcast]
+        let int16Items: [Metadata] = [.bpm, .movementNumber, .movementTotal]
+        let int32Items: [Metadata] = [.episodeNumber, .genreID, .season]
+        
+        if int8Items.contains(metadataItem) {
+            let int8 = Int8(integer)
+            item.value = int8 as NSNumber
+        } else if int16Items.contains(metadataItem) {
+            let int16 = Int16(integer)
+            item.value = int16 as NSNumber
+        } else if int32Items.contains(metadataItem) {
+            let int32 = Int32(integer)
+            item.value = int32 as NSNumber
+        } else {
+            item.value = integer as NSNumber
+        }
         self.metadata.append(item)
     }
     
@@ -404,7 +419,8 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(metadataItem: .contentRating, to: new.rawValue)
+                let newInt = new.rawValue
+                set(metadataItem: .contentRating, to: newInt)
             }
         }
     }
@@ -481,7 +497,8 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(metadataItem: .genreID, to: new.rawValue)
+                let newInt = new.rawValue
+                set(metadataItem: .genreID, to: newInt)
             }
         }
     }
@@ -503,7 +520,12 @@ extension Tag {
     
     var isrc: Int? {
         get { integer(for: .isrc) }
-        set { set(metadataItem: .isrc, to: newValue ?? 0) }
+        set {
+            if let new = newValue {
+                let newString = String(new)
+                set(metadataItem: .isrc, to: newString)
+            }
+        }
     }
     
     var language: [ISO6392Codes]? {
@@ -563,7 +585,8 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(metadataItem: .mediaType, to: new.rawValue)
+                let newInt = new.rawValue
+                set(metadataItem: .mediaType, to: newInt)
             }
         }
     }
@@ -891,5 +914,37 @@ extension Tag {
             set(metadataItem: .year, to: new)
         }
     }
+    
+    var coverImage: NSImage? {
+        let identifier: Metadata = .artwork
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            if let itemData = item.dataValue {
+                if let image = NSImage(data: itemData) {
+                    return image
+                } else {
+                    return nil
+                }
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+
+    mutating func setCoverImage(to imageUrl: URL) throws {
+        let imageData = try Data(contentsOf: imageUrl)
+        let item = AVMutableMetadataItem()
+        let metadataItem: Metadata = .artwork
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.rawValue as NSString
+        item.value = imageData as NSData
+        self.metadata.append(item)
+    }
+    
 }
 
