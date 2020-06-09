@@ -22,6 +22,7 @@ enum Metadata: String, CaseIterable {
     case artist = "©ART"
     case artistSort = "soar"
     case artistWebpage = "com.apple.iTunes.URL_OFFICIAL_ARTIST_SITE"
+    case artwork = "covr"
     case audioFileWebpage = "com.apple.iTunes.OFFICIAL_AUDIO_FILE_URL"
     case audioSourceWebpage = "com.apple.iTunes.OFFICIAL_AUDIO_SOURCE_URL"
     case bpm = "tmpo"
@@ -110,4 +111,5 @@ enum Metadata: String, CaseIterable {
             return AVMetadataKeySpace(rawValue: "itlk")
         }
     }
+    
 }

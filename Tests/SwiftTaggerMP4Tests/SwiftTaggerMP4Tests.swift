@@ -1,4 +1,5 @@
 import XCTest
+import Cocoa
 @testable import SwiftTaggerMP4
 
 @available(OSX 10.13, *)
@@ -103,6 +104,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.artist = "ARTIST"
         writing.artistSort = "SORTARTIST"
         writing.artistWebpage = "WWW.ARTIST.URL"
+        try writing.setCoverImage(to: fileVersion.cover.url)
         writing.audioFileWebpage = "WWW.AUDIOF.URL"
         writing.audioSourceWebpage = "WWW.AUDIOS.URL"
         writing.bpm = 97
@@ -198,7 +200,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         writing.year = 1994
 
-        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
+        let output = try tempDirectory().appendingPathComponent("testoutput.m4a")
         var file = try mp4File(withMeta: false)
         try file.write(using: writing, writingTo: output, fileType: .m4a)
         
@@ -285,7 +287,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(testing.trackNumber, [7,8])
         XCTAssertEqual(testing.trackSubtitle, "TRACK SUBTITLE")
         XCTAssertEqual(testing.work, "WORK")
-
+        
+        let coverArtImage = testing.coverImage
+        XCTAssertNoThrow(try coverArtImage?.save(directory: output.deletingLastPathComponent(), fileName: "testimage"))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: output.deletingLastPathComponent().appendingPathComponent("testimage.png").path))
 
         XCTAssertEqual(writing.encodingTime?.year,2000)
         XCTAssertEqual(writing.encodingTime?.month, 10)
@@ -310,44 +315,5 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(writing.taggingTime?.day, 12)
         
         XCTAssertEqual(writing.year,1994)
-    }
-
-    func testInts() throws {
-        var writing = try tag(withMeta: false)
-        
-        writing.bpm = 99 // int16
-        writing.compilation = true // int8
-        writing.contentAdvisory = .ustvUnrated
-        writing.contentRating = .clean // int8
-        writing.episodeNumber = 3 // int32
-        writing.genreID = .audiobooksNews // uint32
-        writing.isrc = 123456789012
-        writing.mediaType = .audiobook // int8
-        writing.movementNumber = 5 // int 16
-        writing.totalMovements = 6 // int 16
-        writing.podcast = true // int8
-        writing.season = 4 // int32
-
-        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-        var file = try mp4File(withMeta: false)
-        XCTAssertNoThrow(try file.write(using: writing, writingTo: output, fileType: .m4a))
-        
-        XCTAssertNoThrow(try Mp4File(location: output))
-        let testFile = try Mp4File(location: output)
-        XCTAssertNoThrow(try Tag(from: testFile))
-        let testing = try Tag(from: testFile)
-        
-        XCTAssertEqual(testing.bpm, 99)
-        XCTAssertEqual(testing.compilation, true)
-        XCTAssertEqual(testing.contentAdvisory, .ustvUnrated)
-        XCTAssertEqual(testing.contentRating, .clean)
-        XCTAssertEqual(testing.episodeNumber, 3)
-        XCTAssertEqual(testing.genreID, .audiobooksNews)
-        XCTAssertEqual(testing.isrc, 123456789012)
-        XCTAssertEqual(testing.mediaType, .audiobook)
-        XCTAssertEqual(testing.movementNumber, 5)
-        XCTAssertEqual(testing.totalMovements, 6)
-        XCTAssertEqual(testing.podcast, true)
-        XCTAssertEqual(testing.season, 4)
     }
 }

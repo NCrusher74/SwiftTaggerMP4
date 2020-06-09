@@ -181,7 +181,7 @@ extension Tag {
                 return (year,month,day,hour,minute)
             }; return (nil, nil, nil, nil, nil)
     }
-    
+        
     // MARK: Private Helpers - setters
     private mutating func set(metadataItem: Metadata, to string: String) {
         let item = AVMutableMetadataItem()
@@ -914,5 +914,37 @@ extension Tag {
             set(metadataItem: .year, to: new)
         }
     }
+    
+    var coverImage: NSImage? {
+        let identifier: Metadata = .artwork
+        let items = AVMetadataItem.metadataItems(
+            from: self.metadata,
+            withKey: identifier.rawValue,
+            keySpace: identifier.keySpace)
+        if let item = items.first {
+            if let itemData = item.dataValue {
+                if let image = NSImage(data: itemData) {
+                    return image
+                } else {
+                    return nil
+                }
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+
+    mutating func setCoverImage(to imageUrl: URL) throws {
+        let imageData = try Data(contentsOf: imageUrl)
+        let item = AVMutableMetadataItem()
+        let metadataItem: Metadata = .artwork
+        item.keySpace = metadataItem.keySpace
+        item.key = metadataItem.rawValue as NSString
+        item.value = imageData as NSData
+        self.metadata.append(item)
+    }
+    
 }
 

@@ -17,13 +17,13 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
 enum fileVersion {
     case withMeta
     case noMeta
+    case cover
     
     var url: URL {
         switch self {
-            case .withMeta:
-            return testMediaDirectory.appendingPathComponent("mp4-full-meta.m4a")
-            case .noMeta:
-            return testMediaDirectory.appendingPathComponent("mp4-nometa.m4a")
+            case .withMeta: return testMediaDirectory.appendingPathComponent("mp4-full-meta.m4a")
+            case .noMeta: return testMediaDirectory.appendingPathComponent("mp4-nometa.m4a")
+            case .cover: return testMediaDirectory.appendingPathComponent("samplecover-green.jpg")
         }
     }
 }
