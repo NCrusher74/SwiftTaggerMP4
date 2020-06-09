@@ -312,40 +312,21 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(writing.year,1994)
     }
 
-    func testdates() throws {
+    func testInts() throws {
         var writing = try tag(withMeta: false)
         
-        writing.encodingTime?.year = 2000
-        writing.encodingTime?.month = 10
-        writing.encodingTime?.day = 13
-
-        writing.releaseDate?.year = 1999
-        writing.releaseDate?.month = 05
-        writing.releaseDate?.day = 08
-
-        writing.recordingDate?.year = 1998
-        writing.recordingDate?.month = 06
-        writing.recordingDate?.day = 09
-
-        writing.purchaseDate?.year = 1997
-        writing.purchaseDate?.month = 07
-        writing.purchaseDate?.day = 10
-
-        writing.originalReleaseYear = 1996
-
-        print(writing.taggingTime) // Optional((year: nil, month: nil, day: nil, hour: nil, minute: nil))
-
-        writing.taggingTime?.year = 1995
-        print(writing.taggingTime) // Optional((year: Optional(1995), month: Optional(1), day: Optional(1), hour: Optional(0), minute: Optional(0)))
-
-        writing.taggingTime?.month = 09
-        print(writing.taggingTime) // Optional((year: Optional(1995), month: Optional(1), day: Optional(1), hour: Optional(0), minute: Optional(0)))
-
-        writing.taggingTime?.day = 12
-        print(writing.taggingTime) // Optional((year: Optional(1995), month: Optional(1), day: Optional(1), hour: Optional(0), minute: Optional(0)))
-
-        
-        writing.year = 1994
+        writing.bpm = 99 // int16
+        writing.compilation = true // int8
+        writing.contentAdvisory = .ustvUnrated
+        writing.contentRating = .clean // int8
+        writing.episodeNumber = 3 // int32
+        writing.genreID = .audiobooksNews // uint32
+        writing.isrc = 123456789012
+        writing.mediaType = .audiobook // int8
+        writing.movementNumber = 5 // int 16
+        writing.totalMovements = 6 // int 16
+        writing.podcast = true // int8
+        writing.season = 4 // int32
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
         var file = try mp4File(withMeta: false)
@@ -355,111 +336,18 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let testFile = try Mp4File(location: output)
         XCTAssertNoThrow(try Tag(from: testFile))
         let testing = try Tag(from: testFile)
-                
-        XCTAssertEqual(testing.encodingTime?.year,2000)
-        XCTAssertEqual(testing.encodingTime?.month, 10)
-        XCTAssertEqual(testing.encodingTime?.day, 13)
-
-        XCTAssertEqual(testing.releaseDate?.year, 1999)
-        XCTAssertEqual(testing.releaseDate?.month, 05)
-        XCTAssertEqual(testing.releaseDate?.day, 08)
-
-        XCTAssertEqual(testing.recordingDate?.year, 1998)
-        XCTAssertEqual(testing.recordingDate?.month, 06)
-        XCTAssertEqual(testing.recordingDate?.day, 09)
-
-        XCTAssertEqual(testing.purchaseDate?.year, 1997)
-        XCTAssertEqual(testing.purchaseDate?.month, 07)
-        XCTAssertEqual(testing.purchaseDate?.day, 10)
-
-        XCTAssertEqual(testing.originalReleaseYear, 1996)
-
-        print(testing.taggingTime)
-        XCTAssertEqual(testing.taggingTime?.year, 1995)
-        XCTAssertEqual(testing.taggingTime?.month, 09)
-        XCTAssertEqual(testing.taggingTime?.day, 12)
         
-        XCTAssertEqual(testing.year,1994)
+        XCTAssertEqual(testing.bpm, 99)
+        XCTAssertEqual(testing.compilation, true)
+        XCTAssertEqual(testing.contentAdvisory, .ustvUnrated)
+        XCTAssertEqual(testing.contentRating, .clean)
+        XCTAssertEqual(testing.episodeNumber, 3)
+        XCTAssertEqual(testing.genreID, .audiobooksNews)
+        XCTAssertEqual(testing.isrc, 123456789012)
+        XCTAssertEqual(testing.mediaType, .audiobook)
+        XCTAssertEqual(testing.movementNumber, 5)
+        XCTAssertEqual(testing.totalMovements, 6)
+        XCTAssertEqual(testing.podcast, true)
+        XCTAssertEqual(testing.season, 4)
     }
-
-    func testdatesAsTuples() throws {
-        var writing = try tag(withMeta: false)
-        
-        writing.encodingTime = (year: 2000, month: 10, day: 13, hour: nil, minute: nil)
-        
-        writing.releaseDate = (year: 1999, month: 05, day: 08, hour: nil, minute: nil)
-
-        writing.recordingDate = (year: 1998, month: 06, day: 09, hour: nil, minute: nil)
-
-        writing.purchaseDate = (year: 1997, month: 07, day: 10, hour: nil, minute: nil)
-
-        writing.originalReleaseYear = 1996
-        
-        writing.taggingTime = (year: 1995, month: 09, day: 12, hour: nil, minute: nil)
-                
-        writing.year = 1994
-        
-        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-        var file = try mp4File(withMeta: false)
-        XCTAssertNoThrow(try file.write(using: writing, writingTo: output, fileType: .m4a))
-        
-        XCTAssertNoThrow(try Mp4File(location: output))
-        let testFile = try Mp4File(location: output)
-        XCTAssertNoThrow(try Tag(from: testFile))
-        let testing = try Tag(from: testFile)
-        
-        XCTAssertEqual(testing.encodingTime?.year,2000)
-        XCTAssertEqual(testing.encodingTime?.month, 10)
-        XCTAssertEqual(testing.encodingTime?.day, 13)
-        
-        XCTAssertEqual(testing.releaseDate?.year, 1999)
-        XCTAssertEqual(testing.releaseDate?.month, 05)
-        XCTAssertEqual(testing.releaseDate?.day, 08)
-        
-        XCTAssertEqual(testing.recordingDate?.year, 1998)
-        XCTAssertEqual(testing.recordingDate?.month, 06)
-        XCTAssertEqual(testing.recordingDate?.day, 09)
-        
-        XCTAssertEqual(testing.purchaseDate?.year, 1997)
-        XCTAssertEqual(testing.purchaseDate?.month, 07)
-        XCTAssertEqual(testing.purchaseDate?.day, 10)
-        
-        XCTAssertEqual(testing.originalReleaseYear, 1996)
-        
-        XCTAssertEqual(testing.taggingTime?.year, 1995)
-        XCTAssertEqual(testing.taggingTime?.month, 09)
-        XCTAssertEqual(testing.taggingTime?.day, 12)
-        
-        XCTAssertEqual(testing.year,1994)
-    }
-
-    
-    func test() throws {
-        var writing = try tag(withMeta: false)
-
-        writing.encodingTime = (year: 2000, month: 10, day: 13, hour: nil, minute: nil)
-        
-        writing.taggingTime?.year = 1995
-        writing.taggingTime?.month = 09
-        writing.taggingTime?.day = 12
-        
-        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-        var file = try mp4File(withMeta: false)
-        XCTAssertNoThrow(try file.write(using: writing, writingTo: output, fileType: .m4a))
-        
-        XCTAssertNoThrow(try Mp4File(location: output))
-        let testFile = try Mp4File(location: output)
-        XCTAssertNoThrow(try Tag(from: testFile))
-        let testing = try Tag(from: testFile)
-        
-        XCTAssertEqual(testing.encodingTime?.year,2000)
-        XCTAssertEqual(testing.encodingTime?.month, 10)
-        XCTAssertEqual(testing.encodingTime?.day, 13)
-        
-        XCTAssertEqual(testing.taggingTime?.year, 1995)
-        XCTAssertEqual(testing.taggingTime?.month, 09)
-        XCTAssertEqual(testing.taggingTime?.day, 12)
-        
-    }
-
 }
