@@ -17,15 +17,21 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
 enum fileVersion {
     case withMeta
     case noMeta
+    case chapterized
     case cover
     
     var url: URL {
         switch self {
             case .withMeta: return testMediaDirectory.appendingPathComponent("mp4-full-meta.m4a")
             case .noMeta: return testMediaDirectory.appendingPathComponent("mp4-nometa.m4a")
+            case .chapterized: return testMediaDirectory.appendingPathComponent("mp4-chapterized.m4a")
             case .cover: return testMediaDirectory.appendingPathComponent("samplecover-green.jpg")
         }
     }
+}
+
+func mp4Chapterized() throws -> Mp4File {
+    return try Mp4File(location: fileVersion.chapterized.url)
 }
 
 func mp4File(withMeta: Bool) throws -> Mp4File {
@@ -34,6 +40,10 @@ func mp4File(withMeta: Bool) throws -> Mp4File {
     } else {
         return try Mp4File(location: fileVersion.noMeta.url)
     }
+}
+
+func tagChapterized() throws -> Tag {
+    return try Tag(from: mp4Chapterized())
 }
 
 func tag(withMeta: Bool) throws -> Tag {

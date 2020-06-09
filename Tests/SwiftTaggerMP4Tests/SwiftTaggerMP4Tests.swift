@@ -316,4 +316,15 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         XCTAssertEqual(writing.year,1994)
     }
+    
+    func testChapterReading() throws {
+        let mp4Reading: Mp4File = try mp4Chapterized()
+        XCTAssertNoThrow(try TableOfContents(mp4File: mp4Reading))
+        let toc = try TableOfContents(mp4File: mp4Reading)
+        XCTAssertEqual(toc.chapters.count, 2)
+        for chapter in toc.chapters {
+            print(chapter.items)
+        }
+        
+    }
 }
