@@ -10,86 +10,95 @@ import AVFoundation
 import Cocoa
 
 struct TableOfContents {
-
-    var chapters: [AVTimedMetadataGroup]
     
-    init(mp4File: Mp4File) throws {
-        let asset = mp4File.asset
-        let chapterLocalesKey = "availableChapterLocales"
-        
-        // Asynchronous weirdness begins here.
-        var result: Result<AVKeyValueStatus, Error> = .success(.loaded)
-        var inProgress = true
-
-        asset.loadValuesAsynchronously(forKeys: [chapterLocalesKey]) {
-            defer { inProgress = false }
-            
-            var error: NSError? = nil
-            let status = asset.statusOfValue(forKey: chapterLocalesKey, error: &error)
-            if let failure = error {
-                result = .failure(failure)
-            } else {
-                result = .success(status)
-            }
-        }
-        while inProgress {
-            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
-        }
-        // Asynchronous weirdness ends here.
-        
-        var chapterGroup: [AVTimedMetadataGroup] = []
-        switch result {
-            case .failure(let error):
-                throw error
-            case .success(let status):
-                switch status {
-                    case .loaded:
-                        let languages = Locale.preferredLanguages
-                        chapterGroup = asset.chapterMetadataGroups(
-                            bestMatchingPreferredLanguages: languages)
-                        inProgress = false
-                    case .loading: fatalError("Status 'loading' should not coincide with result 'success'")
-                    case .cancelled: throw Mp4File.Error.LoadingCancelled
-                    case .unknown: fatalError("Status 'unknown' should not coincide with result 'success'")
-                    case .failed: throw Mp4File.Error.LoadingError
-                    @unknown default: inProgress = false
-            }
-        }
-        self.chapters = chapterGroup
-    }
+    var chapters: [Int: Chapter]
     
-    /// a public-facing type for handling the Chapter frame in a more intuitive manner
     struct Chapter {
         var chapterTitle: String?
-        var chapterThumbnail: NSImage?
-
+//        var chapterThumbnail: NSImage?
+        
         init(title: String?) {
             self.chapterTitle = title
         }
-        
-        init() {}
+    }
+    
+    /// The chapters in chronological order.
+    func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
+        return chapters.keys.sorted().map { ($0, chapters[$0]!) }
+    }
+}
+
+@available(OSX 10.13, *)
+extension Tag {
+    
+    var tableOfContents: TableOfContents {
+        get {
+            self.toc
+        }
+        set {
+            let newChapters = newValue.sortedChapters()
+            // wipe the existing chapter so they can be replaced
+            self.toc.chapters = [:]
+            
+            var timedMetadataGroups: [AVTimedMetadataGroup] = []
+            for index in newChapters.indices {
+                // get the current chapter
+                let chapter = newChapters[index]
+                // get the endTime for the current chapter from the startTime of the next chapter
+                let endTime: Int
+                // get the index of the next chapter
+                let nextIndex = newChapters.index(after: index)
+                if nextIndex < newChapters.endIndex {
+                    let nextChapter = newChapters[nextIndex]
+                    // get the start time of the next chapter for the end time of the current chapter
+                    endTime = nextChapter.startTime
+                } else {
+                    // unless it's the last chapter, in which case the end time is the end of the file
+                    endTime = self.duration
+                }
+
+                let startTimeAsCMTime = CMTime(seconds: Double(chapter.startTime/1000), preferredTimescale: 1)
+                let endTimeAsCMTime = CMTime(seconds: Double(endTime/1000), preferredTimescale: 1)
+                let chapterTimeRange = CMTimeRange(start: startTimeAsCMTime, end: endTimeAsCMTime)
+
+                // build the chapter metadata array
+                var chapterMetadataTag = Tag()
+                chapterMetadataTag.title = chapter.chapter.chapterTitle
+                
+                let timedMetadataGroup = AVTimedMetadataGroup(items: chapterMetadataTag.metadata, timeRange: chapterTimeRange)
+                timedMetadataGroups.append(timedMetadataGroup)
+            }
+        }
+    }
+    
+    /// Retrieves an array of chapters by start time (in milliseconds) and title.
+    public var chapterList: [(startTime: Int, title: String)] {
+        var chaptersArray: [(Int, String)] = []
+        let chapters = self.toc.sortedChapters()
+        for chapter in chapters {
+            let startTime = chapter.startTime
+            let title = chapter.chapter.chapterTitle ?? ""
+            chaptersArray.append((startTime, title))
+        }
+        return chaptersArray
     }
 
-    func convertTimedMetadataGroupsToChapters(groups: [AVTimedMetadataGroup]) -> [Chapter] {
-        return groups.map { group -> Chapter in
-            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-            let titleItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierTitle)
-            
-            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-            let artworkItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierArtwork)
-            
-            var chapter = Chapter()
-            
-            if let titleValue = titleItems.first?.stringValue {
-                chapter = Chapter(title: titleValue)
-            }
-            
-            if let imageData = artworkItems.first?.dataValue,
-                let image = NSImage(data: imageData) {
-                chapter.chapterThumbnail = image
-            }
-            
-            return chapter
-        }
+    /// Adds a chapter at the specified start time (in milliseconds) with the specified title.
+    /// If a chapter exists at the specified start time, it will be overwritten.
+    /// To edit a chapter title, simply overwrite the existing chapter with a new one
+    public mutating func addChapter(at startTimeInMilliseconds: Int, title: String) {
+        var tocChapters = self.toc.chapters
+        tocChapters.updateValue(TableOfContents.Chapter(title: title), forKey: startTimeInMilliseconds)
+        self.toc.chapters = tocChapters
+    }
+
+    /// Removes the chapter at the specified start time.
+    public mutating func removeChapter(at startTime: Int) {
+        self.toc.chapters[startTime] = nil
+    }
+
+    /// Removes all chapters.
+    public mutating func removeAllChapters() {
+        self.toc.chapters = [:]
     }
 }

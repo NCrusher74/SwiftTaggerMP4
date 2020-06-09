@@ -318,13 +318,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     }
     
     func testChapterReading() throws {
-        let mp4Reading: Mp4File = try mp4Chapterized()
-        XCTAssertNoThrow(try TableOfContents(mp4File: mp4Reading))
-        let toc = try TableOfContents(mp4File: mp4Reading)
+        XCTAssertNoThrow(tagChapterized)
+        let toc = try tagChapterized().toc
         XCTAssertEqual(toc.chapters.count, 2)
-        for chapter in toc.chapters {
-            print(chapter.items)
+        for chapter in toc.sortedChapters() {
+            print(chapter.startTime)
         }
-        
     }
 }
