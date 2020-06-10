@@ -200,7 +200,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         writing.year = 1994
 
-        let output = try tempDirectory().appendingPathComponent("testoutput.m4a")
+        let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
         var file = try mp4File(withMeta: false)
         try file.write(using: writing, writingTo: output, fileType: .m4a)
         

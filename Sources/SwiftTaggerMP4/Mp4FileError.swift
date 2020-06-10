@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 
+@available(OSX 10.13, *)
 extension Mp4File {
     
     public enum Error: Swift.Error {

@@ -10,6 +10,7 @@ import Foundation
 import AVFoundation
 import Cocoa
 
+@available(OSX 10.13, *)
 public struct Tag {
     
     var metadata: [AVMetadataItem]
@@ -98,6 +99,7 @@ public struct Tag {
             chapterGroups[startTime] = chapter
         }
         self.toc = TableOfContents(chapters: chapterGroups)
+        self.toc.timedMetadataGroups = timedMetadataGroups
         self.duration = Int(file.asset.duration.seconds * 1000)
     }
     

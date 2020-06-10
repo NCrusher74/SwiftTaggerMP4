@@ -12,7 +12,8 @@ import Cocoa
 struct TableOfContents {
     
     var chapters: [Int: Chapter]
-    
+    var timedMetadataGroups: [AVTimedMetadataGroup]?
+
     struct Chapter {
         var chapterTitle: String?
 //        var chapterThumbnail: NSImage?
@@ -31,7 +32,7 @@ struct TableOfContents {
 
 @available(OSX 10.13, *)
 extension Tag {
-    
+     
     var tableOfContents: TableOfContents {
         get {
             self.toc
@@ -69,6 +70,7 @@ extension Tag {
                 let timedMetadataGroup = AVTimedMetadataGroup(items: chapterMetadataTag.metadata, timeRange: chapterTimeRange)
                 timedMetadataGroups.append(timedMetadataGroup)
             }
+            self.toc.timedMetadataGroups = timedMetadataGroups
         }
     }
     

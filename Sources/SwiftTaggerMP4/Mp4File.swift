@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 
+@available(OSX 10.13, *)
 public struct Mp4File {
     
     public let location: URL
@@ -33,6 +34,60 @@ public struct Mp4File {
             try FileManager.default.removeItem(at: url)
         }
 
+        // get the source audio track
+        let audioTrack = asset.tracks(withMediaType: .audio).first
+        let audioDesc = audioTrack?.formatDescriptions.first as! CMFormatDescription
+        
+        // turn it into an Input
+        let audioInput = AVAssetWriterInput(
+            mediaType: .audio,
+            outputSettings: nil,
+            sourceFormatHint: audioDesc)
+        
+        
+        let writer = try AVAssetWriter(outputURL: url, fileType: .m4a)
+        writer.startWriting()
+
+        for group in tag.tableOfContents.timedMetadataGroups ?? [] {
+            let desc = group.copyFormatDescription()
+            // create text input
+            let textInput = AVAssetWriterInput(mediaType: .text,
+                                               outputSettings: nil,
+                                               sourceFormatHint: desc)
+            textInput.marksOutputTrackAsEnabled = false
+            
+            if audioInput.canAddTrackAssociation(
+                withTrackOf: textInput, type: AVAssetTrack.AssociationType.chapterList.rawValue) {
+                audioInput.addTrackAssociation(
+                    withTrackOf: textInput, type: AVAssetTrack.AssociationType.chapterList.rawValue)
+            }
+            
+            if writer.canAdd(textInput) {
+                writer.add(textInput)
+            }
+        }
+        
+        if writer.canAdd(audioInput) {
+            writer.add(audioInput)
+        }
+        
+        writer.finishWriting(completionHandler: {
+            if writer.status == .failed {
+                error = true
+            }
+            inProgress = false
+        })
+        
+        while inProgress {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+        
+        if error == true {
+            throw Mp4File.Error.WritingError
+        }
+
+
+/*
         let exportSession = AVAssetExportSession(
             asset: self.asset,
             presetName: AVAssetExportPresetPassthrough)
@@ -53,5 +108,9 @@ public struct Mp4File {
         if error == true {
             throw Mp4File.Error.WritingError
         }
+*/
+
     }
+    
+    
 }

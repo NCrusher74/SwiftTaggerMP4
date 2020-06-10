@@ -30,10 +30,12 @@ enum fileVersion {
     }
 }
 
+@available(OSX 10.13, *)
 func mp4Chapterized() throws -> Mp4File {
     return try Mp4File(location: fileVersion.chapterized.url)
 }
 
+@available(OSX 10.13, *)
 func mp4File(withMeta: Bool) throws -> Mp4File {
     if withMeta {
         return try Mp4File(location: fileVersion.withMeta.url)
@@ -42,10 +44,12 @@ func mp4File(withMeta: Bool) throws -> Mp4File {
     }
 }
 
+@available(OSX 10.13, *)
 func tagChapterized() throws -> Tag {
     return try Tag(from: mp4Chapterized())
 }
 
+@available(OSX 10.13, *)
 func tag(withMeta: Bool) throws -> Tag {
     if withMeta {
         return try Tag(from: mp4File(withMeta: true))
