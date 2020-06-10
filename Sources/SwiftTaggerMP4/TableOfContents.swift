@@ -23,6 +23,7 @@ struct TableOfContents {
     }
     
     /// The chapters in chronological order.
+    /// startTime is in milliseconds
     func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
         return chapters.keys.sorted().map { ($0, chapters[$0]!) }
     }
@@ -74,7 +75,7 @@ extension Tag {
     /// Retrieves an array of chapters by start time (in milliseconds) and title.
     public var chapterList: [(startTime: Int, title: String)] {
         var chaptersArray: [(Int, String)] = []
-        let chapters = self.toc.sortedChapters()
+        let chapters = self.tableOfContents.sortedChapters()
         for chapter in chapters {
             let startTime = chapter.startTime
             let title = chapter.chapter.chapterTitle ?? ""
@@ -89,16 +90,16 @@ extension Tag {
     public mutating func addChapter(at startTimeInMilliseconds: Int, title: String) {
         var tocChapters = self.toc.chapters
         tocChapters.updateValue(TableOfContents.Chapter(title: title), forKey: startTimeInMilliseconds)
-        self.toc.chapters = tocChapters
+        self.tableOfContents.chapters = tocChapters
     }
 
     /// Removes the chapter at the specified start time.
     public mutating func removeChapter(at startTime: Int) {
-        self.toc.chapters[startTime] = nil
+        self.tableOfContents.chapters[startTime] = nil
     }
 
     /// Removes all chapters.
     public mutating func removeAllChapters() {
-        self.toc.chapters = [:]
+        self.tableOfContents.chapters = [:]
     }
 }
