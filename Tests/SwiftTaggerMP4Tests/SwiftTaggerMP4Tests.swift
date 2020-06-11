@@ -1,5 +1,6 @@
 import XCTest
 import Cocoa
+import AVFoundation
 @testable import SwiftTaggerMP4
 
 @available(OSX 10.13, *)
@@ -325,4 +326,50 @@ final class SwiftTaggerMP4Tests: XCTestCase {
             print(chapter.startTime)
         }
     }
+    
+    func testTracks() throws {
+        let asset = try mp4Chapterized().asset
+        var tag = try tagChapterized()
+        let toc = tag.toc
+        
+        tag.removeAllChapters()
+        tag.addChapter(at: 1500, title: "Chapter 01")
+        tag.addChapter(at: 3000, title: "Chapter 02")
+        tag.addChapter(at: 4500, title: "Chapter 03")
+        
+        let chapterGroups = tag.tableOfContents.timedMetadataGroups
+        
+        let output = try localDirectory(fileName: "chaptertestfile", fileExtension: "m4a")
+
+        let assetReader = try AVAssetReader(asset: asset)
+        let assetWriter = try AVAssetWriter(outputURL: output, fileType: .m4a)
+        
+        if let audioTrack = asset.tracks(withMediaType: .audio).first {
+            let audioOutput = AVAssetReaderTrackOutput(
+                track: audioTrack, outputSettings: nil)
+            assetReader.add(audioOutput)
+            
+            let audioInput = AVAssetWriterInput(mediaType:
+                audioTrack.mediaType, outputSettings: nil)
+            
+            // need sample buffer channel?
+            for group in chapterGroups ?? [] {
+                let formatDesc = group.copyFormatDescription()
+                let textInput = AVAssetWriterInput(
+                    mediaType: .text, outputSettings: nil,
+                    sourceFormatHint: formatDesc)
+                textInput.expectsMediaDataInRealTime = true
+
+                let metadataAdaptor = AVAssetWriterInputMetadataAdaptor(assetWriterInput: textInput)
+                
+                textInput.addTrackAssociation(
+                    withTrackOf: audioInput, type: AVAssetTrack.AssociationType.chapterList.rawValue)
+                assetWriter.add(textInput)
+                
+                // more sample buffer stuff
+            }
+        }
+    }
+    
+    
 }
