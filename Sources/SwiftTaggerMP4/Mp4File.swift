@@ -55,6 +55,13 @@ public struct Mp4File {
                                                outputSettings: nil,
                                                sourceFormatHint: desc)
             textInput.marksOutputTrackAsEnabled = false
+            textInput.expectsMediaDataInRealTime = false
+            
+            let metadataAdaptor = AVAssetWriterInputMetadataAdaptor(
+                assetWriterInput: textInput)
+            textInput.requestMediaDataWhenReady(on: DispatchQueue(label: "metadataqueue", qos: .userInitiated), using: {
+                metadataAdaptor.append(group)
+            }) // no idea if I'm using this correctly
             
             if audioInput.canAddTrackAssociation(
                 withTrackOf: textInput, type: AVAssetTrack.AssociationType.chapterList.rawValue) {
@@ -111,6 +118,4 @@ public struct Mp4File {
 */
 
     }
-    
-    
 }
