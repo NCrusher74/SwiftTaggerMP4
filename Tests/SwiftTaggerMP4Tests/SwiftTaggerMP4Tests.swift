@@ -340,6 +340,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         let chapterGroups = tag.tableOfContents.timedMetadataGroups ?? []
         
+//        for chapter in chapterGroups {
+//            print(chapter.copyFormatDescription())
+//        }
         let chapterWriter = ChapterWriter(asset: asset)
         chapterWriter.write(chapters: chapterGroups)
 
@@ -498,7 +501,6 @@ internal class ChapterWriter {
     
     internal func write(chapters: [AVTimedMetadataGroup]) {
         self.chapters = chapters
-        
         serializationQueue.async {
             
             var localError: NSError?
@@ -506,7 +508,7 @@ internal class ChapterWriter {
                 self.readingAndWritingDidFinishSuccessfully(error: localError)
                 return
             }
-            
+
             do {
                 // AVAssetWriter does not overwrite files for us, so remove the destination file if it already exists
                 let fm = FileManager.default
@@ -514,7 +516,6 @@ internal class ChapterWriter {
                 if fm.fileExists(atPath: localOutputPath) {
                     try fm.removeItem(atPath: localOutputPath)
                 }
-                
                 // Set up the AVAssetReader and AVAssetWriter, then begin writing samples or flag an error
                 try self.setUpReaderAndWriter()
                 try self.startReadingAndWriting()
@@ -534,7 +535,7 @@ internal class ChapterWriter {
         // Create asset reader and asset writer
         assetReader = try AVAssetReader(asset: localAsset)
         assetWriter = try AVAssetWriter(url: localOutputURL, fileType: .mov)
-        
+
         // Create asset reader outputs and asset writer inputs for the first audio track of the asset
         var audioTrack: AVAssetTrack? = nil
         
@@ -559,6 +560,26 @@ internal class ChapterWriter {
              
             // Setup metadata track in order to write metadata samples
             var formatDescriptions: [CMFormatDescription] = []
+/*
+            Optional(<CMMetadataFormatDescription 0x100c3fcd0 [0x7fff8a51fb60]> {
+                mediaType:'meta'
+                mediaSubType:'mebx'
+                mediaSpecific: {
+                    identifierToDataTypes 0x100c37610        localKeyIDToKeyEntryMapping 0x100c3a010        localKeyIDToMetadataSpecificationMapping 0x100c3fa60        localKeyIDToQuickTimeWellKnownTypeMapping 0x100c3a200
+                }
+                extensions: {{
+                    MetadataKeyTable =     {
+                        1 =         {
+                            MetadataKeyDataType = {length = 4, bytes = 0x00000001};
+                            MetadataKeyDataTypeNameSpace = 0;
+                            MetadataKeyLocalID = 1;
+                            MetadataKeyNamespace = 1769239403;
+                            MetadataKeyValue = {length = 4, bytes = 0xa96e616d};
+                        };
+                    };
+                    }}
+            })
+*/
             if self.chapters.count > 0 {
                 for chapter in self.chapters {
                     formatDescriptions.append(chapter.copyFormatDescription()!)
@@ -599,7 +620,7 @@ internal class ChapterWriter {
         
         // Start a sample-writing session
         assetWriter.startSession(atSourceTime: .zero)
-        
+
         let dispatchGroup = DispatchGroup()
         
         // Start reading and writing samples
@@ -633,7 +654,6 @@ internal class ChapterWriter {
                 })
                 
                 dispatchGroup.wait()
-                
                 if !finalSuccess {
                     
                     finalError = self.assetWriter.error
@@ -650,8 +670,8 @@ internal class ChapterWriter {
         if let error = error {
             assetReader.cancelReading()
             assetWriter.cancelWriting()
-            
             print("Writing metadata failed with the following error: \(error)")
+            self.globalDispatchSemaphore.signal()
         }
     }
 }
