@@ -667,11 +667,9 @@ internal class ChapterWriter {
     }
     
     private func readingAndWritingDidFinishSuccessfully(error: Error?) {
-        if let error = error {
-            assetReader.cancelReading()
-            assetWriter.cancelWriting()
-            print("Writing metadata failed with the following error: \(error)")
-            self.globalDispatchSemaphore.signal()
-        }
+      assetReader?.cancelReading()
+      assetWriter?.cancelWriting()
+      print("Writing metadata failed with the following error: \(String(describing: error))")
+      self.globalDispatchSemaphore.signal()
     }
 }

@@ -1,0 +1,133 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SDGCommandLine",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
+        "state": {
+          "branch": null,
+          "revision": "9a76898860907270ae29f7c45112cf6a5ca05596",
+          "version": "1.4.2"
+        }
+      },
+      {
+        "package": "SDGCornerstone",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
+        "state": {
+          "branch": null,
+          "revision": "14972491d90c6ad299004fba1224f58adb06368f",
+          "version": "5.1.0"
+        }
+      },
+      {
+        "package": "SDGSwift",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
+        "state": {
+          "branch": null,
+          "revision": "a368d83afdb0caf271c03a20c9616fa8c8ca54ca",
+          "version": "1.0.3"
+        }
+      },
+      {
+        "package": "SDGWeb",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
+        "state": {
+          "branch": null,
+          "revision": "96ddf3ced8f5e302aaef85894312628d84309676",
+          "version": "5.3.1"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "223d62adc52d51669ae2ee19bdb8b7d9fd6fcd9c",
+          "version": "0.0.6"
+        }
+      },
+      {
+        "package": "cmark",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
+        "state": {
+          "branch": null,
+          "revision": "bfa95d55b535fa178f75484b5e8f82ae3d8517af",
+          "version": "0.0.50200"
+        }
+      },
+      {
+        "package": "swift-format",
+        "repositoryURL": "https://github.com/apple/swift-format",
+        "state": {
+          "branch": null,
+          "revision": "1fda39893d3652a9a3f1673565a227f843d59f3c",
+          "version": "0.50200.0"
+        }
+      },
+      {
+        "package": "llbuild",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
+        "state": {
+          "branch": null,
+          "revision": "fb7ebf0b06c0d7c45ca8e18b3371424503a38b5c",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics",
+        "state": {
+          "branch": null,
+          "revision": "5dfc460876510988560170cee3702ab01b89587a",
+          "version": "0.0.5"
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "state": {
+          "branch": null,
+          "revision": "f5ea3972d7d6c574e8bb16a19b2a7bca98ea131b",
+          "version": "0.6.0"
+        }
+      },
+      {
+        "package": "swift-se0270-range-set",
+        "repositoryURL": "https://github.com/apple/swift-se0270-range-set",
+        "state": {
+          "branch": null,
+          "revision": "120fc7efe17b11f7eedd94e7a5e1885fc69efb49",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "SwiftSyntax",
+        "repositoryURL": "https://github.com/apple/swift-syntax",
+        "state": {
+          "branch": null,
+          "revision": "0688b9cfc4c3dd234e4f55f1f056b2affc849873",
+          "version": "0.50200.0"
+        }
+      },
+      {
+        "package": "swift-tools-support-core",
+        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
+        "state": {
+          "branch": null,
+          "revision": "98a5916a811fcaaed770f1ed812e9405be762945",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "Workspace",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/Workspace",
+        "state": {
+          "branch": null,
+          "revision": "43e77232013dddd98d6879f59626b801f06081da",
+          "version": "0.32.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
