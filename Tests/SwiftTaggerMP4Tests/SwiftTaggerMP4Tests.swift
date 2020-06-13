@@ -548,10 +548,14 @@ internal class ChapterWriter {
             // Setup metadata track in order to write metadata samples
             var formatDescription: CMFormatDescription?
 
-            let sampleMp4Asset = try mp4Chapterized().asset
-            let sampleMp4TextTracks = sampleMp4Asset.tracks(withMediaType: AVMediaType.text)
-            if let firstText = sampleMp4TextTracks.first {
-                formatDescription = firstText.formatDescriptions.first as! CMFormatDescription
+//            let sampleMp4Asset = try mp4Chapterized().asset
+//            let sampleMp4TextTracks = sampleMp4Asset.tracks(withMediaType: AVMediaType.text)
+//            if let firstText = sampleMp4TextTracks.first {
+//                formatDescription = firstText.formatDescriptions.first as! CMFormatDescription
+//            }
+
+            if let firstChapter = chapters.first {
+                formatDescription = firstChapter.copyFormatDescription()
             }
 
             let assetWriterMetadataIn = AVAssetWriterInput(
@@ -630,6 +634,7 @@ internal class ChapterWriter {
         assetReader?.cancelReading()
         assetWriter?.cancelWriting()
         print("Writing metadata failed with the following error: \(String(describing: error))")
+        // Writing metadata failed with the following error: nil - very helpful
         self.globalDispatchSemaphore.signal()
     }
 }
