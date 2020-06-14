@@ -92,6 +92,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
     }
     
+    @available(OSX 10.15, *)
     func testWriting() throws {
         var writing = try tag(withMeta: false)
         
@@ -202,7 +203,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.year = 1994
 
         let output = try localDirectory(fileName: "testfile", fileExtension: "m4a")
-        var file = try mp4File(withMeta: false)
+        let file = try mp4File(withMeta: false)
         try file.write(using: writing, writingTo: output, fileType: .m4a)
         
         let testFile = try Mp4File(location: output)
@@ -328,8 +329,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     }
  
 
+    @available(OSX 10.15, *)
     func testTracks() throws {
-        let asset = try mp4Chapterized().asset
+        let file = try mp4Chapterized()
+//        let asset = try mp4Chapterized().asset
         var tag = try tagChapterized()
 
         tag.removeAllChapters()
@@ -338,303 +341,305 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(at: 4500, title: "Chapter 03")
 
         let chapterGroups = tag.tableOfContents.timedMetadataGroups ?? []
+        
+        XCTAssertEqual(chapterGroups.count, 3) // fails, 1 is not equal to 3
         let output = try localDirectory(fileName: "chaptertestfile", fileExtension: "m4a")
+        try file.write(using: tag, writingTo: output, fileType: .m4a)
 
-        let chapterWriter = ChapterWriter(asset: asset)
-        chapterWriter.write(chapters: chapterGroups, to: output)
+        
     }
 }
 
 
-private protocol AssetWriterInputSampleProvider {
-
-    var nextSampleBuffer: CMSampleBuffer? { get }
-    var nextTimedMetadataGroup: AVTimedMetadataGroup? { get }
-}
-
-private class AssetReaderTrackOutput: AVAssetReaderTrackOutput, AssetWriterInputSampleProvider {
-    var nextSampleBuffer: CMSampleBuffer?
-    var nextTimedMetadataGroup: AVTimedMetadataGroup?
-}
-
-private class SampleBufferChannel {
-
-    private var sampleProvider: AssetWriterInputSampleProvider
-    private var assetWriterInput: AVAssetWriterInput
-    private var assetWriterAdaptor: AVAssetWriterInputMetadataAdaptor?
-
-    private var completionHandler: (() -> Void)!
-    private var serializationQueue: DispatchQueue
-    private var finished: Bool  // only accessed on serialization queue
-
-    internal init(
-        sampleProvider: AssetWriterInputSampleProvider,
-        assetWriterInput: AVAssetWriterInput,
-        assetWriterAdaptor adaptor: AVAssetWriterInputMetadataAdaptor?
-    ) {
-        self.sampleProvider = sampleProvider
-        self.assetWriterInput = assetWriterInput
-        self.assetWriterAdaptor = adaptor
-
-        finished = false
-        let serializationQueueDescription = "\(SampleBufferChannel.self) serialization queue"
-        serializationQueue = DispatchQueue(label: serializationQueueDescription)
-    }
-
-    fileprivate func startReadingAndWriting(withCompletionHandler completionHandler: @escaping () -> Void) {
-        self.completionHandler = completionHandler
-
-        assetWriterInput.requestMediaDataWhenReady(on: serializationQueue, using: {
-
-            if self.finished {
-                return
-            }
-
-            var completedOrFailed = false
-
-            // Read samples in a loop as long as the asset writer input is ready
-            while self.assetWriterInput.isReadyForMoreMediaData && !completedOrFailed {
-                var sampleBuffer: CMSampleBuffer?
-                var metadataGroup: AVTimedMetadataGroup?
-                if self.assetWriterInput.mediaType == .text || self.assetWriterInput.mediaType == .metadata {
-                    metadataGroup = self.sampleProvider.nextTimedMetadataGroup
-                } else {
-                    sampleBuffer = self.sampleProvider.nextSampleBuffer
-                }
-
-                if let localSampleBuffer = sampleBuffer {
-                    let success = self.assetWriterInput.append(localSampleBuffer)
-                    sampleBuffer = nil
-
-                    completedOrFailed = !success
-                } else if let metadataGroup = metadataGroup {
-                    let success = self.assetWriterAdaptor?.append(metadataGroup) ?? false
-                    completedOrFailed = !success
-                } else {
-                    completedOrFailed = true
-                }
-            }
-
-            if completedOrFailed {
-                self.callCompletionHandlerIfNecessary()
-            }
-        })
-    }
-
-    private func cancel() {
-        serializationQueue.async {
-            self.callCompletionHandlerIfNecessary()
-        }
-    }
-
-    private func callCompletionHandlerIfNecessary() { // always called on the serialization queue
-        // Set state to mark that we no longer need to call the completion handler, grab the completion handler, and clear out the ivar
-        let oldFinished = finished
-        finished = true;
-
-        if !oldFinished {
-            assetWriterInput.markAsFinished()  // let the asset writer know that we will not be appending any more samples to this input
-
-            completionHandler()
-        }
-    }
-}
-
-private class ChapterGroupProvider: AssetWriterInputSampleProvider {
-
-    private var chapterSamples: [AVTimedMetadataGroup]
-    private var currentChapter: Int
-    private var totalChapters: Int
-
-    fileprivate init(chapters: [AVTimedMetadataGroup]) {
-        self.chapterSamples = chapters
-        totalChapters = chapters.count
-        currentChapter = 0
-    }
-
-    fileprivate var nextSampleBuffer: CMSampleBuffer?
-    fileprivate var nextTimedMetadataGroup: AVTimedMetadataGroup? {
-        var group: AVTimedMetadataGroup?
-        if currentChapter < totalChapters {
-            group = chapterSamples[currentChapter]
-            currentChapter += 1
-        }
-        return group
-    }
-}
-
-@available(OSX 10.13, *)
-internal class ChapterWriter {
-
-    private var serializationQueue: DispatchQueue
-    private var globalDispatchSemaphore: DispatchSemaphore
-
-    // All of these are created, accessed, and torn down exclusively on the serializaton queue
-    private var assetReader: AVAssetReader!
-    private var assetWriter: AVAssetWriter!
-
-    private var audioSampleBufferChannel: SampleBufferChannel!
-    private var chapterSampleBufferChannel: SampleBufferChannel!
-
-    private var sourceAsset: AVAsset!
-    private var chapters: [AVTimedMetadataGroup] = []
-
-    internal init(asset: AVAsset) {
-        sourceAsset = asset
-        let serializationQueueDescription = "\(ChapterWriter.self) serialization queue"
-        serializationQueue = DispatchQueue(label: serializationQueueDescription)
-        globalDispatchSemaphore = DispatchSemaphore(value: 0)
-    }
-
-    internal func write(chapters: [AVTimedMetadataGroup], to location: URL) {
-        self.chapters = chapters
-        serializationQueue.async {
-
-            var localError: NSError?
-            guard self.sourceAsset.statusOfValue(forKey: "tracks", error: &localError) == .loaded else {
-                self.readingAndWritingDidFinishSuccessfully(error: localError)
-                return
-            }
-
-            do {
-                // AVAssetWriter does not overwrite files for us, so remove the destination file if it already exists
-                let fm = FileManager.default
-                let localOutputPath = location.path
-                if fm.fileExists(atPath: localOutputPath) {
-                    try fm.removeItem(atPath: localOutputPath)
-                }
-                // Set up the AVAssetReader and AVAssetWriter, then begin writing samples or flag an error
-                try self.setUpReaderAndWriter(writeTo: location)
-                try self.startReadingAndWriting()
-            } catch {
-                self.readingAndWritingDidFinishSuccessfully(error: error)
-            }
-        }
-
-        // Wait for export to complete so we can return movie URL
-        globalDispatchSemaphore.wait()
-    }
-
-    private func setUpReaderAndWriter(writeTo location: URL) throws {
-        let localAsset = sourceAsset!
-        let localOutputURL = location
-
-        // Create asset reader and asset writer
-        assetReader = try AVAssetReader(asset: localAsset)
-        assetWriter = try AVAssetWriter(url: localOutputURL, fileType: .m4a)
-
-        // Create asset reader outputs and asset writer inputs for the first audio track of the asset
-        var audioTrack: AVAssetTrack? = nil
-
-        // Grab first audio track, if the asset has one
-        let audioTracks = localAsset.tracks(withMediaType: .audio)
-        audioTrack = audioTracks.first
-
-        // Setup passthrough for audio track
-        if let audioTrack = audioTrack {
-            let audioOutput = AssetReaderTrackOutput(track: audioTrack, outputSettings: nil)
-            assetReader.add(audioOutput)
-
-            let audioInput = AVAssetWriterInput(mediaType: audioTrack.mediaType, outputSettings: nil)
-            assetWriter.add(audioInput)
-
-            // Create and save an instance of AVSampleBufferChannel, which will coordinate the work of reading and writing sample buffers
-            audioSampleBufferChannel = SampleBufferChannel(
-                sampleProvider: audioOutput,
-                assetWriterInput: audioInput,
-                assetWriterAdaptor: nil
-            )
-
-            // Setup metadata track in order to write metadata samples
-            var formatDescription: CMFormatDescription?
-
-//            let sampleMp4Asset = try mp4Chapterized().asset
-//            let sampleMp4TextTracks = sampleMp4Asset.tracks(withMediaType: AVMediaType.text)
-//            if let firstText = sampleMp4TextTracks.first {
-//                formatDescription = firstText.formatDescriptions.first as! CMFormatDescription
+//private protocol AssetWriterInputSampleProvider {
+//
+//    var nextSampleBuffer: CMSampleBuffer? { get }
+//    var nextTimedMetadataGroup: AVTimedMetadataGroup? { get }
+//}
+//
+//private class AssetReaderTrackOutput: AVAssetReaderTrackOutput, AssetWriterInputSampleProvider {
+//    var nextSampleBuffer: CMSampleBuffer?
+//    var nextTimedMetadataGroup: AVTimedMetadataGroup?
+//}
+//
+//private class SampleBufferChannel {
+//
+//    private var sampleProvider: AssetWriterInputSampleProvider
+//    private var assetWriterInput: AVAssetWriterInput
+//    private var assetWriterAdaptor: AVAssetWriterInputMetadataAdaptor?
+//
+//    private var completionHandler: (() -> Void)!
+//    private var serializationQueue: DispatchQueue
+//    private var finished: Bool  // only accessed on serialization queue
+//
+//    internal init(
+//        sampleProvider: AssetWriterInputSampleProvider,
+//        assetWriterInput: AVAssetWriterInput,
+//        assetWriterAdaptor adaptor: AVAssetWriterInputMetadataAdaptor?
+//    ) {
+//        self.sampleProvider = sampleProvider
+//        self.assetWriterInput = assetWriterInput
+//        self.assetWriterAdaptor = adaptor
+//
+//        finished = false
+//        let serializationQueueDescription = "\(SampleBufferChannel.self) serialization queue"
+//        serializationQueue = DispatchQueue(label: serializationQueueDescription)
+//    }
+//
+//    fileprivate func startReadingAndWriting(withCompletionHandler completionHandler: @escaping () -> Void) {
+//        self.completionHandler = completionHandler
+//
+//        assetWriterInput.requestMediaDataWhenReady(on: serializationQueue, using: {
+//
+//            if self.finished {
+//                return
 //            }
-
-            if let firstChapter = chapters.first {
-                formatDescription = firstChapter.copyFormatDescription()
-            }
-
-            let assetWriterMetadataIn = AVAssetWriterInput(
-                mediaType: .text,
-                outputSettings: nil,
-                sourceFormatHint: formatDescription
-            )
-            let assetWriterMetadataAdaptor = AVAssetWriterInputMetadataAdaptor(assetWriterInput: assetWriterMetadataIn)
-            assetWriterMetadataIn.expectsMediaDataInRealTime = true;
-
-            assetWriterMetadataIn.addTrackAssociation(withTrackOf: audioInput, type: AVAssetTrack.AssociationType.chapterList.rawValue)
-            assetWriter.add(assetWriterMetadataIn)
-
-            let chapterProvider = ChapterGroupProvider(chapters: chapters)
-
-            chapterSampleBufferChannel = SampleBufferChannel(
-                sampleProvider: chapterProvider,
-                assetWriterInput: assetWriterMetadataIn,
-                assetWriterAdaptor: assetWriterMetadataAdaptor
-            )
-        }
-    }
-
-    private func startReadingAndWriting() throws {
-
-        // Instruct the asset reader and asset writer to get ready to do work
-        guard assetReader.startReading() else {
-            throw assetReader.error!
-        }
-        guard assetWriter.startWriting() else {
-            throw assetWriter.error!
-        }
-
-        // Start a sample-writing session
-        assetWriter.startSession(atSourceTime: .zero)
-
-        let dispatchGroup = DispatchGroup()
-
-        // Start reading and writing samples
-        dispatchGroup.enter()
-        audioSampleBufferChannel.startReadingAndWriting(withCompletionHandler: {
-            dispatchGroup.leave()
-        })
-        dispatchGroup.enter()
-        chapterSampleBufferChannel.startReadingAndWriting(withCompletionHandler: {
-            dispatchGroup.leave()
-        })
-
-        // Set up a callback for when the sample writing is finished
-        dispatchGroup.notify(queue: serializationQueue, execute: {
-            var finalSuccess = true
-            var finalError: Error?
-
-            if self.assetReader.status == .failed {
-                finalSuccess = false
-                finalError = self.assetReader.error
-            }
-
-            if finalSuccess {
-                dispatchGroup.enter()
-                self.assetWriter.finishWriting(completionHandler: {
-                    finalSuccess = self.assetWriter.status == .completed
-                    dispatchGroup.leave()
-                })
-                dispatchGroup.wait()
-                if !finalSuccess {
-                    finalError = self.assetWriter.error
-                    self.readingAndWritingDidFinishSuccessfully(error: finalError)
-                }
-                self.globalDispatchSemaphore.signal()
-            }
-        })
-    }
-
-    private func readingAndWritingDidFinishSuccessfully(error: Error?) {
-        assetReader?.cancelReading()
-        assetWriter?.cancelWriting()
-        print("Writing metadata failed with the following error: \(String(describing: error))")
-        // Writing metadata failed with the following error: nil - very helpful
-        self.globalDispatchSemaphore.signal()
-    }
-}
+//
+//            var completedOrFailed = false
+//
+//            // Read samples in a loop as long as the asset writer input is ready
+//            while self.assetWriterInput.isReadyForMoreMediaData && !completedOrFailed {
+//                var sampleBuffer: CMSampleBuffer?
+//                var metadataGroup: AVTimedMetadataGroup?
+//                if self.assetWriterInput.mediaType == .text || self.assetWriterInput.mediaType == .metadata {
+//                    metadataGroup = self.sampleProvider.nextTimedMetadataGroup
+//                } else {
+//                    sampleBuffer = self.sampleProvider.nextSampleBuffer
+//                }
+//
+//                if let localSampleBuffer = sampleBuffer {
+//                    let success = self.assetWriterInput.append(localSampleBuffer)
+//                    sampleBuffer = nil
+//
+//                    completedOrFailed = !success
+//                } else if let metadataGroup = metadataGroup {
+//                    let success = self.assetWriterAdaptor?.append(metadataGroup) ?? false
+//                    completedOrFailed = !success
+//                } else {
+//                    completedOrFailed = true
+//                }
+//            }
+//
+//            if completedOrFailed {
+//                self.callCompletionHandlerIfNecessary()
+//            }
+//        })
+//    }
+//
+//    private func cancel() {
+//        serializationQueue.async {
+//            self.callCompletionHandlerIfNecessary()
+//        }
+//    }
+//
+//    private func callCompletionHandlerIfNecessary() { // always called on the serialization queue
+//        // Set state to mark that we no longer need to call the completion handler, grab the completion handler, and clear out the ivar
+//        let oldFinished = finished
+//        finished = true;
+//
+//        if !oldFinished {
+//            assetWriterInput.markAsFinished()  // let the asset writer know that we will not be appending any more samples to this input
+//
+//            completionHandler()
+//        }
+//    }
+//}
+//
+//private class ChapterGroupProvider: AssetWriterInputSampleProvider {
+//
+//    private var chapterSamples: [AVTimedMetadataGroup]
+//    private var currentChapter: Int
+//    private var totalChapters: Int
+//
+//    fileprivate init(chapters: [AVTimedMetadataGroup]) {
+//        self.chapterSamples = chapters
+//        totalChapters = chapters.count
+//        currentChapter = 0
+//    }
+//
+//    fileprivate var nextSampleBuffer: CMSampleBuffer?
+//    fileprivate var nextTimedMetadataGroup: AVTimedMetadataGroup? {
+//        var group: AVTimedMetadataGroup?
+//        if currentChapter < totalChapters {
+//            group = chapterSamples[currentChapter]
+//            currentChapter += 1
+//        }
+//        return group
+//    }
+//}
+//
+//@available(OSX 10.13, *)
+//internal class ChapterWriter {
+//
+//    private var serializationQueue: DispatchQueue
+//    private var globalDispatchSemaphore: DispatchSemaphore
+//
+//    // All of these are created, accessed, and torn down exclusively on the serializaton queue
+//    private var assetReader: AVAssetReader!
+//    private var assetWriter: AVAssetWriter!
+//
+//    private var audioSampleBufferChannel: SampleBufferChannel!
+//    private var chapterSampleBufferChannel: SampleBufferChannel!
+//
+//    private var sourceAsset: AVAsset!
+//    private var chapters: [AVTimedMetadataGroup] = []
+//
+//    internal init(asset: AVAsset) {
+//        sourceAsset = asset
+//        let serializationQueueDescription = "\(ChapterWriter.self) serialization queue"
+//        serializationQueue = DispatchQueue(label: serializationQueueDescription)
+//        globalDispatchSemaphore = DispatchSemaphore(value: 0)
+//    }
+//
+//    internal func write(chapters: [AVTimedMetadataGroup], to location: URL) {
+//        self.chapters = chapters
+//        serializationQueue.async {
+//
+//            var localError: NSError?
+//            guard self.sourceAsset.statusOfValue(forKey: "tracks", error: &localError) == .loaded else {
+//                self.readingAndWritingDidFinishSuccessfully(error: localError)
+//                return
+//            }
+//
+//            do {
+//                // AVAssetWriter does not overwrite files for us, so remove the destination file if it already exists
+//                let fm = FileManager.default
+//                let localOutputPath = location.path
+//                if fm.fileExists(atPath: localOutputPath) {
+//                    try fm.removeItem(atPath: localOutputPath)
+//                }
+//                // Set up the AVAssetReader and AVAssetWriter, then begin writing samples or flag an error
+//                try self.setUpReaderAndWriter(writeTo: location)
+//                try self.startReadingAndWriting()
+//            } catch {
+//                self.readingAndWritingDidFinishSuccessfully(error: error)
+//            }
+//        }
+//
+//        // Wait for export to complete so we can return movie URL
+//        globalDispatchSemaphore.wait()
+//    }
+//
+//    private func setUpReaderAndWriter(writeTo location: URL) throws {
+//        let localAsset = sourceAsset!
+//        let localOutputURL = location
+//
+//        // Create asset reader and asset writer
+//        assetReader = try AVAssetReader(asset: localAsset)
+//        assetWriter = try AVAssetWriter(url: localOutputURL, fileType: .m4a)
+//
+//        // Create asset reader outputs and asset writer inputs for the first audio track of the asset
+//        var audioTrack: AVAssetTrack? = nil
+//
+//        // Grab first audio track, if the asset has one
+//        let audioTracks = localAsset.tracks(withMediaType: .audio)
+//        audioTrack = audioTracks.first
+//
+//        // Setup passthrough for audio track
+//        if let audioTrack = audioTrack {
+//            let audioOutput = AssetReaderTrackOutput(track: audioTrack, outputSettings: nil)
+//            assetReader.add(audioOutput)
+//
+//            let audioInput = AVAssetWriterInput(mediaType: audioTrack.mediaType, outputSettings: nil)
+//            assetWriter.add(audioInput)
+//
+//            // Create and save an instance of AVSampleBufferChannel, which will coordinate the work of reading and writing sample buffers
+//            audioSampleBufferChannel = SampleBufferChannel(
+//                sampleProvider: audioOutput,
+//                assetWriterInput: audioInput,
+//                assetWriterAdaptor: nil
+//            )
+//
+//            // Setup metadata track in order to write metadata samples
+//            var formatDescription: CMFormatDescription?
+//
+////            let sampleMp4Asset = try mp4Chapterized().asset
+////            let sampleMp4TextTracks = sampleMp4Asset.tracks(withMediaType: AVMediaType.text)
+////            if let firstText = sampleMp4TextTracks.first {
+////                formatDescription = firstText.formatDescriptions.first as! CMFormatDescription
+////            }
+//
+//            if let firstChapter = chapters.first {
+//                formatDescription = firstChapter.copyFormatDescription()
+//            }
+//
+//            let assetWriterMetadataIn = AVAssetWriterInput(
+//                mediaType: .metadata,
+//                outputSettings: nil,
+//                sourceFormatHint: formatDescription
+//            )
+//            let assetWriterMetadataAdaptor = AVAssetWriterInputMetadataAdaptor(assetWriterInput: assetWriterMetadataIn)
+//            assetWriterMetadataIn.expectsMediaDataInRealTime = true;
+//
+//            assetWriterMetadataIn.addTrackAssociation(withTrackOf: audioInput, type: AVAssetTrack.AssociationType.chapterList.rawValue)
+//            assetWriter.add(assetWriterMetadataIn)
+//
+//            let chapterProvider = ChapterGroupProvider(chapters: chapters)
+//
+//            chapterSampleBufferChannel = SampleBufferChannel(
+//                sampleProvider: chapterProvider,
+//                assetWriterInput: assetWriterMetadataIn,
+//                assetWriterAdaptor: assetWriterMetadataAdaptor
+//            )
+//        }
+//    }
+//
+//    private func startReadingAndWriting() throws {
+//
+//        // Instruct the asset reader and asset writer to get ready to do work
+//        guard assetReader.startReading() else {
+//            throw assetReader.error!
+//        }
+//        guard assetWriter.startWriting() else {
+//            throw assetWriter.error!
+//        }
+//
+//        // Start a sample-writing session
+//        assetWriter.startSession(atSourceTime: .zero)
+//
+//        let dispatchGroup = DispatchGroup()
+//
+//        // Start reading and writing samples
+//        dispatchGroup.enter()
+//        audioSampleBufferChannel.startReadingAndWriting(withCompletionHandler: {
+//            dispatchGroup.leave()
+//        })
+//        dispatchGroup.enter()
+//        chapterSampleBufferChannel.startReadingAndWriting(withCompletionHandler: {
+//            dispatchGroup.leave()
+//        })
+//
+//        // Set up a callback for when the sample writing is finished
+//        dispatchGroup.notify(queue: serializationQueue, execute: {
+//            var finalSuccess = true
+//            var finalError: Error?
+//
+//            if self.assetReader.status == .failed {
+//                finalSuccess = false
+//                finalError = self.assetReader.error
+//            }
+//
+//            if finalSuccess {
+//                dispatchGroup.enter()
+//                self.assetWriter.finishWriting(completionHandler: {
+//                    finalSuccess = self.assetWriter.status == .completed
+//                    dispatchGroup.leave()
+//                })
+//                dispatchGroup.wait()
+//                if !finalSuccess {
+//                    finalError = self.assetWriter.error
+//                    self.readingAndWritingDidFinishSuccessfully(error: finalError)
+//                }
+//                self.globalDispatchSemaphore.signal()
+//            }
+//        })
+//    }
+//
+//    private func readingAndWritingDidFinishSuccessfully(error: Error?) {
+//        assetReader?.cancelReading()
+//        assetWriter?.cancelWriting()
+//        print("Writing metadata failed with the following error: \(String(describing: error))")
+//        // Writing metadata failed with the following error: nil - very helpful
+//        self.globalDispatchSemaphore.signal()
+//    }
+//}

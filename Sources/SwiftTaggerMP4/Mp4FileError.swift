@@ -15,6 +15,8 @@ extension Mp4File {
     public enum Error: Swift.Error {
         /// Error thrown when the file is not an MP4 format audio file
         case InvalidFileFormat
+        /// Error thrown when the file cannot be read
+        case ReadingError
         /// Error thrown when trying to use an invalid metadata type for a given tag
         case InvalidMetadataIdentifierForFormat
         /// Error thrown when cover image can't be found
