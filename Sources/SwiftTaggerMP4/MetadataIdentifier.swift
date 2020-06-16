@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 @available(OSX 10.13, *)
 enum Metadata: String, CaseIterable {
@@ -21,53 +20,53 @@ enum Metadata: String, CaseIterable {
     case artDirector = "©ard"
     case artist = "©ART"
     case artistSort = "soar"
-    case artistWebpage = "com.apple.iTunes.URL_OFFICIAL_ARTIST_SITE"
+    case artistWebpage = "URL_OFFICIAL_ARTIST_SITE"
     case artwork = "covr"
-    case audioFileWebpage = "com.apple.iTunes.OFFICIAL_AUDIO_FILE_URL"
-    case audioSourceWebpage = "com.apple.iTunes.OFFICIAL_AUDIO_SOURCE_URL"
+    case audioFileWebpage = "OFFICIAL_AUDIO_FILE_URL"
+    case audioSourceWebpage = "OFFICIAL_AUDIO_SOURCE_URL"
     case bpm = "tmpo"
     case comment = "©cmt"
     case compilation = "cpil"
     case composer = "©wrt"
     case composerSort = "soco"
     case conductor = "©con"
-    case contentAdvisory = "com.apple.iTunes.iTunEXTC"
+    case contentAdvisory = "iTunEXTC"
     case contentRating = "rtng"
     case copyright = "cprt"
-    case copyrightWebpage = "com.apple.iTunes.COPYRIGHT URL"
+    case copyrightWebpage = "COPYRIGHT URL"
     case description = "©des"
     case director = "©dir"
     case discNumber = "disk"
     case encodedBy = "©enc"
-    case encodingSettings = "com.apple.iTunes.ENCODING"
-    case encodingTime = "com.apple.iTunes.ENCODINGTIME"
+    case encodingSettings = "ENCODING"
+    case encodingTime = "ENCODINGTIME"
     case encodingTool = "©too"
     case episodeNumber = "tves"
     case episodeTitle = "tven"
     case executiveProducer = "©xpd"
     case genre = "©gen"
     case genreID = "geID"
-    case initialKey = "com.apple.iTunes.KEY"
+    case initialKey = ".KEY"
     case isrc = "©isr"
-    case language = "com.apple.iTunes.LANGUAGE"
+    case language = "LANGUAGE"
     case linerNotes = "©lnt"
     case longDescription = "ldes"
     case lyricist = "©aut"
     case lyrics = "©lyr"
     case mediaType = "stik"
-    case mood = "com.apple.iTunes.MOOD"
+    case mood = "MOOD"
     case movementName = "©mvn"
     case movementNumber = "©mvi"
     case movementTotal = "©mvc"
     case narrator = "©nrt"
     case network = "tvnn"
     case onlineExtras = "©url"
-    case originalAlbum = "com.apple.iTunes.ORIGINAL ALBUM"
+    case originalAlbum = "ORIGINAL ALBUM"
     case originalArtist = "©ope"
-    case originalFilename = "com.apple.iTunes.ORIGINAL FILENAME"
-    case originalLyricist = "com.apple.iTunes.ORIGINAL LYRICIST"
-    case originalYear = "com.apple.iTunes.ORIGINAL YEAR"
-    case paymentWebpage = "com.apple.iTunes.PAYMENT_URL"
+    case originalFilename = "ORIGINAL FILENAME"
+    case originalLyricist = "ORIGINAL LYRICIST"
+    case originalYear = "ORIGINAL YEAR"
+    case paymentWebpage = "PAYMENT_URL"
     case performer = "©prf"
     case podcast = "pcst"
     case podcastCategory = "catg"
@@ -79,11 +78,11 @@ enum Metadata: String, CaseIterable {
     case phonogramRights = "©phg"
     case producer = "©prd"
     case publisher = "©pub"
-    case publisherWebpage = "com.apple.iTunes.LABEL_URL"
+    case publisherWebpage = "LABEL_URL"
     case purchaseDate = "purd"
-    case radioStation = "com.apple.iTunes.RADIO_STATION"
-    case radioStationOwner = "com.apple.iTunes.STATION_OWNER"
-    case radioStationWebpage = "com.apple.iTunes.OFFICIAL_RADIO_URL"
+    case radioStation = "RADIO_STATION"
+    case radioStationOwner = "STATION_OWNER"
+    case radioStationWebpage = "OFFICIAL_RADIO_URL"
     case recordCompany = "©mak"
     case recordingDate = "©day"
     case releaseDate = "rldt"
@@ -95,7 +94,7 @@ enum Metadata: String, CaseIterable {
     case soundEngineer = "©sne"
     case sourceCredit = "©src"
     case subtitle = "©snm"
-    case taggingTime = "com.apple.iTunes.TAGGINGTIME"
+    case taggingTime = "TAGGINGTIME"
     case thanks = "©thx"
     case title = "©nam"
     case titleSort = "sonm"
@@ -103,13 +102,5 @@ enum Metadata: String, CaseIterable {
     case trackSubtitle = "©st3"
     case work = "©wrk"
     case year = "yrrc"
-    
-    var keySpace: AVMetadataKeySpace {
-        if self.rawValue.count == 4 {
-            return AVMetadataKeySpace(rawValue: "itsk")
-        } else {
-            return AVMetadataKeySpace(rawValue: "itlk")
-        }
-    }
-    
+
 }

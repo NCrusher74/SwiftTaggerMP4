@@ -13,7 +13,6 @@ import Cocoa
 @available(OSX 10.13, *)
 public struct Tag {
     
-    var metadata: [AVMetadataItem]
     internal var toc: TableOfContents
     internal var duration: Int
     
@@ -83,23 +82,15 @@ public struct Tag {
             // Retrieve AVMetadataCommonIdentifierTitle metadata items
             let titleItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierTitle)
             
-//            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-//            let artworkItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierArtwork)
-            
             let startTime = Int(group.timeRange.start.seconds * 1000)
             var chapter = TableOfContents.Chapter(title: "Chapter Title")            
             if let titleValue = titleItems.first?.stringValue {
                 chapter = TableOfContents.Chapter(title: titleValue)
             }
             
-//            if let imageData = artworkItems.first?.dataValue,
-//                let image = NSImage(data: imageData) {
-//                chapter.chapterThumbnail = image
-//            }
             chapterGroups[startTime] = chapter
         }
         self.toc = TableOfContents(chapters: chapterGroups)
-        self.toc.timedMetadataGroups = timedMetadataGroups
         self.duration = Int(file.asset.duration.seconds * 1000)
     }
     

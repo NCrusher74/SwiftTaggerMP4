@@ -1,0 +1,587 @@
+
+File = /Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/mp4-chapterized.m4a
+
+Title: Title
+Artist: Artist
+Album Artist: Album Artist
+Album: Album
+Track: 1
+Disc: 3
+Year: 1999-05-08
+BPM: 99
+Grouping: Grouping
+Composer: Composer
+Genre: Genre
+Part of a Compilation: 1
+Sort Title: Sort Title
+Sort Artist: Sort Artist
+Sort Album Artist: Sort Album Artist
+Sort Album: Sort Album
+Sort Composer: Sort Composer
+Copyright: 2020 Copyright
+Encoded By: Encoding Tool
+Encoder Settings: Encoder Settings
+Purchase Date: 1998-06-09
+Description: Description
+Set Subtitle: Set Subtitle
+Conductor: Conductor
+Remixer: Remixer
+Lyricist: Lyricist
+Original Album: Original Album
+Original Artist: Original Artist
+Original Lyricist: Original Lyricist
+Original Filename: Original File Name
+Media Type: Music
+File Type: File Type
+Mood: Mood
+Owner: iTunes Account
+Label: Label
+Radio Station: Radio Station
+Station Owner: Radio Station Owner
+ISRC: 123456789012
+Produced Notice: 2020 Produced Notice
+Encoding Time: 1996-08-11
+Playlist Delay: 0
+Original Release Time: 1995-09-12
+Release Time: 1999=05-08
+Tagging Time: 1997-07-10
+Involved People: Director=Director Name
+Producer=Producer Name
+Initial Key: C
+Language: eng
+Musician Credits: Musician=Musician Name
+Singer=Singer Name
+Copyright/Legal Information Webpage: www.copyright.url
+Official Audio File Webpage: www.audiofile.url
+Official Audio Source Webpage: www.audiosource.url
+Official Internet Radio Station Webpage: www.radiostation.url
+Payment Webpage: www.payment.url
+Publisher's Official Webpage: www.publisher.url
+Play Count: 88
+Seller: Apple Store 5432, abcd1234
+Music CD Identifier: 987654321
+Skip When Shuffling: 1
+Content Advisory: Clean
+Publisher: Publisher
+Catalog Number: catalogNumber
+Track Count: 2
+Disc Count: 4
+Video Description: Long Description
+Show Description: Series Description
+Network Name: Network
+Show Name: TV Show
+Episode: 5
+Season: 6
+Sort Show Name: Sort TV Show
+Episode ID: Episode Title
+Classification: unrated
+Podcast URL: www.podcast.url
+Work Name: Work Name
+Movement Name: Movement Name
+Movement Number: 0
+Movement Count: 0
+Remember Position: 1
+Category: CATEGORY
+Rating:
+	desc = 
+	value = 219
+	playcount = 
+Comments:
+	desc = 
+	language = eng
+	value = Comments
+Lyrics:
+	desc = 
+	language = eng
+	value = Lyrics
+Official Artist/Performer Webpage:
+	value = www.artist.url
+User Defined Text Info:
+	desc = SOURCEMEDIA
+	value = Media
+User Defined Text Info:
+	desc = iTunMOVI
+	value = <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>cast</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Cast</string>
+		</dict>
+	</array>
+	<key>codirectors</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Codirector</string>
+		</dict>
+	</array>
+	<key>directors</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Director</string>
+		</dict>
+	</array>
+	<key>producers</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Producers</string>
+		</dict>
+	</array>
+	<key>screenwriters</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Screenwriters</string>
+		</dict>
+	</array>
+	<key>studio</key>
+	<string>Studio</string>
+</dict>
+</plist>
+
+Unhandled Items:
+	desc = ©ard
+	data = 28 bytes of data
+Unhandled Items:
+	desc = ©arg
+	data = 24 bytes of data
+Unhandled Items:
+	desc = ©aut
+	data = 24 bytes of data
+Unhandled Items:
+	desc = ©cak
+	data = 30 bytes of data
+Unhandled Items:
+	desc = ©con
+	data = 25 bytes of data
+Unhandled Items:
+	desc = ©des
+	data = 32 bytes of data
+Unhandled Items:
+	desc = ©lnt
+	data = 27 bytes of data
+Unhandled Items:
+	desc = ©mak
+	data = 21 bytes of data
+Unhandled Items:
+	desc = ©ope
+	data = 31 bytes of data
+Unhandled Items:
+	desc = ©phg
+	data = 32 bytes of data
+Unhandled Items:
+	desc = ©prd
+	data = 29 bytes of data
+Unhandled Items:
+	desc = ©prf
+	data = 25 bytes of data
+Unhandled Items:
+	desc = ©pub
+	data = 25 bytes of data
+Unhandled Items:
+	desc = ©sne
+	data = 30 bytes of data
+Unhandled Items:
+	desc = ©sol
+	data = 23 bytes of data
+Unhandled Items:
+	desc = ©src
+	data = 23 bytes of data
+Unhandled Items:
+	desc = ©st3
+	data = 30 bytes of data
+Unhandled Items:
+	desc = ©thx
+	data = 22 bytes of data
+Unhandled Items:
+	desc = ©url
+	data = 36 bytes of data
+Unhandled Items:
+	desc = ©xpd
+	data = 34 bytes of data
+Unhandled Items:
+	desc = ©enc
+	data = 26 bytes of data
+Unhandled Items:
+	desc = keyw - Apple App podcast keywords
+	data = 24 bytes of data
+Unhandled Items:
+	desc = catg - Apple App podcast catagory
+	data = 24 bytes of data
+Unhandled Items:
+	desc = akID - Apple App store account type
+	data = 17 bytes of data
+Unhandled Items:
+	desc = cnID - Apple App catalog id
+	data = 20 bytes of data
+Unhandled Items:
+	desc = atID - Apple App artist-track id
+	data = 20 bytes of data
+Unhandled Items:
+	desc = plID - Apple App playlist id
+	data = 24 bytes of data
+Unhandled Items:
+	desc = geID - Apple App genre id
+	data = 20 bytes of data
+Unhandled Items:
+	desc = cmID - Apple App composer id
+	data = 20 bytes of data
+Artwork:
+	Description = 
+	MIME type = image/jpeg
+	Picture type = (0) Other
+
+
+Free Space located = 0
+
+Raw Data:
+
+File size: 100361
+Channel mode: Stereo
+Sample rate: 41000 Hz
+Stream: AAC (2)
+Duration: 5015 ms
+Bit rate: 130 kbits/sec
+Audio tracks: 1
+Other tracks: 1
+
+000000000000 000000000024 000000000024 ftyp 
+000000000024 000000018533 000000018509 moov 
+    000000000032 000000000140 000000000108 mvhd 
+    000000000140 000000001623 000000001483 trak 
+        000000000148 000000000240 000000000092 tkhd 
+        000000000240 000000000276 000000000036 edts 
+        000000000276 000000001560 000000001284 mdia 
+            000000000284 000000000316 000000000032 mdhd 
+            000000000316 000000000361 000000000045 hdlr (soun) 
+            000000000361 000000001545 000000001184 minf 
+                000000000369 000000000385 000000000016 smhd 
+                000000000385 000000000421 000000000036 dinf 
+                000000000421 000000001545 000000001124 stbl 
+                    000000000429 000000000535 000000000106 stsd 
+                        000000000445 000000000535 000000000090 mp4a 
+                            000000000481 000000000535 000000000054 esds 
+                    000000000535 000000000559 000000000024 stts 
+                    000000000559 000000000587 000000000028 stsc 
+                    000000000587 000000001471 000000000884 stsz 
+                    000000001471 000000001491 000000000020 stco 
+                    000000001491 000000001517 000000000026 sgpd 
+                    000000001517 000000001545 000000000028 sbgp 
+            000000001545 000000001560 000000000015 elng 
+        000000001560 000000001603 000000000043 udta 
+        000000001603 000000001623 000000000020 tref 
+    000000001623 000000002054 000000000431 trak 
+        000000001631 000000001723 000000000092 tkhd 
+        000000001723 000000002054 000000000331 mdia 
+            000000001731 000000001763 000000000032 mdhd 
+            000000001763 000000001796 000000000033 hdlr (text) 
+            000000001796 000000002039 000000000243 minf 
+                000000001804 000000001816 000000000012 nmhd 
+                000000001816 000000001852 000000000036 dinf 
+                000000001852 000000002039 000000000187 stbl 
+                    000000001860 000000001935 000000000075 stsd 
+                    000000001935 000000001967 000000000032 stts 
+                    000000001967 000000001987 000000000020 stsz 
+                    000000001987 000000002015 000000000028 stsc 
+                    000000002015 000000002039 000000000024 stco 
+            000000002039 000000002054 000000000015 elng 
+    000000002054 000000018533 000000016479 udta 
+        000000002062 000000018533 000000016471 meta 
+            000000002074 000000002107 000000000033 hdlr 
+            000000002107 000000018533 000000016426 ilst 
+                000000002115 000000002205 000000000090 ---- 
+                    000000002123 000000002151 000000000028 mean com.apple.iTunes
+                    000000002151 000000002176 000000000025 name CATALOGNUMBER
+                    000000002176 000000002205 000000000029 data 
+                000000002205 000000002299 000000000094 ---- 
+                    000000002213 000000002241 000000000028 mean com.apple.iTunes
+                    000000002241 000000002266 000000000025 name COPYRIGHT URL
+                    000000002266 000000002299 000000000033 data 
+                000000002299 000000002379 000000000080 ---- 
+                    000000002307 000000002335 000000000028 mean com.apple.iTunes
+                    000000002335 000000002355 000000000020 name Category
+                    000000002355 000000002379 000000000024 data 
+                000000002379 000000002461 000000000082 ---- 
+                    000000002387 000000002415 000000000028 mean com.apple.iTunes
+                    000000002415 000000002436 000000000021 name Conductor
+                    000000002436 000000002461 000000000025 data 
+                000000002461 000000002549 000000000088 ---- 
+                    000000002469 000000002497 000000000028 mean com.apple.iTunes
+                    000000002497 000000002517 000000000020 name ENCODING
+                    000000002517 000000002549 000000000032 data 
+                000000002549 000000002635 000000000086 ---- 
+                    000000002557 000000002585 000000000028 mean com.apple.iTunes
+                    000000002585 000000002609 000000000024 name ENCODINGTIME
+                    000000002609 000000002635 000000000026 data 
+                000000002635 000000002716 000000000081 ---- 
+                    000000002643 000000002671 000000000028 mean com.apple.iTunes
+                    000000002671 000000002691 000000000020 name FILETYPE
+                    000000002691 000000002716 000000000025 data 
+                000000002716 000000002816 000000000100 ---- 
+                    000000002724 000000002752 000000000028 mean com.apple.iTunes
+                    000000002752 000000002778 000000000026 name INVOLVEDPEOPLE
+                    000000002778 000000002816 000000000038 data 
+                000000002816 000000002896 000000000080 ---- 
+                    000000002824 000000002852 000000000028 mean com.apple.iTunes
+                    000000002852 000000002868 000000000016 name ISRC
+                    000000002868 000000002896 000000000028 data 
+                000000002896 000000002964 000000000068 ---- 
+                    000000002904 000000002932 000000000028 mean com.apple.iTunes
+                    000000002932 000000002947 000000000015 name KEY
+                    000000002947 000000002964 000000000017 data 
+                000000002964 000000003038 000000000074 ---- 
+                    000000002972 000000003000 000000000028 mean com.apple.iTunes
+                    000000003000 000000003017 000000000017 name LABEL
+                    000000003017 000000003038 000000000021 data 
+                000000003038 000000003128 000000000090 ---- 
+                    000000003046 000000003074 000000000028 mean com.apple.iTunes
+                    000000003074 000000003095 000000000021 name LABEL_URL
+                    000000003095 000000003128 000000000033 data 
+                000000003128 000000003203 000000000075 ---- 
+                    000000003136 000000003164 000000000028 mean com.apple.iTunes
+                    000000003164 000000003184 000000000020 name LANGUAGE
+                    000000003184 000000003203 000000000019 data 
+                000000003203 000000003283 000000000080 ---- 
+                    000000003211 000000003239 000000000028 mean com.apple.iTunes
+                    000000003239 000000003259 000000000020 name LYRICIST
+                    000000003259 000000003283 000000000024 data 
+                000000003283 000000003355 000000000072 ---- 
+                    000000003291 000000003319 000000000028 mean com.apple.iTunes
+                    000000003319 000000003335 000000000016 name MOOD
+                    000000003335 000000003355 000000000020 data 
+                000000003355 000000003475 000000000120 ---- 
+                    000000003363 000000003391 000000000028 mean com.apple.iTunes
+                    000000003391 000000003418 000000000027 name MUSICIANCREDITS
+                    000000003418 000000003475 000000000057 data 
+                000000003475 000000003567 000000000092 ---- 
+                    000000003483 000000003511 000000000028 mean com.apple.iTunes
+                    000000003511 000000003542 000000000031 name MUSIC_CD_IDENTIFIER
+                    000000003542 000000003567 000000000025 data 
+                000000003567 000000003671 000000000104 ---- 
+                    000000003575 000000003603 000000000028 mean com.apple.iTunes
+                    000000003603 000000003638 000000000035 name OFFICIAL_AUDIO_FILE_URL
+                    000000003638 000000003671 000000000033 data 
+                000000003671 000000003779 000000000108 ---- 
+                    000000003679 000000003707 000000000028 mean com.apple.iTunes
+                    000000003707 000000003744 000000000037 name OFFICIAL_AUDIO_SOURCE_URL
+                    000000003744 000000003779 000000000035 data 
+                000000003779 000000003881 000000000102 ---- 
+                    000000003787 000000003815 000000000028 mean com.apple.iTunes
+                    000000003815 000000003845 000000000030 name OFFICIAL_RADIO_URL
+                    000000003845 000000003881 000000000036 data 
+                000000003881 000000003973 000000000092 ---- 
+                    000000003889 000000003917 000000000028 mean com.apple.iTunes
+                    000000003917 000000003943 000000000026 name ORIGINAL ALBUM
+                    000000003943 000000003973 000000000030 data 
+                000000003973 000000004067 000000000094 ---- 
+                    000000003981 000000004009 000000000028 mean com.apple.iTunes
+                    000000004009 000000004036 000000000027 name ORIGINAL ARTIST
+                    000000004036 000000004067 000000000031 data 
+                000000004067 000000004166 000000000099 ---- 
+                    000000004075 000000004103 000000000028 mean com.apple.iTunes
+                    000000004103 000000004132 000000000029 name ORIGINAL FILENAME
+                    000000004132 000000004166 000000000034 data 
+                000000004166 000000004264 000000000098 ---- 
+                    000000004174 000000004202 000000000028 mean com.apple.iTunes
+                    000000004202 000000004231 000000000029 name ORIGINAL LYRICIST
+                    000000004231 000000004264 000000000033 data 
+                000000004264 000000004351 000000000087 ---- 
+                    000000004272 000000004300 000000000028 mean com.apple.iTunes
+                    000000004300 000000004325 000000000025 name ORIGINAL YEAR
+                    000000004325 000000004351 000000000026 data 
+                000000004351 000000004441 000000000090 ---- 
+                    000000004359 000000004387 000000000028 mean com.apple.iTunes
+                    000000004387 000000004410 000000000023 name PAYMENT_URL
+                    000000004410 000000004441 000000000031 data 
+                000000004441 000000004516 000000000075 ---- 
+                    000000004449 000000004477 000000000028 mean com.apple.iTunes
+                    000000004477 000000004498 000000000021 name PLAYCOUNT
+                    000000004498 000000004516 000000000018 data 
+                000000004516 000000004615 000000000099 ---- 
+                    000000004524 000000004552 000000000028 mean com.apple.iTunes
+                    000000004552 000000004579 000000000027 name PRODUCED_NOTICE
+                    000000004579 000000004615 000000000036 data 
+                000000004615 000000004701 000000000086 ---- 
+                    000000004623 000000004651 000000000028 mean com.apple.iTunes
+                    000000004651 000000004671 000000000020 name PRODUCER
+                    000000004671 000000004701 000000000030 data 
+                000000004701 000000004783 000000000082 ---- 
+                    000000004709 000000004737 000000000028 mean com.apple.iTunes
+                    000000004737 000000004758 000000000021 name PUBLISHER
+                    000000004758 000000004783 000000000025 data 
+                000000004783 000000004873 000000000090 ---- 
+                    000000004791 000000004819 000000000028 mean com.apple.iTunes
+                    000000004819 000000004844 000000000025 name RADIO_STATION
+                    000000004844 000000004873 000000000029 data 
+                000000004873 000000004946 000000000073 ---- 
+                    000000004881 000000004909 000000000028 mean com.apple.iTunes
+                    000000004909 000000004927 000000000018 name RATING
+                    000000004927 000000004946 000000000019 data 
+                000000004946 000000005031 000000000085 ---- 
+                    000000004954 000000004982 000000000028 mean com.apple.iTunes
+                    000000004982 000000005005 000000000023 name RELEASETIME
+                    000000005005 000000005031 000000000026 data 
+                000000005031 000000005109 000000000078 ---- 
+                    000000005039 000000005067 000000000028 mean com.apple.iTunes
+                    000000005067 000000005086 000000000019 name REMIXER
+                    000000005086 000000005109 000000000023 data 
+                000000005109 000000005198 000000000089 ---- 
+                    000000005117 000000005145 000000000028 mean com.apple.iTunes
+                    000000005145 000000005181 000000000036 name RememberPlaybackPosition
+                    000000005181 000000005198 000000000017 data 
+                000000005198 000000005286 000000000088 ---- 
+                    000000005206 000000005234 000000000028 mean com.apple.iTunes
+                    000000005234 000000005258 000000000024 name SET SUBTITLE
+                    000000005258 000000005286 000000000028 data 
+                000000005286 000000005368 000000000082 ---- 
+                    000000005294 000000005322 000000000028 mean com.apple.iTunes
+                    000000005322 000000005351 000000000029 name SKIPWHENSHUFFLING
+                    000000005351 000000005368 000000000017 data 
+                000000005368 000000005448 000000000080 ---- 
+                    000000005376 000000005404 000000000028 mean com.apple.iTunes
+                    000000005404 000000005427 000000000023 name SOURCEMEDIA
+                    000000005427 000000005448 000000000021 data 
+                000000005448 000000005544 000000000096 ---- 
+                    000000005456 000000005484 000000000028 mean com.apple.iTunes
+                    000000005484 000000005509 000000000025 name STATION_OWNER
+                    000000005509 000000005544 000000000035 data 
+                000000005544 000000005629 000000000085 ---- 
+                    000000005552 000000005580 000000000028 mean com.apple.iTunes
+                    000000005580 000000005603 000000000023 name TAGGINGTIME
+                    000000005603 000000005629 000000000026 data 
+                000000005629 000000005731 000000000102 ---- 
+                    000000005637 000000005665 000000000028 mean com.apple.iTunes
+                    000000005665 000000005701 000000000036 name URL_OFFICIAL_ARTIST_SITE
+                    000000005701 000000005731 000000000030 data 
+                000000005731 000000005810 000000000079 ---- 
+                    000000005739 000000005767 000000000028 mean com.apple.iTunes
+                    000000005767 000000005787 000000000020 name iTunEXTC
+                    000000005787 000000005810 000000000023 data 
+                000000005810 000000006659 000000000849 ---- 
+                    000000005818 000000005846 000000000028 mean com.apple.iTunes
+                    000000005846 000000005866 000000000020 name iTunMOVI
+                    000000005866 000000006659 000000000793 data 
+                000000006659 000000006697 000000000038 ownr 
+                    000000006667 000000006697 000000000030 data 
+                000000006697 000000006736 000000000039 purl 
+                    000000006705 000000006736 000000000031 data 
+                000000006736 000000006778 000000000042 sdes 
+                    000000006744 000000006778 000000000034 data 
+                000000006778 000000006803 000000000025 shwm 
+                    000000006786 000000006803 000000000017 data 
+                000000006803 000000006839 000000000036 ©ard 
+                000000006839 000000006871 000000000032 ©arg 
+                000000006871 000000006903 000000000032 ©aut 
+                000000006903 000000006941 000000000038 ©cak 
+                000000006941 000000006974 000000000033 ©con 
+                000000006974 000000007014 000000000040 ©des 
+                000000007014 000000007049 000000000035 ©lnt 
+                000000007049 000000007078 000000000029 ©mak 
+                000000007078 000000007104 000000000026 ©mvc 
+                    000000007086 000000007104 000000000018 data 
+                000000007104 000000007130 000000000026 ©mvi 
+                    000000007112 000000007130 000000000018 data 
+                000000007130 000000007167 000000000037 ©mvn 
+                    000000007138 000000007167 000000000029 data 
+                000000007167 000000007206 000000000039 ©ope 
+                000000007206 000000007246 000000000040 ©phg 
+                000000007246 000000007283 000000000037 ©prd 
+                000000007283 000000007316 000000000033 ©prf 
+                000000007316 000000007349 000000000033 ©pub 
+                000000007349 000000007387 000000000038 ©sne 
+                000000007387 000000007418 000000000031 ©sol 
+                000000007418 000000007449 000000000031 ©src 
+                000000007449 000000007487 000000000038 ©st3 
+                000000007487 000000007517 000000000030 ©thx 
+                000000007517 000000007561 000000000044 ©url 
+                000000007561 000000007594 000000000033 ©wrk 
+                    000000007569 000000007594 000000000025 data 
+                000000007594 000000007636 000000000042 ©xpd 
+                000000007636 000000007665 000000000029 ©nam 
+                    000000007644 000000007665 000000000021 data 
+                000000007665 000000007695 000000000030 ©ART 
+                    000000007673 000000007695 000000000022 data 
+                000000007695 000000007731 000000000036 aART 
+                    000000007703 000000007731 000000000028 data 
+                000000007731 000000007760 000000000029 ©alb 
+                    000000007739 000000007760 000000000021 data 
+                000000007760 000000007792 000000000032 ©grp 
+                    000000007768 000000007792 000000000024 data 
+                000000007792 000000007824 000000000032 ©wrt 
+                    000000007800 000000007824 000000000024 data 
+                000000007824 000000007856 000000000032 ©cmt 
+                    000000007832 000000007856 000000000024 data 
+                000000007856 000000007885 000000000029 ©gen 
+                    000000007864 000000007885 000000000021 data 
+                000000007885 000000007919 000000000034 ©day 
+                    000000007893 000000007919 000000000026 data 
+                000000007919 000000007951 000000000032 trkn 
+                    000000007927 000000007951 000000000024 data 
+                000000007951 000000007981 000000000030 disk 
+                    000000007959 000000007981 000000000022 data 
+                000000007981 000000008007 000000000026 tmpo 
+                    000000007989 000000008007 000000000018 data 
+                000000008007 000000008032 000000000025 cpil 
+                    000000008015 000000008032 000000000017 data 
+                000000008032 000000008063 000000000031 tvsh 
+                    000000008040 000000008063 000000000023 data 
+                000000008063 000000008094 000000000031 tvnn 
+                    000000008071 000000008094 000000000023 data 
+                000000008094 000000008131 000000000037 tven 
+                    000000008102 000000008131 000000000029 data 
+                000000008131 000000008159 000000000028 tvsn 
+                    000000008139 000000008159 000000000020 data 
+                000000008159 000000008187 000000000028 tves 
+                    000000008167 000000008187 000000000020 data 
+                000000008187 000000008221 000000000034 sonm 
+                    000000008195 000000008221 000000000026 data 
+                000000008221 000000008256 000000000035 soar 
+                    000000008229 000000008256 000000000027 data 
+                000000008256 000000008297 000000000041 soaa 
+                    000000008264 000000008297 000000000033 data 
+                000000008297 000000008331 000000000034 soal 
+                    000000008305 000000008331 000000000026 data 
+                000000008331 000000008368 000000000037 soco 
+                    000000008339 000000008368 000000000029 data 
+                000000008368 000000008404 000000000036 sosn 
+                    000000008376 000000008404 000000000028 data 
+                000000008404 000000008439 000000000035 desc 
+                    000000008412 000000008439 000000000027 data 
+                000000008439 000000008479 000000000040 ldes 
+                    000000008447 000000008479 000000000032 data 
+                000000008479 000000008509 000000000030 ©lyr 
+                    000000008487 000000008509 000000000022 data 
+                000000008509 000000008547 000000000038 cprt 
+                    000000008517 000000008547 000000000030 data 
+                000000008547 000000008584 000000000037 ©too 
+                    000000008555 000000008584 000000000029 data 
+                000000008584 000000008618 000000000034 ©enc 
+                000000008618 000000008652 000000000034 purd 
+                    000000008626 000000008652 000000000026 data 
+                000000008652 000000008684 000000000032 keyw 
+                000000008684 000000008716 000000000032 catg 
+                000000008716 000000008741 000000000025 stik 
+                    000000008724 000000008741 000000000017 data 
+                000000008741 000000008766 000000000025 rtng 
+                    000000008749 000000008766 000000000017 data 
+                000000008766 000000008791 000000000025 pgap 
+                    000000008774 000000008791 000000000017 data 
+                000000008791 000000008816 000000000025 akID 
+                000000008816 000000008844 000000000028 sfID 
+                    000000008824 000000008844 000000000020 data 
+                000000008844 000000008872 000000000028 cnID 
+                000000008872 000000008900 000000000028 atID 
+                000000008900 000000008932 000000000032 plID 
+                000000008932 000000008960 000000000028 geID 
+                000000008960 000000008988 000000000028 cmID 
+                000000008988 000000009038 000000000050 xid  
+                    000000008996 000000009038 000000000042 data 
+                000000009038 000000018533 000000009495 covr 
+                    000000009046 000000018533 000000009487 data 
+000000018533 000000100361 000000081828 mdat 
