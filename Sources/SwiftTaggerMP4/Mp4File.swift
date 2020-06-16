@@ -13,6 +13,7 @@ public struct Mp4File {
     
     public let location: URL
     var asset: AVAsset
+//    var fileHandle:
     
     public init(location: URL) throws {
         let validExtensions = ["mp4","aac", "m4a", "m4b"]
