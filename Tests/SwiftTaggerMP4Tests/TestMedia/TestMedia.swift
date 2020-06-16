@@ -17,30 +17,36 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
 enum fileVersion {
     case withMeta
     case noMeta
+    case chapterized
     case cover
     
     var url: URL {
         switch self {
             case .withMeta: return testMediaDirectory.appendingPathComponent("mp4-full-meta.m4a")
             case .noMeta: return testMediaDirectory.appendingPathComponent("mp4-nometa.m4a")
+            case .chapterized: return testMediaDirectory.appendingPathComponent("mp4-chapterized")
             case .cover: return testMediaDirectory.appendingPathComponent("samplecover-green.jpg")
         }
     }
 }
 
-func mp4File(withMeta: Bool) throws -> Mp4File {
-    if withMeta {
-        return try Mp4File(location: fileVersion.withMeta.url)
-    } else {
+func mp4File(withMeta: Bool, chaptered: Bool) throws -> Mp4File {
+    if withMeta && chaptered {
+        return try Mp4File(location: fileVersion.chapterized.url)
+    } else if !withMeta && !chaptered {
         return try Mp4File(location: fileVersion.noMeta.url)
+    } else {
+        return try Mp4File(location: fileVersion.withMeta.url)
     }
 }
 
-func tag(withMeta: Bool) throws -> Tag {
-    if withMeta {
-        return try Tag(from: mp4File(withMeta: true))
+func tag(withMeta: Bool, chaptered: Bool) throws -> Tag {
+    if withMeta && chaptered {
+        return try Tag(from: mp4File(withMeta: true, chaptered: true))
+    } else if !withMeta && !chaptered {
+        return try Tag(from: mp4File(withMeta: false, chaptered: false))
     } else {
-        return try Tag(from: mp4File(withMeta: false))
+        return try Tag(from: mp4File(withMeta: true, chaptered: false))
     }
 }
 

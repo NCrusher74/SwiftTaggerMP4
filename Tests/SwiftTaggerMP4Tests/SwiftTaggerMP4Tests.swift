@@ -5,7 +5,7 @@ import Cocoa
 @available(OSX 10.13, *)
 final class SwiftTaggerMP4Tests: XCTestCase {
     func testReading() throws {
-        let reading = try tag(withMeta: true)
+        let reading = try tag(withMeta: true, chaptered: false)
         
         XCTAssertEqual(reading.acknowledgment, "Acknowledgment")
         XCTAssertEqual(reading.album, "Album")
@@ -92,7 +92,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     }
     
     func testWriting() throws {
-        var writing = try tag(withMeta: false)
+        var writing = try tag(withMeta: false, chaptered: false)
         
         writing.acknowledgment = "ACKNOWLEDGMENT"
         writing.album = "ALBUM"
@@ -201,7 +201,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         writing.year = 1994
 
         let output = try tempDirectory().appendingPathComponent("testoutput.m4a")
-        var file = try mp4File(withMeta: false)
+        var file = try mp4File(withMeta: false, chaptered: false)
         try file.write(using: writing, writingTo: output, fileType: .m4a)
         
         let testFile = try Mp4File(location: output)
