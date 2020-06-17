@@ -29,7 +29,8 @@ let package = Package(
         .target(
             name: "SwiftTaggerMP4",
             dependencies: [
-                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set")],
+                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set"),
+                .product(name: "MP4v2", package: "MP4v2")],
             path: "Sources"),
         .testTarget(
             name: "SwiftTaggerMP4Tests",
