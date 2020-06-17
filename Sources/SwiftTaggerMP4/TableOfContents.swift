@@ -64,3 +64,23 @@ struct TableOfContents {
         return mp4Chapters
     }
 }
+
+extension Tag {
+    
+    var tableOfContents: TableOfContents {
+        get {
+            self.toc
+        }
+        set {
+            let toc = self.toc
+            let mp4Chapters = toc.mp4Chapters
+            let chapterCountInt = mp4Chapters.count
+            let chapterCountUInt32 = chapterCountInt.truncatedUInt32
+            
+            MP4SetChapters(fileHandle,
+                           mp4Chapters,
+                           chapterCountUInt32,
+                           MP4ChapterTypeAny)
+        }
+    }
+}
