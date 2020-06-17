@@ -14,9 +14,13 @@ struct TableOfContents {
     var fileDuration: Int
     struct Chapter {
         
-        var chapterTitle: String
-        init(title: String) {
-            self.chapterTitle = title
+        var chapterTitle: String?
+        init(title: String?) {
+            if let title = title {
+                self.chapterTitle = title
+            } else {
+                self.chapterTitle = nil
+            }
         }
     }
     /// The chapters in chronological order.
@@ -27,8 +31,11 @@ struct TableOfContents {
     // convert chapters to mp4Chapter type
     var mp4Chapters: [MP4Chapter_t] {
         var mp4Chapters: [MP4Chapter_t] = []
+        var defaultChapterTitle: String = ""
         // for each index in the chapters array...
         for index in sortedChapters().indices {
+            
+            defaultChapterTitle = "Chapter \(Int(index))"
             // get the current chapter
             let chapter = sortedChapters()[index]
             // get the endTime for the current chapter from the startTime of the next chapter
@@ -45,9 +52,15 @@ struct TableOfContents {
             }
             let chapterDuration = endTime - chapter.startTime
             let mp4Duration = MP4Duration(chapterDuration)
+         
+            let title = chapter.chapter.chapterTitle
             var mp4Chapter = MP4Chapter_t()
             mp4Chapter.duration = mp4Duration
-            mp4Chapter.title = chapter.chapter.chapterTitle.cString(using: .utf8)
+            withUnsafeMutableBytes(of: &mp4Chapter.title) { buffer in
+                buffer.copyBytes(from: title?.utf8 ?? defaultChapterTitle.utf8)
+            }
+            mp4Chapters.append(mp4Chapter)
         }
+        return mp4Chapters
     }
 }
