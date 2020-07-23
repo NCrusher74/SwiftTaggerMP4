@@ -18,7 +18,6 @@ public struct Tag {
         // Load metadata first
         let asset = file.asset
         let formatsKey = "availableMetadataFormats"
-        let chapterLocalesKey = "availableChapterLocales"
 
         // Asynchronous weirdness begins here.
         var result: Result<AVKeyValueStatus, Error> = .success(.loaded)
@@ -35,25 +34,12 @@ public struct Tag {
                 result = .success(status)
             }
         }
-        asset.loadValuesAsynchronously(forKeys: [chapterLocalesKey]) {
-            defer { inProgress = false }
-            
-            var error: NSError? = nil
-            let status = asset.statusOfValue(forKey: chapterLocalesKey, error: &error)
-            if let failure = error {
-                result = .failure(failure)
-            } else {
-                result = .success(status)
-            }
-        }
-        
         while inProgress {
             RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
         }
         // Asynchronous weirdness ends here.
         
         var loadedMetadata: [AVMetadataItem] = []
-        var timedMetadataGroups: [AVTimedMetadataGroup] = []
         switch result {
             case .failure(let error):
                 throw error
@@ -63,9 +49,6 @@ public struct Tag {
                         for format in asset.availableMetadataFormats {
                             loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
                         }
-                        let languages = Locale.preferredLanguages
-                        timedMetadataGroups = asset.chapterMetadataGroups(
-                            bestMatchingPreferredLanguages: languages)
                         inProgress = false
                     case .loading: fatalError("Status 'loading' should not coincide with result 'success'")
                     case .cancelled: throw Mp4File.Error.LoadingCancelled
@@ -76,30 +59,6 @@ public struct Tag {
         }
         self.metadata = loadedMetadata
         
-//        var chapterGroups: [Int: TableOfContents.Chapter] = [:]
-//        for group in timedMetadataGroups {
-//            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-//            let titleItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierTitle)
-//            
-//            //            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-//            //            let artworkItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierArtwork)
-//            
-//            let startTime = Int(group.timeRange.start.seconds * 1000)
-//            var chapter = TableOfContents.Chapter(title: "Chapter Title")
-//            if let titleValue = titleItems.first?.stringValue {
-//                chapter = TableOfContents.Chapter(title: titleValue)
-//            }
-//            
-//            //            if let imageData = artworkItems.first?.dataValue,
-//            //                let image = NSImage(data: imageData) {
-//            //                chapter.chapterThumbnail = image
-//            //            }
-//            chapterGroups[startTime] = chapter
-//        }
-//        let fileDuration = Int(asset.duration.seconds * 1000)
-//        self.toc = TableOfContents(
-//            chapters: chapterGroups,
-//            fileDuration: fileDuration)
     }
 }
 
