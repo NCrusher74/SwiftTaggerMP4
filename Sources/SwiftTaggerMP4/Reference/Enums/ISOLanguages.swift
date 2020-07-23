@@ -27,6 +27,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case afh
     /// Afrikaans
     case afr
+    /// Aghem
+    case agq
     /// Ainu
     case ain
     /// Akan
@@ -65,6 +67,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case art
     /// Arawak
     case arw
+    /// Asu
+    case asa
     /// Assamese
     case asm
     /// Asturian; Bable; Leonese; Asturleonese
@@ -111,6 +115,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case ben
     /// Berber languages
     case ber
+    /// Bena
+    case bez
     /// Bhojpuri
     case bho
     /// Bihari languages
@@ -133,6 +139,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case bra
     /// Breton
     case bre
+    /// Bodo
+    case brx
     /// Batak languages
     case btk
     /// Buriat
@@ -161,6 +169,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case cel
     /// Czech
     case ces
+    /// Chiga
+    case cgg
     /// Chamorro
     case cha
     /// Chibcha
@@ -223,6 +233,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case dan
     /// Dargwa
     case dar
+    /// Taita
+    case dav
     /// Land Dayak languages
     case day
     /// Delaware
@@ -237,6 +249,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case din
     /// Divehi; Dhivehi; Maldivian
     case div
+    /// Zarma
+    case dje
     /// Dogri
     case doi
     /// Dravidian languages
@@ -249,10 +263,14 @@ public enum ISO6392Codes: String, CaseIterable {
     case dum
     /// Dutch; Flemish
     case nld
+    /// Jola-Fonyi
+    case dyo
     /// Dyula
     case dyu
     /// Dzongkha
     case dzo
+    /// Embu
+    case ebu
     /// Efik
     case efi
     /// Egyptian (Ancient)
@@ -351,6 +369,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case gsw
     /// Gujarati
     case guj
+    /// Gusii
+    case guz
     /// Gwich'in
     case gwi
     /// Haida
@@ -425,6 +445,10 @@ public enum ISO6392Codes: String, CaseIterable {
     case jav
     /// Lojban
     case jbo
+    /// Ngomba
+    case jgo
+    /// Machame
+    case jmc
     /// Japanese
     case jpn
     /// Judeo-Persian
@@ -455,6 +479,10 @@ public enum ISO6392Codes: String, CaseIterable {
     case kaz
     /// Kabardian
     case kbd
+    /// Makonde
+    case kde
+    /// Kabuverdianu
+    case kea
     /// Khasi
     case kha
     /// Khoisan languages
@@ -463,12 +491,18 @@ public enum ISO6392Codes: String, CaseIterable {
     case khm
     /// Khotanese; Sakan
     case kho
+    /// Koyra Chiini
+    case khq
     /// Kikuyu; Gikuyu
     case kik
     /// Kinyarwanda
     case kin
     /// Kirghiz; Kyrgyz
     case kir
+    /// Kako
+    case kkj
+    /// Kelenjin
+    case kln
     /// Kimbundu
     case kmb
     /// Konkani
@@ -491,6 +525,12 @@ public enum ISO6392Codes: String, CaseIterable {
     case kro
     /// Kurukh
     case kru
+    /// Shambala
+    case ksb
+    /// Bafia
+    case ksf
+    /// Colognian
+    case ksh
     /// Kuanyama; Kwanyama
     case kua
     /// Kumyk
@@ -501,6 +541,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case kut
     /// Ladino
     case lad
+    /// Langi
+    case lag
     /// Lahnda
     case lah
     /// Lamba
@@ -519,10 +561,14 @@ public enum ISO6392Codes: String, CaseIterable {
     case lin
     /// Lithuanian
     case lit
+    /// Lakota
+    case lkt
     /// Mongo
     case lol
     /// Lozi
     case loz
+    /// Northern Luri
+    case lrc
     /// Luxembourgish; Letzeburgesch
     case ltz
     /// Luba-Lulua
@@ -539,6 +585,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case luo
     /// Lushai
     case lus
+    /// Luyia
+    case luy
     /// Macedonian
     case mkd
     /// Madurese
@@ -571,8 +619,16 @@ public enum ISO6392Codes: String, CaseIterable {
     case mdr
     /// Mende
     case men
+    /// Meru
+    case mer
+    /// Morisyen
+    case mfe
     /// Irish, Middle (900–1200)
     case mga
+    /// Makhuwa-Meetto
+    case mgh
+    /// Meta'
+    case mgo
     /// Mi'kmaq; Micmac
     case mic
     /// Minangkabau
@@ -597,6 +653,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case mon
     /// Mossi
     case mos
+    /// Mundang
+    case mua
     /// Multiple languages
     case mul
     /// Munda languages
@@ -611,12 +669,16 @@ public enum ISO6392Codes: String, CaseIterable {
     case myn
     /// Erzya
     case myv
+    /// Mazanderani
+    case mzn
     /// Nahuatl languages
     case nah
     /// North American Indian languages
     case nai
     /// Neapolitan
     case nap
+    /// Nama
+    case naq
     /// Nauru
     case nau
     /// Navajo; Navaho
@@ -639,6 +701,10 @@ public enum ISO6392Codes: String, CaseIterable {
     case nic
     /// Niuean
     case niu
+    /// Kwasio
+    case nmg
+    /// Ngiemboon
+    case nnh
     /// Norwegian Nynorsk; Nynorsk, Norwegian
     case nno
     /// Bokmål, Norwegian; Norwegian Bokmål
@@ -655,6 +721,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case nso
     /// Nubian languages
     case nub
+    /// Nuer
+    case nus
     /// Classical Newari; Old Newari; Classical Nepal Bhasa
     case nwc
     /// Chichewa; Chewa; Nyanja
@@ -727,6 +795,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case rar
     /// Romance languages
     case roa
+    /// Rombo
+    case rof
     /// Romansh
     case roh
     /// Romany
@@ -739,6 +809,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case rup
     /// Russian
     case rus
+    /// Rwa
+    case rwk
     /// Sandawe
     case sad
     /// Sango
@@ -753,22 +825,32 @@ public enum ISO6392Codes: String, CaseIterable {
     case sam
     /// Sanskrit
     case san
+    /// Samburu
+    case saq
     /// Sasak
     case sas
     /// Santali
     case sat
+    /// Sangu
+    case sbp
     /// Sicilian
     case scn
     /// Scots
     case sco
+    /// Sena
+    case seh
     /// Selkup
     case sel
     /// Semitic languages
     case sem
+    /// Koyraboro Senni
+    case ses
     /// Irish, Old (to 900)
     case sga
     /// Sign Languages
     case sgn
+    /// Tachelhit (Tifinagh, Morocco)
+    case shi
     /// Shan
     case shn
     /// Sidamo
@@ -855,6 +937,8 @@ public enum ISO6392Codes: String, CaseIterable {
     case tel
     /// Timne
     case tem
+    /// Teso
+    case teo
     /// Tereno
     case ter
     /// Tetum
@@ -905,8 +989,12 @@ public enum ISO6392Codes: String, CaseIterable {
     case tvl
     /// Twi
     case twi
+    /// Tasawaq
+    case twq
     /// Tuvinian
     case tyv
+    /// Central Atlas Tamazight
+    case tzm
     /// Udmurt
     case udm
     /// Ugaritic
@@ -933,6 +1021,10 @@ public enum ISO6392Codes: String, CaseIterable {
     case vol
     /// Votic
     case vot
+    /// Vunjo
+    case vun
+    /// Walser
+    case wae
     /// Wakashan languages
     case wak
     /// Wolaitta; Wolaytta
@@ -951,14 +1043,20 @@ public enum ISO6392Codes: String, CaseIterable {
     case xal
     /// Xhosa
     case xho
+    /// Soga
+    case xog
     /// Yao
     case yao
     /// Yapese
     case yap
+    /// Yangben
+    case yav
     /// Yiddish
     case yid
     /// Yoruba
     case yor
+    /// Cantonese
+    case yue
     /// Yupik languages
     case ypk
     /// Zapotec
@@ -2705,6 +2803,582 @@ public enum ISO6392Codes: String, CaseIterable {
             case .zxx: return "No linguistic content; Not applicable"
             /// Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
             case .zza: return "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
+            case .asa: return "Asu"
+            case .bez: return "Bena"
+            case .brx: return "Bodo"
+            case .cgg: return "Chiga"
+            case .dav: return "Taita"
+            case .dje: return "Zarma"
+            case .dyo: return "Jola-Fonyi"
+            case .ebu: return "Embu"
+            case .guz: return "Gusii"
+            case .jgo: return "Ngomba"
+            case .jmc: return "Machame"
+            case .kde: return "Makonde"
+            case .kea: return "Kabuverdianu"
+            case .khq: return "Koyra Chiini"
+            case .kkj: return "Kako"
+            case .kln: return "Kelenjin"
+            case .ksb: return "Shambala"
+            case .ksf: return "Bafia"
+            case .ksh: return "Colognian"
+            case .lag: return "Langi"
+            case .lkt: return "Lakota"
+            case .lrc: return "Northern Luri"
+            case .luy: return "Luyia"
+            case .mer: return "Meru"
+            case .mfe: return "Morisyen"
+            case .mgh: return "Makhuwa-Meetto"
+            case .mgo: return "Meta'"
+            case .mua: return "Mundang"
+            case .mzn: return "Mazanderani"
+            case .naq: return "Nama"
+            case .nmg: return "Kwasio"
+            case .nnh: return "Ngiemboon"
+            case .nus: return "Nuer"
+            case .rof: return "Rombo"
+            case .rwk: return "Rwa"
+            case .saq: return "Samburu"
+            case .sbp: return "Sangu"
+            case .seh: return "Sena"
+            case .ses: return "Koyraboro Senni"
+            case .shi: return "Tachelhit"
+            case .teo: return "Teso"
+            case .twq: return "Tasawaq"
+            case .tzm: return "Central Atlas Tamazight"
+            case .vun: return "Vunjo"
+            case .wae: return "Walser"
+            case .xog: return "Soga"
+            case .yav: return "Yangben"
+            case .yue: return "Cantonese"
+            case .agq: return "Aghem"
+        }
+    }
+    
+    var iso639_1_Code: String {
+        switch self {
+            case .aar: return "aa"
+            case .abk: return "ab"
+            case .afr: return "af"
+            case .aka: return "ak"
+            case .amh: return "am"
+            case .ara: return "ar"
+            case .arg: return "an"
+            case .asm: return "as"
+            case .ava: return "av"
+            case .ave: return "ae"
+            case .aym: return "ay"
+            case .bak: return "ba"
+            case .bam: return "bm"
+            case .bel: return "be"
+            case .ben: return "bn"
+            case .bih: return "bh"
+            case .bis: return "bi"
+            case .bod: return "bo"
+            case .bos: return "bs"
+            case .bre: return "br"
+            case .bul: return "bg"
+            case .cat: return "ca"
+            case .ces: return "cs"
+            case .cha: return "ch"
+            case .che: return "ce"
+            case .chu: return "cu"
+            case .chv: return "cv"
+            case .cor: return "kw"
+            case .cos: return "co"
+            case .cre: return "cr"
+            case .cym: return "cy"
+            case .dan: return "da"
+            case .deu: return "de"
+            case .div: return "dv"
+            case .dzo: return "dz"
+            case .ell: return "el"
+            case .eng: return "en"
+            case .epo: return "eo"
+            case .est: return "et"
+            case .eus: return "eu"
+            case .ewe: return "ee"
+            case .fao: return "fo"
+            case .fas: return "fa"
+            case .fij: return "fj"
+            case .fin: return "fi"
+            case .fra: return "fr"
+            case .fry: return "fy"
+            case .ful: return "ff"
+            case .gla: return "gd"
+            case .gle: return "ga"
+            case .glg: return "gl"
+            case .glv: return "gv"
+            case .grn: return "gn"
+            case .guj: return "gu"
+            case .hat: return "ht"
+            case .hau: return "ha"
+            case .heb: return "he"
+            case .her: return "hz"
+            case .hin: return "hi"
+            case .hmo: return "ho"
+            case .hrv: return "hr"
+            case .hun: return "hu"
+            case .hye: return "hy"
+            case .ibo: return "ig"
+            case .isl: return "is"
+            case .ido: return "io"
+            case .iii: return "ii"
+            case .iku: return "iu"
+            case .ile: return "ie"
+            case .ina: return "ia"
+            case .ind: return "id"
+            case .ipk: return "ik"
+            case .ita: return "it"
+            case .jav: return "jv"
+            case .jpn: return "ja"
+            case .kal: return "kl"
+            case .kan: return "kn"
+            case .kas: return "ks"
+            case .kat: return "ka"
+            case .kau: return "kr"
+            case .kaz: return "kk"
+            case .khm: return "km"
+            case .kik: return "ki"
+            case .kin: return "rw"
+            case .kir: return "ky"
+            case .kom: return "kv"
+            case .kon: return "kg"
+            case .kor: return "ko"
+            case .kua: return "kj"
+            case .kur: return "ku"
+            case .lao: return "lo"
+            case .lat: return "la"
+            case .lav: return "lv"
+            case .lim: return "li"
+            case .lin: return "ln"
+            case .lit: return "lt"
+            case .ltz: return "lb"
+            case .lub: return "lu"
+            case .lug: return "lg"
+            case .mkd: return "mk"
+            case .mah: return "mh"
+            case .mal: return "ml"
+            case .mri: return "mi"
+            case .mar: return "mr"
+            case .msa: return "ms"
+            case .mlg: return "mg"
+            case .mlt: return "mt"
+            case .mon: return "mn"
+            case .mya: return "my"
+            case .nau: return "na"
+            case .nav: return "nv"
+            case .nbl: return "nr"
+            case .nde: return "nd"
+            case .ndo: return "ng"
+            case .nep: return "ne"
+            case .nld: return "nl"
+            case .nno: return "nn"
+            case .nob: return "nb"
+            case .nor: return "no"
+            case .nya: return "ny"
+            case .oci: return "oc"
+            case .oji: return "oj"
+            case .ori: return "or"
+            case .orm: return "om"
+            case .oss: return "os"
+            case .pan: return "pa"
+            case .pli: return "pi"
+            case .pol: return "pl"
+            case .por: return "pt"
+            case .pus: return "ps"
+            case .que: return "qu"
+            case .roh: return "rm"
+            case .ron: return "ro"
+            case .run: return "rn"
+            case .rus: return "ru"
+            case .sag: return "sg"
+            case .san: return "sa"
+            case .sin: return "si"
+            case .slk: return "sk"
+            case .slv: return "sl"
+            case .sme: return "se"
+            case .smo: return "sm"
+            case .sna: return "sn"
+            case .snd: return "sd"
+            case .som: return "so"
+            case .sot: return "st"
+            case .spa: return "es"
+            case .sqi: return "sq"
+            case .srd: return "sc"
+            case .srp: return "sr"
+            case .ssw: return "ss"
+            case .sun: return "su"
+            case .swa: return "sw"
+            case .swe: return "sv"
+            case .tah: return "ty"
+            case .tam: return "ta"
+            case .tat: return "tt"
+            case .tel: return "te"
+            case .tgk: return "tg"
+            case .tgl: return "tl"
+            case .tha: return "th"
+            case .tir: return "ti"
+            case .ton: return "to"
+            case .tsn: return "tn"
+            case .tuk: return "tk"
+            case .tur: return "tr"
+            case .twi: return "tw"
+            case .uig: return "ug"
+            case .ukr: return "uk"
+            case .urd: return "ur"
+            case .uzb: return "uz"
+            case .ven: return "ve"
+            case .vie: return "vi"
+            case .vol: return "vo"
+            case .wln: return "wa"
+            case .wol: return "wo"
+            case .xho: return "xh"
+            case .yid: return "yi"
+            case .yor: return "yo"
+            case .zha: return "za"
+            case .zho: return "zh"
+            case .zul: return "zu"
+            default: return rawValue
+        }
+    }
+    
+    var quickTimeLanguageCode: Int? {
+        switch self {
+            case .eng: return 0
+            case .fra: return 1
+            case .deu: return 2
+            case .ita: return 3
+            case .nld: return 4
+            case .swe: return 5
+            case .spa: return 6
+            case .dan: return 7
+            case .por: return 8
+            case .nor: return 9
+            case .heb: return 10
+            case .jpn: return 11
+            case .ara: return 12
+            case .fin: return 13
+            case .ell: return 14
+            case .isl: return 15
+            case .mlt: return 16
+            case .tur: return 17
+            case .hrv: return 18
+            case .zho: return 19
+            case .urd: return 20
+            case .hin: return 21
+            case .tha: return 22
+            case .kor: return 23
+            case .lit: return 24
+            case .pol: return 25
+            case .hun: return 26
+            case .est: return 27
+            case .lav: return 28
+            case .sme: return 29
+            case .sma: return 29
+            case .smi: return 29
+            case .smj: return 29
+            case .smn: return 29
+            case .fao: return 30
+            case .fas: return 31
+            case .rus: return 32
+            case .gle: return 35
+            case .sqi: return 36
+            case .ron: return 37
+            case .ces: return 38
+            case .slk: return 39
+            case .slv: return 40
+            case .yid: return 41
+            case .srp: return 42
+            case .mkd: return 43
+            case .bul: return 44
+            case .ukr: return 45
+            case .bel: return 46
+            case .uzb: return 47
+            case .kaz: return 48
+            case .aze: return 49
+            case .hye: return 51
+            case .und: return 32767
+            case .kat: return 52
+            case .kir: return 54
+            case .tgk: return 55
+            case .tuk: return 56
+            case .mon: return 57
+            case .pus: return 59
+            case .kur: return 60
+            case .kas: return 61
+            case .snd: return 62
+            case .bod: return 63
+            case .nep: return 64
+            case .san: return 65
+            case .mar: return 66
+            case .ben: return 67
+            case .asm: return 68
+            case .guj: return 69
+            case .pan: return 70
+            case .ori: return 71
+            case .mal: return 72
+            case .kan: return 73
+            case .tam: return 74
+            case .tel: return 75
+            case .sin: return 76
+            case .mya: return 77
+            case .khm: return 78
+            case .lao: return 79
+            case .vie: return 80
+            case .ind: return 81
+            case .tgl: return 82
+            case .msa: return 83
+            case .amh: return 85
+            case .tir: return 86
+            case .orm: return 87
+            case .som: return 88
+            case .swa: return 89
+            case .kin: return 90
+            case .run: return 91
+            case .nya: return 92
+            case .mlg: return 93
+            case .epo: return 94
+            case .cym: return 128
+            case .eus: return 129
+            case .cat: return 130
+            case .lat: return 131
+            case .que: return 132
+            case .grn: return 133
+            case .aym: return 134
+            case .crh: return 135
+            case .uig: return 136
+            case .dzo: return 137
+            case .jav: return 138
+            case .sun: return 139
+            case .glg: return 140
+            case .afr: return 141
+            case .bre: return 142
+            case .iku: return 143
+            case .gla: return 144
+            case .glv: return 145
+            case .tog: return 147
+            default: return nil
+        }
+    }
+    
+    var associatedCountries: [LocaleCodes]? {
+        switch self {
+            case .aar: return [.Ethiopia, .Eritrea, .Djibouti]
+            case .abk: return [.Georgia]
+            case .afr: return [.Namibia, .South_Africa]
+            case .agq: return [.Cameroon]
+            case .aka: return [.Ghana]
+            case .sqi: return [.Albania, .Macedonia_Republic_of]
+            case .amh: return [.Ethiopia]
+            case .apa: return [.United_States_of_America]
+            case .ara: return [.United_Arab_Emirates, .Bahrain, .Djibouti, .Algeria, .Egypt, .Western_Sahara, .Eritrea, .Israel, .Jordan, .Comoros, .Kuwait, .Lebanon, .Libya, .Morocco, .Mauritania, .Oman, .Palestinian_Territory, .Qatar, .Saudi_Arabia, .Sudan, .Somalia, .South_Sudan, .Syrian_Arab_Republic_Syria, .Chad, .Tunisia, .Yemen]
+            case .hye: return [.Armenia]
+            case .arp: return [.United_States_of_America]
+            case .asa: return [.Tanzania_United_Republic_of]
+            case .asm: return [.India]
+            case .ast: return [.Spain]
+            case .aus: return [.Australia]
+            case .aze: return [.Azerbaijan]
+            case .bam: return [.Mali]
+            case .eus: return [.Spain]
+            case .bas: return [.Cameroon]
+            case .bel: return [.Belarus]
+            case .bem: return [.Zambia]
+            case .ben: return [.Bangladesh, .India]
+            case .bez: return [.Tanzania_United_Republic_of]
+            case .bod: return [.China, .India]
+            case .bos: return [.Bosnia_and_Herzegovina]
+            case .bre: return [.France]
+            case .brx: return [.India]
+            case .bul: return [.Bulgaria]
+            case .mya: return [.Myanmar]
+            case .cat: return [.Andorra, .Spain, .France, .Italy]
+            case .ces: return [.Czech_Republic]
+            case .cgg: return [.Uganda]
+            case .che: return [.Russian_Federation]
+            case .zho: return [.China, .Hong_Kong_SAR_China, .Macao_SAR_China, .Singapore, .Taiwan_Republic_of_China]
+            case .cnr: return [.Montenegro]
+            case .cor: return [.United_Kingdom]
+            case .cpp: return [.Bangladesh]
+            case .cym: return [.United_Kingdom]
+            case .dan: return [.Denmark, .Greenland]
+            case .dav: return [.Kenya]
+            case .deu: return [.Austria, .Belgium, .Switzerland, .Germany, .Liechtenstein, .Luxembourg]
+            case .dje: return [.Niger]
+            case .dsb: return [.Germany]
+            case .dua: return [.Cameroon]
+            case .nld: return [.Aruba, .Belgium, .Netherlands, .Curaçao, .Suriname, .Sint_Maarten, .Carribean_Netherlands]
+            case .dyo: return [.Senegal]
+            case .dzo: return [.Bhutan]
+            case .ebu: return [.Kenya]
+            case .ell: return [.Cyprus, .Greece]
+            case .elx: return []
+            case .eng: return [.Antigua_and_Barbuda, .Anguilla, .American_Samoa, .Samoa, .Austria, .Australia, .Barbados, .Belgium, .Burundi, .Bermuda, .Bahamas, .Botswana, .Belize, .Canada, .Cocos_Keeling_Islands, .Switzerland, .Cook_Islands, .Cameroon, .Christmas_Island, .Cyprus, .Germany, .Denmark, .Dominica, .Eritrea, .Finland, .Fiji, .Micronesia_Federated_States_of, .Falkland_Islands_Malvinas, .United_Kingdom, .Grenada, .Guernsey, .Ghana, .Gibraltar, .Gambia, .Guam, .Guyana, .Hong_Kong_SAR_China, .Ireland, .Israel, .Isle_of_Man, .India, .British_Indian_Ocean_Territory, .Jersey, .Jamaica, .Kenya, .Kiribati, .Saint_Kitts_and_Nevis, .Cayman_Islands, .Saint_Lucia, .Liberia, .Lesotho, .Madagascar, .Marshall_Islands, .Macao_SAR_China, .Northern_Mariana_Islands, .Montserrat, .Malta, .Mauritius, .Malawi, .Malaysia, .Namibia, .Norfolk_Island, .Nigeria, .Netherlands, .Nauru, .Niue, .New_Zealand, .Papua_New_Guinea, .Philippines, .Pakistan, .Pitcairn, .Puerto_Rico, .Palau, .Solomon_Islands, .Seychelles, .Sudan, .Sweden, .Singapore, .Saint_Helena, .Slovenia, .Sierra_Leone, .South_Sudan, .Sint_Maarten, .Swaziland, .Turks_and_Caicos_Islands, .Tokelau, .Tonga, .Trinidad_and_Tobago, .Tuvalu, .Tanzania_United_Republic_of, .Uganda, .US_Minor_Outlying_Islands, .United_States_of_America, .Saint_Vincent_and_Grenadines, .Virgin_Islands_US, .British_Virgin_Islands, .Vanuatu, .South_Africa, .Zambia, .Zimbabwe]
+            case .est: return [.Estonia]
+            case .ewe: return [.Ghana, .Togo]
+            case .ewo: return [.Cameroon]
+            case .fao: return [.Denmark, .Faroe_Islands]
+            case .fas: return [.Afghanistan, .Iran_Islamic_Republic_of]
+            case .fij: return [.Fiji]
+            case .fil: return [.Philippines]
+            case .fin: return [.Finland]
+            case .fra: return [.Belgium, .Burkina_Faso, .Burundi, .Benin, .Saint_Barthélemy, .Canada, .Congo_Kinshasa, .Central_African_Republic, .Congo_Brazzaville, .Switzerland, .Côte_dIvoire, .Cameroon, .Djibouti, .Algeria, .Gabon, .French_Guiana, .Guinea, .Guadeloupe, .Equatorial_Guinea, .Haiti, .Comoros, .Luxembourg, .Morocco, .Monaco, .Saint_Martin_French, .Madagascar, .Mali, .Martinique, .Mauritius, .Mauritania, .New_Caledonia, .Niger, .French_Polynesia, .Saint_Pierre_and_Miquelon, .Réunion, .France, .Rwanda, .Seychelles, .Senegal, .Syrian_Arab_Republic_Syria, .Chad, .Togo, .Tunisia, .Vanuatu, .Wallis_and_Futuna_Islands, .Mayotte]
+            case .fry: return [.Netherlands]
+            case .ful: return [.Cameroon, .Senegal, .Guinea, .Mauritania]
+            case .fur: return [.Italy]
+            case .kat: return [.Georgia]
+            case .gla: return [.United_Kingdom]
+            case .gle: return [.Ireland]
+            case .glg: return [.Spain]
+            case .glv: return [.Isle_of_Man]
+            case .gsw: return [.Switzerland]
+            case .guj: return [.India]
+            case .guz: return [.Kenya]
+            case .hat: return [.Haiti]
+            case .hau: return [.Ghana, .Niger, .Nigeria]
+            case .haw: return [.United_States_of_America]
+            case .heb: return [.Israel]
+            case .hin: return [.India]
+            case .hmn: return [.China]
+            case .hrv: return [.Bosnia_and_Herzegovina]
+            case .hsb: return [.Germany]
+            case .hun: return [.Hungary]
+            case .ibo: return [.Nigeria]
+            case .isl: return [.Iceland]
+            case .iii: return [.China]
+            case .ind: return [.Indonesia]
+            case .ira: return [.Iran_Islamic_Republic_of]
+            case .ita: return [.Switzerland]
+            case .jgo: return [.Cameroon]
+            case .jmc: return [.Tanzania_United_Republic_of]
+            case .jpn: return [.Japan]
+            case .kab: return [.Algeria]
+            case .kal: return [.Greenland]
+            case .kam: return [.Kenya]
+            case .kan: return [.India]
+            case .kas: return [.India]
+            case .kaz: return [.Kazakhstan]
+            case .kde: return [.Tanzania_United_Republic_of]
+            case .kea: return [.Cape_Verde]
+            case .khm: return [.Cambodia]
+            case .khq: return [.Mali]
+            case .kik: return [.Kenya]
+            case .kin: return [.Rwanda]
+            case .kir: return [.Kyrgyzstan]
+            case .kkj: return [.Cameroon]
+            case .kok: return [.India]
+            case .kor: return [.Korea_North, .Korea_South]
+            case .ksb: return [.Tanzania_United_Republic_of]
+            case .ksf: return [.Cameroon]
+            case .ksh: return [.Germany]
+            case .kur: return [.Iraq, .Iran_Islamic_Republic_of]
+            case .lag: return [.Tanzania_United_Republic_of]
+            case .lao: return [.Lao_PDR]
+            case .lav: return [.Latvia]
+            case .lin: return [.Angola, .Congo_Kinshasa, .Central_African_Republic, .Congo_Brazzaville]
+            case .lit: return [.Lithuania]
+            case .lrc: return [.Iraq, .Iran_Islamic_Republic_of]
+            case .ltz: return [.Luxembourg]
+            case .lub: return [.Congo_Kinshasa]
+            case .lug: return [.Uganda]
+            case .luo: return [.Kenya, .Tanzania_United_Republic_of]
+            case .luy: return [.Kenya]
+            case .mkd: return [.Macedonia_Republic_of]
+            case .mah: return [.Marshall_Islands]
+            case .mal: return [.India]
+            case .mri: return [.New_Zealand]
+            case .mar: return [.India]
+            case .mas: return [.Kenya, .Tanzania_United_Republic_of]
+            case .msa: return [.Brunei_Darussalam, .Malaysia, .Singapore]
+            case .mer: return [.Kenya]
+            case .mfe: return [.Mauritius]
+            case .mgo: return [.Cameroon]
+            case .mkh: return [.Cambodia]
+            case .mlg: return [.Madagascar]
+            case .mlt: return [.Malta]
+            case .mon: return [.Mongolia]
+            case .mua: return [.Cameroon]
+            case .mzn: return [.Iran_Islamic_Republic_of]
+            case .naq: return [.Namibia]
+            case .nau: return [.Nauru]
+            case .nbl: return [.Zimbabwe]
+            case .nde: return [.Zimbabwe]
+            case .nds: return [.Germany, .Netherlands]
+            case .nep: return [.Nepal, .India]
+            case .niu: return [.Niue]
+            case .nmg: return [.Cameroon]
+            case .nnh: return [.Cameroon]
+            case .nno: return [.Norway]
+            case .nob: return [.Norway, .Svalbard_and_Jan_Mayen_Islands]
+            case .nor: return [.Norway]
+            case .nus: return [.South_Sudan]
+            case .nyn: return [.Uganda]
+            case .orm: return [.Ethiopia, .Kenya]
+            case .oss: return [.Russian_Federation]
+            case .pan: return [.India, .Pakistan]
+            case .pau: return [.Palau]
+            case .pol: return [.Poland]
+            case .por: return [.Angola, .Brazil, .Switzerland, .Portugal, .Cape_Verde, .Dominican_Republic, .Sao_Tome_and_Principe, .Timor_Leste, .Equatorial_Guinea, .Guinea_Bissau, .Luxembourg, .Macao_SAR_China, .Mozambique]
+            case .pus: return [.Afghanistan]
+            case .que: return [.Bolivia, .Ecuador, .Peru]
+            case .rof: return [.Tanzania_United_Republic_of]
+            case .roh: return [.Switzerland]
+            case .ron: return [.Romania, .Moldova]
+            case .run: return [.Burundi]
+            case .rup: return [.Romania, .Macedonia_Republic_of]
+            case .rus: return [.Belarus, .Russian_Federation, .Kyrgyzstan, .Kazakhstan, .Moldova, .Ukraine]
+            case .rwk: return [.Tanzania_United_Republic_of]
+            case .sag: return [.Central_African_Republic]
+            case .saq: return [.Kenya]
+            case .sbp: return [.Tanzania_United_Republic_of]
+            case .sco: return [.United_Kingdom]
+            case .seh: return [.Mozambique]
+            case .ses: return [.Mali]
+            case .shi: return [.Morocco]
+            case .sin: return [.Sri_Lanka]
+            case .slk: return [.Slovakia]
+            case .slv: return [.Slovenia]
+            case .sme: return [.Finland, .Norway, .Sweden]
+            case .smn: return [.Finland]
+            case .smo: return [.Samoa]
+            case .sna: return [.Zimbabwe]
+            case .som: return [.Djibouti, .Ethiopia, .Kenya, .Somalia]
+            case .spa: return [.Argentina, .Bolivia, .Brazil, .Belize, .Chile, .Colombia, .Costa_Rica, .Cuba, .Ecuador, .Dominican_Republic, .Equatorial_Guinea, .Guatemala, .Honduras, .Spain, .Mexico, .Nicaragua, .Panama, .Peru, .Philippines, .Puerto_Rico, .Paraguay, .El_Salvador, .United_States_of_America, .Uruguay, .Venezuela_Bolivarian_Republic]
+            case .srp: return [.Bosnia_and_Herzegovina, .Serbia, .Montenegro]
+            case .sun: return [.Sudan, .South_Sudan]
+            case .swa: return [.Congo_Kinshasa, .Tanzania_United_Republic_of, .Uganda, .Kenya]
+            case .swe: return [.Aland_Islands, .Finland, .Sweden]
+            case .tam: return [.India, .Sri_Lanka, .Malaysia, .Singapore]
+            case .tat: return [.Russian_Federation]
+            case .tel: return [.India]
+            case .teo: return [.Uganda, .Kenya]
+            case .tgk: return [.Tajikistan]
+            case .tha: return [.Thailand]
+            case .tir: return [.Eritrea, .Ethiopia]
+            case .tkl: return [.Tokelau]
+            case .tog: return [.Tonga]
+            case .ton: return [.Tonga]
+            case .tuk: return [.Turkmenistan]
+            case .tur: return [.Cyprus, .Turkey]
+            case .tvl: return [.Tuvalu]
+            case .twq: return [.Niger]
+            case .tzm: return [.Morocco]
+            case .uig: return [.China]
+            case .ukr: return [.Ukraine]
+            case .urd: return [.India, .Pakistan]
+            case .uzb: return [.Afghanistan]
+            case .vai: return [.Liberia]
+            case .vie: return [.Viet_Nam]
+            case .vun: return [.Tanzania_United_Republic_of]
+            case .wae: return [.Switzerland]
+            case .xog: return [.Uganda]
+            case .yav: return [.Cameroon]
+            case .yor: return [.Benin, .Nigeria]
+            case .yue: return [.China]
+            case .zgh: return [.Morocco]
+            case .zul: return [.South_Africa]
+            default: return nil
         }
     }
 }

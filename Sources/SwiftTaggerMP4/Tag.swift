@@ -9,16 +9,12 @@
 import Foundation
 import AVFoundation
 import Cocoa
-import CMP4v2
 
 public struct Tag {
     
     var metadata: [AVMetadataItem]
-    var fileHandle: MP4FileHandle
-    var toc: TableOfContents
     
     public init(from file: Mp4File) throws {
-        self.fileHandle = file.fileHandle
         // Load metadata first
         let asset = file.asset
         let formatsKey = "availableMetadataFormats"
@@ -80,30 +76,30 @@ public struct Tag {
         }
         self.metadata = loadedMetadata
         
-        var chapterGroups: [Int: TableOfContents.Chapter] = [:]
-        for group in timedMetadataGroups {
-            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-            let titleItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierTitle)
-            
-            //            // Retrieve AVMetadataCommonIdentifierTitle metadata items
-            //            let artworkItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierArtwork)
-            
-            let startTime = Int(group.timeRange.start.seconds * 1000)
-            var chapter = TableOfContents.Chapter(title: "Chapter Title")
-            if let titleValue = titleItems.first?.stringValue {
-                chapter = TableOfContents.Chapter(title: titleValue)
-            }
-            
-            //            if let imageData = artworkItems.first?.dataValue,
-            //                let image = NSImage(data: imageData) {
-            //                chapter.chapterThumbnail = image
-            //            }
-            chapterGroups[startTime] = chapter
-        }
-        let fileDuration = Int(asset.duration.seconds * 1000)
-        self.toc = TableOfContents(
-            chapters: chapterGroups,
-            fileDuration: fileDuration)
+//        var chapterGroups: [Int: TableOfContents.Chapter] = [:]
+//        for group in timedMetadataGroups {
+//            // Retrieve AVMetadataCommonIdentifierTitle metadata items
+//            let titleItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierTitle)
+//            
+//            //            // Retrieve AVMetadataCommonIdentifierTitle metadata items
+//            //            let artworkItems = AVMetadataItem.metadataItems(from: group.items, filteredByIdentifier: AVMetadataIdentifier.commonIdentifierArtwork)
+//            
+//            let startTime = Int(group.timeRange.start.seconds * 1000)
+//            var chapter = TableOfContents.Chapter(title: "Chapter Title")
+//            if let titleValue = titleItems.first?.stringValue {
+//                chapter = TableOfContents.Chapter(title: titleValue)
+//            }
+//            
+//            //            if let imageData = artworkItems.first?.dataValue,
+//            //                let image = NSImage(data: imageData) {
+//            //                chapter.chapterThumbnail = image
+//            //            }
+//            chapterGroups[startTime] = chapter
+//        }
+//        let fileDuration = Int(asset.duration.seconds * 1000)
+//        self.toc = TableOfContents(
+//            chapters: chapterGroups,
+//            fileDuration: fileDuration)
     }
 }
 
@@ -355,14 +351,29 @@ extension Tag {
         set { set(metadataItem: .albumArtistSort, to: newValue ?? "") }
     }
     
+    var albumID: Int? {
+        get { integer(for: .albumID) }
+        set { set(metadataItem: .albumID, to: newValue ?? 0) }
+    }
+
     var albumSort: String? {
         get { string(for: .albumSort) }
         set { set(metadataItem: .albumSort, to: newValue ?? "") }
     }
     
+    var appleStoreCountryID: Int? {
+        get { integer(for: .appleStoreCountryID) }
+        set { set(metadataItem: .appleStoreCountryID, to: newValue ?? 0) }
+    }
+
     var arranger: String? {
         get { string(for: .arranger) }
         set { set(metadataItem: .arranger, to: newValue ?? "") }
+    }
+    
+    var arrangerKeyword: String? {
+        get { string(for: .arrangerKeyword) }
+        set { set(metadataItem: .arrangerKeyword, to: newValue ?? "") }
     }
     
     var artDirector: String? {
@@ -373,6 +384,16 @@ extension Tag {
     var artist: String? {
         get { string(for: .artist) }
         set { set(metadataItem: .artist, to: newValue ?? "") }
+    }
+    
+    var artistID: Int? {
+        get { integer(for: .artistID) }
+        set { set(metadataItem: .artistID, to: newValue ?? 0) }
+    }
+
+    var artistKeywords: String? {
+        get { string(for: .artistKeywords) }
+        set { set(metadataItem: .artistKeywords, to: newValue ?? "") }
     }
     
     var artistSort: String? {
@@ -433,6 +454,16 @@ extension Tag {
         set { set(metadataItem: .composer, to: newValue ?? "") }
     }
     
+    var composerID: Int? {
+        get { integer(for: .composerID) }
+        set { set(metadataItem: .composerID, to: newValue ?? 0) }
+    }
+
+    var composerKeyword: String? {
+        get { string(for: .composerKeyword) }
+        set { set(metadataItem: .composerKeyword, to: newValue ?? "") }
+    }
+    
     var composerSort: String? {
         get { string(for: .composerSort) }
         set { set(metadataItem: .composerSort, to: newValue ?? "") }
@@ -443,6 +474,11 @@ extension Tag {
         set { set(metadataItem: .conductor, to: newValue ?? "") }
     }
     
+    var conductorID: Int? {
+        get { integer(for: .conductorID) }
+        set { set(metadataItem: .conductorID, to: newValue ?? 0) }
+    }
+
     var contentAdvisory: ContentAdvisory? {
         get {
             let stringValue = string(for: .contentAdvisory) ?? ""
@@ -477,6 +513,11 @@ extension Tag {
         set { set(metadataItem: .copyright, to: newValue ?? "") }
     }
     
+    var copyrightStatement: String? {
+        get { string(for: .copyrightStatement) }
+        set { set(metadataItem: .copyrightStatement, to: newValue ?? "") }
+    }
+    
     var copyrightWebpage: String? {
         get { string(for: .copyrightWebpage) }
         set { set(metadataItem: .copyrightWebpage, to: newValue ?? "") }
@@ -496,6 +537,51 @@ extension Tag {
         get { intArrayFromData(for: .discNumber) }
         set { set(metadataItem: .discNumber, to: newValue ?? [])
         }
+    }
+    
+    var editDateAndDescription1: String? {
+        get { string(for: .editDateAndDescription1) }
+        set { set(metadataItem: .editDateAndDescription1, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription2: String? {
+        get { string(for: .editDateAndDescription2) }
+        set { set(metadataItem: .editDateAndDescription2, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription3: String? {
+        get { string(for: .editDateAndDescription3) }
+        set { set(metadataItem: .editDateAndDescription3, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription4: String? {
+        get { string(for: .editDateAndDescription4) }
+        set { set(metadataItem: .editDateAndDescription4, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription5: String? {
+        get { string(for: .editDateAndDescription5) }
+        set { set(metadataItem: .editDateAndDescription5, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription6: String? {
+        get { string(for: .editDateAndDescription6) }
+        set { set(metadataItem: .editDateAndDescription6, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription7: String? {
+        get { string(for: .editDateAndDescription7) }
+        set { set(metadataItem: .editDateAndDescription7, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription8: String? {
+        get { string(for: .editDateAndDescription8) }
+        set { set(metadataItem: .editDateAndDescription8, to: newValue ?? "") }
+    }
+    
+    var editDateAndDescription9: String? {
+        get { string(for: .editDateAndDescription9) }
+        set { set(metadataItem: .editDateAndDescription9, to: newValue ?? "") }
     }
     
     var encodedBy: String? {
@@ -528,6 +614,27 @@ extension Tag {
         set { set(metadataItem: .executiveProducer, to: newValue ?? "") }
     }
     
+    var filmmakerUrl: String? {
+        get { string(for: .filmMakerUrl) }
+        set { set(metadataItem: .filmMakerUrl, to: newValue ?? "") }
+    }
+    
+    var format: String? {
+        get { string(for: .format) }
+        set { set(metadataItem: .format, to: newValue ?? "") }
+    }
+    
+    var gaplessPlayback: Bool? {
+        get { boolean(for: .gaplessPlayback) }
+        set {
+            if newValue == true {
+                set(metadataItem: .gaplessPlayback, to: 1)
+            } else {
+                set(metadataItem: .gaplessPlayback, to: 0)
+            }
+        }
+    }
+
     var genre: String? {
         get { string(for: .genre) }
         set { set(metadataItem: .genre, to: newValue ?? "") }
@@ -548,6 +655,16 @@ extension Tag {
                 set(metadataItem: .genreID, to: newInt)
             }
         }
+    }
+    
+    var grouping: String? {
+        get { string(for: .grouping) }
+        set { set(metadataItem: .grouping, to: newValue ?? "") }
+    }
+
+    var information: String? {
+        get { string(for: .information) }
+        set { set(metadataItem: .information, to: newValue ?? "") }
     }
     
     var initialKey: KeySignature? {
@@ -575,6 +692,11 @@ extension Tag {
         }
     }
     
+    var label: String? {
+        get { string(for: .label) }
+        set { set(metadataItem: .label, to: newValue ?? "") }
+    }
+
     var language: [ISO6392Codes]? {
         get {
             if let str = string(for: .language) {
@@ -668,9 +790,9 @@ extension Tag {
         set { set(metadataItem: .network, to: newValue ?? "") }
     }
     
-    var onlineExtras: String? {
-        get { string(for: .onlineExtras) }
-        set { set(metadataItem: .onlineExtras, to: newValue ?? "") }
+    var website: String? {
+        get { string(for: .website) }
+        set { set(metadataItem: .website, to: newValue ?? "") }
     }
     
     var originalAlbum: String? {
@@ -699,6 +821,11 @@ extension Tag {
         set { set(metadataItem: .originalLyricist, to: newValue ?? "") }
     }
     
+    var owner: String? {
+        get { string(for: .owner) }
+        set { set(metadataItem: .owner, to: newValue ?? "") }
+    }
+    
     var paymentWebpage: String? {
         get { string(for: .paymentWebpage) }
         set { set(metadataItem: .paymentWebpage, to: newValue ?? "") }
@@ -714,6 +841,11 @@ extension Tag {
         set { set(metadataItem: .phonogramRights, to: newValue ?? "") }
     }
     
+    var playlistID: Int? {
+        get { integer(for: .playlistID) }
+        set { set(metadataItem: .playlistID, to: newValue ?? 0) }
+    }
+
     var podcast: Bool? {
         get { boolean(for: .podcast) }
         set {
@@ -730,9 +862,9 @@ extension Tag {
         set { set(metadataItem: .podcastCategory, to: newValue ?? "") }
     }
     
-    var podcastDescription: String? {
-        get { string(for: .podcastDescription) }
-        set { set(metadataItem: .podcastDescription, to: newValue ?? "") }
+    var songDescription: String? {
+        get { string(for: .songDescription) }
+        set { set(metadataItem: .songDescription, to: newValue ?? "") }
     }
     
     var podcastID: String? {
@@ -789,6 +921,11 @@ extension Tag {
         set { set(metadataItem: .producer, to: newValue ?? "") }
     }
     
+    var producerKeywords: String? {
+        get { string(for: .producerKeywords) }
+        set { set(metadataItem: .producerKeywords, to: newValue ?? "") }
+    }
+    
     var publisher: String? {
         get { string(for: .publisher) }
         set { set(metadataItem: .publisher, to: newValue ?? "") }
@@ -819,9 +956,19 @@ extension Tag {
         set { set(metadataItem: .recordCompany, to: newValue ?? "") }
     }
     
+    var requirements: String? {
+        get { string(for: .requirements) }
+        set { set(metadataItem: .requirements, to: newValue ?? "") }
+    }
+    
     var season: Int? {
         get { integer(for: .season) }
         set { set(metadataItem: .season, to: newValue ?? 0) }
+    }
+    
+    var seller: String? {
+        get { string(for: .seller) }
+        set { set(metadataItem: .seller, to: newValue ?? "") }
     }
     
     var seriesName: String? {
@@ -839,9 +986,30 @@ extension Tag {
         set { set(metadataItem: .seriesSort, to: newValue ?? "") }
     }
     
+    var showWorkAndMovement: Bool? {
+        get { boolean(for: .showWorkAndMovement) }
+        set {
+            if newValue == true {
+                set(metadataItem: .showWorkAndMovement, to: 1)
+            } else {
+                set(metadataItem: .showWorkAndMovement, to: 0)
+            }
+        }
+    }
+    
+    var softwareVersion: String? {
+        get { string(for: .softwareVersion) }
+        set { set(metadataItem: .softwareVersion, to: newValue ?? "") }
+    }
+    
     var soloist: String? {
         get { string(for: .soloist) }
         set { set(metadataItem: .soloist, to: newValue ?? "") }
+    }
+    
+    var songwriterKeywords: String? {
+        get { string(for: .songwriterKeywords) }
+        set { set(metadataItem: .songwriterKeywords, to: newValue ?? "") }
     }
     
     var soundEngineer: String? {
@@ -854,6 +1022,11 @@ extension Tag {
         set { set(metadataItem: .sourceCredit, to: newValue ?? "") }
     }
     
+    var subtitleKeywords: String? {
+        get { string(for: .subtitleKeywords) }
+        set { set(metadataItem: .subtitleKeywords, to: newValue ?? "") }
+    }
+    
     var thanks: String? {
         get { string(for: .thanks) }
         set { set(metadataItem: .thanks, to: newValue ?? "") }
@@ -862,6 +1035,11 @@ extension Tag {
     var title: String? {
         get { string(for: .title) }
         set { set(metadataItem: .title, to: newValue ?? "") }
+    }
+    
+    var titleKeywords: String? {
+        get { string(for: .titleKeywords) }
+        set { set(metadataItem: .titleKeywords, to: newValue ?? "") }
     }
     
     var titleSort: String? {
@@ -885,6 +1063,11 @@ extension Tag {
         set { set(metadataItem: .work, to: newValue ?? "") }
     }
     
+    var writer: String? {
+        get { string(for: .writer) }
+        set { set(metadataItem: .writer, to: newValue ?? "") }
+    }
+
     var encodingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
             date(for: .encodingTime)

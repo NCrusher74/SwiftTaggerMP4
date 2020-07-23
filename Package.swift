@@ -19,9 +19,6 @@ let package = Package(
         .package(
             url: "https://github.com/apple/swift-se0270-range-set",
             from: "1.0.0"),
-        .package(name: "MP4v2",
-                 url: "https://github.com/NCrusher74/Mp4v2.git",
-                 Package.Dependency.Requirement.branch("package")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -29,8 +26,7 @@ let package = Package(
         .target(
             name: "SwiftTaggerMP4",
             dependencies: [
-                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set"),
-                .product(name: "MP4v2", package: "MP4v2")],
+                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set")],
             path: "Sources"),
         .testTarget(
             name: "SwiftTaggerMP4Tests",

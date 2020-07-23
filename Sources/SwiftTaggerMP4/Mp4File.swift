@@ -8,13 +8,11 @@
 
 import Foundation
 import AVFoundation
-import CMP4v2
 
 public struct Mp4File {
     
     public let location: URL
     var asset: AVAsset
-    var fileHandle: MP4FileHandle
     
     public init(location: URL) throws {
         let validExtensions = ["mp4","aac", "m4a", "m4b"]
@@ -25,8 +23,6 @@ public struct Mp4File {
             throw Mp4File.Error.InvalidFileFormat
         }
         self.asset = AVAsset(url: location)
-        let fileName = location.fileName
-        self.fileHandle = MP4Read(fileName.cString(using: .utf8))
     }
     
     public mutating func write(using tag: Tag, writingTo url: URL, fileType: AVFileType) throws {
