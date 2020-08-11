@@ -13,6 +13,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            name: "SwiftMp4MetadataParser",
+            url: "https://github.com/NCrusher74/SwiftMp4MetadataParser",
+            .branch("master")),
+        .package(
             name: "Workspace",
             url: "https://github.com/SDGGiesbrecht/Workspace",
             .exact(Version(0, 32, 3))),
@@ -26,7 +30,8 @@ let package = Package(
         .target(
             name: "SwiftTaggerMP4",
             dependencies: [
-                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set")],
+                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set"),
+                .product(name: "SwiftMp4MetadataParser", package: "SwiftMp4MetadataParser")],
             path: "Sources"),
         .testTarget(
             name: "SwiftTaggerMP4Tests",
