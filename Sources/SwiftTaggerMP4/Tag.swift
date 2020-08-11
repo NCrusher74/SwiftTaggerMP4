@@ -7,62 +7,9 @@
 //
 
 import Foundation
-import AVFoundation
 import Cocoa
 
 public struct Tag {
-    
-    var metadata: [AVMetadataItem]
-    
-    public init(from file: Mp4File) throws {
-        let asset = file.asset
-        let formatsKey = "availableMetadataFormats"
-        
-        // Asynchronous weirdness begins here.
-        var result: Result<AVKeyValueStatus, Error> = .success(.loaded)
-        var inProgress = true
-
-        asset.loadValuesAsynchronously(forKeys: [formatsKey]) {
-            defer { inProgress = false }
-            
-            var error: NSError? = nil
-            let status = asset.statusOfValue(forKey: formatsKey, error: &error)
-            if let failure = error {
-                result = .failure(failure)
-            } else {
-                result = .success(status)
-            }
-        }
-        while inProgress {
-            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
-        }
-        // Asynchronous weirdness ends here.
-        
-        var loadedMetadata: [AVMetadataItem] = []
-        switch result {
-            case .failure(let error):
-                throw error
-            case .success(let status):
-                switch status {
-                    case .loaded:
-                        for format in asset.availableMetadataFormats {
-                            loadedMetadata.append(contentsOf: asset.metadata(forFormat: format))
-                         }
-                        inProgress = false
-                    case .loading: fatalError("Status 'loading' should not coincide with result 'success'")
-                    case .cancelled: throw Mp4File.Error.LoadingCancelled
-                    case .unknown: fatalError("Status 'unknown' should not coincide with result 'success'")
-                    case .failed: throw Mp4File.Error.LoadingError
-                    @unknown default: inProgress = false
-            }
-        }
-        self.metadata = loadedMetadata
-    }
-}
-
-
-@available(OSX 10.13, *)
-extension Tag {
     
     // MARK: Private Helper - getters
     private func string(for identifier: Metadata) -> String? {
@@ -945,6 +892,5 @@ extension Tag {
         item.value = imageData as NSData
         self.metadata.append(item)
     }
-    
 }
 

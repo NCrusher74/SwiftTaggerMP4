@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 extension Mp4File {
     
