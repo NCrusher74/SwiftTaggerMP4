@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftMp4MetadataParser
 
 @available(OSX 10.13, *)
 public struct Mp4File {
@@ -23,6 +24,8 @@ public struct Mp4File {
         }
     }
     
-    public mutating func write(using tag: Tag, writingTo url: URL) throws {
+    public mutating func write(tag: Tag, outputLocation: URL) throws {
+        let parser = try SwiftMp4MetadataParser.Mp4File(location: self.location)
+        try parser.write(outputLocation: outputLocation)
     }
 }

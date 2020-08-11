@@ -29,7 +29,7 @@ public struct Tag {
         self.metadata = entries
     }
     
-    // MARK: Convenience getter/setters
+    // MARK: - A
     var acknowledgment: String? {
         get {
             do {
@@ -349,6 +349,7 @@ public struct Tag {
         }
     }
 
+    // MARK: - B-C
     var bpm: Int? {
         get {
             do {
@@ -652,6 +653,7 @@ public struct Tag {
         }
     }
     
+    // MARK: - D-E
     var description: String? {
         get {
             do {
@@ -714,24 +716,6 @@ public struct Tag {
         }
     }
 
-    var trackNumber: [Int] {
-        get {
-            do {
-                return try parser.get(.trackNumber)
-            } catch {
-                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackNumber.rawValue)")
-                return []
-            }
-        }
-        set {
-            do {
-                try parser.set(.trackNumber, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackNumber.rawValue)")
-            }
-        }
-    }
-    
     var editDateAndDescription1: String? {
         get {
             do {
@@ -996,6 +980,7 @@ public struct Tag {
         }
     }
     
+    // MARK: - F-K
     var filmMakerUrl: String? {
         get {
             do {
@@ -1179,6 +1164,7 @@ public struct Tag {
         }
     }
 
+    // MARK: - L-N
     var label: String? {
         get {
             do {
@@ -1399,6 +1385,7 @@ public struct Tag {
         }
     }
     
+    // MARK: - O-P
     var originalArtist: String? {
         get {
             do {
@@ -1690,6 +1677,7 @@ public struct Tag {
         }
     }
 
+    // MARK: - R-S
     var rating: ContentRating {
         get {
             do {
@@ -2061,6 +2049,7 @@ public struct Tag {
         }
     }
     
+    // MARK: - T-Z
     var title: String? {
         get {
             do {
@@ -2141,6 +2130,24 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.thanks.rawValue)")
                 }
+            }
+        }
+    }
+    
+    var trackNumber: [Int] {
+        get {
+            do {
+                return try parser.get(.trackNumber)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackNumber.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.trackNumber, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackNumber.rawValue)")
             }
         }
     }
@@ -2275,7 +2282,7 @@ public struct Tag {
         }
     }
     
-    var trackShowDescription: String? {
+    var tvShowDescription: String? {
         get {
             do {
                 return try parser.get(.tvShowDescription)

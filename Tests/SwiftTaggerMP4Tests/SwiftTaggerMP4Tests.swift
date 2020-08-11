@@ -1,329 +1,181 @@
 import XCTest
 import Cocoa
-import SwiftMp4MetadataParser
+//import SwiftMp4MetadataParser
 @testable import SwiftTaggerMP4
 
 @available(OSX 10.13, *)
 final class SwiftTaggerMP4Tests: XCTestCase {
-//    func testStringAndStringArrayCreation() throws {
-//        let source = try Mp4File(location: sampleNoMeta)
-//        try source.set(.acknowledgment,
-//                       stringValue: "Acknowledgment",
-//                       customName: nil)
-//        try source.set(.album,
-//                       stringValue: "Album",
-//                       customName: nil)
-//        try source.set(.albumArtist,
-//                       stringValue: "Album Artist",
-//                       customName: nil)
-//        try source.set(.albumArtistSort,
-//                       stringValue: "Album Artist Sort",
-//                       customName: nil)
-//        try source.set(.albumSort,
-//                       stringValue: "Album Sort",
-//                       customName: nil)
-//        try source.set(.arranger,
-//                       stringValue: "Arranger",
-//                       customName: nil)
-//        try source.set(.arrangerKeywords,
-//                       arrayValue: ["Arranger", "Keywords"])
-//        try source.set(.artDirector,
-//                       stringValue: "Art Director",
-//                       customName: nil)
-//        try source.set(.artist,
-//                       stringValue: "Artist",
-//                       customName: nil)
-//        try source.set(.artistKeywords,
-//                       arrayValue: ["Artist", "Keywords"])
-//        try source.set(.artistSort,
-//                       stringValue: "Artist Sort",
-//                       customName: nil)
-//        try source.set(.artistUrl,
-//                       stringValue: "Artist Url",
-//                       customName: nil)
-//        try source.set(.category,
-//                       stringValue: "Category",
-//                       customName: nil)
-//        try source.set(.comment,
-//                       stringValue: "Comment",
-//                       customName: nil)
-//        try source.set(.composer,
-//                       stringValue: "Composer",
-//                       customName: nil)
-//        try source.set(.composerKeywords,
-//                       arrayValue: ["Composer", "Keywords"])
-//        try source.set(.composerSort,
-//                       stringValue: "Composer Sort",
-//                       customName: nil)
-//        try source.set(.conductor,
-//                       stringValue: "Conductor",
-//                       customName: nil)
-//        try source.set(.copyright,
-//                       stringValue: "Copyright",
-//                       customName: nil)
-//        try source.set(.copyrightStatement,
-//                       stringValue: "Copyright Statement",
-//                       customName: nil)
-//        try source.set(.customGenre,
-//                       stringValue: "Custom Genre",
-//                       customName: nil)
-//        try source.set(.description,
-//                       stringValue: "Description",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription1,
-//                       stringValue: "Edit Date Description 1",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription2,
-//                       stringValue: "Edit Date Description 2",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription3,
-//                       stringValue: "Edit Date Description 3",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription4,
-//                       stringValue: "Edit Date Description 4",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription5,
-//                       stringValue: "Edit Date Description 5",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription6,
-//                       stringValue: "Edit Date Description 6",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription7,
-//                       stringValue: "Edit Date Description 7",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription8,
-//                       stringValue: "Edit Date Description 8",
-//                       customName: nil)
-//        try source.set(.editDateAndDescription9,
-//                       stringValue: "Edit Date Description 9",
-//                       customName: nil)
-//        try source.set(.encodedBy,
-//                       stringValue: "Encoded By",
-//                       customName: nil)
-//        try source.set(.encodingTool,
-//                       stringValue: "Encoding Tool",
-//                       customName: nil)
-//        try source.set(.executiveProducer,
-//                       stringValue: "Executive Producer",
-//                       customName: nil)
-//        try source.set(.filmMakerUrl,
-//                       stringValue: "Filmmaker Url",
-//                       customName: nil)
-//        try source.set(.format,
-//                       stringValue: "Format",
-//                       customName: nil)
-//        try source.set(.grouping,
-//                       stringValue: "Grouping",
-//                       customName: nil)
-//        try source.set(.information,
-//                       stringValue: "Information",
-//                       customName: nil)
-//        try source.set(.keywords,
-//                       arrayValue: ["Key","Words"])
-//        try source.set(.label,
-//                       stringValue: "Label",
-//                       customName: nil)
-//        try source.set(.linerNotes,
-//                       stringValue: "Liner Notes",
-//                       customName: nil)
-//        try source.set(.longDescription,
-//                       stringValue: "Long Description",
-//                       customName: nil)
-//        try source.set(.lyricist,
-//                       stringValue: "Lyricist",
-//                       customName: nil)
-//        try source.set(.lyrics,
-//                       stringValue: "Lyrics",
-//                       customName: nil)
-//        try source.set(.movementName,
-//                       stringValue: "Movement Name",
-//                       customName: nil)
-//        try source.set(.originalArtist,
-//                       stringValue: "Original Artist",
-//                       customName: nil)
-//        try source.set(.owner,
-//                       stringValue: "Owner",
-//                       customName: nil)
-//        try source.set(.performers,
-//                       stringValue: "Performers",
-//                       customName: nil)
-//        try source.set(.predefinedGenre,
-//                       stringValue: "Predefined Genre",
-//                       customName: nil)
-//        try source.set(.producer,
-//                       stringValue: "Producer",
-//                       customName: nil)
-//        try source.set(.producerKeywords,
-//                       arrayValue: ["Producer", "Keywords"])
-//        try source.set(.publisher,
-//                       stringValue: "Publisher",
-//                       customName: nil)
-//        try source.set(.publisherUrl,
-//                       stringValue: "Publisher Url",
-//                       customName: nil)
-//        try source.set(.purchaseUrl,
-//                       stringValue: "Purchase Url",
-//                       customName: nil)
-//        try source.set(.recordCompany,
-//                       stringValue: "Record Company",
-//                       customName: nil)
-//        try source.set(.recordingCopyright,
-//                       stringValue: "Recording Copyright",
-//                       customName: nil)
-//        try source.set(.requirements,
-//                       stringValue: "Requirements",
-//                       customName: nil)
-//        try source.set(.sellerID,
-//                       stringValue: "Seller",
-//                       customName: nil)
-//        try source.set(.softwareVersion,
-//                       stringValue: "Software Version",
-//                       customName: nil)
-//        try source.set(.soloist,
-//                       stringValue: "Soloist",
-//                       customName: nil)
-//        try source.set(.songDescription,
-//                       stringValue: "Song Description",
-//                       customName: nil)
-//        try source.set(.songwriterKeywords,
-//                       arrayValue: ["Songwriter", "Keywords"])
-//        try source.set(.soundEngineer,
-//                       stringValue: "Sound Engineer",
-//                       customName: nil)
-//        try source.set(.sourceCredit,
-//                       stringValue: "Source Credit",
-//                       customName: nil)
-//        try source.set(.subtitle,
-//                       stringValue: "Subtitle",
-//                       customName: nil)
-//        try source.set(.subtitleKeywords,
-//                       arrayValue: ["Subtitle", "Keywords"])
-//        try source.set(.thanks,
-//                       stringValue: "Thanks",
-//                       customName: nil)
-//        try source.set(.title,
-//                       stringValue: "Title",
-//                       customName: nil)
-//        try source.set(.titleKeywords,
-//                       arrayValue: ["Title", "Keywords"])
-//        try source.set(.titleSort,
-//                       stringValue: "Title Sort",
-//                       customName: nil)
-//        try source.set(.trackSubtitle,
-//                       stringValue: "Track Subtitle",
-//                       customName: nil)
-//        try source.set(.tvEpisodeTitle,
-//                       stringValue: "TV Episode Title",
-//                       customName: nil)
-//        try source.set(.tvNetwork,
-//                       stringValue: "TV Network",
-//                       customName: nil)
-//        try source.set(.tvShow,
-//                       stringValue: "TV Show",
-//                       customName: nil)
-//        try source.set(.tvShowDescription,
-//                       stringValue: "TV Show Description",
-//                       customName: nil)
-//        try source.set(.tvShowSort,
-//                       stringValue: "TV Show Sort",
-//                       customName: nil)
-//        try source.set(.website,
-//                       stringValue: "Website",
-//                       customName: nil)
-//        try source.set(.workName,
-//                       stringValue: "Work",
-//                       customName: nil)
-//        try source.set(.writer,
-//                       stringValue: "Writer",
-//                       customName: nil)
-//        try source.set(.unknown,
-//                       stringValue: "Unknown",
-//                       customName: "UNKNOWN")
-//        
-//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
-//        try source.write(outputLocation: outputUrl)
-//        
-//        let output = try Mp4File(location: outputUrl)
-//        XCTAssertEqual(try output.get(.acknowledgment), "Acknowledgment")
-//        XCTAssertEqual(try output.get(.album), "Album")
-//        XCTAssertEqual(try output.get(.albumArtist), "Album Artist")
-//        XCTAssertEqual(try output.get(.albumArtistSort), "Album Artist Sort")
-//        XCTAssertEqual(try output.get(.albumSort), "Album Sort")
-//        XCTAssertEqual(try output.get(.arranger), "Arranger")
-//        XCTAssertEqual(try output.get(.arrangerKeywords), ["Arranger", "Keywords"])
-//        XCTAssertEqual(try output.get(.artDirector), "Art Director")
-//        XCTAssertEqual(try output.get(.artist), "Artist")
-//        XCTAssertEqual(try output.get(.artistKeywords), ["Artist", "Keywords"])
-//        XCTAssertEqual(try output.get(.artistSort), "Artist Sort")
-//        XCTAssertEqual(try output.get(.artistUrl), "Artist Url")
-//        XCTAssertEqual(try output.get(.category), "Category")
-//        XCTAssertEqual(try output.get(.comment), "Comment")
-//        XCTAssertEqual(try output.get(.composer), "Composer")
-//        XCTAssertEqual(try output.get(.composerKeywords), ["Composer", "Keywords"])
-//        XCTAssertEqual(try output.get(.composerSort), "Composer Sort")
-//        XCTAssertEqual(try output.get(.conductor), "Conductor")
-//        XCTAssertEqual(try output.get(.copyright), "Copyright")
-//        XCTAssertEqual(try output.get(.copyrightStatement), "Copyright Statement")
-//        XCTAssertEqual(try output.get(.customGenre), "Custom Genre")
-//        XCTAssertEqual(try output.get(.description), "Description")
-//        XCTAssertEqual(try output.get(.editDateAndDescription1), "Edit Date Description 1")
-//        XCTAssertEqual(try output.get(.editDateAndDescription2), "Edit Date Description 2")
-//        XCTAssertEqual(try output.get(.editDateAndDescription3), "Edit Date Description 3")
-//        XCTAssertEqual(try output.get(.editDateAndDescription4), "Edit Date Description 4")
-//        XCTAssertEqual(try output.get(.editDateAndDescription5), "Edit Date Description 5")
-//        XCTAssertEqual(try output.get(.editDateAndDescription6), "Edit Date Description 6")
-//        XCTAssertEqual(try output.get(.editDateAndDescription7), "Edit Date Description 7")
-//        XCTAssertEqual(try output.get(.editDateAndDescription8), "Edit Date Description 8")
-//        XCTAssertEqual(try output.get(.editDateAndDescription9), "Edit Date Description 9")
-//        XCTAssertEqual(try output.get(.encodedBy), "Encoded By")
-//        XCTAssertEqual(try output.get(.encodingTool), "Encoding Tool")
-//        XCTAssertEqual(try output.get(.executiveProducer), "Executive Producer")
-//        XCTAssertEqual(try output.get(.filmMakerUrl), "Filmmaker Url")
-//        XCTAssertEqual(try output.get(.format), "Format")
-//        XCTAssertEqual(try output.get(.grouping), "Grouping")
-//        XCTAssertEqual(try output.get(.information), "Information")
-//        XCTAssertEqual(try output.get(.keywords), ["Key","Words"])
-//        XCTAssertEqual(try output.get(.label), "Label")
-//        XCTAssertEqual(try output.get(.linerNotes), "Liner Notes")
-//        XCTAssertEqual(try output.get(.longDescription), "Long Description")
-//        XCTAssertEqual(try output.get(.lyricist), "Lyricist")
-//        XCTAssertEqual(try output.get(.lyrics), "Lyrics")
-//        XCTAssertEqual(try output.get(.movementName), "Movement Name")
-//        XCTAssertEqual(try output.get(.originalArtist), "Original Artist")
-//        XCTAssertEqual(try output.get(.owner), "Owner")
-//        XCTAssertEqual(try output.get(.performers), "Performers")
-//        XCTAssertEqual(try output.get(.predefinedGenre), "Predefined Genre")
-//        XCTAssertEqual(try output.get(.producer), "Producer")
-//        XCTAssertEqual(try output.get(.producerKeywords), ["Producer", "Keywords"])
-//        XCTAssertEqual(try output.get(.publisher), "Publisher")
-//        XCTAssertEqual(try output.get(.publisherUrl), "Publisher Url")
-//        XCTAssertEqual(try output.get(.purchaseUrl), "Purchase Url")
-//        XCTAssertEqual(try output.get(.recordCompany), "Record Company")
-//        XCTAssertEqual(try output.get(.recordingCopyright), "Recording Copyright")
-//        XCTAssertEqual(try output.get(.requirements), "Requirements")
-//        XCTAssertEqual(try output.get(.sellerID), "Seller")
-//        XCTAssertEqual(try output.get(.softwareVersion), "Software Version")
-//        XCTAssertEqual(try output.get(.soloist), "Soloist")
-//        XCTAssertEqual(try output.get(.songDescription), "Song Description")
-//        XCTAssertEqual(try output.get(.songwriterKeywords), ["Songwriter", "Keywords"])
-//        XCTAssertEqual(try output.get(.soundEngineer), "Sound Engineer")
-//        XCTAssertEqual(try output.get(.sourceCredit), "Source Credit")
-//        XCTAssertEqual(try output.get(.subtitle), "Subtitle")
-//        XCTAssertEqual(try output.get(.subtitleKeywords), ["Subtitle", "Keywords"])
-//        XCTAssertEqual(try output.get(.thanks), "Thanks")
-//        XCTAssertEqual(try output.get(.title), "Title")
-//        XCTAssertEqual(try output.get(.titleKeywords), ["Title", "Keywords"])
-//        XCTAssertEqual(try output.get(.titleSort), "Title Sort")
-//        XCTAssertEqual(try output.get(.trackSubtitle), "Track Subtitle")
-//        XCTAssertEqual(try output.get(.tvEpisodeTitle), "TV Episode Title")
-//        XCTAssertEqual(try output.get(.tvNetwork), "TV Network")
-//        XCTAssertEqual(try output.get(.tvShow), "TV Show")
-//        XCTAssertEqual(try output.get(.tvShowDescription), "TV Show Description")
-//        XCTAssertEqual(try output.get(.tvShowSort), "TV Show Sort")
-//        XCTAssertEqual(try output.get(.website), "Website")
-//        XCTAssertEqual(try output.get(.workName), "Work")
-//        XCTAssertEqual(try output.get(.writer), "Writer")
-//        XCTAssertEqual(try output.get(customStringMetadata: "UNKNOWN"), "Unknown")
-//    }
-//
+    func testStringAndStringArrayCreation() throws {
+        var source = try mp4File(withMeta: false)
+        var tag = try Tag(from: source)
+        tag.acknowledgment = "Acknowledgment"
+        tag.album = "Album"
+        tag.album = "Album Artist"
+        tag.albumArtistSort = "Album Artist Sort"
+        tag.albumSort = "Album Sort"
+        tag.arranger = "Arranger"
+        tag.arrangerKeywords = ["Arranger", "Keywords"]
+        tag.artDirector = "Art Director"
+        tag.artist = "Artist"
+        tag.artistKeywords = ["Artist", "Keywords"]
+        tag.artistSort = "Artist Sort"
+        tag.artistUrl = "Artist Url"
+        tag.category = "Category"
+        tag.comment = "Comment"
+        tag.composer = "Composer"
+        tag.composerKeywords = ["Composer", "Keywords"]
+        tag.composerSort = "Composer Sort"
+        tag.conductor = "Conductor"
+        tag.copyright = "Copyright"
+        tag.copyrightStatement = "Copyright Statement"
+        tag.customGenre = "Custom Genre"
+        tag.description = "Description"
+        tag.director = "Director"
+        tag.editDateAndDescription1 = "Edit Date Description 1"
+        tag.editDateAndDescription2 = "Edit Date Description 2"
+        tag.editDateAndDescription3 = "Edit Date Description 3"
+        tag.editDateAndDescription4 = "Edit Date Description 4"
+        tag.editDateAndDescription5 = "Edit Date Description 5"
+        tag.editDateAndDescription6 = "Edit Date Description 6"
+        tag.editDateAndDescription7 = "Edit Date Description 7"
+        tag.editDateAndDescription8 = "Edit Date Description 8"
+        tag.editDateAndDescription9 = "Edit Date Description 9"
+        tag.encodedBy = "Encoded By"
+        tag.encodingTool = "Encoding Tool"
+        tag.executiveProducer = "Executive Producer"
+        tag.filmMakerUrl = "Filmmaker Url"
+        tag.format = "Format"
+        tag.grouping = "Grouping"
+        tag.information = "Information"
+        tag.keywords = ["Key","Words"]
+        tag.label = "Label"
+        tag.linerNotes = "Liner Notes"
+        tag.longDescription = "Long Description"
+        tag.lyricist = "Lyricist"
+        tag.lyrics = "Lyrics"
+        tag.movementName = "Movement Name"
+        tag.narrator = "Narrator"
+        tag.originalArtist = "Original Artist"
+        tag.owner = "Owner"
+        tag.performers = "Performers"
+        tag.predefinedGenre = .audiobooks
+        tag.producer = "Producer"
+        tag.producerKeywords = ["Producer", "Keywords"]
+        tag.publisher = "Publisher"
+        tag.publisherUrl = "Publisher Url"
+        tag.podcastUrl = "Podcast Url"
+        tag.recordCompany = "Record Company"
+        tag.recordingCopyright = "Recording Copyright"
+        tag.requirements = "Requirements"
+        tag.sellerID = "Seller"
+        tag.softwareVersion = "Software Version"
+        tag.soloist = "Soloist"
+        tag.songDescription = "Song Description"
+        tag.songwriterKeywords = ["Songwriter", "Keywords"]
+        tag.soundEngineer = "Sound Engineer"
+        tag.sourceCredit = "Source Credit"
+        tag.subtitle = "Subtitle"
+        tag.subtitleKeywords = ["Subtitle", "Keywords"]
+        tag.thanks = "Thanks"
+        tag.title = "Title"
+        tag.titleKeywords = ["Title", "Keywords"]
+        tag.titleSort = "Title Sort"
+        tag.trackSubtitle = "Track Subtitle"
+        tag.tvEpisodeTitle = "TV Episode Title"
+        tag.tvNetwork = "TV Network"
+        tag.tvShow = "TV Show"
+        tag.tvShowDescription = "TV Show Description"
+        tag.tvShowSort = "TV Show Sort"
+        tag.website = "Website"
+        tag.workName = "Work"
+        tag.writer = "Writer"
+        try tag.setFreeformMetadata(name: "Unknown", stringValue: "Unknown")
+        
+        let outputUrl = try localDirectory(fileName: "stringtest", fileExtension: "m4a")
+        try source.write(outputLocation: outputUrl)
+        
+        let output = try Tag(from: Mp4File(location: outputUrl))
+        XCTAssertEqual(output.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(output.album, "Album")
+        XCTAssertEqual(output.albumArtist, "Album Artist")
+        XCTAssertEqual(output.albumArtistSort, "Album Artist Sort")
+        XCTAssertEqual(output.albumSort, "Album Sort")
+        XCTAssertEqual(output.arranger, "Arranger")
+        XCTAssertEqual(output.arrangerKeywords, ["Arranger", "Keywords"])
+        XCTAssertEqual(output.artDirector, "Art Director")
+        XCTAssertEqual(output.artist, "Artist")
+        XCTAssertEqual(output.artistKeywords, ["Artist", "Keywords"])
+        XCTAssertEqual(output.artistSort, "Artist Sort")
+        XCTAssertEqual(output.artistUrl, "Artist Url")
+        XCTAssertEqual(output.category, "Category")
+        XCTAssertEqual(output.comment, "Comment")
+        XCTAssertEqual(output.composer, "Composer")
+        XCTAssertEqual(output.composerKeywords, ["Composer", "Keywords"])
+        XCTAssertEqual(output.composerSort, "Composer Sort")
+        XCTAssertEqual(output.conductor, "Conductor")
+        XCTAssertEqual(output.copyright, "Copyright")
+        XCTAssertEqual(output.copyrightStatement, "Copyright Statement")
+        XCTAssertEqual(output.customGenre, "Custom Genre")
+        XCTAssertEqual(output.description, "Description")
+        XCTAssertEqual(output.director, "Director")
+        XCTAssertEqual(output.editDateAndDescription1, "Edit Date Description 1")
+        XCTAssertEqual(output.editDateAndDescription2, "Edit Date Description 2")
+        XCTAssertEqual(output.editDateAndDescription3, "Edit Date Description 3")
+        XCTAssertEqual(output.editDateAndDescription4, "Edit Date Description 4")
+        XCTAssertEqual(output.editDateAndDescription5, "Edit Date Description 5")
+        XCTAssertEqual(output.editDateAndDescription6, "Edit Date Description 6")
+        XCTAssertEqual(output.editDateAndDescription7, "Edit Date Description 7")
+        XCTAssertEqual(output.editDateAndDescription8, "Edit Date Description 8")
+        XCTAssertEqual(output.editDateAndDescription9, "Edit Date Description 9")
+        XCTAssertEqual(output.encodedBy, "Encoded By")
+        XCTAssertEqual(output.encodingTool, "Encoding Tool")
+        XCTAssertEqual(output.executiveProducer, "Executive Producer")
+        XCTAssertEqual(output.filmMakerUrl, "Filmmaker Url")
+        XCTAssertEqual(output.grouping, "Grouping")
+        XCTAssertEqual(output.information, "Information")
+        XCTAssertEqual(output.keywords, ["Key", "Words"])
+        XCTAssertEqual(output.label, "Label")
+        XCTAssertEqual(output.linerNotes, "Liner Notes")
+        XCTAssertEqual(output.format, "Format")
+        XCTAssertEqual(output.longDescription, "Long Description")
+        XCTAssertEqual(output.lyricist, "Lyricist")
+        XCTAssertEqual(output.lyrics, "Lyrics")
+        XCTAssertEqual(output.movementName, "Movement Name")
+        XCTAssertEqual(output.narrator, "Narrator")
+        XCTAssertEqual(output.originalArtist, "Original Artist")
+        XCTAssertEqual(output.owner, "Owner")
+        XCTAssertEqual(output.performers, "Performers")
+        XCTAssertEqual(output.predefinedGenre, .audiobooks)
+        XCTAssertEqual(output.producer, "Producer")
+        XCTAssertEqual(output.producerKeywords, ["Producer", "Keywords"])
+        XCTAssertEqual(output.publisher, "Publisher")
+        XCTAssertEqual(output.publisherUrl, "Publisher Url")
+        XCTAssertEqual(output.podcastUrl, "Podcast Url")
+        XCTAssertEqual(output.recordCompany, "Record Company")
+        XCTAssertEqual(output.recordingCopyright, "Recording Copyright")
+        XCTAssertEqual(output.requirements, "Requirements")
+        XCTAssertEqual(output.sellerID, "Seller ID")
+        XCTAssertEqual(output.softwareVersion, "Software Version")
+        XCTAssertEqual(output.soloist, "Soloist")
+        XCTAssertEqual(output.songDescription, "Song Description")
+        XCTAssertEqual(output.songwriterKeywords, ["Songwriter", "Keywords"])
+        XCTAssertEqual(output.soundEngineer, "Sound Engineer")
+        XCTAssertEqual(output.sourceCredit, "Source Credit")
+        XCTAssertEqual(output.subtitle, "Subtitle")
+        XCTAssertEqual(output.subtitleKeywords, ["Subtitle", "Keywords"])
+        XCTAssertEqual(output.thanks, "Thanks")
+        XCTAssertEqual(output.title, "Title")
+        XCTAssertEqual(output.titleKeywords, ["Title", "Keywords"])
+        XCTAssertEqual(output.titleSort, "Title Sort")
+        XCTAssertEqual(output.trackSubtitle, "Track Subtitle")
+        XCTAssertEqual(output.tvEpisodeTitle, "TV Episode Title")
+        XCTAssertEqual(output.tvNetwork, "TV Network")
+        XCTAssertEqual(output.tvShow, "TV Show")
+        XCTAssertEqual(output.tvShowDescription, "TV Show Description")
+        XCTAssertEqual(output.tvShowSort, "TV Show Sort")
+        XCTAssertEqual(output.website, "Website")
+        XCTAssertEqual(output.workName, "Work Name")
+        XCTAssertEqual(output.writer, "Writer")
+        XCTAssertEqual(try output.getFreeformMetadata(name: "UNKNOWN"), "Unknown")
+    }
 }
