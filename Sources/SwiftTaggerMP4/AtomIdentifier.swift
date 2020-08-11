@@ -5,11 +5,11 @@
 //  Created by Nolaine Crusher on 4/21/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 
-
+import SwiftMp4MetadataParser
 import Foundation
 
 @available(OSX 10.13, *)
-enum Metadata: String, CaseIterable {
+public enum AtomIdentifier: String, CaseIterable {
     case acknowledgment = "\u{00A9}cak"
     case album = "\u{00A9}alb"
     case albumArtist = "aART"
@@ -156,6 +156,41 @@ enum Metadata: String, CaseIterable {
                  .tvEpisodeNumber,
                  .tvSeason: return .integer
             default: return .string
+        }
+    }
+    
+    var stringMetadataID: SwiftMp4MetadataParser.MetadataIDString? {
+        switch self.handler {
+            case .string: return SwiftMp4MetadataParser.MetadataIDString(rawValue: self.rawValue)!
+            default: return nil
+        }
+    }
+    
+    var stringArrayMetadataID: SwiftMp4MetadataParser.MetadataIDArrayString? {
+        switch self.handler {
+            case .stringArray: return SwiftMp4MetadataParser.MetadataIDArrayString(rawValue: self.rawValue)!
+            default: return nil
+        }
+    }
+
+    var integerMetadataID: SwiftMp4MetadataParser.MetadataIDInt? {
+        switch self.handler {
+            case .integer, .boolean: return SwiftMp4MetadataParser.MetadataIDInt(rawValue: self.rawValue)!
+            default: return nil
+        }
+    }
+
+    var intArrayMetadataID: SwiftMp4MetadataParser.MetadataIDArrayInt? {
+        switch self.handler {
+            case .intArray: return SwiftMp4MetadataParser.MetadataIDArrayInt(rawValue: self.rawValue)!
+            default: return nil
+        }
+    }
+
+    var dateMetadataID: SwiftMp4MetadataParser.MetadataIDDate? {
+        switch self.handler {
+            case .date: return SwiftMp4MetadataParser.MetadataIDDate(rawValue: self.rawValue)!
+            default: return nil
         }
     }
 }

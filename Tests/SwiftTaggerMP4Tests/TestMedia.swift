@@ -28,6 +28,7 @@ enum fileVersion {
     }
 }
 
+@available(OSX 10.13, *)
 func mp4File(withMeta: Bool) throws -> Mp4File {
     if withMeta {
         return try Mp4File(location: fileVersion.withMeta.url)
@@ -36,6 +37,7 @@ func mp4File(withMeta: Bool) throws -> Mp4File {
     }
 }
 
+@available(OSX 10.13, *)
 func tag(withMeta: Bool) throws -> Tag {
     if withMeta {
         return try Tag(from: mp4File(withMeta: true))
@@ -44,7 +46,7 @@ func tag(withMeta: Bool) throws -> Tag {
     }
 }
 
-@available(OSX 10.12, *)
+@available(OSX 10.13, *)
 func tempDirectory() throws -> URL {
     let tempDirectory = FileManager.default.temporaryDirectory
         .appendingPathComponent("SwiftTaggerTemp",
@@ -55,12 +57,12 @@ func tempDirectory() throws -> URL {
     return tempDirectory
 }
 
-@available(OSX 10.12, *)
+@available(OSX 10.13, *)
 func emptyDirectory() throws {
     try FileManager.default.removeItem(at: tempDirectory())
 }
 
-@available(OSX 10.12, *)
+@available(OSX 10.13, *)
 func localDirectory(fileName: String, fileExtension: String) throws -> URL {
     let home = FileManager.default.homeDirectoryForCurrentUser
     let desktopPath = "Desktop/TestOutput"

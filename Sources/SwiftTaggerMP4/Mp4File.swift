@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(OSX 10.13, *)
 public struct Mp4File {
     
     public let location: URL

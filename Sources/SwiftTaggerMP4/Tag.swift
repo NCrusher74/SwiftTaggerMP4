@@ -7,890 +7,2390 @@
 //
 
 import Foundation
+import SwiftMp4MetadataParser
 import Cocoa
 
+@available(OSX 10.13, *)
 public struct Tag {
-    
-    // MARK: Private Helper - getters
-    private func string(for identifier: Metadata) -> String? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            return item.stringValue
-        }; return nil
-    }
-    
-    private func stringFromData(for identifier: Metadata) -> String? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            if let data = item.dataValue {
-                return String(decoding: data, as: UTF8.self)
-            }
-        }; return nil
-    }
-    
-    private func integer(for identifier: Metadata) -> Int? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            return item.numberValue as? Int
-        }; return nil
-    }
-    
-    private func intArrayFromData(for identifier: Metadata) -> [Int]? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            if let data = item.dataValue {
-                let firstRange: Range<Int>
-                let lastRange: Range<Int>
-                if data.count > 4 {
-                    firstRange = 2..<4
-                    lastRange = 4..<6
-                } else {
-                    firstRange = 0..<2
-                    lastRange = 2..<4
-                }
-                let firstData = item.dataValue?.subdata(in: firstRange)
-                let lastData = item.dataValue?.subdata(in: lastRange)
-                let firstUInt16 = firstData?.uint16.bigEndian ?? 0x0000
-                let lastUInt16 = lastData?.uint16.bigEndian ?? 0x0000
-                let first = Int(firstUInt16)
-                let last = Int(lastUInt16)
-                return [first, last]
-            }
-        }; return nil
-    }
-    
-    private func boolean(for identifier: Metadata) -> Bool? {
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            return item.numberValue?.boolValue
-        }; return nil
-    }
-    
-    private func date(for identifier: Metadata) -> (
-        year: Int?,
-        month: Int?,
-        day: Int?,
-        hour: Int?,
-        minute: Int?)? {
-            let items = AVMetadataItem.metadataItems(
-                from: self.metadata,
-                withKey: identifier.rawValue,
-                keySpace: identifier.keySpace)
-            if let item = items.first {
-                let calendar = Calendar(identifier: .iso8601)
-                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                var year: Int?
-                var month: Int?
-                var day: Int?
-                var hour: Int?
-                var minute: Int?
-                if identifier == .recordingDate {
-                    if let date = item.dateValue {
-                        let components = calendar.dateComponents(in: timeZone, from: date)
-                        year = components.year
-                        month = components.month
-                        day = components.day
-                        hour = components.hour
-                        minute = components.minute
-                    }
-                } else {
-                    if let dateString = item.stringValue {
-                        let formatterA = ISO8601DateFormatter().withInternetDateTimeAndGMT0
-                        let formatterB = ISO8601DateFormatter().withDashAndGMT0
-                        var components = DateComponents()
-                        if let date = formatterA.date(from: dateString) {
-                            components = calendar.dateComponents(in: timeZone, from: date)
-                        } else if let date = formatterB.date(from: dateString) {
-                            components = calendar.dateComponents(in: timeZone, from: date)
-                        }
-                        year = components.year
-                        month = components.month
-                        day = components.day
-                        hour = components.hour
-                        minute = components.minute
-                    }
-                }
-                return (year,month,day,hour,minute)
-            }; return (nil, nil, nil, nil, nil)
-    }
-        
-    // MARK: Private Helpers - setters
-    private mutating func set(metadataItem: Metadata, to string: String) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        item.value = string as NSString
-        self.metadata.append(item)
-    }
-    
-    private mutating func set(metadataItem: Metadata, to data: Data) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        item.value = data as NSData
-        self.metadata.append(item)
-    }
-    
-    private mutating func set(metadataItem: Metadata, to integer: Int) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        let int8Items: [Metadata] = [.compilation, .contentRating, .mediaType, .podcast]
-        let int16Items: [Metadata] = [.bpm, .movementNumber, .movementTotal]
-        let int32Items: [Metadata] = [.episodeNumber, .genreID, .season]
-        
-        if int8Items.contains(metadataItem) {
-            let int8 = Int8(integer)
-            item.value = int8 as NSNumber
-        } else if int16Items.contains(metadataItem) {
-            let int16 = Int16(integer)
-            item.value = int16 as NSNumber
-        } else if int32Items.contains(metadataItem) {
-            let int32 = Int32(integer)
-            item.value = int32 as NSNumber
-        } else {
-            item.value = integer as NSNumber
-        }
-        self.metadata.append(item)
-    }
-    
-    private mutating func set(metadataItem: Metadata, to stringArray: [String]) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        item.value = stringArray.joined(separator: ",") as NSString
-        self.metadata.append(item)
-    }
-    
-    private mutating func set(metadataItem: Metadata, to intArray: [Int]) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        var data = Data()
-        if let firstInt = intArray.first {
-            // the data starts with two zero bytes
-            data.append(contentsOf: [0x0, 0x0])
-            let uInt16 = UInt16(firstInt).bigEndian
-            let firstData = uInt16.data
-            data.append(firstData)
-        }
-        if let lastInt = intArray.last {
-            let uInt16 = UInt16(lastInt).bigEndian
-            let lastData = uInt16.data
-            // disc number is 6 bytes, track number is 8 bytes
-            if metadataItem == .discNumber {
-                data.append(lastData)
-            } else {
-                data.append(lastData)
-                data.append(contentsOf: [0x0, 0x0])
+    public var metadata: [(identifier: AtomIdentifier, value: Any)]
+    private var parser: SwiftMp4MetadataParser.Mp4File
+
+    public init(from file: Mp4File) throws {
+        let parser = try SwiftMp4MetadataParser.Mp4File(location: file.location)
+        self.parser = parser
+        let tags = try parser.listMetadataTags()
+        var entries = [(AtomIdentifier, Any)]()
+        for tag in tags {
+            if let identifier = AtomIdentifier(rawValue: tag.identifier) {
+                let entry = (identifier, tag.value)
+                entries.append(entry)
             }
         }
-        item.value = data as NSData
-        self.metadata.append(item)
-    }
-    
-    private mutating func set(metadataItem: Metadata, to components: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)) {
-        let item = AVMutableMetadataItem()
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        
-        let formatter = ISO8601DateFormatter().withInternetDateTimeAndGMT0
-        let calendar = Calendar(identifier: .iso8601)
-        let timeZone = TimeZone(secondsFromGMT: 0)
-        let components = DateComponents(
-            calendar: calendar,
-            timeZone: timeZone,
-            year: components.year,
-            month: components.month,
-            day: components.day,
-            hour: components.hour,
-            minute: components.minute)
-        if let date = components.date {
-            let dateString = formatter.string(from: date)
-            item.value = dateString as NSString
-        }
-        var metadata = self.metadata
-        for (index, dataItem) in metadata.enumerated() {
-            if dataItem.key as? NSString == metadataItem.rawValue as NSString {
-                metadata.remove(at: index)
-            }
-        }
-        metadata.append(item)
-        self.metadata = metadata
+        self.metadata = entries
     }
     
     // MARK: Convenience getter/setters
     var acknowledgment: String? {
-        get { string(for: .acknowledgment) }
-        set { set(metadataItem: .acknowledgment, to: newValue ?? "") }
-    }
-    
-    var album: String? {
-        get { string(for: .album) }
-        set { set(metadataItem: .album, to: newValue ?? "") }
-    }
-    
-    var albumArtist: String? {
-        get { string(for: .albumArtist) }
-        set { set(metadataItem: .albumArtist, to: newValue ?? "") }
-    }
-    
-    var albumArtistSort: String? {
-        get { string(for: .albumArtistSort) }
-        set { set(metadataItem: .albumArtistSort, to: newValue ?? "") }
-    }
-    
-    var albumSort: String? {
-        get { string(for: .albumSort) }
-        set { set(metadataItem: .albumSort, to: newValue ?? "") }
-    }
-    
-    var arranger: String? {
-        get { string(for: .arranger) }
-        set { set(metadataItem: .arranger, to: newValue ?? "") }
-    }
-    
-    var artDirector: String? {
-        get { string(for: .artDirector) }
-        set { set(metadataItem: .artDirector, to: newValue ?? "") }
-    }
-    
-    var artist: String? {
-        get { string(for: .artist) }
-        set { set(metadataItem: .artist, to: newValue ?? "") }
-    }
-    
-    var artistSort: String? {
-        get { string(for: .artistSort) }
-        set { set(metadataItem: .artistSort, to: newValue ?? "") }
-    }
-    
-    var artistWebpage: String? {
-        get { string(for: .artistWebpage) }
-        set { set(metadataItem: .artistWebpage, to: newValue ?? "") }
-    }
-    
-    var audioFileWebpage: String? {
         get {
-            if let str = string(for: .audioFileWebpage) {
-                return str
-            }; return nil
-        }
-        set {
-            set(metadataItem: .audioFileWebpage, to: newValue ?? "")
-        }
-    }
-    
-    var audioSourceWebpage: String? {
-        get {
-            if let str = string(for: .audioSourceWebpage) {
-                return str
-            }; return nil
-        }
-        set {
-            set(metadataItem: .audioSourceWebpage, to: newValue ?? "")
-        }
-    }
-    
-    var bpm: Int? {
-        get { integer(for: .bpm) }
-        set { set(metadataItem: .bpm, to: newValue ?? 0) }
-    }
-    
-    var comment: String? {
-        get { string(for: .comment) }
-        set { set(metadataItem: .comment, to: newValue ?? "") }
-    }
-    
-    var compilation: Bool? {
-        get { boolean(for: .compilation) }
-        set {
-            if newValue == true {
-                set(metadataItem: .compilation, to: 1)
-            } else {
-                set(metadataItem: .compilation, to: 0)
-            }
-        }
-    }
-    
-    var composer: String? {
-        get { string(for: .composer) }
-        set { set(metadataItem: .composer, to: newValue ?? "") }
-    }
-    
-    var composerSort: String? {
-        get { string(for: .composerSort) }
-        set { set(metadataItem: .composerSort, to: newValue ?? "") }
-    }
-    
-    var conductor: String? {
-        get { string(for: .conductor) }
-        set { set(metadataItem: .conductor, to: newValue ?? "") }
-    }
-    
-    var contentAdvisory: ContentAdvisory? {
-        get {
-            let stringValue = string(for: .contentAdvisory) ?? ""
-            if let rating = ContentAdvisory(rawValue: stringValue) {
-                return rating
-            }; return nil
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .contentAdvisory, to: new.rawValue)
-            }
-        }
-    }
-    
-    var contentRating: ContentRating? {
-        get {
-            let int = integer(for: .contentRating) ?? 0
-            if let rating = ContentRating(rawValue: int) {
-                return rating
-            }; return nil
-        }
-        set {
-            if let new = newValue {
-                let newInt = new.rawValue
-                set(metadataItem: .contentRating, to: newInt)
-            }
-        }
-    }
-    
-    var copyright: String? {
-        get { string(for: .copyright) }
-        set { set(metadataItem: .copyright, to: newValue ?? "") }
-    }
-    
-    var copyrightWebpage: String? {
-        get { string(for: .copyrightWebpage) }
-        set { set(metadataItem: .copyrightWebpage, to: newValue ?? "") }
-    }
-    
-    var description: String? {
-        get { string(for: .description) }
-        set { set(metadataItem: .description, to: newValue ?? "") }
-    }
-    
-    var director: String? {
-        get { string(for: .director) }
-        set { set(metadataItem: .director, to: newValue ?? "") }
-    }
-    
-    var discNumber: [Int]? {
-        get { intArrayFromData(for: .discNumber) }
-        set { set(metadataItem: .discNumber, to: newValue ?? [])
-        }
-    }
-    
-    var encodedBy: String? {
-        get { string(for: .encodedBy) }
-        set { set(metadataItem: .encodedBy, to: newValue ?? "") }
-    }
-    
-    var encodingTool: String? {
-        get { string(for: .encodingTool) }
-        set { set(metadataItem: .encodingTool, to: newValue ?? "") }
-    }
-    
-    var encodingSettings: String? {
-        get { string(for: .encodingSettings) }
-        set { set(metadataItem: .encodingSettings, to: newValue ?? "") }
-    }
-    
-    var episodeNumber: Int? {
-        get { integer(for: .episodeNumber) }
-        set { set(metadataItem: .episodeNumber, to: newValue ?? 0) }
-    }
-    
-    var episodeTitle: String? {
-        get { string(for: .episodeTitle) }
-        set { set(metadataItem: .episodeTitle, to: newValue ?? "") }
-    }
-    
-    var executiveProducer: String? {
-        get { string(for: .executiveProducer) }
-        set { set(metadataItem: .executiveProducer, to: newValue ?? "") }
-    }
-    
-    var genre: String? {
-        get { string(for: .genre) }
-        set { set(metadataItem: .genre, to: newValue ?? "") }
-    }
-    
-    var genreID: Genres? {
-        get {
-            let int = integer(for: .genreID) ?? 0
-            if let genre = Genres(rawValue: int) {
-                return genre
-            } else {
+            do {
+                return try parser.get(.acknowledgment)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.acknowledgment.rawValue)")
                 return nil
             }
         }
         set {
             if let new = newValue {
-                let newInt = new.rawValue
-                set(metadataItem: .genreID, to: newInt)
-            }
-        }
-    }
-    
-    var initialKey: KeySignature? {
-        get {
-            if let str = string(for: .initialKey) {
-                if let key = KeySignature(rawValue: str) {
-                    return key
-                }; return nil
-            }; return nil
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .initialKey, to: new.rawValue)
-            }
-        }
-    }
-    
-    var isrc: Int? {
-        get { integer(for: .isrc) }
-        set {
-            if let new = newValue {
-                let newString = String(new)
-                set(metadataItem: .isrc, to: newString)
-            }
-        }
-    }
-    
-    var language: [ISO6392Codes]? {
-        get {
-            if let str = string(for: .language) {
-                var languageArray: [ISO6392Codes] = []
-                let stringArray = str.components(separatedBy: ",")
-                for string in stringArray {
-                    if let language = ISO6392Codes(rawValue: string) {
-                        languageArray.append(language)
-                    }
+                do {
+                    try parser.set(.acknowledgment,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.acknowledgment.rawValue)")
                 }
-                return languageArray
-            }; return nil
+            }
+        }
+    }
+
+    var album: String? {
+        get {
+            do {
+                return try parser.get(.album)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.album.rawValue)")
+                return nil
+            }
         }
         set {
             if let new = newValue {
-                var stringArray: [String] = []
-                for languageCode in new {
-                    stringArray.append(languageCode.rawValue)
+                do {
+                    try parser.set(.album,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.album.rawValue)")
                 }
-                set(metadataItem: .language, to: stringArray)
+            }
+        }
+    }
+
+    var albumArtist: String? {
+        get {
+            do {
+                return try parser.get(.albumArtist)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.albumArtist.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.albumArtist,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumArtist.rawValue)")
+                }
+            }
+        }
+    }
+
+    var albumArtistSort: String? {
+        get {
+            do {
+                return try parser.get(.albumArtistSort)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.albumArtistSort.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.albumArtistSort,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumArtistSort.rawValue)")
+                }
+            }
+        }
+    }
+
+    var albumID: Int? {
+        get {
+            do {
+                return try parser.get(.albumID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.albumID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.albumID,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumID.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var albumSort: String? {
+        get {
+            do {
+                return try parser.get(.albumSort)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.albumSort.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.albumSort,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumSort.rawValue)")
+                }
+            }
+        }
+    }
+
+    var appleStoreCountryID: Int? {
+        get {
+            do {
+                return try parser.get(.appleStoreCountryID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.appleStoreCountryID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.appleStoreCountryID,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.appleStoreCountryID.rawValue)")
+                }
+            }
+        }
+    }
+
+    var arranger: String? {
+        get {
+            do {
+                return try parser.get(.arranger)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.arranger.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.arranger,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.arranger.rawValue)")
+                }
+            }
+        }
+    }
+
+    var arrangerKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.arrangerKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.arrangerKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.arrangerKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.arrangerKeywords.rawValue)")
+            }
+        }
+    }
+
+    var artDirector: String? {
+        get {
+            do {
+                return try parser.get(.artDirector)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artDirector.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.artDirector,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artDirector.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var artist: String? {
+        get {
+            do {
+                return try parser.get(.artist)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artist.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.artist,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artist.rawValue)")
+                }
+            }
+        }
+    }
+
+    var artistID: Int? {
+        get {
+            do {
+                return try parser.get(.artistID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artistID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.artistID,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artist.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var artistKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.artistKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artistKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.artistKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistKeywords.rawValue)")
+            }
+        }
+    }
+    
+    var artistSort: String? {
+        get {
+            do {
+                return try parser.get(.artistSort)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artistSort.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.artistSort,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistSort.rawValue)")
+                }
+            }
+        }
+    }
+
+    var artistUrl: String? {
+        get {
+            do {
+                return try parser.get(.artistUrl)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artistUrl.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.artistUrl,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistUrl.rawValue)")
+                }
+            }
+        }
+    }
+
+    var bpm: Int? {
+        get {
+            do {
+                return try parser.get(.bpm)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.bpm.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.bpm,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.bpm.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var category: String? {
+        get {
+            do {
+                return try parser.get(.category)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.category.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.category,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.category.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var comment: String? {
+        get {
+            do {
+                return try parser.get(.comment)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.comment.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.comment,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.comment.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var compilation: Bool {
+        get {
+            do {
+                let value = try parser.get(.compilation)
+                if value == 1 {
+                    return true
+                } else {
+                    return false
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.compilation.rawValue)")
+                return false
+            }
+        }
+        set {
+            var intValue = Int()
+            if newValue == false {
+                intValue = 0
+            } else {
+                intValue = 1
+            }
+
+            do {
+                try parser.set(.compilation,
+                               intValue: intValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.compilation.rawValue)")
+            }
+        }
+    }
+    
+    var composer: String? {
+        get {
+            do {
+                return try parser.get(.composer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.composer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.composer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.composer.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var composerID: Int? {
+        get {
+            do {
+                return try parser.get(.composerID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.composerID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.composerID,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerID.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var composerKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.composerKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.composerKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.composerKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerKeywords.rawValue)")
+            }
+        }
+    }
+    
+    var composerSort: String? {
+        get {
+            do {
+                return try parser.get(.composerSort)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.composerSort.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.composerSort,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerSort.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var conductor: String? {
+        get {
+            do {
+                return try parser.get(.conductor)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.conductor.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.conductor,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.conductor.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var conductorID: Int? {
+        get {
+            do {
+                return try parser.get(.conductorID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.conductorID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.conductorID,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.conductorID.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var copyright: String? {
+        get {
+            do {
+                return try parser.get(.copyright)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.copyright.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.copyright,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.copyright.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var copyrightStatement: String? {
+        get {
+            do {
+                return try parser.get(.copyrightStatement)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.copyrightStatement.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.copyrightStatement,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.copyrightStatement.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var coverArt: NSImage? {
+        get {
+            do {
+                return try parser.getCoverArt()
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.coverArt.rawValue)")
+                return nil
+            }
+        }
+    }
+    
+    func setCoverArt(imageLocation: URL) throws {
+        try parser.set(coverImage: imageLocation)
+    }
+
+    var customGenre: String? {
+        get {
+            do {
+                return try parser.get(.customGenre)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.customGenre.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.customGenre,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.customGenre.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var description: String? {
+        get {
+            do {
+                return try parser.get(.description)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.description.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.description,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.description.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var director: String? {
+        get {
+            do {
+                return try parser.get(.director)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.director.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.director,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.director.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var discNumber: [Int] {
+        get {
+            do {
+                return try parser.get(.discNumber)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.discNumber.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.discNumber, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.discNumber.rawValue)")
+            }
+        }
+    }
+
+    var trackNumber: [Int] {
+        get {
+            do {
+                return try parser.get(.trackNumber)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackNumber.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.trackNumber, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackNumber.rawValue)")
+            }
+        }
+    }
+    
+    var editDateAndDescription1: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription1)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription1.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription1,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription1.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription2: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription2)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription2.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription2,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription2.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription3: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription3)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription3.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription3,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription3.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription4: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription4)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription4.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription4,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription4.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription5: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription5)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription5.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription5,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription5.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription6: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription6)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription6.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription6,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription6.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription7: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription7)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription7.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription7,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription7.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription8: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription8)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription8.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription8,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription8.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var editDateAndDescription9: String? {
+        get {
+            do {
+                return try parser.get(.editDateAndDescription9)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.editDateAndDescription9.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.editDateAndDescription9,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription9.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var encodedBy: String? {
+        get {
+            do {
+                return try parser.get(.encodedBy)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.encodedBy.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.encodedBy,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.encodedBy.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var encodingTool: String? {
+        get {
+            do {
+                return try parser.get(.encodingTool)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.encodingTool.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.encodingTool,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.encodingTool.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var executiveProducer: String? {
+        get {
+            do {
+                return try parser.get(.executiveProducer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.executiveProducer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var filmMakerUrl: String? {
+        get {
+            do {
+                return try parser.get(.filmMakerUrl)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.filmMakerUrl.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.filmMakerUrl,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.filmMakerUrl.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var format: String? {
+        get {
+            do {
+                return try parser.get(.format)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.format.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.format,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.format.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var gaplessPlayback: Bool {
+        get {
+            do {
+                let value = try parser.get(.gaplessPlayback)
+                if value == 1 {
+                    return true
+                } else {
+                    return false
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.gaplessPlayback.rawValue)")
+                return false
+            }
+        }
+        set {
+            var intValue = Int()
+            if newValue == false {
+                intValue = 0
+            } else {
+                intValue = 1
+            }
+            
+            do {
+                try parser.set(.gaplessPlayback,
+                               intValue: intValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.gaplessPlayback.rawValue)")
+            }
+        }
+    }
+    
+    var genreID: Genres {
+        get {
+            do {
+                let id = try parser.get(.genreID)
+                if let genreID = Genres(rawValue: id ?? 0) {
+                    return genreID
+                } else {
+                    return .unknown
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.genreID.rawValue)")
+                return .unknown
+            }
+        }
+        set {
+            do {
+                try parser.set(.genreID,
+                               intValue: newValue.rawValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.genreID.rawValue)")
+            }
+        }
+    }
+    
+    var grouping: String? {
+        get {
+            do {
+                return try parser.get(.grouping)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.grouping.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.grouping,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.grouping.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var information: String? {
+        get {
+            do {
+                return try parser.get(.information)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.information.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.information,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.information.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var isrc: String? {
+        get {
+            do {
+                return try parser.get(.isrc)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.isrc.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.isrc,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.isrc.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var keywords: [String] {
+        get {
+            do {
+                return try parser.get(.keywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.keywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.keywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.keywords.rawValue)")
+            }
+        }
+    }
+
+    var label: String? {
+        get {
+            do {
+                return try parser.get(.label)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.label.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.label,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.label.rawValue)")
+                }
             }
         }
     }
     
     var linerNotes: String? {
-        get { string(for: .linerNotes) }
-        set { set(metadataItem: .linerNotes, to: newValue ?? "") }
-    }
-    
-    var longDescription: String? {
-        get { string(for: .longDescription) }
-        set { set(metadataItem: .longDescription, to: newValue ?? "") }
-    }
-    
-    var lyricist: String? {
-        get { string(for: .lyricist) }
-        set { set(metadataItem: .lyricist, to: newValue ?? "") }
-    }
-    
-    var lyrics: String? {
-        get { string(for: .lyrics) }
-        set { set(metadataItem: .lyrics, to: newValue ?? "") }
-    }
-    
-    var mediaType: MediaType? {
         get {
-            if let mediaType = self.genreID?.mediaType {
-                return mediaType
-            } else {
-                let int = integer(for: .mediaType) ?? 0
-                if let type = MediaType(rawValue: int) {
-                    return type
-                }; return nil
+            do {
+                return try parser.get(.linerNotes)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.linerNotes.rawValue)")
+                return nil
             }
         }
         set {
             if let new = newValue {
-                let newInt = new.rawValue
-                set(metadataItem: .mediaType, to: newInt)
+                do {
+                    try parser.set(.linerNotes,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.linerNotes.rawValue)")
+                }
             }
         }
     }
     
-    var mood: String? {
-        get { string(for: .mood) }
-        set { set(metadataItem: .mood, to: newValue ?? "") }
+    var longDescription: String? {
+        get {
+            do {
+                return try parser.get(.longDescription)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.longDescription.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.longDescription,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.longDescription.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var lyrics: String? {
+        get {
+            do {
+                return try parser.get(.lyrics)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.lyrics.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.lyrics,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.lyrics.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var lyricist: String? {
+        get {
+            do {
+                return try parser.get(.lyricist)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.lyricist.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.lyricist,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.lyricist.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var mediaType: MediaType {
+        get {
+            do {
+                let id = try parser.get(.mediaType)
+                if let mediaType = MediaType(rawValue: id ?? 1) {
+                    return mediaType
+                } else {
+                    return .music
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.mediaType.rawValue)")
+                return .music
+            }
+        }
+        set {
+            do {
+                try parser.set(.mediaType,
+                               intValue: newValue.rawValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.mediaType.rawValue)")
+            }
+        }
+    }
+
+    var movementCount: Int? {
+        get {
+            do {
+                return try parser.get(.movementCount)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.movementCount.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.movementCount,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.movementCount.rawValue)")
+                }
+            }
+        }
     }
     
     var movementName: String? {
-        get { string(for: .movementName) }
-        set { set(metadataItem: .movementName, to: newValue ?? "") }
+        get {
+            do {
+                return try parser.get(.movementName)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.movementName.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.movementName,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.movementName.rawValue)")
+                }
+            }
+        }
     }
     
     var movementNumber: Int? {
-        get { integer(for: .movementNumber) }
-        set { set(metadataItem: .movementNumber, to: newValue ?? 0) }
-    }
-    
-    var totalMovements: Int? {
-        get { integer(for: .movementTotal) }
-        set { set(metadataItem: .movementTotal, to: newValue ?? 0) }
+        get {
+            do {
+                return try parser.get(.movementNumber)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.movementNumber.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.movementNumber,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.movementNumber.rawValue)")
+                }
+            }
+        }
     }
     
     var narrator: String? {
-        get { string(for: .narrator) }
-        set { set(metadataItem: .narrator, to: newValue ?? "") }
-    }
-    
-    var network: String? {
-        get { string(for: .network) }
-        set { set(metadataItem: .network, to: newValue ?? "") }
-    }
-    
-    var onlineExtras: String? {
-        get { string(for: .onlineExtras) }
-        set { set(metadataItem: .onlineExtras, to: newValue ?? "") }
-    }
-    
-    var originalAlbum: String? {
         get {
-            if let str = string(for: .originalAlbum) {
-                return str
-            }; return nil
+            do {
+                return try parser.get(.narrator)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.narrator.rawValue)")
+                return nil
+            }
         }
         set {
-            set(metadataItem: .originalAlbum, to: newValue ?? "")
+            if let new = newValue {
+                do {
+                    try parser.set(.narrator,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.narrator.rawValue)")
+                }
+            }
         }
     }
     
     var originalArtist: String? {
-        get { string(for: .originalArtist) }
-        set { set(metadataItem: .originalArtist, to: newValue ?? "") }
-    }
-    
-    var originalFilename: String? {
-        get { string(for: .originalFilename) }
-        set { set(metadataItem: .originalFilename, to: newValue ?? "") }
-    }
-    
-    var originalLyricist: String? {
-        get { string(for: .originalLyricist) }
-        set { set(metadataItem: .originalLyricist, to: newValue ?? "") }
-    }
-    
-    var paymentWebpage: String? {
-        get { string(for: .paymentWebpage) }
-        set { set(metadataItem: .paymentWebpage, to: newValue ?? "") }
-    }
-    
-    var performer: String? {
-        get { string(for: .performer) }
-        set { set(metadataItem: .performer, to: newValue ?? "") }
-    }
-    
-    var phonogramRights: String? {
-        get { string(for: .phonogramRights) }
-        set { set(metadataItem: .phonogramRights, to: newValue ?? "") }
-    }
-    
-    var podcast: Bool? {
-        get { boolean(for: .podcast) }
+        get {
+            do {
+                return try parser.get(.originalArtist)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.originalArtist.rawValue)")
+                return nil
+            }
+        }
         set {
-            if newValue == true {
-                set(metadataItem: .podcast, to: 1)
-            } else {
-                set(metadataItem: .podcast, to: 0)
+            if let new = newValue {
+                do {
+                    try parser.set(.originalArtist,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.originalArtist.rawValue)")
+                }
             }
         }
     }
     
-    var podcastCategory: String? {
-        get { string(for: .podcastCategory) }
-        set { set(metadataItem: .podcastCategory, to: newValue ?? "") }
-    }
-    
-    var podcastDescription: String? {
-        get { string(for: .podcastDescription) }
-        set { set(metadataItem: .podcastDescription, to: newValue ?? "") }
-    }
-    
-    var podcastID: String? {
-        get { string(for: .podcastID) }
-        set { set(metadataItem: .podcastID, to: newValue ?? "") }
-    }
-    
-    var podcastKeywords: [String]? {
+    var owner: String? {
         get {
-            if let str = string(for: .podcastKeywords) {
-                return str.components(separatedBy: ",")
-            }; return nil
+            do {
+                return try parser.get(.owner)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.owner.rawValue)")
+                return nil
+            }
         }
         set {
             if let new = newValue {
-                let string = new.joined(separator: ",")
-                set(metadataItem: .podcastKeywords, to: string)
+                do {
+                    try parser.set(.owner,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.owner.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var performers: String? {
+        get {
+            do {
+                return try parser.get(.performers)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.performers.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.performers,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.performers.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var playlistID: Int? {
+        get {
+            do {
+                return try parser.get(.playlistID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.playlistID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.playlistID,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.playlistID.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var podcast: Bool {
+        get {
+            do {
+                let value = try parser.get(.podcast)
+                if value == 1 {
+                    return true
+                } else {
+                    return false
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.podcast.rawValue)")
+                return false
+            }
+        }
+        set {
+            var intValue = Int()
+            if newValue == false {
+                intValue = 0
+            } else {
+                intValue = 1
+            }
+            
+            do {
+                try parser.set(.podcast,
+                               intValue: intValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcast.rawValue)")
+            }
+        }
+    }
+    
+    var podcastID: String? {
+        get {
+            do {
+                return try parser.get(.podcastID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.podcastID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.podcastID,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcastID.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var predefinedGenre: Genres {
+        get {
+            do {
+                let nameString = try parser.get(.predefinedGenre) ?? "unknown"
+                if let genreByName = Genres(genreName: nameString) {
+                    return genreByName
+                } else {
+                    return .unknown
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.predefinedGenre.rawValue)")
+                return .unknown
+            }
+        }
+        set {
+            do {
+                try parser.set(.predefinedGenre,
+                               stringValue: newValue.predefinedGenres ?? "unknown",
+                               customName: nil)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.predefinedGenre.rawValue)")
+            }
+        }
+    }
+
+    var producer: String? {
+        get {
+            do {
+                return try parser.get(.producer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.producer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.producer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.producer.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var producerKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.producerKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.producerKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.producerKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.producerKeywords.rawValue)")
+            }
+        }
+    }
+    
+    var publisher: String? {
+        get {
+            do {
+                return try parser.get(.publisher)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.publisher.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.publisher,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.publisher.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var publisherUrl: String? {
+        get {
+            do {
+                return try parser.get(.publisherUrl)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.publisherUrl.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.publisherUrl,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.publisherUrl.rawValue)")
+                }
+            }
+        }
+    }
+
+    var purchaseDate: Date? {
+        get {
+            do {
+                return try parser.get(.purchaseDate)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.purchaseDate.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.purchaseDate, dateValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.purchaseDate.rawValue)")
+                }
             }
         }
     }
 
     var podcastUrl: String? {
         get {
-            if let str = stringFromData(for: .podcastUrl) {
-                return str
-            } else if let str = string(for: .podcastUrl) {
-                return str
-            }; return nil
-        }
-        set {
-            if let new = newValue {
-                let newData = new.encodedASCII()
-                set(metadataItem: .podcastUrl, to: newData)
-            }
-        }
-    }
-    
-    var predefinedGenre: Genres? {
-        get {
-            let str = string(for: .predefinedGenre) ?? ""
-            if let genre = Genres(genreName: str) {
-                return genre
-            } else {
+            do {
+                return try parser.get(.purchaseUrl)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.purchaseUrl.rawValue)")
                 return nil
             }
         }
         set {
-            set(metadataItem: .predefinedGenre, to: newValue?.predefinedGenres ?? "")
+            if let new = newValue {
+                do {
+                    try parser.set(.purchaseUrl,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.purchaseUrl.rawValue)")
+                }
+            }
+        }
+    }
+
+    var rating: ContentRating {
+        get {
+            do {
+                let ratingInt = try parser.get(.rating) ?? 0
+                if let rating = ContentRating(rawValue: ratingInt) {
+                    return rating
+                } else {
+                    return .none
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.rating.rawValue)")
+                return .none
+            }
+        }
+        set {
+            do {
+                try parser.set(.rating,
+                               intValue: newValue.rawValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.rating.rawValue)")
+            }
         }
     }
     
-    var producer: String? {
-        get { string(for: .producer) }
-        set { set(metadataItem: .producer, to: newValue ?? "") }
-    }
-    
-    var publisher: String? {
-        get { string(for: .publisher) }
-        set { set(metadataItem: .publisher, to: newValue ?? "") }
-    }
-    
-    var publisherWebpage: String? {
-        get { string(for: .publisherWebpage) }
-        set { set(metadataItem: .publisherWebpage, to: newValue ?? "") }
-    }
-    
-    var radioStation: String? {
-        get { string(for: .radioStation) }
-        set { set(metadataItem: .radioStation, to: newValue ?? "") }
-    }
-    
-    var radioStationOwner: String? {
-        get { string(for: .radioStationOwner) }
-        set { set(metadataItem: .radioStationOwner, to: newValue ?? "") }
-    }
-    
-    var radioStationWebpage: String? {
-        get { string(for: .radioStationWebpage) }
-        set { set(metadataItem: .radioStationWebpage, to: newValue ?? "") }
-    }
-    
     var recordCompany: String? {
-        get { string(for: .recordCompany) }
-        set { set(metadataItem: .recordCompany, to: newValue ?? "") }
+        get {
+            do {
+                return try parser.get(.recordCompany)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.recordCompany.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.recordCompany,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordCompany.rawValue)")
+                }
+            }
+        }
+    }
+
+    var recordingDate: Date? {
+        get {
+            do {
+                return try parser.get(.recordingDate)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.recordingDate.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.recordingDate, dateValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingDate.rawValue)")
+                }
+            }
+        }
     }
     
-    var season: Int? {
-        get { integer(for: .season) }
-        set { set(metadataItem: .season, to: newValue ?? 0) }
+    var recordingCopyright: String? {
+        get {
+            do {
+                return try parser.get(.recordingCopyright)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.recordingCopyright.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.recordingCopyright,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingCopyright.rawValue)")
+                }
+            }
+        }
     }
     
-    var seriesName: String? {
-        get { string(for: .series) }
-        set { set(metadataItem: .series, to: newValue ?? "") }
+    var year: Date? {
+        get {
+            do {
+                return try parser.get(.recordingYear)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.recordingYear.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.recordingYear, dateValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingYear.rawValue)")
+                }
+            }
+        }
     }
     
-    var seriesDescription: String? {
-        get { string(for: .seriesDescription) }
-        set { set(metadataItem: .seriesDescription, to: newValue ?? "") }
+    var releaseDate: Date? {
+        get {
+            do {
+                return try parser.get(.releaseDate)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.releaseDate.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.releaseDate, dateValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.releaseDate.rawValue)")
+                }
+            }
+        }
     }
     
-    var seriesSort: String? {
-        get { string(for: .seriesSort) }
-        set { set(metadataItem: .seriesSort, to: newValue ?? "") }
+    var requirements: String? {
+        get {
+            do {
+                return try parser.get(.requirements)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.requirements.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.requirements,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.requirements.rawValue)")
+                }
+            }
+        }
     }
     
-    var soloist: String? {
-        get { string(for: .soloist) }
-        set { set(metadataItem: .soloist, to: newValue ?? "") }
+    var sellerID: String? {
+        get {
+            do {
+                return try parser.get(.sellerID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.sellerID.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.sellerID,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.sellerID.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var showWorkAndMovement: Bool {
+        get {
+            do {
+                let value = try parser.get(.showWorkAndMovement)
+                if value == 1 {
+                    return true
+                } else {
+                    return false
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.showWorkAndMovement.rawValue)")
+                return false
+            }
+        }
+        set {
+            var intValue = Int()
+            if newValue == false {
+                intValue = 0
+            } else {
+                intValue = 1
+            }
+            
+            do {
+                try parser.set(.showWorkAndMovement,
+                               intValue: intValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.showWorkAndMovement.rawValue)")
+            }
+        }
     }
     
     var soundEngineer: String? {
-        get { string(for: .soundEngineer) }
-        set { set(metadataItem: .soundEngineer, to: newValue ?? "") }
+        get {
+            do {
+                return try parser.get(.sellerID)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.soundEngineer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var softwareVersion: String? {
+        get {
+            do {
+                return try parser.get(.softwareVersion)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.softwareVersion.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.softwareVersion,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.softwareVersion.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var soloist: String? {
+        get {
+            do {
+                return try parser.get(.soloist)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.soloist.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.soloist,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.soloist.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var songDescription: String? {
+        get {
+            do {
+                return try parser.get(.songDescription)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.songDescription.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.songDescription,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.songDescription.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var songwriterKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.songwriterKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.songwriterKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.songwriterKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.songwriterKeywords.rawValue)")
+            }
+        }
     }
     
     var sourceCredit: String? {
-        get { string(for: .sourceCredit) }
-        set { set(metadataItem: .sourceCredit, to: newValue ?? "") }
+        get {
+            do {
+                return try parser.get(.sourceCredit)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.sourceCredit.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.sourceCredit,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.sourceCredit.rawValue)")
+                }
+            }
+        }
     }
     
-    var thanks: String? {
-        get { string(for: .thanks) }
-        set { set(metadataItem: .thanks, to: newValue ?? "") }
+    var subtitle: String? {
+        get {
+            do {
+                return try parser.get(.subtitle)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.subtitle.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.subtitle,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.subtitle.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var subtitleKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.subtitleKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.subtitleKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.subtitleKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.subtitleKeywords.rawValue)")
+            }
+        }
     }
     
     var title: String? {
-        get { string(for: .title) }
-        set { set(metadataItem: .title, to: newValue ?? "") }
+        get {
+            do {
+                return try parser.get(.title)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.title.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.title,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.title.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var titleKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.titleKeywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.titleKeywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
+            }
+        }
     }
     
     var titleSort: String? {
-        get { string(for: .titleSort) }
-        set { set(metadataItem: .titleSort, to: newValue ?? "") }
+        get {
+            do {
+                return try parser.get(.titleSort)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.titleSort.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.titleSort,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.titleSort.rawValue)")
+                }
+            }
+        }
     }
     
-    var trackNumber: [Int]? {
-        get { intArrayFromData(for: .trackNumber) }
-        set { set(metadataItem: .trackNumber, to: newValue ?? [])
+    var thanks: String? {
+        get {
+            do {
+                return try parser.get(.thanks)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.thanks.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.thanks,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.thanks.rawValue)")
+                }
+            }
         }
     }
     
     var trackSubtitle: String? {
-        get { string(for: .trackSubtitle) }
-        set { set(metadataItem: .trackSubtitle, to: newValue ?? "") }
-    }
-    
-    var work: String? {
-        get { string(for: .work) }
-        set { set(metadataItem: .work, to: newValue ?? "") }
-    }
-    
-    var encodingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .encodingTime)
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .encodingTime, to: new)
-            }
-        }
-    }
-    
-    var originalReleaseYear: Int? {
-        get {
-            let components = date(for: .originalYear)
-            return components?.year
-        }
-        set {
-            let new: (Int?, Int?, Int?, Int?, Int?) = (newValue, nil, nil, nil, nil)
-            set(metadataItem: .originalYear, to: new)
-        }
-    }
-    
-    var purchaseDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            date(for: .purchaseDate)
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .purchaseDate, to: new)
-            }
-        }
-    }
-    
-    var recordingDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            date(for: .recordingDate)
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .recordingDate, to: new)
-            }
-        }
-    }
-    
-    var releaseDate: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            date(for: .releaseDate)
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .releaseDate, to: new)
-            }
-        }
-    }
-    
-    var taggingTime: (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            date(for: .taggingTime)
-        }
-        set {
-            if let new = newValue {
-                set(metadataItem: .taggingTime, to: new)
-            }
-        }
-    }
-    
-    var year: Int? {
-        get {
-            let components = date(for: .year)
-            return components?.year
-        }
-        set {
-            let new: (Int?, Int?, Int?, Int?, Int?) = (newValue, nil, nil, nil, nil)
-            set(metadataItem: .year, to: new)
-        }
-    }
-    
-    var coverImage: NSImage? {
-        let identifier: Metadata = .artwork
-        let items = AVMetadataItem.metadataItems(
-            from: self.metadata,
-            withKey: identifier.rawValue,
-            keySpace: identifier.keySpace)
-        if let item = items.first {
-            if let itemData = item.dataValue {
-                if let image = NSImage(data: itemData) {
-                    return image
-                } else {
-                    return nil
-                }
-            } else {
+            do {
+                return try parser.get(.trackSubtitle)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackSubtitle.rawValue)")
                 return nil
             }
-        } else {
-            return nil
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.trackSubtitle,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackSubtitle.rawValue)")
+                }
+            }
         }
     }
-
-    mutating func setCoverImage(to imageUrl: URL) throws {
-        let imageData = try Data(contentsOf: imageUrl)
-        let item = AVMutableMetadataItem()
-        let metadataItem: Metadata = .artwork
-        item.keySpace = metadataItem.keySpace
-        item.key = metadataItem.rawValue as NSString
-        item.value = imageData as NSData
-        self.metadata.append(item)
+    
+    var tvEpisodeNumber: Int? {
+        get {
+            do {
+                return try parser.get(.tvEpisodeNumber)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.tvEpisodeNumber.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvEpisodeNumber,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvEpisodeNumber.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var tvEpisodeTitle: String? {
+        get {
+            do {
+                return try parser.get(.tvEpisodeTitle)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackSubtitle.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvEpisodeTitle,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvEpisodeTitle.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var tvSeason: Int? {
+        get {
+            do {
+                return try parser.get(.tvSeason)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.tvSeason.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvSeason,
+                                   intValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvSeason.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var tvNetwork: String? {
+        get {
+            do {
+                return try parser.get(.tvNetwork)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.tvNetwork.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvNetwork,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvNetwork.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var tvShow: String? {
+        get {
+            do {
+                return try parser.get(.tvShow)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.tvShow.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvShow,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvShow.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var trackShowDescription: String? {
+        get {
+            do {
+                return try parser.get(.tvShowDescription)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.tvShowDescription.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvShowDescription,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvShowDescription.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var tvShowSort: String? {
+        get {
+            do {
+                return try parser.get(.tvShowSort)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.tvShowSort.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.tvShowSort,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvShowSort.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var website: String? {
+        get {
+            do {
+                return try parser.get(.website)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.website.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.website,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.website.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var workName: String? {
+        get {
+            do {
+                return try parser.get(.workName)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.workName.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.workName,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.workName.rawValue)")
+                }
+            }
+        }
+    }
+    
+    var writer: String? {
+        get {
+            do {
+                return try parser.get(.writer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.writer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.writer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.writer.rawValue)")
+                }
+            }
+        }
+    }
+    
+    func getFreeformMetadata(name: String) throws -> String? {
+        return try parser.get(customStringMetadata: name)
+    }
+    
+    func setFreeformMetadata(name: String, stringValue: String) throws {
+        try parser.set(.unknown, stringValue: stringValue, customName: name)
     }
 }
 
