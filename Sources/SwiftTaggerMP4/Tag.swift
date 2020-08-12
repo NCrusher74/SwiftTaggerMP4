@@ -13,7 +13,7 @@ import Cocoa
 @available(OSX 10.13, *)
 public struct Tag {
     public var metadata: [(identifier: AtomIdentifier, value: Any)]
-    private var parser: SwiftMp4MetadataParser.Mp4File
+    var parser: SwiftMp4MetadataParser.Mp4File
 
     public init(from file: Mp4File) throws {
         let parser = try SwiftMp4MetadataParser.Mp4File(location: file.location)
@@ -1884,7 +1884,7 @@ public struct Tag {
     var soundEngineer: String? {
         get {
             do {
-                return try parser.get(.sellerID)
+                return try parser.get(.soundEngineer)
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
                 return nil

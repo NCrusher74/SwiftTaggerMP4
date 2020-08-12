@@ -24,8 +24,9 @@ public struct Mp4File {
         }
     }
     
-    public mutating func write(tag: Tag, outputLocation: URL) throws {
-        let parser = try SwiftMp4MetadataParser.Mp4File(location: self.location)
+    public func write(tag: Tag, outputLocation: URL) throws {
+        let parser = tag.parser
+        // how to get the metadata from `tag` to parser?
         try parser.write(outputLocation: outputLocation)
     }
 }
