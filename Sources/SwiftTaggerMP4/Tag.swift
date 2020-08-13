@@ -2419,12 +2419,32 @@ public struct Tag {
         }
     }
     
-    func getFreeformMetadata(name: String) throws -> String? {
+    private func getFreeformMetadata(name: String) throws -> String? {
         return try parser.get(customStringMetadata: name)
     }
     
-    func setFreeformMetadata(name: String, stringValue: String) throws {
+    private func setFreeformMetadata(name: String, stringValue: String) throws {
         try parser.set(.unknown, stringValue: stringValue, customName: name)
+    }
+    
+    public subscript(userDefinedText userTextDescription: String?) -> String? {
+        get {
+            do {
+            return try getFreeformMetadata(name: userTextDescription ?? "")
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.unknown.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try setFreeformMetadata(name: userTextDescription ?? "", stringValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.unknown.rawValue)")
+                }
+            }
+        }
     }
 }
 

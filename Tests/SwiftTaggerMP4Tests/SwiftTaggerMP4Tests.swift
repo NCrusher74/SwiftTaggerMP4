@@ -91,7 +91,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.website = "Website"
         tag.workName = "Work"
         tag.writer = "Writer"
-        try tag.setFreeformMetadata(name: "UNKNOWN", stringValue: "Unknown")
+        tag[userDefinedText: "UNKNOWN"] = "Unknown"
         
         let outputUrl = try localDirectory(fileName: "stringtest", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
@@ -180,7 +180,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.website, "Website")
         XCTAssertEqual(output.workName, "Work")
         XCTAssertEqual(output.writer, "Writer")
-        XCTAssertEqual(try output.getFreeformMetadata(name: "UNKNOWN"), "Unknown")
+        XCTAssertEqual(output[userDefinedText: "UNKNOWN"], "Unknown")
     }
     
     func testIntAndIntArrayWriting() throws {
