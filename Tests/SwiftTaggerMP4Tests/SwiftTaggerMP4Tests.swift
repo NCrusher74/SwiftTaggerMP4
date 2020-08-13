@@ -48,7 +48,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.grouping = "Grouping"
         tag.information = "Information"
         tag.isrc = "123456789012"
-        tag.keywords = ["Key","Words"]
+        tag.podcastKeywords = ["Key","Words"]
         tag.label = "Label"
         tag.linerNotes = "Liner Notes"
         tag.longDescription = "Long Description"
@@ -136,7 +136,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.grouping, "Grouping")
         XCTAssertEqual(output.information, "Information")
         XCTAssertEqual(output.isrc, "123456789012")
-        XCTAssertEqual(output.keywords, ["Key", "Words"])
+        XCTAssertEqual(output.podcastKeywords, ["Key", "Words"])
         XCTAssertEqual(output.label, "Label")
         XCTAssertEqual(output.linerNotes, "Liner Notes")
         XCTAssertEqual(output.format, "Format")
@@ -274,6 +274,50 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let coverArt = output.coverArt
         let coverArtUrl = try localDirectory(fileName: "cover", fileExtension: "jpg")
         try coverArt?.data.write(to: coverArtUrl)
+    }
+    
+    func testFreeFormMetadataAccessors() throws {
+        let source = try mp4File(withMeta: false)
+        var tag = try Tag(from: source)
+        var components = DateComponents()
+        components.year = 1979
+        components.month = 11
+        components.day = 23
+        var calendar = Calendar(identifier: .iso8601)
+        let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        calendar.timeZone = timeZone
+        let date = calendar.date(from: components)
+
+        tag[userDefinedText: "UNKNOWN"] = "unknown"
+        tag.audioFileWebpage = "audio file webpage"
+        tag.audioSourceWebpage = "audio source webpage"
+        tag.copyrightWebpage = "copyright webpage"
+        tag.encodingSettings = "encoding settings"
+        tag.encodingTime = date
+        tag.fileType = .M4A
+        tag.paymentWebpage = "payment webpage"
+        tag.radioStation = "radio station"
+        tag.radioStationOwner = "radio station owner"
+        tag.radioStationWebpage = "radio station webpage"
+        tag.taggingTime = date
+
+        let outputUrl = try localDirectory(fileName: "freeformtest", fileExtension: "m4a")
+        try source.write(tag: tag, outputLocation: outputUrl)
+        
+        let output = try Tag(from: Mp4File(location: outputUrl))
+        
+        XCTAssertEqual(output[userDefinedText: "UNKNOWN"], "unknown")
+        XCTAssertEqual(output.audioFileWebpage, "audio file webpage")
+        XCTAssertEqual(output.audioSourceWebpage, "audio source webpage")
+        XCTAssertEqual(output.copyrightWebpage, "copyright webpage")
+        XCTAssertEqual(output.encodingSettings, "encoding settings")
+        XCTAssertEqual(tag.encodingTime, date)
+        XCTAssertEqual(tag.fileType, .M4A)
+        XCTAssertEqual(tag.paymentWebpage, "payment webpage")
+        XCTAssertEqual(tag.radioStation, "radio station")
+        XCTAssertEqual(tag.radioStationOwner, "radio station owner")
+        XCTAssertEqual(tag.radioStationWebpage, "radio station webpage")
+        XCTAssertEqual(tag.taggingTime, date)
     }
 
 }

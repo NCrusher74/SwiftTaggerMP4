@@ -84,7 +84,7 @@ public enum AtomIdentifier: String, CaseIterable {
     case publisher = "\u{00A9}pub"
     case publisherUrl = "\u{00A9}lal"
     case purchaseDate = "purd"
-    case purchaseUrl = "purl"
+    case podcastUrl = "purl"
     case rating = "rtng"
     case recordCompany = "\u{00A9}mak"
     case recordingDate = "\u{00A9}day"

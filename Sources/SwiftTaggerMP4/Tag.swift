@@ -1159,24 +1159,6 @@ public struct Tag {
         }
     }
     
-    var keywords: [String] {
-        get {
-            do {
-                return try parser.get(.keywords)
-            } catch {
-                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.keywords.rawValue)")
-                return []
-            }
-        }
-        set {
-            do {
-                try parser.set(.keywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.keywords.rawValue)")
-            }
-        }
-    }
-
     // MARK: - L-N
     var label: String? {
         get {
@@ -1539,6 +1521,46 @@ public struct Tag {
         }
     }
     
+    var podcastKeywords: [String] {
+        get {
+            do {
+                return try parser.get(.keywords)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.keywords.rawValue)")
+                return []
+            }
+        }
+        set {
+            do {
+                try parser.set(.keywords, arrayValue: newValue)
+            } catch {
+                print("WARNING: Unable to set metadata atom \(AtomIdentifier.keywords.rawValue)")
+            }
+        }
+    }
+    
+    var podcastUrl: String? {
+        get {
+            do {
+                return try parser.get(.purchaseUrl)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.podcastUrl.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.purchaseUrl,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcastUrl.rawValue)")
+                }
+            }
+        }
+    }
+    
     var predefinedGenre: Genres {
         get {
             do {
@@ -1663,28 +1685,6 @@ public struct Tag {
                     try parser.set(.purchaseDate, dateValue: new)
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.purchaseDate.rawValue)")
-                }
-            }
-        }
-    }
-
-    var podcastUrl: String? {
-        get {
-            do {
-                return try parser.get(.purchaseUrl)
-            } catch {
-                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.purchaseUrl.rawValue)")
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                do {
-                    try parser.set(.purchaseUrl,
-                                   stringValue: new,
-                                   customName: nil)
-                } catch {
-                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.purchaseUrl.rawValue)")
                 }
             }
         }
@@ -2446,5 +2446,290 @@ public struct Tag {
             }
         }
     }
-}
+    
+    public var audioFileWebpage: String? {
+        get {
+            if let string = self[userDefinedText: "WOAF"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "WOAF"] = new
+            }
+        }
+    }
+    
+    public var audioSourceWebpage: String? {
+        get {
+            if let string = self[userDefinedText: "WOAS"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "WOAS"] = new
+            }
+        }
+    }
 
+    public var copyrightWebpage: String? {
+        get {
+            if let string = self[userDefinedText: "WCOP"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "WCOP"] = new
+            }
+        }
+    }
+
+    public var encodingTime: Date? {
+        get {
+            if let string = self[userDefinedText: "TDEN"] {
+                let formatter = ISO8601DateFormatter()
+                let date = formatter.date(from: string)
+                return date
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                let formatter = ISO8601DateFormatter()
+                let string = formatter.string(from: new)
+                self[userDefinedText: "TDEN"] = string
+            }
+        }
+    }
+
+    public var taggingTime: Date? {
+        get {
+            if let string = self[userDefinedText: "TDTG"] {
+                let formatter = ISO8601DateFormatter()
+                let date = formatter.date(from: string)
+                return date
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                let formatter = ISO8601DateFormatter()
+                let string = formatter.string(from: new)
+                self[userDefinedText: "TDTG"] = string
+            }
+        }
+    }
+
+    public var originalReleaseTime: Date? {
+        get {
+            if let string = self[userDefinedText: "TDOR"] {
+                let formatter = ISO8601DateFormatter()
+                let date = formatter.date(from: string)
+                return date
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                let formatter = ISO8601DateFormatter()
+                let string = formatter.string(from: new)
+                self[userDefinedText: "TDOR"] = string
+            }
+        }
+    }
+    
+    public var paymentWebpage: String? {
+        get {
+            if let string = self[userDefinedText: "WPAY"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "WPAY"] = new
+            }
+        }
+    }
+
+    public var encodingSettings: String? {
+        get {
+            if let string = self[userDefinedText: "TSSE"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TSSE"] = new
+            }
+        }
+    }
+
+    public var fileType: FileType {
+        get {
+            if let string = self[userDefinedText: "TFLT"] {
+                if let fileType = FileType(rawValue: string) {
+                    return fileType
+                } else {
+                    return .unknown
+                }
+            } else {
+                return .unknown
+            }
+        }
+        set {
+            self[userDefinedText: "TFLT"] = newValue.rawValue
+        }
+    }
+
+    public var initialKey: KeySignature {
+        get {
+            if let string = self[userDefinedText: "TKEY"] {
+                if let key = KeySignature(rawValue: string) {
+                    return key
+                } else {
+                    return .unknown
+                }
+            } else {
+                return .unknown
+            }
+        }
+        set {
+            self[userDefinedText: "TKEY"] = newValue.rawValue
+        }
+    }
+
+    public var mood: String? {
+        get {
+            if let string = self[userDefinedText: "TMOO"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TMOO"] = new
+            }
+        }
+    }
+
+    public var originalAlbum: String? {
+        get {
+            if let string = self[userDefinedText: "TOAL"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TOAL"] = new
+            }
+        }
+    }
+
+    public var originalFilename: String? {
+        get {
+            if let string = self[userDefinedText: "TOFN"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TOFN"] = new
+            }
+        }
+    }
+
+    public var originalLyricist: String? {
+        get {
+            if let string = self[userDefinedText: "TOLY"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TOLY"] = new
+            }
+        }
+    }
+
+    public var radioStation: String? {
+        get {
+            if let string = self[userDefinedText: "TRSN"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TRSN"] = new
+            }
+        }
+    }
+
+    public var radioStationOwner: String? {
+        get {
+            if let string = self[userDefinedText: "TRSO"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TRSO"] = new
+            }
+        }
+    }
+
+    public var radioStationWebpage: String? {
+        get {
+            if let string = self[userDefinedText: "WORS"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "WORS"] = new
+            }
+        }
+    }
+
+    public var producedNotice: String? {
+        get {
+            if let string = self[userDefinedText: "TPRO"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[userDefinedText: "TPRO"] = new
+            }
+        }
+    }
+}
