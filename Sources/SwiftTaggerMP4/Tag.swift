@@ -30,7 +30,7 @@ public struct Tag {
     }
     
     // MARK: - A
-    var acknowledgment: String? {
+    public var acknowledgment: String? {
         get {
             do {
                 return try parser.get(.acknowledgment)
@@ -52,7 +52,7 @@ public struct Tag {
         }
     }
 
-    var album: String? {
+    public var album: String? {
         get {
             do {
                 return try parser.get(.album)
@@ -74,7 +74,7 @@ public struct Tag {
         }
     }
 
-    var albumArtist: String? {
+    public var albumArtist: String? {
         get {
             do {
                 return try parser.get(.albumArtist)
@@ -96,7 +96,7 @@ public struct Tag {
         }
     }
 
-    var albumArtistSort: String? {
+    public var albumArtistSort: String? {
         get {
             do {
                 return try parser.get(.albumArtistSort)
@@ -118,7 +118,7 @@ public struct Tag {
         }
     }
 
-    var albumID: Int? {
+    public var albumID: Int? {
         get {
             do {
                 return try parser.get(.albumID)
@@ -139,7 +139,7 @@ public struct Tag {
         }
     }
     
-    var albumSort: String? {
+    public var albumSort: String? {
         get {
             do {
                 return try parser.get(.albumSort)
@@ -161,7 +161,7 @@ public struct Tag {
         }
     }
 
-    var appleStoreCountryID: Int? {
+    public var appleStoreCountryID: Int? {
         get {
             do {
                 return try parser.get(.appleStoreCountryID)
@@ -182,7 +182,7 @@ public struct Tag {
         }
     }
 
-    var arranger: String? {
+    public var arranger: String? {
         get {
             do {
                 return try parser.get(.arranger)
@@ -204,7 +204,7 @@ public struct Tag {
         }
     }
 
-    var arrangerKeywords: [String] {
+    public var arrangerKeywords: [String] {
         get {
             do {
                 return try parser.get(.arrangerKeywords)
@@ -222,7 +222,7 @@ public struct Tag {
         }
     }
 
-    var artDirector: String? {
+    public var artDirector: String? {
         get {
             do {
                 return try parser.get(.artDirector)
@@ -244,7 +244,7 @@ public struct Tag {
         }
     }
     
-    var artist: String? {
+    public var artist: String? {
         get {
             do {
                 return try parser.get(.artist)
@@ -266,7 +266,7 @@ public struct Tag {
         }
     }
 
-    var artistID: Int? {
+    public var artistID: Int? {
         get {
             do {
                 return try parser.get(.artistID)
@@ -287,7 +287,7 @@ public struct Tag {
         }
     }
     
-    var artistKeywords: [String] {
+    public var artistKeywords: [String] {
         get {
             do {
                 return try parser.get(.artistKeywords)
@@ -305,7 +305,7 @@ public struct Tag {
         }
     }
     
-    var artistSort: String? {
+    public var artistSort: String? {
         get {
             do {
                 return try parser.get(.artistSort)
@@ -327,7 +327,7 @@ public struct Tag {
         }
     }
 
-    var artistUrl: String? {
+    public var artistUrl: String? {
         get {
             do {
                 return try parser.get(.artistUrl)
@@ -350,7 +350,7 @@ public struct Tag {
     }
 
     // MARK: - B-C
-    var bpm: Int? {
+    public var bpm: Int? {
         get {
             do {
                 return try parser.get(.bpm)
@@ -371,7 +371,7 @@ public struct Tag {
         }
     }
     
-    var category: String? {
+    public var category: String? {
         get {
             do {
                 return try parser.get(.category)
@@ -393,7 +393,7 @@ public struct Tag {
         }
     }
     
-    var comment: String? {
+    public var comment: String? {
         get {
             do {
                 return try parser.get(.comment)
@@ -415,7 +415,7 @@ public struct Tag {
         }
     }
     
-    var compilation: Bool {
+    public var compilation: Bool {
         get {
             do {
                 let value = try parser.get(.compilation)
@@ -446,7 +446,7 @@ public struct Tag {
         }
     }
     
-    var composer: String? {
+    public var composer: String? {
         get {
             do {
                 return try parser.get(.composer)
@@ -468,7 +468,7 @@ public struct Tag {
         }
     }
     
-    var composerID: Int? {
+    public var composerID: Int? {
         get {
             do {
                 return try parser.get(.composerID)
@@ -489,7 +489,7 @@ public struct Tag {
         }
     }
     
-    var composerKeywords: [String] {
+    public var composerKeywords: [String] {
         get {
             do {
                 return try parser.get(.composerKeywords)
@@ -507,7 +507,7 @@ public struct Tag {
         }
     }
     
-    var composerSort: String? {
+    public var composerSort: String? {
         get {
             do {
                 return try parser.get(.composerSort)
@@ -529,7 +529,7 @@ public struct Tag {
         }
     }
     
-    var conductor: String? {
+    public var conductor: String? {
         get {
             do {
                 return try parser.get(.conductor)
@@ -551,7 +551,7 @@ public struct Tag {
         }
     }
     
-    var conductorID: Int? {
+    public var conductorID: Int? {
         get {
             do {
                 return try parser.get(.conductorID)
@@ -572,7 +572,7 @@ public struct Tag {
         }
     }
     
-    var copyright: String? {
+    public var copyright: String? {
         get {
             do {
                 return try parser.get(.copyright)
@@ -594,7 +594,7 @@ public struct Tag {
         }
     }
     
-    var copyrightStatement: String? {
+    public var copyrightStatement: String? {
         get {
             do {
                 return try parser.get(.copyrightStatement)
@@ -616,7 +616,7 @@ public struct Tag {
         }
     }
     
-    var coverArt: NSImage? {
+    public var coverArt: NSImage? {
         get {
             do {
                 return try parser.getCoverArt()
@@ -631,7 +631,7 @@ public struct Tag {
         try parser.set(coverImage: imageLocation)
     }
 
-    var customGenre: String? {
+    public var customGenre: String? {
         get {
             do {
                 return try parser.get(.customGenre)
@@ -654,7 +654,7 @@ public struct Tag {
     }
     
     // MARK: - D-E
-    var description: String? {
+    public var description: String? {
         get {
             do {
                 return try parser.get(.description)
@@ -676,7 +676,7 @@ public struct Tag {
         }
     }
     
-    var director: String? {
+    public var director: String? {
         get {
             do {
                 return try parser.get(.director)
@@ -698,7 +698,7 @@ public struct Tag {
         }
     }
     
-    var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             do {
                 let array = try parser.get(.discNumber)
@@ -729,7 +729,7 @@ public struct Tag {
         }
     }
 
-    var editDateAndDescription1: String? {
+    public var editDateAndDescription1: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription1)
@@ -751,7 +751,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription2: String? {
+    public var editDateAndDescription2: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription2)
@@ -773,7 +773,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription3: String? {
+    public var editDateAndDescription3: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription3)
@@ -795,7 +795,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription4: String? {
+    public var editDateAndDescription4: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription4)
@@ -817,7 +817,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription5: String? {
+    public var editDateAndDescription5: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription5)
@@ -839,7 +839,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription6: String? {
+    public var editDateAndDescription6: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription6)
@@ -861,7 +861,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription7: String? {
+    public var editDateAndDescription7: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription7)
@@ -883,7 +883,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription8: String? {
+    public var editDateAndDescription8: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription8)
@@ -905,7 +905,7 @@ public struct Tag {
         }
     }
     
-    var editDateAndDescription9: String? {
+    public var editDateAndDescription9: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription9)
@@ -927,7 +927,7 @@ public struct Tag {
         }
     }
     
-    var encodedBy: String? {
+    public var encodedBy: String? {
         get {
             do {
                 return try parser.get(.encodedBy)
@@ -949,7 +949,7 @@ public struct Tag {
         }
     }
     
-    var encodingTool: String? {
+    public var encodingTool: String? {
         get {
             do {
                 return try parser.get(.encodingTool)
@@ -971,7 +971,7 @@ public struct Tag {
         }
     }
     
-    var executiveProducer: String? {
+    public var executiveProducer: String? {
         get {
             do {
                 return try parser.get(.executiveProducer)
@@ -994,7 +994,7 @@ public struct Tag {
     }
     
     // MARK: - F-K
-    var filmMakerUrl: String? {
+    public var filmMakerUrl: String? {
         get {
             do {
                 return try parser.get(.filmMakerUrl)
@@ -1016,7 +1016,7 @@ public struct Tag {
         }
     }
     
-    var format: String? {
+    public var format: String? {
         get {
             do {
                 return try parser.get(.format)
@@ -1038,7 +1038,7 @@ public struct Tag {
         }
     }
     
-    var gaplessPlayback: Bool {
+    public var gaplessPlayback: Bool {
         get {
             do {
                 let value = try parser.get(.gaplessPlayback)
@@ -1069,7 +1069,7 @@ public struct Tag {
         }
     }
     
-    var genreID: Genres {
+    public var genreID: Genres {
         get {
             do {
                 let id = try parser.get(.genreID)
@@ -1093,7 +1093,7 @@ public struct Tag {
         }
     }
     
-    var grouping: String? {
+    public var grouping: String? {
         get {
             do {
                 return try parser.get(.grouping)
@@ -1115,7 +1115,7 @@ public struct Tag {
         }
     }
     
-    var information: String? {
+    public var information: String? {
         get {
             do {
                 return try parser.get(.information)
@@ -1137,7 +1137,7 @@ public struct Tag {
         }
     }
     
-    var isrc: String? {
+    public var isrc: String? {
         get {
             do {
                 return try parser.get(.isrc)
@@ -1160,7 +1160,7 @@ public struct Tag {
     }
     
     // MARK: - L-N
-    var label: String? {
+    public var label: String? {
         get {
             do {
                 return try parser.get(.label)
@@ -1182,7 +1182,7 @@ public struct Tag {
         }
     }
     
-    var linerNotes: String? {
+    public var linerNotes: String? {
         get {
             do {
                 return try parser.get(.linerNotes)
@@ -1204,7 +1204,7 @@ public struct Tag {
         }
     }
     
-    var longDescription: String? {
+    public var longDescription: String? {
         get {
             do {
                 return try parser.get(.longDescription)
@@ -1226,7 +1226,7 @@ public struct Tag {
         }
     }
     
-    var lyrics: String? {
+    public var lyrics: String? {
         get {
             do {
                 return try parser.get(.lyrics)
@@ -1248,7 +1248,7 @@ public struct Tag {
         }
     }
     
-    var lyricist: String? {
+    public var lyricist: String? {
         get {
             do {
                 return try parser.get(.lyricist)
@@ -1270,7 +1270,7 @@ public struct Tag {
         }
     }
     
-    var mediaType: MediaType {
+    public var mediaType: MediaType {
         get {
             do {
                 let id = try parser.get(.mediaType)
@@ -1294,7 +1294,7 @@ public struct Tag {
         }
     }
 
-    var movementCount: Int? {
+    public var movementCount: Int? {
         get {
             do {
                 return try parser.get(.movementCount)
@@ -1315,7 +1315,7 @@ public struct Tag {
         }
     }
     
-    var movementName: String? {
+    public var movementName: String? {
         get {
             do {
                 return try parser.get(.movementName)
@@ -1337,7 +1337,7 @@ public struct Tag {
         }
     }
     
-    var movementNumber: Int? {
+    public var movementNumber: Int? {
         get {
             do {
                 return try parser.get(.movementNumber)
@@ -1358,7 +1358,7 @@ public struct Tag {
         }
     }
     
-    var narrator: String? {
+    public var narrator: String? {
         get {
             do {
                 return try parser.get(.narrator)
@@ -1381,7 +1381,7 @@ public struct Tag {
     }
     
     // MARK: - O-P
-    var originalArtist: String? {
+    public var originalArtist: String? {
         get {
             do {
                 return try parser.get(.originalArtist)
@@ -1403,7 +1403,7 @@ public struct Tag {
         }
     }
     
-    var owner: String? {
+    public var owner: String? {
         get {
             do {
                 return try parser.get(.owner)
@@ -1425,7 +1425,7 @@ public struct Tag {
         }
     }
     
-    var performers: String? {
+    public var performers: String? {
         get {
             do {
                 return try parser.get(.performers)
@@ -1447,7 +1447,7 @@ public struct Tag {
         }
     }
     
-    var playlistID: Int? {
+    public var playlistID: Int? {
         get {
             do {
                 return try parser.get(.playlistID)
@@ -1468,7 +1468,7 @@ public struct Tag {
         }
     }
     
-    var podcast: Bool {
+    public var podcast: Bool {
         get {
             do {
                 let value = try parser.get(.podcast)
@@ -1499,7 +1499,7 @@ public struct Tag {
         }
     }
     
-    var podcastID: String? {
+    public var podcastID: String? {
         get {
             do {
                 return try parser.get(.podcastID)
@@ -1521,7 +1521,7 @@ public struct Tag {
         }
     }
     
-    var podcastKeywords: [String] {
+    public var podcastKeywords: [String] {
         get {
             do {
                 return try parser.get(.keywords)
@@ -1539,7 +1539,7 @@ public struct Tag {
         }
     }
     
-    var podcastUrl: String? {
+    public var podcastUrl: String? {
         get {
             do {
                 return try parser.get(.purchaseUrl)
@@ -1561,7 +1561,7 @@ public struct Tag {
         }
     }
     
-    var predefinedGenre: Genres {
+    public var predefinedGenre: Genres {
         get {
             do {
                 let nameString = try parser.get(.predefinedGenre) ?? "unknown"
@@ -1586,7 +1586,7 @@ public struct Tag {
         }
     }
 
-    var producer: String? {
+    public var producer: String? {
         get {
             do {
                 return try parser.get(.producer)
@@ -1608,7 +1608,7 @@ public struct Tag {
         }
     }
     
-    var producerKeywords: [String] {
+    public var producerKeywords: [String] {
         get {
             do {
                 return try parser.get(.producerKeywords)
@@ -1626,7 +1626,7 @@ public struct Tag {
         }
     }
     
-    var publisher: String? {
+    public var publisher: String? {
         get {
             do {
                 return try parser.get(.publisher)
@@ -1648,7 +1648,7 @@ public struct Tag {
         }
     }
     
-    var publisherUrl: String? {
+    public var publisherUrl: String? {
         get {
             do {
                 return try parser.get(.publisherUrl)
@@ -1670,7 +1670,7 @@ public struct Tag {
         }
     }
 
-    var purchaseDate: Date? {
+    public var purchaseDate: Date? {
         get {
             do {
                 return try parser.get(.purchaseDate)
@@ -1691,7 +1691,7 @@ public struct Tag {
     }
 
     // MARK: - R-S
-    var rating: ContentRating {
+    public var rating: ContentRating {
         get {
             do {
                 let ratingInt = try parser.get(.rating) ?? 0
@@ -1715,7 +1715,7 @@ public struct Tag {
         }
     }
     
-    var recordCompany: String? {
+    public var recordCompany: String? {
         get {
             do {
                 return try parser.get(.recordCompany)
@@ -1737,7 +1737,7 @@ public struct Tag {
         }
     }
 
-    var recordingDate: Date? {
+    public var recordingDate: Date? {
         get {
             do {
                 return try parser.get(.recordingDate)
@@ -1757,7 +1757,7 @@ public struct Tag {
         }
     }
     
-    var recordingCopyright: String? {
+    public var recordingCopyright: String? {
         get {
             do {
                 return try parser.get(.recordingCopyright)
@@ -1779,7 +1779,7 @@ public struct Tag {
         }
     }
     
-    var year: Date? {
+    public var year: Date? {
         get {
             do {
                 return try parser.get(.recordingYear)
@@ -1799,7 +1799,7 @@ public struct Tag {
         }
     }
     
-    var releaseDate: Date? {
+    public var releaseDate: Date? {
         get {
             do {
                 return try parser.get(.releaseDate)
@@ -1819,7 +1819,7 @@ public struct Tag {
         }
     }
     
-    var requirements: String? {
+    public var requirements: String? {
         get {
             do {
                 return try parser.get(.requirements)
@@ -1841,7 +1841,7 @@ public struct Tag {
         }
     }
     
-    var sellerID: String? {
+    public var sellerID: String? {
         get {
             do {
                 return try parser.get(.sellerID)
@@ -1863,7 +1863,7 @@ public struct Tag {
         }
     }
     
-    var showWorkAndMovement: Bool {
+    public var showWorkAndMovement: Bool {
         get {
             do {
                 let value = try parser.get(.showWorkAndMovement)
@@ -1894,7 +1894,7 @@ public struct Tag {
         }
     }
     
-    var soundEngineer: String? {
+    public var soundEngineer: String? {
         get {
             do {
                 return try parser.get(.soundEngineer)
@@ -1916,7 +1916,7 @@ public struct Tag {
         }
     }
     
-    var softwareVersion: String? {
+    public var softwareVersion: String? {
         get {
             do {
                 return try parser.get(.softwareVersion)
@@ -1938,7 +1938,7 @@ public struct Tag {
         }
     }
     
-    var soloist: String? {
+    public var soloist: String? {
         get {
             do {
                 return try parser.get(.soloist)
@@ -1960,7 +1960,7 @@ public struct Tag {
         }
     }
     
-    var songDescription: String? {
+    public var songDescription: String? {
         get {
             do {
                 return try parser.get(.songDescription)
@@ -1982,7 +1982,7 @@ public struct Tag {
         }
     }
     
-    var songwriterKeywords: [String] {
+    public var songwriterKeywords: [String] {
         get {
             do {
                 return try parser.get(.songwriterKeywords)
@@ -2000,7 +2000,7 @@ public struct Tag {
         }
     }
     
-    var sourceCredit: String? {
+    public var sourceCredit: String? {
         get {
             do {
                 return try parser.get(.sourceCredit)
@@ -2022,7 +2022,7 @@ public struct Tag {
         }
     }
     
-    var subtitle: String? {
+    public var subtitle: String? {
         get {
             do {
                 return try parser.get(.subtitle)
@@ -2044,7 +2044,7 @@ public struct Tag {
         }
     }
     
-    var subtitleKeywords: [String] {
+    public var subtitleKeywords: [String] {
         get {
             do {
                 return try parser.get(.subtitleKeywords)
@@ -2063,7 +2063,7 @@ public struct Tag {
     }
     
     // MARK: - T-Z
-    var title: String? {
+    public var title: String? {
         get {
             do {
                 return try parser.get(.title)
@@ -2085,7 +2085,7 @@ public struct Tag {
         }
     }
     
-    var titleKeywords: [String] {
+    public var titleKeywords: [String] {
         get {
             do {
                 return try parser.get(.titleKeywords)
@@ -2103,7 +2103,7 @@ public struct Tag {
         }
     }
     
-    var titleSort: String? {
+    public var titleSort: String? {
         get {
             do {
                 return try parser.get(.titleSort)
@@ -2125,7 +2125,7 @@ public struct Tag {
         }
     }
     
-    var thanks: String? {
+    public var thanks: String? {
         get {
             do {
                 return try parser.get(.thanks)
@@ -2147,7 +2147,7 @@ public struct Tag {
         }
     }
     
-    var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             do {
                 let array = try parser.get(.trackNumber)
@@ -2179,7 +2179,7 @@ public struct Tag {
         }
     }
     
-    var trackSubtitle: String? {
+    public var trackSubtitle: String? {
         get {
             do {
                 return try parser.get(.trackSubtitle)
@@ -2201,7 +2201,7 @@ public struct Tag {
         }
     }
     
-    var tvEpisodeNumber: Int? {
+    public var tvEpisodeNumber: Int? {
         get {
             do {
                 return try parser.get(.tvEpisodeNumber)
@@ -2222,7 +2222,7 @@ public struct Tag {
         }
     }
     
-    var tvEpisodeTitle: String? {
+    public var tvEpisodeTitle: String? {
         get {
             do {
                 return try parser.get(.tvEpisodeTitle)
@@ -2244,7 +2244,7 @@ public struct Tag {
         }
     }
     
-    var tvSeason: Int? {
+    public var tvSeason: Int? {
         get {
             do {
                 return try parser.get(.tvSeason)
@@ -2265,7 +2265,7 @@ public struct Tag {
         }
     }
     
-    var tvNetwork: String? {
+    public var tvNetwork: String? {
         get {
             do {
                 return try parser.get(.tvNetwork)
@@ -2287,7 +2287,7 @@ public struct Tag {
         }
     }
     
-    var tvShow: String? {
+    public var tvShow: String? {
         get {
             do {
                 return try parser.get(.tvShow)
@@ -2309,7 +2309,7 @@ public struct Tag {
         }
     }
     
-    var tvShowDescription: String? {
+    public var tvShowDescription: String? {
         get {
             do {
                 return try parser.get(.tvShowDescription)
@@ -2331,7 +2331,7 @@ public struct Tag {
         }
     }
     
-    var tvShowSort: String? {
+    public var tvShowSort: String? {
         get {
             do {
                 return try parser.get(.tvShowSort)
@@ -2353,7 +2353,7 @@ public struct Tag {
         }
     }
     
-    var website: String? {
+    public var website: String? {
         get {
             do {
                 return try parser.get(.website)
@@ -2375,7 +2375,7 @@ public struct Tag {
         }
     }
     
-    var workName: String? {
+    public var workName: String? {
         get {
             do {
                 return try parser.get(.workName)
@@ -2397,7 +2397,7 @@ public struct Tag {
         }
     }
     
-    var writer: String? {
+    public var writer: String? {
         get {
             do {
                 return try parser.get(.writer)
