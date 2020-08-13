@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MediaType: Int {
+public enum MediaType: Int {
     case movieOld = 0
     case music = 1
     case audiobook = 2

@@ -1,6 +1,6 @@
 import SE0270_RangeSet
 
-enum Genres: Int, CaseIterable {
+public enum Genres: Int, CaseIterable {
     case unknown = 0
     case musicBlues = 2
     case musicComedy = 3
