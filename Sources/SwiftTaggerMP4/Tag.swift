@@ -698,18 +698,31 @@ public struct Tag {
         }
     }
     
-    var discNumber: [Int] {
+    var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             do {
-                return try parser.get(.discNumber)
+                let array = try parser.get(.discNumber)
+                if let disc = array.first {
+                    if let total = array.last, array.count > 1 {
+                        return (disc, total)
+                    } else {
+                        return (disc, nil)
+                    }
+                } else {
+                    return (0, nil)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.discNumber.rawValue)")
-                return []
+                return (0, nil)
             }
         }
         set {
             do {
-                try parser.set(.discNumber, arrayValue: newValue)
+                var array = [newValue.disc]
+                if let total = newValue.totalDiscs {
+                    array.append(total)
+                }
+                try parser.set(.discNumber, arrayValue: array)
             } catch {
                 print("WARNING: Unable to set metadata atom \(AtomIdentifier.discNumber.rawValue)")
             }
@@ -2134,18 +2147,32 @@ public struct Tag {
         }
     }
     
-    var trackNumber: [Int] {
+    var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             do {
-                return try parser.get(.trackNumber)
+                let array = try parser.get(.trackNumber)
+                if let track = array.first {
+                    if let total = array.last, array.count > 1 {
+                        return (track, total)
+                    } else {
+                        return (track, nil)
+                    }
+                } else {
+                    return (0, nil)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackNumber.rawValue)")
-                return []
+                return (0, nil)
             }
         }
         set {
+            //            print(newValue) // nil
             do {
-                try parser.set(.trackNumber, arrayValue: newValue)
+                var array = [newValue.track]
+                if let total = newValue.totalTracks {
+                    array.append(total)
+                }
+                try parser.set(.trackNumber, arrayValue: array)
             } catch {
                 print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackNumber.rawValue)")
             }

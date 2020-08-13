@@ -204,8 +204,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.showWorkAndMovement = true
         tag.tvEpisodeNumber = 7
         tag.tvSeason = 6
-        tag.discNumber = [2,3]
-        tag.trackNumber = [4,5]
+        tag.discNumber.disc = 2
+        tag.discNumber.totalDiscs = 3
+        tag.trackNumber.track = 4
+        tag.trackNumber.totalTracks = 5
         tag.appleStoreCountryID = 678901
 
         
@@ -231,8 +233,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.showWorkAndMovement, true)
         XCTAssertEqual(output.tvEpisodeNumber, 7)
         XCTAssertEqual(output.tvSeason, 6)
-        XCTAssertEqual(output.discNumber, [2,3])
-        XCTAssertEqual(output.trackNumber, [4,5])
+        XCTAssertEqual(output.discNumber.disc, 2)
+        XCTAssertEqual(output.discNumber.totalDiscs, 3)
+        XCTAssertEqual(output.trackNumber.track, 4)
+        XCTAssertEqual(output.trackNumber.totalTracks, 5)
         XCTAssertEqual(output.appleStoreCountryID, 678901)
     }
 
