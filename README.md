@@ -26,8 +26,8 @@ tag.trackNumber.totalDiscs = 2
 
 let outputUrl = URL(fileURLWithPath: "/path/to/new.m4a")
 try mp4File.write(
-tag: tag,
-outputLocation: outputUrl)
+    tag: tag,
+    outputLocation: outputUrl)
 ```
 
 If you wish to overwrite all metadata on the file and replace it with only your newly-created metadata, initialize `tag` to an empty `Tag()` instance instead of reading from an mp4 file. 
@@ -43,51 +43,33 @@ var tag = try mp4File.read()
 
 tag.album = nil
 tag.artist = nil
-tag.trackNumber = (0,nil)
 ```
 
-For `userDefinedText` multiple versions of the item are permitted in a tag. In these cases, you can locate the specific atom using it's `name` as a subscript:
+To remove track and disc numbers, use the removal function:
 ```swift
-print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
+try tag.removeTrackNumber()
+try tag.removeDiscNumber()
+```
+
+For unknown (`----`) metadata atoms, multiple versions of the atom are permitted in a tag. In these cases, you can locate a specific atom using its custom name as a subscript:
+```swift
+print(tag["My Custom Tag"]) // "Custom Tag Content"
 ```
 Writing to these items works the same way.
 ```swift
-tag[userDefinedText: "Description"] = "User Defined Text Content"
+tag["My Custom Tag"] = "Custom Tag Content"
 ```
-To overwrite an existing item with a subscript accessor, just use the same name`. To remove an existing item of this type, access it using its removal function:
+To overwrite an existing item with a subscript accessor, just use the same name. To remove an existing item of this type, set it equal to `nil`:
 ```swift
-tag.removeUserTextItem(withName: "UserText")
+tag["My Custom Tag"] = nil
 ```
 
-*Involved People and Musician Credit List frames*
-
-Data in the `InvolvedPeopleList` and `MusicianCreditsList` frames is available as a dictionary, `[role: [person]]` where `role` is whatever part or function is being performed, and `[person]` is an array of the people performing it.
-
-To return the entire dictionary:
+To remove all metadata:
 ```swift
-print(tag.musicianCreditsList)
-print(tag.involvedPeopleList)
+try tag.removeAllMetadata()
 ```
 
-To access information for a particular role:
-```swift
-print(tag.involvedPeopleList?[.producer]) // ["Producer Name", "Coproducer Name"]
-print(tag.musicianCreditsList?[.singer]) // ["Singer Name"]
-```
-
-To clear all the values from the `InvolvedPeopleList` or `MusicianCreditsList` frames:
-```swift
-tag.clearInvolvedPeopleList()
-tag.clearMusicianCreditsList()
-```
-
-To clear the `[person]` array for a specific  `role`:
-```swift
-tag.clearInvolvedPeopleForRole(role: .director)
-tag.clearMusicianCreditsForRole(role: .guitarist)
-```
-
-*Chapter Frames*
+*Chapters*
 
 To retrieve a list of all the chapters in the file, use the `chapterList` property.
 ```swift
@@ -107,118 +89,211 @@ To add a chapter, use the `addChapter(at startTime: Int, title: String)` functio
 tag.addChapter(at: 1000, title: "Chapter 02") // start time in milliseconds
 ```
 
-To remove a single chapter frame from the tag:
+To remove a single chapter from the tag:
 ```swift
 tag.removeChapter(at: startTime)
 ```
 
-To wipe all chapters frames from the tag:
+To wipe all chapters from the tag:
 ```swift
 tag.removechapterList()
 ```
 
-*Other Frames*
+*Cover Art*
 
-You can export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
 ```swift
-let outputURL = URL(fileURLWithPath: "/destination/path/for/image.jpg")
-let coverImageData = tag[attachedPicture: "SampleCover"]
-try coverImageData?.write(to: outputURL)
+tag.coverArt // returns `NSImage`
+
+try setCoverArt(imageLocation: URL)
+
+try removeCoverArt()
 ```
 
-Unknown or unhandled frames are assigned a `UUID` that may be used in a similar fashion to a `descriptionString`.
+Here's a complete list of the atoms handled by SwiftTaggeMP4:
 
-Here's a complete list of the frames handled by SwiftTaggerID3:
+## Available metadata tags are:
+### String Metadata Identifiers
+*  `acknowledgment = "\u{00A9}cak"`
+*  `album = "\u{00A9}alb"`
+*  `albumArtist = "aART"`
+*  `albumArtistSort = "soaa"`
+*  `albumSort = "soal"`
+*  `arranger = "\u{00A9}arg"`
+*  `artDirector = "\u{00A9}ard"`
+*  `artist = "\u{00A9}ART"`
+*  `artistSort = "soar"`
+*  `artistUrl = "\u{00A9}prl"`
+*  `category = "catg"`
+*  `comment = "\u{00A9}cmt"`
+*  `composer = "\u{00A9}com"`
+*  `composerSort = "soco"`
+*  `conductor = "\u{00A9}con"`
+*  `copyright = "cprt"`
+*  `copyrightStatement = "\u{00A9}cpy"`
+*  `customGenre = "\u{00A9}gen"`
+*  `description = "\u{00A9}des"`
+*  `director = "\u{00A9}dir"`
+*  `editDateAndDescription1 = "\u{00A9}ed1"`
+*  `editDateAndDescription2 = "\u{00A9}ed2"`
+*  `editDateAndDescription3 = "\u{00A9}ed3"`
+*  `editDateAndDescription4 = "\u{00A9}ed4"`
+*  `editDateAndDescription5 = "\u{00A9}ed5"`
+*  `editDateAndDescription6 = "\u{00A9}ed6"`
+*  `editDateAndDescription7 = "\u{00A9}ed7"`
+*  `editDateAndDescription8 = "\u{00A9}ed8"`
+*  `editDateAndDescription9 = "\u{00A9}ed9"`
+*  `encodedBy = "\u{00A9}enc"`
+*  `encodingTool = "\u{00A9}too"`
+*  `executiveProducer = "\u{00A9}xpd"`
+*  `filmMakerUrl = "\u{00A9}mal"`
+*  `format = "\u{00A9}fmt"`
+*  `grouping = "\u{00A9}grp"`
+*  `information = "\u{00A9}inf"`
+*  `isrc = "\u{00A9}isr"`
+*  `label = "\u{00A9}lab"`
+*  `linerNotes = "\u{00A9}lnt"`
+*  `longDescription = "ldes"`
+*  `lyrics = "\u{00A9}lyr"`
+*  `lyricist = "\u{00A9}aut"`
+*  `movementName = "\u{00A9}mvn"`
+*  `narrator = "\u{00A9}nrt"`
+*  `originalArtist = "\u{00A9}ope"`
+*  `owner = "ownr"`
+*  `performers = "\u{00A9}prf"`
+*  `podcastID = "egid"`
+*  `predefinedGenre = "genr"`
+*  `producer = "\u{00A9}prd"`
+*  `publisher = "\u{00A9}pub"`
+*  `publisherUrl = "\u{00A9}lal"`
+*  `purchaseUrl = "purl"`
+*  `recordCompany = "\u{00A9}mak"`
+*  `recordingCopyright = "\u{00A9}phg"`
+*  `requirements = "\u{00A9}req"`
+*  `sellerID = "xid "`
+*  `soundEngineer = "\u{00A9}sne"`
+*  `softwareVersion = "\u{00A9}swr"`
+*  `soloist = "\u{00A9}sol"`
+*  `songDescription = "desc"`
+*  `sourceCredit = "\u{00A9}src"`
+*  `subtitle = "\u{00A9}snm"`
+*  `title = "\u{00A9}nam"`
+*  `titleSort = "sonm"`
+*  `thanks = "\u{00A9}thx"`
+*  `trackSubtitle = "\u{00A9}st3"`
+*  `tvEpisodeTitle = "tven"`
+*  `tvNetwork = "tvnn"`
+*  `tvShow = "tvsh"`
+*  `tvShowDescription = "sdes"`
+*  `tvShowSort = "sosn"`
+*  `website = "\u{00A9}url"`
+*  `workName = "\u{00A9}wrk"`
+*  `writer = "\u{00A9}wrt"`
+*  `unknown = "----"`
 
-* `album`
-* `albumSort`
-* `albumArtist`
-* `albumArtistSort`
-* `arranger`
-* `artist`
-* `artistSort`
-* `artistWebpage`
-* `attachedPicture // query using description as subscript accessor`
-* `audioFileWebpage`
-* `audioSourceWebpage`
-* `bpm`
-* `comments // query using description as subscript accessor`
-* `compilation // iTunes non-standard frame`
-* `composer`
-* `composerSort`
-* `conductor`
-* `contentGroup`
-* `copyright`
-* `copyrightWebpage`
-* `discNumber`
-* `encodedBy`
-* `encodingSettings`
-* `fileOwner // uses non-standard identifier in version 2.2`
-* `fileType`
-* `genre`
-* `grouping // iTunes non-standard frame`
-* `initialKey`
-* `involvedPeopleList`
-* `isrc`
-* `languages`
-* `length`
-* `lyricist`
-* `mediaType`
-* `mood // uses non-standard identifier in versions 2.2/2.3`
-* `movementCount // iTunes non-standard frame`
-* `movementName // iTunes non-standard frame`
-* `movementNumber // iTunes non-standard frame`
-* `musicianCreditsList // uses non-standard identifier in versions 2.2/2.3`
-* `originalAlbum`
-* `originalArtist`
-* `originalFilename`
-* `originalLyricist`
-* `originalReleaseTime`
-* `paymentWebpage // uses non-standard identifier in version 2.2`
-* `playlistDelay`
-* `podcastCategory // iTunes non-standard frame`
-* `podcastDescription // iTunes non-standard frame`
-* `podcastID // iTunes non-standard frame`
-* `podcastKeywords // iTunes non-standard frame`
-* `podcastFeedLink // iTunes non-standard frame`
-* `producedNotice // uses non-standard identifier in versions 2.2/2.3`
-* `publisher`
-* `publisherWebpage`
-* `radioStation`
-* `radioStationOwner`
-* `radioStationWebpage`
-* `recordingDate`
-* `setSubtitle // uses non-standard identifier in versions 2.2/2.3`
-* `subtitle`
-* `title`
-* `titleSort`
-* `trackNumber`
-* `unsynchronizedLyrics // query using description as subscript accessor`
-* `userDefinedText // query using description as subscript accessor`
-* `userDefinedWebpage // query using description as subscript accessor`
+### String Array Metadata Identifiers
+*  `arrangerKeywords = "\u{00A9}ark"`
+*  `artistKeywords = "\u{00A9}prk"`
+*  `composerKeywords = "\u{00A9}cok"`
+*  `keywords = "keyw"`
+*  `producerKeywords = "\u{00A9}pdk"`
+*  `songwriterKeywords = "\u{00A9}swk"`
+*  `subtitleKeywords = "\u{00A9}snk"`
+*  `titleKeywords = "\u{00A9}nak"`
 
-For ID3 version 2.4 only:
-* `encodingTime`
-* `releaseTime`
-* `taggingTime`
+### Integer Metadata Identifiers
+*  `albumID = "akID"`
+*  `appleStoreCountryID = "sfID"`
+*  `artistID = "atID"`
+*  `bpm = "tmpo"`
+*  `compilation = "cpil"`
+*  `composerID = "cmID"`
+*  `conductorID = "cnID"`
+*  `gaplessPlayback = "pgap"`
+*  `genreID = "geID"`
+*  `mediaType = "stik"`
+*  `movementCount = "\u{00A9}mvc"`
+*  `movementNumber = "\u{00A9}mvi"`
+*  `playlistID = "plID"`
+*  `podcast = "pcst"`
+*  `rating = "rtng"`
+*  `showWorkAndMovement = "shwm"`
+*  `tvEpisodeNumber = "tves"`
+*  `tvSeason = "tvsn"`
 
-For ID3 versions 2.3 and 2.4 only:
-* `chapter`
-* `tableOfContents`
+### Integer Array Metadata Identifiers
+*  `discNumber = "disk"`
+*  `trackNumber = "trkn"`
 
-For ID3 versions 2.2 and 2.3 only:
-* `date`
-* `time`
-* `year`
+### Date Metadata Identifiers
+*  `purchaseDate = "purd"`
+*  `recordingDate = "\u{00A9}day"`
+*  `recordingYear = "yrrc"`
+*  `releaseDate = "rldt"`
 
-**A note on ID3 specification compliance**
-`SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
+### Image Metadata Identifiers
+*  `coverArt = "covr"`
 
-* In most cases where a frame doesn't exist for one ID3 version but does for another, an ID3 identifier for the frame has been created. Some apps will recognize these frames, some will not. The exceptions to this are the chapter/table of contents frames and the date frames.
-* The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each. This should be more than sufficient for most user's needs.
-* The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
+### Freeform Tags and compatibility
+To facilitate compatibility with `ID3` metadata, some freeform tags have been pre-defined for convenience. The custom name for these is the four-letter `ID3` identifier. Other tagging apps have different custom names for these, and what that custom name is differs from app to app. There's no way of predicting whether these custom tags as written by `SwiftTaggerMp4` will be recognized by other apps.
 
-**Known Issues**
-Date frames will throw a `FrameNotAvailableForVersion` error, even when outputting to a compatible version, if the tag which has been read in has an incompatible version.
+These tags are:
 
-If you wish to add these missing features, while keeping the usage user-friendly, the author will welcome pull requests.
+* `audioFileWebpage // custom name "WOAF"`
+* `audioSourceWebpage // custom name "WOAS"`
+* `copyrightWebpage// custom name "WCOP"`
+* `encodingSettings // custom name "TSSE"`
+* `encodingTime // custom name "TDEN"`
+* `initialKey // custom name "TKEY"`
+* `mood // custom name "TMOO"`
+* `originalAlbum // custom name "TOAL"`
+* `originalFilename // custom name "TOFN"`
+* `originalLyricist // custom name "TOLY"`
+* `originalReleaseTIME // custom name "TDOR"`
+* `paymentWebpage // custom name "WPAY"`
+* `producedNotice // custom name "TPRO"`
+* `radioStation // custom name "TRSN"`
+* `radioStationOwner // custom name "TRSO"`
+* `radioStationWebpage // custom name "WORS"`
+* `taggingTime // custom name "TDTG"`
+
+
+If you wish to make these accessors compatible with a particular app, change the `name` parameter of the subscript accessor. 
+
+For example, to make `mood` compatible with `Yate`, you would change "TMOO" to "MOOD"
+
+```swift
+public var mood: String? {
+    get {
+        if let string = self["TMOO"] { 
+            return string
+        } else {
+            return nil
+        }
+    }
+    set {
+        if let new = newValue {
+            self["TMOO"] = new
+        } else {
+            self["TMOO"] = nil
+        }
+    }
+}
+```
+
+This will require knowing what custom name the other app uses to access these tags. You can locate these using `AtomicParsley` or `Yate`:
+
+```
+// Atomic Parsley
+Atom "----" [ORIGINAL YEAR] contains: 1996-01-01T00:00:00Z
+Atom "----" [MOOD] contains: MOOD
+
+// Yate (File > Log > Raw Data)
+000000095792 000000095889 000000000097 ---- 
+    000000095800 000000095828 000000000028 mean com.apple.iTunes
+    000000095828 000000095853 000000000025 name ORIGINAL YEAR
+    000000095853 000000095889 000000000036 data 
+000000096005 000000096077 000000000072 ---- 
+    000000096013 000000096041 000000000028 mean com.apple.iTunes
+    000000096041 000000096057 000000000016 name MOOD
+    000000096057 000000096077 000000000020 data 
+```

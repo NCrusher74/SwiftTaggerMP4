@@ -473,7 +473,7 @@ public struct Tag {
 
     public var audioFileWebpage: String? {
         get {
-            if let string = self[userDefinedText: "WOAF"] {
+            if let string = self["WOAF"] {
                 return string
             } else {
                 return nil
@@ -481,16 +481,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "WOAF"] = new
+                self["WOAF"] = new
             } else {
-                self[userDefinedText: "WOAF"] = nil
+                self["WOAF"] = nil
             }
         }
     }
     
     public var audioSourceWebpage: String? {
         get {
-            if let string = self[userDefinedText: "WOAS"] {
+            if let string = self["WOAS"] {
                 return string
             } else {
                 return nil
@@ -498,9 +498,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "WOAS"] = new
+                self["WOAS"] = new
             } else {
-                self[userDefinedText: "WOAS"] = nil
+                self["WOAS"] = nil
             }
         }
     }
@@ -810,6 +810,27 @@ public struct Tag {
         }
     }
     
+    public var contentAdvisory: ContentAdvisory? {
+        get {
+            if let string = self["iTunEXTC"] {
+                if let key = ContentAdvisory(rawValue: string) {
+                    return key
+                } else {
+                    return .unknown
+                }
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["iTunEXTC"] = new.rawValue
+            } else {
+                self["iTunEXTC"] = nil
+            }
+        }
+    }
+
     public var copyright: String? {
         get {
             do {
@@ -872,7 +893,7 @@ public struct Tag {
    
     public var copyrightWebpage: String? {
         get {
-            if let string = self[userDefinedText: "WCOP"] {
+            if let string = self["WCOP"] {
                 return string
             } else {
                 return nil
@@ -880,9 +901,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "WCOP"] = new
+                self["WCOP"] = new
             } else {
-                self[userDefinedText: "WCOP"] = nil
+                self["WCOP"] = nil
             }
         }
     }
@@ -1330,7 +1351,7 @@ public struct Tag {
    
     public var encodingSettings: String? {
         get {
-            if let string = self[userDefinedText: "TSSE"] {
+            if let string = self["TSSE"] {
                 return string
             } else {
                 return nil
@@ -1338,16 +1359,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TSSE"] = new
+                self["TSSE"] = new
             } else {
-                self[userDefinedText: "TSSE"] = nil
+                self["TSSE"] = nil
             }
         }
     }
     
     public var encodingTime: Date? {
         get {
-            if let string = self[userDefinedText: "TDEN"] {
+            if let string = self["TDEN"] {
                 let formatter = ISO8601DateFormatter()
                 let date = formatter.date(from: string)
                 return date
@@ -1359,9 +1380,9 @@ public struct Tag {
             if let new = newValue {
                 let formatter = ISO8601DateFormatter()
                 let string = formatter.string(from: new)
-                self[userDefinedText: "TDEN"] = string
+                self["TDEN"] = string
             } else {
-                self[userDefinedText: "TDEN"] = nil
+                self["TDEN"] = nil
             }
         }
     }
@@ -1429,7 +1450,7 @@ public struct Tag {
     // MARK: - F-K
     public var fileType: FileType? {
         get {
-            if let string = self[userDefinedText: "TFLT"] {
+            if let string = self["TFLT"] {
                 if let fileType = FileType(rawValue: string) {
                     return fileType
                 } else {
@@ -1441,9 +1462,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TFLT"] = new.rawValue
+                self["TFLT"] = new.rawValue
             } else {
-                self[userDefinedText: "TFLT"] = nil
+                self["TFLT"] = nil
             }
         }
     }
@@ -1647,7 +1668,7 @@ public struct Tag {
     
     public var initialKey: KeySignature? {
         get {
-            if let string = self[userDefinedText: "TKEY"] {
+            if let string = self["TKEY"] {
                 if let key = KeySignature(rawValue: string) {
                     return key
                 } else {
@@ -1659,9 +1680,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TKEY"] = new.rawValue
+                self["TKEY"] = new.rawValue
             } else {
-                self[userDefinedText: "TKEY"] = nil
+                self["TKEY"] = nil
             }
         }
     }
@@ -1885,7 +1906,7 @@ public struct Tag {
 
     public var mood: String? {
         get {
-            if let string = self[userDefinedText: "TMOO"] {
+            if let string = self["TMOO"] {
                 return string
             } else {
                 return nil
@@ -1893,9 +1914,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TMOO"] = new
+                self["TMOO"] = new
             } else {
-                self[userDefinedText: "TMOO"] = nil
+                self["TMOO"] = nil
             }
         }
     }
@@ -2047,7 +2068,7 @@ public struct Tag {
     
     public var originalAlbum: String? {
         get {
-            if let string = self[userDefinedText: "TOAL"] {
+            if let string = self["TOAL"] {
                 return string
             } else {
                 return nil
@@ -2055,16 +2076,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TOAL"] = new
+                self["TOAL"] = new
             } else {
-                self[userDefinedText: "TOAL"] = nil
+                self["TOAL"] = nil
             }
         }
     }
     
     public var originalFilename: String? {
         get {
-            if let string = self[userDefinedText: "TOFN"] {
+            if let string = self["TOFN"] {
                 return string
             } else {
                 return nil
@@ -2072,16 +2093,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TOFN"] = new
+                self["TOFN"] = new
             } else {
-                self[userDefinedText: "TOFN"] = nil
+                self["TOFN"] = nil
             }
         }
     }
     
     public var originalLyricist: String? {
         get {
-            if let string = self[userDefinedText: "TOLY"] {
+            if let string = self["TOLY"] {
                 return string
             } else {
                 return nil
@@ -2089,16 +2110,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TOLY"] = new
+                self["TOLY"] = new
             } else {
-                self[userDefinedText: "TOLY"] = nil
+                self["TOLY"] = nil
             }
         }
     }
     
     public var originalReleaseTime: Date? {
         get {
-            if let string = self[userDefinedText: "TDOR"] {
+            if let string = self["TDOR"] {
                 let formatter = ISO8601DateFormatter()
                 let date = formatter.date(from: string)
                 return date
@@ -2110,9 +2131,9 @@ public struct Tag {
             if let new = newValue {
                 let formatter = ISO8601DateFormatter()
                 let string = formatter.string(from: new)
-                self[userDefinedText: "TDOR"] = string
+                self["TDOR"] = string
             } else {
-                self[userDefinedText: "TDOR"] = nil
+                self["TDOR"] = nil
             }
         }
     }
@@ -2149,7 +2170,7 @@ public struct Tag {
     
     public var paymentWebpage: String? {
         get {
-            if let string = self[userDefinedText: "WPAY"] {
+            if let string = self["WPAY"] {
                 return string
             } else {
                 return nil
@@ -2157,9 +2178,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "WPAY"] = new
+                self["WPAY"] = new
             } else {
-                self[userDefinedText: "WPAY"] = nil
+                self["WPAY"] = nil
             }
         }
     }
@@ -2393,7 +2414,7 @@ public struct Tag {
     
     public var producedNotice: String? {
         get {
-            if let string = self[userDefinedText: "TPRO"] {
+            if let string = self["TPRO"] {
                 return string
             } else {
                 return nil
@@ -2401,9 +2422,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TPRO"] = new
+                self["TPRO"] = new
             } else {
-                self[userDefinedText: "TPRO"] = nil
+                self["TPRO"] = nil
             }
         }
     }
@@ -2558,7 +2579,7 @@ public struct Tag {
     // MARK: - R-S
     public var radioStation: String? {
         get {
-            if let string = self[userDefinedText: "TRSN"] {
+            if let string = self["TRSN"] {
                 return string
             } else {
                 return nil
@@ -2566,16 +2587,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TRSN"] = new
+                self["TRSN"] = new
             } else {
-                self[userDefinedText: "TRSN"] = nil
+                self["TRSN"] = nil
             }
         }
     }
     
     public var radioStationOwner: String? {
         get {
-            if let string = self[userDefinedText: "TRSO"] {
+            if let string = self["TRSO"] {
                 return string
             } else {
                 return nil
@@ -2583,16 +2604,16 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "TRSO"] = new
+                self["TRSO"] = new
             } else {
-                self[userDefinedText: "TRSO"] = nil
+                self["TRSO"] = nil
             }
         }
     }
     
     public var radioStationWebpage: String? {
         get {
-            if let string = self[userDefinedText: "WORS"] {
+            if let string = self["WORS"] {
                 return string
             } else {
                 return nil
@@ -2600,9 +2621,9 @@ public struct Tag {
         }
         set {
             if let new = newValue {
-                self[userDefinedText: "WORS"] = new
+                self["WORS"] = new
             } else {
-                self[userDefinedText: "WORS"] = nil
+                self["WORS"] = nil
             }
         }
     }
@@ -3100,7 +3121,7 @@ public struct Tag {
     // MARK: - T-Z
     public var taggingTime: Date? {
         get {
-            if let string = self[userDefinedText: "TDTG"] {
+            if let string = self["TDTG"] {
                 let formatter = ISO8601DateFormatter()
                 let date = formatter.date(from: string)
                 return date
@@ -3112,9 +3133,9 @@ public struct Tag {
             if let new = newValue {
                 let formatter = ISO8601DateFormatter()
                 let string = formatter.string(from: new)
-                self[userDefinedText: "TDTG"] = string
+                self["TDTG"] = string
             } else {
-                self[userDefinedText: "TDTG"] = nil
+                self["TDTG"] = nil
             }
         }
     }
@@ -3633,7 +3654,7 @@ public struct Tag {
         }
     }
     
-    public subscript(userDefinedText name: String?) -> String? {
+    public subscript(_ name: String?) -> String? {
         get {
             do {
             return try getFreeformMetadata(name: name ?? "")
