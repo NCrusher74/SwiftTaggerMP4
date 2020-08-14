@@ -722,4 +722,291 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         }
     }
     
+    func testRemoveFreeform() throws {
+        let url = fileVersion.withMeta.url
+        let source = try Mp4File(location: url)
+        var tag = try Tag(from: source)
+        tag[userDefinedText: "MOOD"] = nil
+
+        let outputUrl = try localDirectory(fileName: "removeFreeform", fileExtension: "m4a")
+        try source.write(tag: tag, outputLocation: outputUrl)
+        
+        let output = try Tag(from: Mp4File(location: outputUrl))
+        XCTAssertNil(output[userDefinedText: "MOOD"])
+    }
+    
+    func testRemoveAllMetadata() throws {
+        let url = fileVersion.withMeta.url
+        let source = try Mp4File(location: url)
+        var tag = try Tag(from: source)
+        try tag.removeAllMetadata()
+
+        let outputUrl = try localDirectory(fileName: "removeAllMeta", fileExtension: "m4a")
+        try source.write(tag: tag, outputLocation: outputUrl)
+
+        let output = try Tag(from: Mp4File(location: outputUrl))
+        XCTAssertTrue(output.metadata.isEmpty)
+    }
+    
+    func testRemoveMetadataItems() throws {
+        let url = fileVersion.withMeta.url
+        let source = try Mp4File(location: url)
+        var tag = try Tag(from: source)
+        
+        tag.albumID = nil
+        tag.artistID = nil
+        tag.bpm = nil
+        tag.compilation = nil
+        tag.composerID = nil
+        tag.conductorID = nil
+        tag.gaplessPlayback = nil
+        tag.genreID = nil
+        tag.mediaType = nil
+        tag.movementCount = nil
+        tag.movementNumber = nil
+        tag.playlistID = nil
+        tag.podcast = nil
+        tag.rating = nil
+        tag.showWorkAndMovement = nil
+        tag.tvEpisodeNumber = nil
+        tag.tvSeason = nil
+        try tag.removeDiscNumber()
+        try tag.removeTrackNumber()
+        tag.appleStoreCountryID = nil
+        tag.acknowledgment = nil
+        tag.album = nil
+        tag.albumArtist = nil
+        tag.albumArtistSort = nil
+        tag.albumSort = nil
+        tag.arranger = nil
+        tag.arrangerKeywords = nil
+        tag.artDirector = nil
+        tag.artist = nil
+        tag.artistKeywords = nil
+        tag.artistSort = nil
+        tag.artistUrl = nil
+        tag.category = nil
+        tag.comment = nil
+        tag.composer = nil
+        tag.composerKeywords = nil
+        tag.composerSort = nil
+        tag.conductor = nil
+        tag.copyright = nil
+        tag.copyrightStatement = nil
+        tag.customGenre = nil
+        tag.description = nil
+        tag.director = nil
+        tag.editDateAndDescription1 = nil
+        tag.editDateAndDescription2 = nil
+        tag.editDateAndDescription3 = nil
+        tag.editDateAndDescription4 = nil
+        tag.editDateAndDescription5 = nil
+        tag.editDateAndDescription6 = nil
+        tag.editDateAndDescription7 = nil
+        tag.editDateAndDescription8 = nil
+        tag.editDateAndDescription9 = nil
+        tag.encodedBy = nil
+        tag.encodingTool = nil
+        tag.executiveProducer = nil
+        tag.filmMakerUrl = nil
+        tag.format = nil
+        tag.grouping = nil
+        tag.information = nil
+        tag.isrc = nil
+        tag.podcastKeywords = nil
+        tag.label = nil
+        tag.linerNotes = nil
+        tag.longDescription = nil
+        tag.lyricist = nil
+        tag.lyrics = nil
+        tag.movementName = nil
+        tag.narrator = nil
+        tag.originalArtist = nil
+        tag.owner = nil
+        tag.performers = nil
+        tag.predefinedGenre = nil
+        tag.producer = nil
+        tag.producerKeywords = nil
+        tag.publisher = nil
+        tag.publisherUrl = nil
+        tag.podcastUrl = nil
+        tag.podcastID = nil
+        tag.recordCompany = nil
+        tag.recordingCopyright = nil
+        tag.requirements = nil
+        tag.sellerID = nil
+        tag.softwareVersion = nil
+        tag.soloist = nil
+        tag.songDescription = nil
+        tag.songwriterKeywords = nil
+        tag.soundEngineer = nil
+        tag.sourceCredit = nil
+        tag.subtitle = nil
+        tag.subtitleKeywords = nil
+        tag.thanks = nil
+        tag.title = nil
+        tag.titleKeywords = nil
+        tag.titleSort = nil
+        tag.trackSubtitle = nil
+        tag.tvEpisodeTitle = nil
+        tag.tvNetwork = nil
+        tag.tvShow = nil
+        tag.tvShowDescription = nil
+        tag.tvShowSort = nil
+        tag.website = nil
+        tag.workName = nil
+        tag.writer = nil
+        tag.purchaseDate = nil
+        tag.releaseDate = nil
+        tag.recordingDate = nil
+        tag.year = nil
+        try tag.removeCoverArt()
+        tag[userDefinedText: "MOOD"] = nil
+        tag[userDefinedText: "KEY"] = nil
+        tag[userDefinedText: "ENCODINGTIME"] = nil
+        tag[userDefinedText: "ORIGINAL YEAR"] = nil
+        tag[userDefinedText: "ORIGINAL ALBUM"] = nil
+        tag[userDefinedText: "OFFICIAL_AUDIO_FILE_URL"] = nil
+        tag[userDefinedText: "iTunEXTC"] = nil
+        tag[userDefinedText: "LANGUAGE"] = nil
+        tag[userDefinedText: "RADIO_STATION"] = nil
+        tag[userDefinedText: "COPYRIGHT URL"] = nil
+        tag[userDefinedText: "TAGGINGTIME"] = nil
+        tag[userDefinedText: "ORIGINAL LYRICIST"] = nil
+        tag[userDefinedText: "PAYMENT_URL"] = nil
+        tag[userDefinedText: "iTunSMPB"] = nil
+        tag[userDefinedText: "ORIGINAL FILENAME"] = nil
+        tag[userDefinedText: "OFFICIAL_RADIO_URL"] = nil
+        tag[userDefinedText: "STATION_OWNER"] = nil
+        tag[userDefinedText: "OFFICIAL_AUDIO_SOURCE_URL"] = nil
+
+        let outputUrl = try localDirectory(fileName: "removeMeta", fileExtension: "m4a")
+        try source.write(tag: tag, outputLocation: outputUrl)
+        
+        let output = try Tag(from: Mp4File(location: outputUrl))
+        XCTAssertNil(output.albumID)
+        XCTAssertNil(output.artistID)
+        XCTAssertNil(output.bpm)
+        XCTAssertNil(output.compilation)
+        XCTAssertNil(output.composerID)
+        XCTAssertNil(output.conductorID)
+        XCTAssertNil(output.gaplessPlayback)
+        XCTAssertNil(output.genreID)
+        XCTAssertNil(output.mediaType)
+        XCTAssertNil(output.movementCount)
+        XCTAssertNil(output.movementNumber)
+        XCTAssertNil(output.playlistID)
+        XCTAssertNil(output.podcast)
+        XCTAssertNil(output.rating)
+        XCTAssertNil(output.showWorkAndMovement)
+        XCTAssertNil(output.tvEpisodeNumber)
+        XCTAssertNil(output.tvSeason)
+        XCTAssertNil(output.appleStoreCountryID)
+        XCTAssertNil(output.acknowledgment)
+        XCTAssertNil(output.album)
+        XCTAssertNil(output.albumArtist)
+        XCTAssertNil(output.albumArtistSort)
+        XCTAssertNil(output.albumSort)
+        XCTAssertNil(output.arranger)
+        XCTAssertNil(output.arrangerKeywords)
+        XCTAssertNil(output.artDirector)
+        XCTAssertNil(output.artist)
+        XCTAssertNil(output.artistKeywords)
+        XCTAssertNil(output.artistSort)
+        XCTAssertNil(output.artistUrl)
+        XCTAssertNil(output.category)
+        XCTAssertNil(output.comment)
+        XCTAssertNil(output.composer)
+        XCTAssertNil(output.composerKeywords)
+        XCTAssertNil(output.composerSort)
+        XCTAssertNil(output.conductor)
+        XCTAssertNil(output.copyright)
+        XCTAssertNil(output.copyrightStatement)
+        XCTAssertNil(output.customGenre)
+        XCTAssertNil(output.description)
+        XCTAssertNil(output.director)
+        XCTAssertNil(output.editDateAndDescription1)
+        XCTAssertNil(output.editDateAndDescription2)
+        XCTAssertNil(output.editDateAndDescription3)
+        XCTAssertNil(output.editDateAndDescription4)
+        XCTAssertNil(output.editDateAndDescription5)
+        XCTAssertNil(output.editDateAndDescription6)
+        XCTAssertNil(output.editDateAndDescription7)
+        XCTAssertNil(output.editDateAndDescription8)
+        XCTAssertNil(output.editDateAndDescription9)
+        XCTAssertNil(output.encodedBy)
+        XCTAssertNil(output.encodingTool)
+        XCTAssertNil(output.executiveProducer)
+        XCTAssertNil(output.filmMakerUrl)
+        XCTAssertNil(output.format)
+        XCTAssertNil(output.grouping)
+        XCTAssertNil(output.information)
+        XCTAssertNil(output.isrc)
+        XCTAssertNil(output.podcastKeywords)
+        XCTAssertNil(output.label)
+        XCTAssertNil(output.linerNotes)
+        XCTAssertNil(output.longDescription)
+        XCTAssertNil(output.lyricist)
+        XCTAssertNil(output.lyrics)
+        XCTAssertNil(output.movementName)
+        XCTAssertNil(output.narrator)
+        XCTAssertNil(output.originalArtist)
+        XCTAssertNil(output.owner)
+        XCTAssertNil(output.performers)
+        XCTAssertNil(output.predefinedGenre)
+        XCTAssertNil(output.producer)
+        XCTAssertNil(output.producerKeywords)
+        XCTAssertNil(output.publisher)
+        XCTAssertNil(output.publisherUrl)
+        XCTAssertNil(output.podcastUrl)
+        XCTAssertNil(output.podcastID)
+        XCTAssertNil(output.recordCompany)
+        XCTAssertNil(output.recordingCopyright)
+        XCTAssertNil(output.requirements)
+        XCTAssertNil(output.sellerID)
+        XCTAssertNil(output.softwareVersion)
+        XCTAssertNil(output.soloist)
+        XCTAssertNil(output.songDescription)
+        XCTAssertNil(output.songwriterKeywords)
+        XCTAssertNil(output.soundEngineer)
+        XCTAssertNil(output.sourceCredit)
+        XCTAssertNil(output.subtitle)
+        XCTAssertNil(output.subtitleKeywords)
+        XCTAssertNil(output.thanks)
+        XCTAssertNil(output.title)
+        XCTAssertNil(output.titleKeywords)
+        XCTAssertNil(output.titleSort)
+        XCTAssertNil(output.trackSubtitle)
+        XCTAssertNil(output.tvEpisodeTitle)
+        XCTAssertNil(output.tvNetwork)
+        XCTAssertNil(output.tvShow)
+        XCTAssertNil(output.tvShowDescription)
+        XCTAssertNil(output.tvShowSort)
+        XCTAssertNil(output.website)
+        XCTAssertNil(output.workName)
+        XCTAssertNil(output.writer)
+        XCTAssertNil(output.purchaseDate)
+        XCTAssertNil(output.releaseDate)
+        XCTAssertNil(output.recordingDate)
+        XCTAssertNil(output.year)
+        XCTAssertNil(output.coverArt)
+        XCTAssertNil(output[userDefinedText: "MOOD"])
+        XCTAssertNil(output[userDefinedText: "KEY"])
+        XCTAssertNil(output[userDefinedText: "ENCODINGTIME"])
+        XCTAssertNil(output[userDefinedText: "ORIGINAL YEAR"])
+        XCTAssertNil(output[userDefinedText: "ORIGINAL ALBUM"])
+        XCTAssertNil(output[userDefinedText: "OFFICIAL_AUDIO_FILE_URL"])
+        XCTAssertNil(output[userDefinedText: "iTunEXTC"])
+        XCTAssertNil(output[userDefinedText: "LANGUAGE"])
+        XCTAssertNil(output[userDefinedText: "RADIO_STATION"])
+        XCTAssertNil(output[userDefinedText: "COPYRIGHT URL"])
+        XCTAssertNil(output[userDefinedText: "TAGGINGTIME"])
+        XCTAssertNil(output[userDefinedText: "ORIGINAL LYRICIST"])
+        XCTAssertNil(output[userDefinedText: "PAYMENT_URL"])
+        XCTAssertNil(output[userDefinedText: "iTunSMPB"])
+        XCTAssertNil(output[userDefinedText: "ORIGINAL FILENAME"])
+        XCTAssertNil(output[userDefinedText: "ORIGINAL_RADIO_URL"])
+        XCTAssertNil(output[userDefinedText: "STATION_OWNER"])
+        XCTAssertNil(output[userDefinedText: "OFFICIAL_AUDIO_SOURCE_URL"])
+    }
 }

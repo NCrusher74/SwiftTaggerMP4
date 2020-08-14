@@ -24,6 +24,10 @@ public struct Mp4File {
         }
     }
     
+    public func read() throws -> Tag {
+        return try Tag(from: self)
+    }
+    
     public func write(tag: Tag, outputLocation: URL) throws {
         let parser = tag.parser
         // how to get the metadata from `tag` to parser?
