@@ -9,6 +9,8 @@ import SwiftMp4MetadataParser
 import Foundation
 
 @available(OSX 10.13, *)
+
+/// The the human-readable identifier for mp4 metadata atoms
 public enum AtomIdentifier: String, CaseIterable {
     case acknowledgment = "\u{00A9}cak"
     case album = "\u{00A9}alb"
@@ -119,88 +121,4 @@ public enum AtomIdentifier: String, CaseIterable {
     case workName = "\u{00A9}wrk"
     case writer = "\u{00A9}wrt"
     case unknown = "----"
-
-    var handler: MetadataHandler {
-        switch self {
-            case .coverArt: return .image
-            case .discNumber,
-                 .trackNumber: return .intArray
-            case .compilation,
-                 .gaplessPlayback,
-                 .podcast,
-                 .showWorkAndMovement: return .boolean
-            case .purchaseDate,
-                 .recordingDate,
-                 .recordingYear,
-                 .releaseDate: return .date
-            case .arrangerKeywords,
-                 .artistKeywords,
-                 .composerKeywords,
-                 .keywords,
-                 .producerKeywords,
-                 .songwriterKeywords,
-                 .subtitleKeywords,
-                 .titleKeywords: return .stringArray
-            case .albumID,
-                 .appleStoreCountryID,
-                 .artistID,
-                 .bpm,
-                 .composerID,
-                 .conductorID,
-                 .genreID,
-                 .mediaType,
-                 .movementCount,
-                 .movementNumber,
-                 .playlistID,
-                 .rating,
-                 .tvEpisodeNumber,
-                 .tvSeason: return .integer
-            default: return .string
-        }
-    }
-    
-    var stringMetadataID: SwiftMp4MetadataParser.MetadataIDString? {
-        switch self.handler {
-            case .string: return SwiftMp4MetadataParser.MetadataIDString(rawValue: self.rawValue)!
-            default: return nil
-        }
-    }
-    
-    var stringArrayMetadataID: SwiftMp4MetadataParser.MetadataIDArrayString? {
-        switch self.handler {
-            case .stringArray: return SwiftMp4MetadataParser.MetadataIDArrayString(rawValue: self.rawValue)!
-            default: return nil
-        }
-    }
-
-    var integerMetadataID: SwiftMp4MetadataParser.MetadataIDInt? {
-        switch self.handler {
-            case .integer, .boolean: return SwiftMp4MetadataParser.MetadataIDInt(rawValue: self.rawValue)!
-            default: return nil
-        }
-    }
-
-    var intArrayMetadataID: SwiftMp4MetadataParser.MetadataIDArrayInt? {
-        switch self.handler {
-            case .intArray: return SwiftMp4MetadataParser.MetadataIDArrayInt(rawValue: self.rawValue)!
-            default: return nil
-        }
-    }
-
-    var dateMetadataID: SwiftMp4MetadataParser.MetadataIDDate? {
-        switch self.handler {
-            case .date: return SwiftMp4MetadataParser.MetadataIDDate(rawValue: self.rawValue)!
-            default: return nil
-        }
-    }
-}
-
-enum MetadataHandler {
-    case string
-    case stringArray
-    case integer
-    case intArray
-    case boolean
-    case date
-    case image
 }

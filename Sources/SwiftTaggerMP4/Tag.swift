@@ -11,10 +11,14 @@ import SwiftMp4MetadataParser
 import Cocoa
 
 @available(OSX 10.13, *)
+/// A structure containing the metadata accessors for an mp4 file
 public struct Tag {
     public var metadata: [(identifier: AtomIdentifier, value: Any)]
-    var parser: SwiftMp4MetadataParser.Mp4File
-
+    internal var parser: SwiftMp4MetadataParser.Mp4File
+    
+    /// Initializes a `Tag` instance containing the metadata and chapter data accessors of an mp4 file
+    /// - Parameter file: The mp4 file being parsed
+    /// - Throws: caller will decide how errors are handled
     public init(from file: Mp4File) throws {
         let parser = try SwiftMp4MetadataParser.Mp4File(location: file.location)
         self.parser = parser

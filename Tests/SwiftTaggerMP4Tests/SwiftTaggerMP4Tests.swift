@@ -91,7 +91,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.website = "Website"
         tag.workName = "Work"
         tag.writer = "Writer"
-        tag[userDefinedText: "UNKNOWN"] = "Unknown"
+        tag["UNKNOWN"] = "Unknown"
         
         let outputUrl = try localDirectory(fileName: "stringtest", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
@@ -180,7 +180,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.website, "Website")
         XCTAssertEqual(output.workName, "Work")
         XCTAssertEqual(output.writer, "Writer")
-        XCTAssertEqual(output[userDefinedText: "UNKNOWN"], "Unknown")
+        XCTAssertEqual(output["UNKNOWN"], "Unknown")
     }
     
     func testIntAndIntArrayWriting() throws {
@@ -288,7 +288,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         calendar.timeZone = timeZone
         let date = calendar.date(from: components)
 
-        tag[userDefinedText: "UNKNOWN"] = "unknown"
+        tag["UNKNOWN"] = "unknown"
         tag.audioFileWebpage = "audio file webpage"
         tag.audioSourceWebpage = "audio source webpage"
         tag.copyrightWebpage = "copyright webpage"
@@ -306,7 +306,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let output = try Tag(from: Mp4File(location: outputUrl))
         
-        XCTAssertEqual(output[userDefinedText: "UNKNOWN"], "unknown")
+        XCTAssertEqual(output["UNKNOWN"], "unknown")
         XCTAssertEqual(output.audioFileWebpage, "audio file webpage")
         XCTAssertEqual(output.audioSourceWebpage, "audio source webpage")
         XCTAssertEqual(output.copyrightWebpage, "copyright webpage")
@@ -450,7 +450,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         calendar.timeZone = timeZone
         let date = calendar.date(from: components)
         
-        tag[userDefinedText: "UNKNOWN"] = "unknown"
+        tag["UNKNOWN"] = "unknown"
         tag.audioFileWebpage = "audio file webpage"
         tag.audioSourceWebpage = "audio source webpage"
         tag.copyrightWebpage = "copyright webpage"
@@ -591,7 +591,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let knownStarts = [0, 600, 1300, 2100, 3300, 4600]
         XCTAssertEqual(titles, knownTitles)
         XCTAssertEqual(starts, knownStarts)
-        XCTAssertEqual(output[userDefinedText: "UNKNOWN"], "unknown")
+        XCTAssertEqual(output["UNKNOWN"], "unknown")
         XCTAssertEqual(output.audioFileWebpage, "audio file webpage")
         XCTAssertEqual(output.audioSourceWebpage, "audio source webpage")
         XCTAssertEqual(output.copyrightWebpage, "copyright webpage")
@@ -715,24 +715,20 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.tvShowSort, "TV Show Sort")
         XCTAssertEqual(output.website, "Website")
         XCTAssertEqual(output.workName, "Work")
-        XCTAssertEqual(output.writer, "Writer")
-        
-        for item in output.metadata {
-            print(item)
-        }
+        XCTAssertEqual(output.writer, "Writer")        
     }
     
     func testRemoveFreeform() throws {
         let url = fileVersion.withMeta.url
         let source = try Mp4File(location: url)
         var tag = try Tag(from: source)
-        tag[userDefinedText: "MOOD"] = nil
+        tag["MOOD"] = nil
 
         let outputUrl = try localDirectory(fileName: "removeFreeform", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
         
         let output = try Tag(from: Mp4File(location: outputUrl))
-        XCTAssertNil(output[userDefinedText: "MOOD"])
+        XCTAssertNil(output["MOOD"])
     }
     
     func testRemoveAllMetadata() throws {
@@ -861,24 +857,24 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.recordingDate = nil
         tag.year = nil
         try tag.removeCoverArt()
-        tag[userDefinedText: "MOOD"] = nil
-        tag[userDefinedText: "KEY"] = nil
-        tag[userDefinedText: "ENCODINGTIME"] = nil
-        tag[userDefinedText: "ORIGINAL YEAR"] = nil
-        tag[userDefinedText: "ORIGINAL ALBUM"] = nil
-        tag[userDefinedText: "OFFICIAL_AUDIO_FILE_URL"] = nil
-        tag[userDefinedText: "iTunEXTC"] = nil
-        tag[userDefinedText: "LANGUAGE"] = nil
-        tag[userDefinedText: "RADIO_STATION"] = nil
-        tag[userDefinedText: "COPYRIGHT URL"] = nil
-        tag[userDefinedText: "TAGGINGTIME"] = nil
-        tag[userDefinedText: "ORIGINAL LYRICIST"] = nil
-        tag[userDefinedText: "PAYMENT_URL"] = nil
-        tag[userDefinedText: "iTunSMPB"] = nil
-        tag[userDefinedText: "ORIGINAL FILENAME"] = nil
-        tag[userDefinedText: "OFFICIAL_RADIO_URL"] = nil
-        tag[userDefinedText: "STATION_OWNER"] = nil
-        tag[userDefinedText: "OFFICIAL_AUDIO_SOURCE_URL"] = nil
+        tag["MOOD"] = nil
+        tag["KEY"] = nil
+        tag["ENCODINGTIME"] = nil
+        tag["ORIGINAL YEAR"] = nil
+        tag["ORIGINAL ALBUM"] = nil
+        tag["OFFICIAL_AUDIO_FILE_URL"] = nil
+        tag["iTunEXTC"] = nil
+        tag["LANGUAGE"] = nil
+        tag["RADIO_STATION"] = nil
+        tag["COPYRIGHT URL"] = nil
+        tag["TAGGINGTIME"] = nil
+        tag["ORIGINAL LYRICIST"] = nil
+        tag["PAYMENT_URL"] = nil
+        tag["iTunSMPB"] = nil
+        tag["ORIGINAL FILENAME"] = nil
+        tag["OFFICIAL_RADIO_URL"] = nil
+        tag["STATION_OWNER"] = nil
+        tag["OFFICIAL_AUDIO_SOURCE_URL"] = nil
 
         let outputUrl = try localDirectory(fileName: "removeMeta", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
@@ -990,23 +986,23 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output.recordingDate)
         XCTAssertNil(output.year)
         XCTAssertNil(output.coverArt)
-        XCTAssertNil(output[userDefinedText: "MOOD"])
-        XCTAssertNil(output[userDefinedText: "KEY"])
-        XCTAssertNil(output[userDefinedText: "ENCODINGTIME"])
-        XCTAssertNil(output[userDefinedText: "ORIGINAL YEAR"])
-        XCTAssertNil(output[userDefinedText: "ORIGINAL ALBUM"])
-        XCTAssertNil(output[userDefinedText: "OFFICIAL_AUDIO_FILE_URL"])
-        XCTAssertNil(output[userDefinedText: "iTunEXTC"])
-        XCTAssertNil(output[userDefinedText: "LANGUAGE"])
-        XCTAssertNil(output[userDefinedText: "RADIO_STATION"])
-        XCTAssertNil(output[userDefinedText: "COPYRIGHT URL"])
-        XCTAssertNil(output[userDefinedText: "TAGGINGTIME"])
-        XCTAssertNil(output[userDefinedText: "ORIGINAL LYRICIST"])
-        XCTAssertNil(output[userDefinedText: "PAYMENT_URL"])
-        XCTAssertNil(output[userDefinedText: "iTunSMPB"])
-        XCTAssertNil(output[userDefinedText: "ORIGINAL FILENAME"])
-        XCTAssertNil(output[userDefinedText: "ORIGINAL_RADIO_URL"])
-        XCTAssertNil(output[userDefinedText: "STATION_OWNER"])
-        XCTAssertNil(output[userDefinedText: "OFFICIAL_AUDIO_SOURCE_URL"])
-    }
+        XCTAssertNil(output["MOOD"])
+        XCTAssertNil(output["KEY"])
+        XCTAssertNil(output["ENCODINGTIME"])
+        XCTAssertNil(output["ORIGINAL YEAR"])
+        XCTAssertNil(output["ORIGINAL ALBUM"])
+        XCTAssertNil(output["OFFICIAL_AUDIO_FILE_URL"])
+        XCTAssertNil(output["iTunEXTC"])
+        XCTAssertNil(output["LANGUAGE"])
+        XCTAssertNil(output["RADIO_STATION"])
+        XCTAssertNil(output["COPYRIGHT URL"])
+        XCTAssertNil(output["TAGGINGTIME"])
+        XCTAssertNil(output["ORIGINAL LYRICIST"])
+        XCTAssertNil(output["PAYMENT_URL"])
+        XCTAssertNil(output["iTunSMPB"])
+        XCTAssertNil(output["ORIGINAL FILENAME"])
+        XCTAssertNil(output["ORIGINAL_RADIO_URL"])
+        XCTAssertNil(output["STATION_OWNER"])
+        XCTAssertNil(output["OFFICIAL_AUDIO_SOURCE_URL"])
+    }    
 }
