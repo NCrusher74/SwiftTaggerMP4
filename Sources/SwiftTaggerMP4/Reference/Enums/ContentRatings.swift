@@ -1,11 +1,11 @@
-/*
- 
- ContentRatings.swift
- SwiftTaggerID3
- 
- Copyright ©2020 Nolaine Crusher. All rights reserved.
- 
- */
+
+// ContentRatings.swift
+//  SwiftTaggerMP4
+//
+//  Created by Nolaine Crusher on 5/2/20.
+//  Copyright © 2020 Nolaine Crusher. All rights reserved.
+//
+
 
 import Foundation
 
