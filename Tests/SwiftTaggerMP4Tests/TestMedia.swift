@@ -18,11 +18,13 @@ enum fileVersion {
     case withMeta
     case noMeta
     case cover
+    case chaptered
     
     var url: URL {
         switch self {
             case .withMeta: return testMediaDirectory.appendingPathComponent("mp4-full-meta.m4a")
             case .noMeta: return testMediaDirectory.appendingPathComponent("mp4-nometa.m4a")
+            case .chaptered: return testMediaDirectory.appendingPathComponent("mp4-chaptered.m4a")
             case .cover: return testMediaDirectory.appendingPathComponent("samplecover-green.jpg")
         }
     }

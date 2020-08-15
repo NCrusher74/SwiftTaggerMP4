@@ -11,10 +11,14 @@ import SwiftMp4MetadataParser
 import Cocoa
 
 @available(OSX 10.13, *)
+/// A structure containing the metadata accessors for an mp4 file
 public struct Tag {
     public var metadata: [(identifier: AtomIdentifier, value: Any)]
-    var parser: SwiftMp4MetadataParser.Mp4File
-
+    internal var parser: SwiftMp4MetadataParser.Mp4File
+    
+    /// Initializes a `Tag` instance containing the metadata and chapter data accessors of an mp4 file
+    /// - Parameter file: The mp4 file being parsed
+    /// - Throws: caller will decide how errors are handled
     public init(from file: Mp4File) throws {
         let parser = try SwiftMp4MetadataParser.Mp4File(location: file.location)
         self.parser = parser
@@ -30,7 +34,7 @@ public struct Tag {
     }
     
     // MARK: - A
-    var acknowledgment: String? {
+    public var acknowledgment: String? {
         get {
             do {
                 return try parser.get(.acknowledgment)
@@ -48,11 +52,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.acknowledgment.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.acknowledgment,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.acknowledgment.rawValue)")
+                }
             }
         }
     }
 
-    var album: String? {
+    public var album: String? {
         get {
             do {
                 return try parser.get(.album)
@@ -70,11 +82,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.album.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.album,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.album.rawValue)")
+                }
             }
         }
     }
 
-    var albumArtist: String? {
+    public var albumArtist: String? {
         get {
             do {
                 return try parser.get(.albumArtist)
@@ -92,11 +112,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumArtist.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.albumArtist,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.albumArtist.rawValue)")
+                }
             }
         }
     }
 
-    var albumArtistSort: String? {
+    public var albumArtistSort: String? {
         get {
             do {
                 return try parser.get(.albumArtistSort)
@@ -114,11 +142,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumArtistSort.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.albumArtistSort,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.albumArtistSort.rawValue)")
+                }
             }
         }
     }
 
-    var albumID: Int? {
+    public var albumID: Int? {
         get {
             do {
                 return try parser.get(.albumID)
@@ -135,11 +171,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.albumID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.albumID.rawValue)")
+                }
             }
         }
     }
     
-    var albumSort: String? {
+    public var albumSort: String? {
         get {
             do {
                 return try parser.get(.albumSort)
@@ -157,11 +199,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.albumSort.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.albumSort,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.albumSort.rawValue)")
+                }
             }
         }
     }
 
-    var appleStoreCountryID: Int? {
+    public var appleStoreCountryID: Int? {
         get {
             do {
                 return try parser.get(.appleStoreCountryID)
@@ -178,11 +228,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.appleStoreCountryID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.appleStoreCountryID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.appleStoreCountryID.rawValue)")
+                }
             }
         }
     }
 
-    var arranger: String? {
+    public var arranger: String? {
         get {
             do {
                 return try parser.get(.arranger)
@@ -200,29 +256,49 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.arranger.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.arranger,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.arranger.rawValue)")
+                }
             }
         }
     }
 
-    var arrangerKeywords: [String] {
+    public var arrangerKeywords: [String]? {
         get {
             do {
-                return try parser.get(.arrangerKeywords)
+                if try parser.get(.arrangerKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.arrangerKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.arrangerKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.arrangerKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.arrangerKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.arrangerKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.arrangerKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.arrangerKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.arrangerKeywords.rawValue)")
+                }
             }
         }
     }
 
-    var artDirector: String? {
+    public var artDirector: String? {
         get {
             do {
                 return try parser.get(.artDirector)
@@ -240,11 +316,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artDirector.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.artDirector,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artDirector.rawValue)")
+                }
             }
         }
     }
     
-    var artist: String? {
+    public var artist: String? {
         get {
             do {
                 return try parser.get(.artist)
@@ -262,11 +346,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artist.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.artist,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artist.rawValue)")
+                }
             }
         }
     }
 
-    var artistID: Int? {
+    public var artistID: Int? {
         get {
             do {
                 return try parser.get(.artistID)
@@ -283,29 +375,47 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artist.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.artistID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artistID.rawValue)")
+                }
             }
         }
     }
     
-    var artistKeywords: [String] {
+    public var artistKeywords: [String]? {
         get {
             do {
-                return try parser.get(.artistKeywords)
+                if try parser.get(.artistKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.artistKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artistKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.artistKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.artistKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.artistKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artistKeywords.rawValue)")
+                }
             }
         }
     }
     
-    var artistSort: String? {
+    public var artistSort: String? {
         get {
             do {
                 return try parser.get(.artistSort)
@@ -323,11 +433,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistSort.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.artistSort,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artistSort.rawValue)")
+                }
             }
         }
     }
 
-    var artistUrl: String? {
+    public var artistUrl: String? {
         get {
             do {
                 return try parser.get(.artistUrl)
@@ -345,12 +463,55 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artistUrl.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.artistUrl,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artistUrl.rawValue)")
+                }
             }
         }
     }
 
+    public var audioFileWebpage: String? {
+        get {
+            if let string = self["WOAF"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["WOAF"] = new
+            } else {
+                self["WOAF"] = nil
+            }
+        }
+    }
+    
+    public var audioSourceWebpage: String? {
+        get {
+            if let string = self["WOAS"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["WOAS"] = new
+            } else {
+                self["WOAS"] = nil
+            }
+        }
+    }
+    
+
     // MARK: - B-C
-    var bpm: Int? {
+    public var bpm: Int? {
         get {
             do {
                 return try parser.get(.bpm)
@@ -367,11 +528,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.bpm.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.bpm, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.bpm.rawValue)")
+                }
             }
         }
     }
     
-    var category: String? {
+    public var category: String? {
         get {
             do {
                 return try parser.get(.category)
@@ -389,11 +556,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.category.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.category,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.category.rawValue)")
+                }
             }
         }
     }
     
-    var comment: String? {
+    public var comment: String? {
         get {
             do {
                 return try parser.get(.comment)
@@ -411,42 +586,61 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.comment.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.comment,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.comment.rawValue)")
+                }
             }
         }
     }
     
-    var compilation: Bool {
+    public var compilation: Bool? {
         get {
             do {
                 let value = try parser.get(.compilation)
                 if value == 1 {
                     return true
-                } else {
+                } else if value == 0 {
                     return false
+                } else {
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.compilation.rawValue)")
-                return false
+                return nil
             }
         }
         set {
-            var intValue = Int()
-            if newValue == false {
-                intValue = 0
+            if let new = newValue {
+                var intValue = Int()
+                if new == false {
+                    intValue = 0
+                } else {
+                    intValue = 1
+                }
+                
+                do {
+                    try parser.set(.compilation,
+                                   intValue: intValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.compilation.rawValue)")
+                }
             } else {
-                intValue = 1
-            }
-
-            do {
-                try parser.set(.compilation,
-                               intValue: intValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.compilation.rawValue)")
+                do {
+                    try parser.set(.compilation,
+                                   intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.compilation.rawValue)")
+                }
             }
         }
     }
     
-    var composer: String? {
+    public var composer: String? {
         get {
             do {
                 return try parser.get(.composer)
@@ -464,11 +658,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.composer.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.composer,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.composer.rawValue)")
+                }
             }
         }
     }
     
-    var composerID: Int? {
+    public var composerID: Int? {
         get {
             do {
                 return try parser.get(.composerID)
@@ -485,29 +687,47 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.composerID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.composerID.rawValue)")
+                }
             }
         }
     }
     
-    var composerKeywords: [String] {
+    public var composerKeywords: [String]? {
         get {
             do {
-                return try parser.get(.composerKeywords)
+                if try parser.get(.composerKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.composerKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.composerKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.composerKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.composerKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.composerKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.composerKeywords.rawValue)")
+                }
             }
         }
     }
     
-    var composerSort: String? {
+    public var composerSort: String? {
         get {
             do {
                 return try parser.get(.composerSort)
@@ -525,11 +745,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.composerSort.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.composerSort,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.composerSort.rawValue)")
+                }
             }
         }
     }
     
-    var conductor: String? {
+    public var conductor: String? {
         get {
             do {
                 return try parser.get(.conductor)
@@ -547,11 +775,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.conductor.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.conductor,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.conductor.rawValue)")
+                }
             }
         }
     }
     
-    var conductorID: Int? {
+    public var conductorID: Int? {
         get {
             do {
                 return try parser.get(.conductorID)
@@ -568,11 +804,38 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.conductorID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.conductorID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.conductorID.rawValue)")
+                }
             }
         }
     }
     
-    var copyright: String? {
+    public var contentAdvisory: ContentAdvisory? {
+        get {
+            if let string = self["iTunEXTC"] {
+                if let key = ContentAdvisory(rawValue: string) {
+                    return key
+                } else {
+                    return .unknown
+                }
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["iTunEXTC"] = new.rawValue
+            } else {
+                self["iTunEXTC"] = nil
+            }
+        }
+    }
+
+    public var copyright: String? {
         get {
             do {
                 return try parser.get(.copyright)
@@ -590,11 +853,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.copyright.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.copyright,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.copyright.rawValue)")
+                }
             }
         }
     }
     
-    var copyrightStatement: String? {
+    public var copyrightStatement: String? {
         get {
             do {
                 return try parser.get(.copyrightStatement)
@@ -612,11 +883,36 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.copyrightStatement.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.copyrightStatement,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.copyrightStatement.rawValue)")
+                }
+            }
+        }
+    }
+   
+    public var copyrightWebpage: String? {
+        get {
+            if let string = self["WCOP"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["WCOP"] = new
+            } else {
+                self["WCOP"] = nil
             }
         }
     }
     
-    var coverArt: NSImage? {
+    public var coverArt: NSImage? {
         get {
             do {
                 return try parser.getCoverArt()
@@ -627,11 +923,15 @@ public struct Tag {
         }
     }
     
-    func setCoverArt(imageLocation: URL) throws {
+    public func setCoverArt(imageLocation: URL) throws {
         try parser.set(coverImage: imageLocation)
     }
+    
+    public func removeCoverArt() throws {
+        try parser.removeCoverArt()
+    }
 
-    var customGenre: String? {
+    public var customGenre: String? {
         get {
             do {
                 return try parser.get(.customGenre)
@@ -649,12 +949,20 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.customGenre.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.customGenre,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.customGenre.rawValue)")
+                }
             }
         }
     }
     
     // MARK: - D-E
-    var description: String? {
+    public var description: String? {
         get {
             do {
                 return try parser.get(.description)
@@ -672,11 +980,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.description.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.description,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.description.rawValue)")
+                }
             }
         }
     }
     
-    var director: String? {
+    public var director: String? {
         get {
             do {
                 return try parser.get(.director)
@@ -694,11 +1010,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.director.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.director,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.director.rawValue)")
+                }
             }
         }
     }
     
-    var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             do {
                 let array = try parser.get(.discNumber)
@@ -729,7 +1053,7 @@ public struct Tag {
         }
     }
 
-    var editDateAndDescription1: String? {
+    public var editDateAndDescription1: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription1)
@@ -747,11 +1071,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription1.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription1,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription1.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription2: String? {
+    public var editDateAndDescription2: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription2)
@@ -769,11 +1101,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription2.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription2,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription2.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription3: String? {
+    public var editDateAndDescription3: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription3)
@@ -791,11 +1131,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription3.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription3,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription3.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription4: String? {
+    public var editDateAndDescription4: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription4)
@@ -813,11 +1161,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription4.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription4,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription4.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription5: String? {
+    public var editDateAndDescription5: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription5)
@@ -835,11 +1191,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription5.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription5,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription5.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription6: String? {
+    public var editDateAndDescription6: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription6)
@@ -857,11 +1221,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription6.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription6,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription6.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription7: String? {
+    public var editDateAndDescription7: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription7)
@@ -879,11 +1251,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription7.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription7,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription7.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription8: String? {
+    public var editDateAndDescription8: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription8)
@@ -901,11 +1281,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription8.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription8,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription8.rawValue)")
+                }
             }
         }
     }
     
-    var editDateAndDescription9: String? {
+    public var editDateAndDescription9: String? {
         get {
             do {
                 return try parser.get(.editDateAndDescription9)
@@ -923,11 +1311,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.editDateAndDescription9.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.editDateAndDescription9,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.editDateAndDescription9.rawValue)")
+                }
             }
         }
     }
     
-    var encodedBy: String? {
+    public var encodedBy: String? {
         get {
             do {
                 return try parser.get(.encodedBy)
@@ -945,11 +1341,57 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.encodedBy.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.encodedBy,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.encodedBy.rawValue)")
+                }
+            }
+        }
+    }
+   
+    public var encodingSettings: String? {
+        get {
+            if let string = self["TSSE"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TSSE"] = new
+            } else {
+                self["TSSE"] = nil
             }
         }
     }
     
-    var encodingTool: String? {
+    public var encodingTime: Date? {
+        get {
+            if let string = self["TDEN"] {
+                let formatter = ISO8601DateFormatter()
+                let date = formatter.date(from: string)
+                return date
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                let formatter = ISO8601DateFormatter()
+                let string = formatter.string(from: new)
+                self["TDEN"] = string
+            } else {
+                self["TDEN"] = nil
+            }
+        }
+    }
+    
+    public var encodingTool: String? {
         get {
             do {
                 return try parser.get(.encodingTool)
@@ -967,11 +1409,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.encodingTool.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.encodingTool,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.encodingTool.rawValue)")
+                }
             }
         }
     }
     
-    var executiveProducer: String? {
+    public var executiveProducer: String? {
         get {
             do {
                 return try parser.get(.executiveProducer)
@@ -989,12 +1439,41 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.executiveProducer,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
+                }
             }
         }
     }
     
     // MARK: - F-K
-    var filmMakerUrl: String? {
+    public var fileType: FileType? {
+        get {
+            if let string = self["TFLT"] {
+                if let fileType = FileType(rawValue: string) {
+                    return fileType
+                } else {
+                    return .unknown
+                }
+            } else {
+                return .unknown
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TFLT"] = new.rawValue
+            } else {
+                self["TFLT"] = nil
+            }
+        }
+    }
+    
+    public var filmMakerUrl: String? {
         get {
             do {
                 return try parser.get(.filmMakerUrl)
@@ -1012,11 +1491,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.filmMakerUrl.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.filmMakerUrl,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.filmMakerUrl.rawValue)")
+                }
             }
         }
     }
     
-    var format: String? {
+    public var format: String? {
         get {
             do {
                 return try parser.get(.format)
@@ -1034,49 +1521,71 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.format.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.format,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.format.rawValue)")
+                }
             }
         }
     }
     
-    var gaplessPlayback: Bool {
+    public var gaplessPlayback: Bool? {
         get {
             do {
                 let value = try parser.get(.gaplessPlayback)
                 if value == 1 {
                     return true
-                } else {
+                } else if value == 0 {
                     return false
+                } else {
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.gaplessPlayback.rawValue)")
-                return false
+                return nil
             }
         }
         set {
-            var intValue = Int()
-            if newValue == false {
-                intValue = 0
+            if let new = newValue {
+                var intValue = Int()
+                if new == false {
+                    intValue = 0
+                } else {
+                    intValue = 1
+                }
+                
+                do {
+                    try parser.set(.gaplessPlayback,
+                                   intValue: intValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.gaplessPlayback.rawValue)")
+                }
             } else {
-                intValue = 1
-            }
-            
-            do {
-                try parser.set(.gaplessPlayback,
-                               intValue: intValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.gaplessPlayback.rawValue)")
+                do {
+                    try parser.set(.gaplessPlayback,
+                                   intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.gaplessPlayback.rawValue)")
+                }
             }
         }
     }
     
-    var genreID: Genres {
+    public var genreID: Genres? {
         get {
             do {
-                let id = try parser.get(.genreID)
-                if let genreID = Genres(rawValue: id ?? 0) {
-                    return genreID
+                if let id = try parser.get(.genreID) {
+                    if let genreID = Genres(rawValue: id) {
+                        return genreID
+                    } else {
+                        return .unknown
+                    }
                 } else {
-                    return .unknown
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.genreID.rawValue)")
@@ -1084,16 +1593,24 @@ public struct Tag {
             }
         }
         set {
-            do {
-                try parser.set(.genreID,
-                               intValue: newValue.rawValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.genreID.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.genreID,
+                                   intValue: new.rawValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.genreID.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.genreID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.genreID.rawValue)")
+                }
             }
         }
     }
     
-    var grouping: String? {
+    public var grouping: String? {
         get {
             do {
                 return try parser.get(.grouping)
@@ -1111,11 +1628,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.grouping.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.grouping,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.grouping.rawValue)")
+                }
             }
         }
     }
     
-    var information: String? {
+    public var information: String? {
         get {
             do {
                 return try parser.get(.information)
@@ -1133,11 +1658,40 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.information.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.information,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.information.rawValue)")
+                }
             }
         }
     }
     
-    var isrc: String? {
+    public var initialKey: KeySignature? {
+        get {
+            if let string = self["TKEY"] {
+                if let key = KeySignature(rawValue: string) {
+                    return key
+                } else {
+                    return .unknown
+                }
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TKEY"] = new.rawValue
+            } else {
+                self["TKEY"] = nil
+            }
+        }
+    }
+    
+    public var isrc: String? {
         get {
             do {
                 return try parser.get(.isrc)
@@ -1155,12 +1709,20 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.isrc.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.isrc,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.isrc.rawValue)")
+                }
             }
         }
     }
     
     // MARK: - L-N
-    var label: String? {
+    public var label: String? {
         get {
             do {
                 return try parser.get(.label)
@@ -1178,11 +1740,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.label.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.label,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.label.rawValue)")
+                }
             }
         }
     }
     
-    var linerNotes: String? {
+    public var linerNotes: String? {
         get {
             do {
                 return try parser.get(.linerNotes)
@@ -1200,11 +1770,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.linerNotes.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.linerNotes,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.linerNotes.rawValue)")
+                }
             }
         }
     }
     
-    var longDescription: String? {
+    public var longDescription: String? {
         get {
             do {
                 return try parser.get(.longDescription)
@@ -1222,11 +1800,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.longDescription.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.longDescription,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.longDescription.rawValue)")
+                }
             }
         }
     }
     
-    var lyrics: String? {
+    public var lyrics: String? {
         get {
             do {
                 return try parser.get(.lyrics)
@@ -1244,11 +1830,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.lyrics.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.lyrics,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.lyrics.rawValue)")
+                }
             }
         }
     }
     
-    var lyricist: String? {
+    public var lyricist: String? {
         get {
             do {
                 return try parser.get(.lyricist)
@@ -1266,18 +1860,29 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.lyricist.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.lyricist,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.lyricist.rawValue)")
+                }
             }
         }
     }
     
-    var mediaType: MediaType {
+    public var mediaType: MediaType? {
         get {
             do {
-                let id = try parser.get(.mediaType)
-                if let mediaType = MediaType(rawValue: id ?? 1) {
-                    return mediaType
+                if let id = try parser.get(.mediaType) {
+                    if let mediaType = MediaType(rawValue: id) {
+                        return mediaType
+                    } else {
+                        return .music
+                    }
                 } else {
-                    return .music
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.mediaType.rawValue)")
@@ -1285,16 +1890,42 @@ public struct Tag {
             }
         }
         set {
-            do {
-                try parser.set(.mediaType,
-                               intValue: newValue.rawValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.mediaType.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.mediaType,
+                                   intValue: new.rawValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.mediaType.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.mediaType,
+                                   intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.mediaType.rawValue)")
+                }
             }
         }
     }
 
-    var movementCount: Int? {
+    public var mood: String? {
+        get {
+            if let string = self["TMOO"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TMOO"] = new
+            } else {
+                self["TMOO"] = nil
+            }
+        }
+    }
+    
+    public var movementCount: Int? {
         get {
             do {
                 return try parser.get(.movementCount)
@@ -1311,11 +1942,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.movementCount.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.movementCount, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.movementCount.rawValue)")
+                }
             }
         }
     }
     
-    var movementName: String? {
+    public var movementName: String? {
         get {
             do {
                 return try parser.get(.movementName)
@@ -1333,11 +1970,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.movementName.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.movementName,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.movementName.rawValue)")
+                }
             }
         }
     }
     
-    var movementNumber: Int? {
+    public var movementNumber: Int? {
         get {
             do {
                 return try parser.get(.movementNumber)
@@ -1354,11 +1999,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.movementNumber.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.movementNumber, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.movementNumber.rawValue)")
+                }
             }
         }
     }
     
-    var narrator: String? {
+    public var narrator: String? {
         get {
             do {
                 return try parser.get(.narrator)
@@ -1376,12 +2027,20 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.narrator.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.narrator,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.narrator.rawValue)")
+                }
             }
         }
     }
     
     // MARK: - O-P
-    var originalArtist: String? {
+    public var originalArtist: String? {
         get {
             do {
                 return try parser.get(.originalArtist)
@@ -1399,11 +2058,91 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.originalArtist.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.originalArtist,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.originalArtist.rawValue)")
+                }
             }
         }
     }
     
-    var owner: String? {
+    public var originalAlbum: String? {
+        get {
+            if let string = self["TOAL"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TOAL"] = new
+            } else {
+                self["TOAL"] = nil
+            }
+        }
+    }
+    
+    public var originalFilename: String? {
+        get {
+            if let string = self["TOFN"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TOFN"] = new
+            } else {
+                self["TOFN"] = nil
+            }
+        }
+    }
+    
+    public var originalLyricist: String? {
+        get {
+            if let string = self["TOLY"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TOLY"] = new
+            } else {
+                self["TOLY"] = nil
+            }
+        }
+    }
+    
+    public var originalReleaseTime: Date? {
+        get {
+            if let string = self["TDOR"] {
+                let formatter = ISO8601DateFormatter()
+                let date = formatter.date(from: string)
+                return date
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                let formatter = ISO8601DateFormatter()
+                let string = formatter.string(from: new)
+                self["TDOR"] = string
+            } else {
+                self["TDOR"] = nil
+            }
+        }
+    }
+    
+    public var owner: String? {
         get {
             do {
                 return try parser.get(.owner)
@@ -1421,11 +2160,36 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.owner.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.owner,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.owner.rawValue)")
+                }
             }
         }
     }
     
-    var performers: String? {
+    public var paymentWebpage: String? {
+        get {
+            if let string = self["WPAY"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["WPAY"] = new
+            } else {
+                self["WPAY"] = nil
+            }
+        }
+    }
+    
+    public var performers: String? {
         get {
             do {
                 return try parser.get(.performers)
@@ -1443,11 +2207,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.performers.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.performers,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.performers.rawValue)")
+                }
             }
         }
     }
     
-    var playlistID: Int? {
+    public var playlistID: Int? {
         get {
             do {
                 return try parser.get(.playlistID)
@@ -1464,42 +2236,59 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.playlistID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.playlistID, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.playlistID.rawValue)")
+                }
             }
         }
     }
     
-    var podcast: Bool {
+    public var podcast: Bool? {
         get {
             do {
                 let value = try parser.get(.podcast)
                 if value == 1 {
                     return true
-                } else {
+                } else if value == 0 {
                     return false
+                } else {
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.podcast.rawValue)")
-                return false
+                return nil
             }
         }
         set {
-            var intValue = Int()
-            if newValue == false {
-                intValue = 0
+            if let new = newValue {
+                var intValue = Int()
+                if new == false {
+                    intValue = 0
+                } else {
+                    intValue = 1
+                }
+                
+                do {
+                    try parser.set(.podcast,
+                                   intValue: intValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcast.rawValue)")
+                }
             } else {
-                intValue = 1
-            }
-            
-            do {
-                try parser.set(.podcast,
-                               intValue: intValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcast.rawValue)")
+                do {
+                    try parser.set(.podcast,
+                                   intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.podcast.rawValue)")
+                }
             }
         }
     }
     
-    var podcastID: String? {
+    public var podcastID: String? {
         get {
             do {
                 return try parser.get(.podcastID)
@@ -1517,29 +2306,49 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcastID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.podcastID,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.podcastID.rawValue)")
+                }
             }
         }
     }
     
-    var podcastKeywords: [String] {
+    public var podcastKeywords: [String]? {
         get {
             do {
-                return try parser.get(.keywords)
+                if try parser.get(.keywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.keywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.keywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.keywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.keywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.keywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.keywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.keywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.keywords.rawValue)")
+                }
             }
         }
     }
     
-    var podcastUrl: String? {
+    public var podcastUrl: String? {
         get {
             do {
                 return try parser.get(.purchaseUrl)
@@ -1557,18 +2366,29 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.podcastUrl.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.purchaseUrl,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.podcastUrl.rawValue)")
+                }
             }
         }
     }
     
-    var predefinedGenre: Genres {
+    public var predefinedGenre: Genres? {
         get {
             do {
-                let nameString = try parser.get(.predefinedGenre) ?? "unknown"
-                if let genreByName = Genres(genreName: nameString) {
-                    return genreByName
+                if let nameString = try parser.get(.predefinedGenre) {
+                    if let genreByName = Genres(genreName: nameString) {
+                        return genreByName
+                    } else {
+                        return .unknown
+                    }
                 } else {
-                    return .unknown
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.predefinedGenre.rawValue)")
@@ -1576,17 +2396,45 @@ public struct Tag {
             }
         }
         set {
-            do {
-                try parser.set(.predefinedGenre,
-                               stringValue: newValue.predefinedGenres ?? "unknown",
-                               customName: nil)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.predefinedGenre.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.predefinedGenre,
+                                   stringValue: new.predefinedGenres ?? "unknown",
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.predefinedGenre.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.predefinedGenre,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.predefinedGenre.rawValue)")
+                }
             }
         }
     }
+    
+    public var producedNotice: String? {
+        get {
+            if let string = self["TPRO"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TPRO"] = new
+            } else {
+                self["TPRO"] = nil
+            }
+        }
+    }
+    
 
-    var producer: String? {
+    public var producer: String? {
         get {
             do {
                 return try parser.get(.producer)
@@ -1604,29 +2452,49 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.producer.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.producer,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.producer.rawValue)")
+                }
             }
         }
     }
     
-    var producerKeywords: [String] {
+    public var producerKeywords: [String]? {
         get {
             do {
-                return try parser.get(.producerKeywords)
+                if try parser.get(.producerKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.producerKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.producerKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.producerKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.producerKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.producerKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.producerKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.producerKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.producerKeywords.rawValue)")
+                }
             }
         }
     }
     
-    var publisher: String? {
+    public var publisher: String? {
         get {
             do {
                 return try parser.get(.publisher)
@@ -1644,11 +2512,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.publisher.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.publisher,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.publisher.rawValue)")
+                }
             }
         }
     }
     
-    var publisherUrl: String? {
+    public var publisherUrl: String? {
         get {
             do {
                 return try parser.get(.publisherUrl)
@@ -1666,11 +2542,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.publisherUrl.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.publisherUrl,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.publisherUrl.rawValue)")
+                }
             }
         }
     }
 
-    var purchaseDate: Date? {
+    public var purchaseDate: Date? {
         get {
             do {
                 return try parser.get(.purchaseDate)
@@ -1686,36 +2570,105 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.purchaseDate.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.purchaseDate, dateValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.purchaseDate.rawValue)")
+                }
             }
         }
     }
 
     // MARK: - R-S
-    var rating: ContentRating {
+    public var radioStation: String? {
         get {
-            do {
-                let ratingInt = try parser.get(.rating) ?? 0
-                if let rating = ContentRating(rawValue: ratingInt) {
-                    return rating
-                } else {
-                    return .none
-                }
-            } catch {
-                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.rating.rawValue)")
-                return .none
+            if let string = self["TRSN"] {
+                return string
+            } else {
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.rating,
-                               intValue: newValue.rawValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.rating.rawValue)")
+            if let new = newValue {
+                self["TRSN"] = new
+            } else {
+                self["TRSN"] = nil
             }
         }
     }
     
-    var recordCompany: String? {
+    public var radioStationOwner: String? {
+        get {
+            if let string = self["TRSO"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["TRSO"] = new
+            } else {
+                self["TRSO"] = nil
+            }
+        }
+    }
+    
+    public var radioStationWebpage: String? {
+        get {
+            if let string = self["WORS"] {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["WORS"] = new
+            } else {
+                self["WORS"] = nil
+            }
+        }
+    }
+    
+    public var rating: ContentRating? {
+        get {
+            do {
+                if let ratingInt = try parser.get(.rating) {
+                    if let rating = ContentRating(rawValue: ratingInt) {
+                        return rating
+                    } else {
+                        return ContentRating.none
+                    }
+                } else {
+                    return nil
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.rating.rawValue)")
+                return ContentRating.none
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.rating,
+                                   intValue: new.rawValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.rating.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.rating,
+                                   intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.rating.rawValue)")
+                }
+            }
+        }
+    }
+    
+    public var recordCompany: String? {
         get {
             do {
                 return try parser.get(.recordCompany)
@@ -1733,11 +2686,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordCompany.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.recordCompany,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.recordCompany.rawValue)")
+                }
             }
         }
     }
 
-    var recordingDate: Date? {
+    public var recordingDate: Date? {
         get {
             do {
                 return try parser.get(.recordingDate)
@@ -1753,11 +2714,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingDate.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.recordingDate, dateValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.recordingDate.rawValue)")
+                }
             }
         }
     }
     
-    var recordingCopyright: String? {
+    public var recordingCopyright: String? {
         get {
             do {
                 return try parser.get(.recordingCopyright)
@@ -1775,31 +2742,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingCopyright.rawValue)")
                 }
-            }
-        }
-    }
-    
-    var year: Date? {
-        get {
-            do {
-                return try parser.get(.recordingYear)
-            } catch {
-                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.recordingYear.rawValue)")
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
+            } else {
                 do {
-                    try parser.set(.recordingYear, dateValue: new)
+                    try parser.set(.recordingCopyright,
+                        stringValue: nil,
+                        customName: nil)
                 } catch {
-                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingYear.rawValue)")
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.recordingCopyright.rawValue)")
                 }
             }
         }
     }
     
-    var releaseDate: Date? {
+    public var releaseDate: Date? {
         get {
             do {
                 return try parser.get(.releaseDate)
@@ -1815,11 +2770,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.releaseDate.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.releaseDate, dateValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.releaseDate.rawValue)")
+                }
             }
         }
     }
     
-    var requirements: String? {
+    public var requirements: String? {
         get {
             do {
                 return try parser.get(.requirements)
@@ -1837,11 +2798,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.requirements.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.requirements,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.requirements.rawValue)")
+                }
             }
         }
     }
     
-    var sellerID: String? {
+    public var sellerID: String? {
         get {
             do {
                 return try parser.get(.sellerID)
@@ -1859,42 +2828,61 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.sellerID.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.sellerID,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.sellerID.rawValue)")
+                }
             }
         }
     }
     
-    var showWorkAndMovement: Bool {
+    public var showWorkAndMovement: Bool? {
         get {
             do {
                 let value = try parser.get(.showWorkAndMovement)
                 if value == 1 {
                     return true
-                } else {
+                } else if value == 0 {
                     return false
+                } else {
+                    return nil
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.showWorkAndMovement.rawValue)")
-                return false
+                return nil
             }
         }
         set {
-            var intValue = Int()
-            if newValue == false {
-                intValue = 0
+            if let new = newValue {
+                var intValue = Int()
+                if new == false {
+                    intValue = 0
+                } else {
+                    intValue = 1
+                }
+                
+                do {
+                    try parser.set(.showWorkAndMovement,
+                                   intValue: intValue)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.showWorkAndMovement.rawValue)")
+                }
             } else {
-                intValue = 1
-            }
-            
-            do {
-                try parser.set(.showWorkAndMovement,
-                               intValue: intValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.showWorkAndMovement.rawValue)")
+                do {
+                    try parser.set(.showWorkAndMovement,
+                                   intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.showWorkAndMovement.rawValue)")
+                }
             }
         }
     }
     
-    var soundEngineer: String? {
+    public var soundEngineer: String? {
         get {
             do {
                 return try parser.get(.soundEngineer)
@@ -1912,11 +2900,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.soundEngineer,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
+                }
             }
         }
     }
     
-    var softwareVersion: String? {
+    public var softwareVersion: String? {
         get {
             do {
                 return try parser.get(.softwareVersion)
@@ -1934,11 +2930,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.softwareVersion.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.softwareVersion,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.softwareVersion.rawValue)")
+                }
             }
         }
     }
     
-    var soloist: String? {
+    public var soloist: String? {
         get {
             do {
                 return try parser.get(.soloist)
@@ -1956,11 +2960,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.soloist.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.soloist,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.soloist.rawValue)")
+                }
             }
         }
     }
     
-    var songDescription: String? {
+    public var songDescription: String? {
         get {
             do {
                 return try parser.get(.songDescription)
@@ -1978,29 +2990,49 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.songDescription.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.songDescription,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.songDescription.rawValue)")
+                }
             }
         }
     }
     
-    var songwriterKeywords: [String] {
+    public var songwriterKeywords: [String]? {
         get {
             do {
-                return try parser.get(.songwriterKeywords)
+                if try parser.get(.songwriterKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.songwriterKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.songwriterKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.songwriterKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.songwriterKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.songwriterKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.songwriterKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.songwriterKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.songwriterKeywords.rawValue)")
+                }
             }
         }
     }
     
-    var sourceCredit: String? {
+    public var sourceCredit: String? {
         get {
             do {
                 return try parser.get(.sourceCredit)
@@ -2018,11 +3050,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.sourceCredit.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.sourceCredit,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.sourceCredit.rawValue)")
+                }
             }
         }
     }
     
-    var subtitle: String? {
+    public var subtitle: String? {
         get {
             do {
                 return try parser.get(.subtitle)
@@ -2040,30 +3080,71 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.subtitle.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.subtitle,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.subtitle.rawValue)")
+                }
             }
         }
     }
     
-    var subtitleKeywords: [String] {
+    public var subtitleKeywords: [String]? {
         get {
             do {
-                return try parser.get(.subtitleKeywords)
+                if try parser.get(.subtitleKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.subtitleKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.subtitleKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.subtitleKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.subtitleKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.subtitleKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.subtitleKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.subtitleKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.subtitleKeywords.rawValue)")
+                }
             }
         }
     }
     
     // MARK: - T-Z
-    var title: String? {
+    public var taggingTime: Date? {
+        get {
+            if let string = self["TDTG"] {
+                let formatter = ISO8601DateFormatter()
+                let date = formatter.date(from: string)
+                return date
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                let formatter = ISO8601DateFormatter()
+                let string = formatter.string(from: new)
+                self["TDTG"] = string
+            } else {
+                self["TDTG"] = nil
+            }
+        }
+    }
+    
+    public var title: String? {
         get {
             do {
                 return try parser.get(.title)
@@ -2081,29 +3162,49 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.title.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.title,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.title.rawValue)")
+                }
             }
         }
     }
     
-    var titleKeywords: [String] {
+    public var titleKeywords: [String]? {
         get {
             do {
-                return try parser.get(.titleKeywords)
+                if try parser.get(.titleKeywords).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.titleKeywords)
+                }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
-                return []
+                return nil
             }
         }
         set {
-            do {
-                try parser.set(.titleKeywords, arrayValue: newValue)
-            } catch {
-                print("WARNING: Unable to set metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
+            if let new = newValue {
+                do {
+                    try parser.set(.titleKeywords, arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.titleKeywords, arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
+                }
             }
         }
     }
     
-    var titleSort: String? {
+    public var titleSort: String? {
         get {
             do {
                 return try parser.get(.titleSort)
@@ -2121,11 +3222,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.titleSort.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.titleSort,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.titleSort.rawValue)")
+                }
             }
         }
     }
     
-    var thanks: String? {
+    public var thanks: String? {
         get {
             do {
                 return try parser.get(.thanks)
@@ -2143,11 +3252,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.thanks.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.thanks,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.thanks.rawValue)")
+                }
             }
         }
     }
     
-    var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             do {
                 let array = try parser.get(.trackNumber)
@@ -2166,7 +3283,6 @@ public struct Tag {
             }
         }
         set {
-            //            print(newValue) // nil
             do {
                 var array = [newValue.track]
                 if let total = newValue.totalTracks {
@@ -2179,7 +3295,7 @@ public struct Tag {
         }
     }
     
-    var trackSubtitle: String? {
+    public var trackSubtitle: String? {
         get {
             do {
                 return try parser.get(.trackSubtitle)
@@ -2197,11 +3313,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackSubtitle.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.trackSubtitle,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.trackSubtitle.rawValue)")
+                }
             }
         }
     }
     
-    var tvEpisodeNumber: Int? {
+    public var tvEpisodeNumber: Int? {
         get {
             do {
                 return try parser.get(.tvEpisodeNumber)
@@ -2218,11 +3342,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvEpisodeNumber.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvEpisodeNumber, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvEpisodeNumber.rawValue)")
+                }
             }
         }
     }
     
-    var tvEpisodeTitle: String? {
+    public var tvEpisodeTitle: String? {
         get {
             do {
                 return try parser.get(.tvEpisodeTitle)
@@ -2240,11 +3370,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvEpisodeTitle.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvEpisodeTitle,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvEpisodeTitle.rawValue)")
+                }
             }
         }
     }
     
-    var tvSeason: Int? {
+    public var tvSeason: Int? {
         get {
             do {
                 return try parser.get(.tvSeason)
@@ -2261,11 +3399,17 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvSeason.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvSeason, intValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvSeason.rawValue)")
+                }
             }
         }
     }
     
-    var tvNetwork: String? {
+    public var tvNetwork: String? {
         get {
             do {
                 return try parser.get(.tvNetwork)
@@ -2283,11 +3427,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvNetwork.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvNetwork,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvNetwork.rawValue)")
+                }
             }
         }
     }
     
-    var tvShow: String? {
+    public var tvShow: String? {
         get {
             do {
                 return try parser.get(.tvShow)
@@ -2305,11 +3457,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvShow.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvShow,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvShow.rawValue)")
+                }
             }
         }
     }
     
-    var tvShowDescription: String? {
+    public var tvShowDescription: String? {
         get {
             do {
                 return try parser.get(.tvShowDescription)
@@ -2327,11 +3487,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvShowDescription.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvShowDescription,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvShowDescription.rawValue)")
+                }
             }
         }
     }
     
-    var tvShowSort: String? {
+    public var tvShowSort: String? {
         get {
             do {
                 return try parser.get(.tvShowSort)
@@ -2349,11 +3517,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.tvShowSort.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.tvShowSort,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.tvShowSort.rawValue)")
+                }
             }
         }
     }
     
-    var website: String? {
+    public var website: String? {
         get {
             do {
                 return try parser.get(.website)
@@ -2371,11 +3547,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.website.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.website,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.website.rawValue)")
+                }
             }
         }
     }
     
-    var workName: String? {
+    public var workName: String? {
         get {
             do {
                 return try parser.get(.workName)
@@ -2393,11 +3577,19 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.workName.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.workName,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.workName.rawValue)")
+                }
             }
         }
     }
     
-    var writer: String? {
+    public var writer: String? {
         get {
             do {
                 return try parser.get(.writer)
@@ -2415,22 +3607,61 @@ public struct Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.writer.rawValue)")
                 }
+            } else {
+                do {
+                    try parser.set(.writer,
+                        stringValue: nil,
+                        customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.writer.rawValue)")
+                }
             }
         }
     }
     
+    public var year: Date? {
+        get {
+            do {
+                return try parser.get(.recordingYear)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.recordingYear.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.recordingYear, dateValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.recordingYear.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.recordingYear, dateValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.recordingYear.rawValue)")
+                }
+            }
+        }
+    }
+    
+    // MARK: - Freeform and Removal
     private func getFreeformMetadata(name: String) throws -> String? {
         return try parser.get(customStringMetadata: name)
     }
     
-    private func setFreeformMetadata(name: String, stringValue: String) throws {
-        try parser.set(.unknown, stringValue: stringValue, customName: name)
+    private func setFreeformMetadata(name: String, stringValue: String?) throws {
+        if stringValue != nil {
+            try parser.set(.unknown, stringValue: stringValue, customName: name)
+        } else {
+            try parser.set(.unknown, stringValue: nil, customName: name)
+        }
     }
     
-    public subscript(userDefinedText userTextDescription: String?) -> String? {
+    public subscript(_ name: String?) -> String? {
         get {
             do {
-            return try getFreeformMetadata(name: userTextDescription ?? "")
+            return try getFreeformMetadata(name: name ?? "")
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.unknown.rawValue)")
                 return nil
@@ -2439,297 +3670,74 @@ public struct Tag {
         set {
             if let new = newValue {
                 do {
-                    try setFreeformMetadata(name: userTextDescription ?? "", stringValue: new)
+                    try setFreeformMetadata(name: name ?? "", stringValue: new)
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.unknown.rawValue)")
                 }
-            }
-        }
-    }
-    
-    public var audioFileWebpage: String? {
-        get {
-            if let string = self[userDefinedText: "WOAF"] {
-                return string
             } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "WOAF"] = new
-            }
-        }
-    }
-    
-    public var audioSourceWebpage: String? {
-        get {
-            if let string = self[userDefinedText: "WOAS"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "WOAS"] = new
-            }
-        }
-    }
-
-    public var copyrightWebpage: String? {
-        get {
-            if let string = self[userDefinedText: "WCOP"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "WCOP"] = new
-            }
-        }
-    }
-
-    public var encodingTime: Date? {
-        get {
-            if let string = self[userDefinedText: "TDEN"] {
-                let formatter = ISO8601DateFormatter()
-                let date = formatter.date(from: string)
-                return date
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                let formatter = ISO8601DateFormatter()
-                let string = formatter.string(from: new)
-                self[userDefinedText: "TDEN"] = string
-            }
-        }
-    }
-
-    public var taggingTime: Date? {
-        get {
-            if let string = self[userDefinedText: "TDTG"] {
-                let formatter = ISO8601DateFormatter()
-                let date = formatter.date(from: string)
-                return date
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                let formatter = ISO8601DateFormatter()
-                let string = formatter.string(from: new)
-                self[userDefinedText: "TDTG"] = string
-            }
-        }
-    }
-
-    public var originalReleaseTime: Date? {
-        get {
-            if let string = self[userDefinedText: "TDOR"] {
-                let formatter = ISO8601DateFormatter()
-                let date = formatter.date(from: string)
-                return date
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                let formatter = ISO8601DateFormatter()
-                let string = formatter.string(from: new)
-                self[userDefinedText: "TDOR"] = string
-            }
-        }
-    }
-    
-    public var paymentWebpage: String? {
-        get {
-            if let string = self[userDefinedText: "WPAY"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "WPAY"] = new
-            }
-        }
-    }
-
-    public var encodingSettings: String? {
-        get {
-            if let string = self[userDefinedText: "TSSE"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TSSE"] = new
-            }
-        }
-    }
-
-    public var fileType: FileType {
-        get {
-            if let string = self[userDefinedText: "TFLT"] {
-                if let fileType = FileType(rawValue: string) {
-                    return fileType
-                } else {
-                    return .unknown
+                do {
+                    try setFreeformMetadata(name: name ?? "", stringValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.unknown.rawValue)")
                 }
-            } else {
-                return .unknown
-            }
-        }
-        set {
-            self[userDefinedText: "TFLT"] = newValue.rawValue
-        }
-    }
-
-    public var initialKey: KeySignature {
-        get {
-            if let string = self[userDefinedText: "TKEY"] {
-                if let key = KeySignature(rawValue: string) {
-                    return key
-                } else {
-                    return .unknown
-                }
-            } else {
-                return .unknown
-            }
-        }
-        set {
-            self[userDefinedText: "TKEY"] = newValue.rawValue
-        }
-    }
-
-    public var mood: String? {
-        get {
-            if let string = self[userDefinedText: "TMOO"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TMOO"] = new
             }
         }
     }
-
-    public var originalAlbum: String? {
-        get {
-            if let string = self[userDefinedText: "TOAL"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TOAL"] = new
-            }
+        
+    public mutating func removeAllMetadata() throws {
+        try parser.removeAllMetadata()
+    }
+    
+    public mutating func removeTrackNumber() throws {
+        try parser.set(.trackNumber, arrayValue: nil)
+    }
+    
+    public mutating func removeDiscNumber() throws {
+        try parser.set(.discNumber, arrayValue: nil)
+    }
+    
+    // MARK: - Chaptering
+    /// Retrieves an array of chapters by start time (in milliseconds) and title.
+    public var chapterList: [(startTime: Int, title: String)] {
+        do {
+            return try parser.listChapters()
+        } catch {
+            print("WARNING: Unable to access chapters from SwiftMp4MetadataParser")
+            return []
         }
     }
-
-    public var originalFilename: String? {
-        get {
-            if let string = self[userDefinedText: "TOFN"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TOFN"] = new
-            }
-        }
-    }
-
-    public var originalLyricist: String? {
-        get {
-            if let string = self[userDefinedText: "TOLY"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TOLY"] = new
-            }
+    
+    /// Adds a chapter at the specified start time (in milliseconds) with the specified title.
+    /// If a chapter exists at the specified start time, it will be overwritten.
+    /// To edit a chapter title, simply overwrite the existing chapter with a new one
+    /// - Parameters:
+    ///  - startTime: The chapter start in milliseconds
+    ///  - title: The chapter title
+    public func addChapter(at startTime: Int, title: String) {
+        do {
+            try parser.addChapter(startTime: startTime, title: title)
+        } catch {
+            print("WARNING: Unable to add chapters")
         }
     }
-
-    public var radioStation: String? {
-        get {
-            if let string = self[userDefinedText: "TRSN"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TRSN"] = new
-            }
+    
+    /// Removes the chapter at the specified start time.
+    /// - Parameters:
+    ///  - startTime: The chapter start in milliseconds
+    public func removeChapter(at startTime: Int) {
+        do {
+            try parser.removeChapter(startTime: startTime)
+        } catch {
+            print("WARNING: Unable to remove chapters")
         }
     }
-
-    public var radioStationOwner: String? {
-        get {
-            if let string = self[userDefinedText: "TRSO"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TRSO"] = new
-            }
-        }
-    }
-
-    public var radioStationWebpage: String? {
-        get {
-            if let string = self[userDefinedText: "WORS"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "WORS"] = new
-            }
-        }
-    }
-
-    public var producedNotice: String? {
-        get {
-            if let string = self[userDefinedText: "TPRO"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self[userDefinedText: "TPRO"] = new
-            }
+    
+    /// Removes all chapters.
+    public func removeAllChapters() throws {
+        do {
+            try parser.removeAllChapters()
+        } catch {
+            print("WARNING: Unable to remove chapters")
         }
     }
 }

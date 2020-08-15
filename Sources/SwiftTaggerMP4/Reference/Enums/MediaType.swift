@@ -1,13 +1,14 @@
 //
-//  File.swift
-//  
+//  MediaType.swift
+//  SwiftTaggerMP4
 //
-//  Created by Nolaine Crusher on 6/3/20.
+//  Created by Nolaine Crusher on 5/2/20.
+//  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
 import Foundation
 
-enum MediaType: Int {
+public enum MediaType: Int {
     case movieOld = 0
     case music = 1
     case audiobook = 2

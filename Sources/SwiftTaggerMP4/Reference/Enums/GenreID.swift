@@ -1,6 +1,13 @@
+//  GenreID
+//  SwiftTaggerMP4
+//
+//  Created by Nolaine Crusher on 5/2/20.
+//  Copyright © 2020 Nolaine Crusher. All rights reserved.
+//
+
 import SE0270_RangeSet
 
-enum Genres: Int, CaseIterable {
+public enum Genres: Int, CaseIterable {
     case unknown = 0
     case musicBlues = 2
     case musicComedy = 3
