@@ -3695,6 +3695,7 @@ public struct Tag {
         
     public mutating func removeAllMetadata() throws {
         try parser.removeAllMetadata()
+        self.metadata = []
     }
     
     public mutating func removeTrackNumber() throws {

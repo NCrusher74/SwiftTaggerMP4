@@ -736,6 +736,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let source = try Mp4File(location: url)
         var tag = try Tag(from: source)
         try tag.removeAllMetadata()
+        XCTAssertTrue(tag.metadata.isEmpty)
 
         let outputUrl = try localDirectory(fileName: "removeAllMeta", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
