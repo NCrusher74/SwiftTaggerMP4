@@ -2631,7 +2631,16 @@ public struct Tag {
             }
         }
     }
-    
+
+    public var length: Int {
+        get {
+            return SwiftMp4MetadataParser.Mp4File.duration
+        }
+        set {
+            SwiftMp4MetadataParser.Mp4File.duration = newValue
+        }
+    }
+
     public var rating: ContentRating? {
         get {
             do {
