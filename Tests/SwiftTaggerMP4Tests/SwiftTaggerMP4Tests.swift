@@ -767,10 +767,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.showWorkAndMovement = nil
         tag.tvEpisodeNumber = nil
         tag.tvSeason = nil
-        tag.trackNumber.track = nil
-        tag.trackNumber.totalTracks = nil
-        tag.discNumber.disc = nil
-        tag.discNumber.totalDiscs = nil
+        tag.trackNumber = (nil, nil)
+//        tag.trackNumber.totalTracks = nil
+        tag.discNumber = (nil, nil)
+//        tag.discNumber.totalDiscs = nil
         tag.appleStoreCountryID = nil
         tag.acknowledgment = nil
         tag.album = nil
@@ -883,8 +883,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         try source.write(tag: tag, outputLocation: outputUrl)
         
         let output = try Tag(from: Mp4File(location: outputUrl))
-        XCTAssertNil(output.trackNumber)
-        XCTAssertNil(output.discNumber)
+        XCTAssertNil(output.trackNumber.track)
+        XCTAssertNil(output.trackNumber.totalTracks)
+        XCTAssertNil(output.discNumber.disc)
+        XCTAssertNil(output.discNumber.totalDiscs)
         XCTAssertNil(output.albumID)
         XCTAssertNil(output.artistID)
         XCTAssertNil(output.bpm)
