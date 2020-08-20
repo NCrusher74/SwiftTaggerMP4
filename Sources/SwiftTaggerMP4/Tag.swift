@@ -1024,40 +1024,39 @@ public struct Tag {
     
     public var discNumber: (disc: Int?, totalDiscs: Int?) {
         get {
-            var tuple: (disc: Int?, totalDiscs: Int?) = (nil, nil)
             do {
-                let array = try parser.get(.discNumber)
-                
-                if let total = array.last, array.count > 1 {
-                    tuple.totalDiscs = total
+                if let tuple = try parser.get(.discNumber) {
+                    if let disc = tuple.part {
+                        if let total = tuple.total {
+                            return (disc, total)
+                        } else {
+                            return (disc, nil)
+                        }
+                    } else {
+                        if let total = tuple.total {
+                            return (nil, total)
+                        } else {
+                            return (nil, nil)
+                        }
+                    }
+                } else {
+                 return (nil, nil)
                 }
-
-                if let disc = array.first {
-                    tuple.disc = disc
-                }
-                
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.discNumber.rawValue)")
+                return (nil, nil)
             }
-            return tuple
         }
         set {
             if newValue != (nil, nil) {
                 do {
-                    var array = [Int]()
-                    if let disc = newValue.disc {
-                        array.append(disc)
-                    }
-                    if let total = newValue.totalDiscs {
-                        array.append(total)
-                    }
-                    try parser.set(.discNumber, arrayValue: array)
+                    try parser.set(.discNumber, tupleValue: newValue)
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.discNumber.rawValue)")
                 }
             } else {
                 do {
-                    try parser.set(.discNumber, arrayValue: nil)
+                    try parser.set(.discNumber, tupleValue: nil)
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.discNumber.rawValue)")
                 }
@@ -3287,40 +3286,39 @@ public struct Tag {
     
     public var trackNumber: (track: Int?, totalTracks: Int?) {
         get {
-            var tuple: (track: Int?, totalTracks: Int?) = (nil, nil)
             do {
-                let array = try parser.get(.trackNumber)
-
-                if let total = array.last, array.count > 1 {
-                    tuple.totalTracks = total
+                if let tuple = try parser.get(.discNumber) {
+                    if let track = tuple.part {
+                        if let total = tuple.total {
+                            return (track, total)
+                        } else {
+                            return (track, nil)
+                        }
+                    } else {
+                        if let total = tuple.total {
+                            return (nil, total)
+                        } else {
+                            return (nil, nil)
+                        }
+                    }
+                } else {
+                    return (nil, nil)
                 }
-
-                if let track = array.first {
-                    tuple.track = track
-                }
-
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackNumber.rawValue)")
+                return (nil, nil)
             }
-            return tuple
         }
         set {
             if newValue != (nil, nil) {
                 do {
-                    var array = [Int]()
-                    if let track = newValue.track {
-                        array.append(track)
-                    }
-                    if let total = newValue.totalTracks {
-                        array.append(total)
-                    }
-                    try parser.set(.trackNumber, arrayValue: array)
+                    try parser.set(.trackNumber, tupleValue: newValue)
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.trackNumber.rawValue)")
                 }
             } else {
                 do {
-                    try parser.set(.trackNumber, arrayValue: nil)
+                    try parser.set(.trackNumber, tupleValue: nil)
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.trackNumber.rawValue)")
                 }

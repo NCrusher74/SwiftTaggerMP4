@@ -887,6 +887,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output.trackNumber.totalTracks)
         XCTAssertNil(output.discNumber.disc)
         XCTAssertNil(output.discNumber.totalDiscs)
+        XCTAssertNotNil(output.discNumber)
+        XCTAssertNotNil(output.trackNumber)
         XCTAssertNil(output.albumID)
         XCTAssertNil(output.artistID)
         XCTAssertNil(output.bpm)
