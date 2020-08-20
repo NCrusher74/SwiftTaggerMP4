@@ -1025,22 +1025,19 @@ public struct Tag {
     public var discNumber: (disc: Int?, totalDiscs: Int?) {
         get {
             do {
-                if let tuple = try parser.get(.discNumber) {
-                    if let disc = tuple.part {
-                        if let total = tuple.total {
-                            return (disc, total)
-                        } else {
-                            return (disc, nil)
-                        }
+                let tuple = try parser.get(.discNumber)
+                if let disc = tuple.part {
+                    if let total = tuple.total {
+                        return (disc, total)
                     } else {
-                        if let total = tuple.total {
-                            return (nil, total)
-                        } else {
-                            return (nil, nil)
-                        }
+                        return (disc, nil)
                     }
                 } else {
-                 return (nil, nil)
+                    if let total = tuple.total {
+                        return (nil, total)
+                    } else {
+                        return (nil, nil)
+                    }
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.discNumber.rawValue)")
@@ -3287,22 +3284,19 @@ public struct Tag {
     public var trackNumber: (track: Int?, totalTracks: Int?) {
         get {
             do {
-                if let tuple = try parser.get(.discNumber) {
-                    if let track = tuple.part {
-                        if let total = tuple.total {
-                            return (track, total)
-                        } else {
-                            return (track, nil)
-                        }
+                let tuple = try parser.get(.trackNumber)
+                if let track = tuple.part {
+                    if let total = tuple.total {
+                        return (track, total)
                     } else {
-                        if let total = tuple.total {
-                            return (nil, total)
-                        } else {
-                            return (nil, nil)
-                        }
+                        return (track, nil)
                     }
                 } else {
-                    return (nil, nil)
+                    if let total = tuple.total {
+                        return (nil, total)
+                    } else {
+                        return (nil, nil)
+                    }
                 }
             } catch {
                 print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.trackNumber.rawValue)")
