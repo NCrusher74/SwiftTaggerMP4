@@ -58,7 +58,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.narrator = "Narrator"
         tag.originalArtist = "Original Artist"
         tag.owner = "Owner"
-        tag.performers = "Performers"
+        tag.performers = ["Performers"]
         tag.predefinedGenre = .audiobooks
         tag.producer = "Producer"
         tag.producerKeywords = ["Producer", "Keywords"]
@@ -147,7 +147,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.narrator, "Narrator")
         XCTAssertEqual(output.originalArtist, "Original Artist")
         XCTAssertEqual(output.owner, "Owner")
-        XCTAssertEqual(output.performers, "Performers")
+        XCTAssertEqual(output.performers, ["Performers"])
         XCTAssertEqual(output.predefinedGenre, .audiobooks)
         XCTAssertEqual(output.producer, "Producer")
         XCTAssertEqual(output.producerKeywords, ["Producer", "Keywords"])
@@ -542,7 +542,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.narrator = "Narrator"
         tag.originalArtist = "Original Artist"
         tag.owner = "Owner"
-        tag.performers = "Performers"
+        tag.performers = ["Performers"]
         tag.predefinedGenre = .audiobooks
         tag.producer = "Producer"
         tag.producerKeywords = ["Producer", "Keywords"]
@@ -683,7 +683,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.narrator, "Narrator")
         XCTAssertEqual(output.originalArtist, "Original Artist")
         XCTAssertEqual(output.owner, "Owner")
-        XCTAssertEqual(output.performers, "Performers")
+        XCTAssertEqual(output.performers, ["Performers"])
         XCTAssertEqual(output.predefinedGenre, .audiobooks)
         XCTAssertEqual(output.producer, "Producer")
         XCTAssertEqual(output.producerKeywords, ["Producer", "Keywords"])
@@ -1013,9 +1013,5 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output["ORIGINAL_RADIO_URL"])
         XCTAssertNil(output["STATION_OWNER"])
         XCTAssertNil(output["OFFICIAL_AUDIO_SOURCE_URL"])
-    }
-    
-    func testRemoveSome() throws {
-        
-    }
+    }    
 }
