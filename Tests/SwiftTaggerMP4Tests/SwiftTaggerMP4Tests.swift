@@ -1013,5 +1013,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output["ORIGINAL_RADIO_URL"])
         XCTAssertNil(output["STATION_OWNER"])
         XCTAssertNil(output["OFFICIAL_AUDIO_SOURCE_URL"])
-    }    
+    }
+    
+    func testRemoveSome() throws {
+        
+    }
 }
