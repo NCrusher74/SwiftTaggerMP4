@@ -28,9 +28,12 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artDirector.rawValue)")
                 }
-                if var creditsArray = self.involvedPersonCreditsList[.artDirection] {
-                    creditsArray.append(new)
-                    self.involvedPersonCreditsList[.artDirection] = creditsArray
+                if var creditsArray = self.involvedPersonCreditsList[
+                    .artDirection] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(new)
+                        self.involvedPersonCreditsList[.artDirection] = creditsArray
+                    }
                 } else {
                     self.involvedPersonCreditsList[.artDirection] = [new]
                 }
@@ -65,9 +68,12 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.director.rawValue)")
                 }
-                if var creditsArray = self.involvedPersonCreditsList[.director] {
-                    creditsArray.append(new)
-                    self.involvedPersonCreditsList[.director] = creditsArray
+                if var creditsArray = self.involvedPersonCreditsList[
+                    .director] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(new)
+                        self.involvedPersonCreditsList[.director] = creditsArray
+                    }
                 } else {
                     self.involvedPersonCreditsList[.director] = [new]
                 }
@@ -102,9 +108,12 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
                 }
-                if var creditsArray = self.involvedPersonCreditsList[.executiveProducer] {
-                    creditsArray.append(new)
-                    self.involvedPersonCreditsList[.executiveProducer] = creditsArray
+                if var creditsArray = self.involvedPersonCreditsList[
+                    .executiveProducer] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(new)
+                        self.involvedPersonCreditsList[.executiveProducer] = creditsArray
+                    }
                 } else {
                     self.involvedPersonCreditsList[.executiveProducer] = [new]
                 }
@@ -142,11 +151,16 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.performers.rawValue)")
                 }
-                if var creditsArray = self.musicianAndPerformerCreditsList[.performer] {
-                    creditsArray.append(contentsOf: new)
-                    self.musicianAndPerformerCreditsList[.performer] = creditsArray
+                if var creditsArray = self.musicianAndPerformerCreditsList[
+                    .performer] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(contentsOf: new)
+                        self.musicianAndPerformerCreditsList[
+                            .performer] = creditsArray
+                    }
                 } else {
-                    self.musicianAndPerformerCreditsList[.performer] = new
+                    self.musicianAndPerformerCreditsList[
+                        .performer] = new
                 }
             } else {
                 do {
@@ -178,9 +192,12 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.producer.rawValue)")
                 }
-                if var creditsArray = self.involvedPersonCreditsList[.producer] {
-                    creditsArray.append(new)
-                    self.involvedPersonCreditsList[.producer] = creditsArray
+                if var creditsArray = self.involvedPersonCreditsList[
+                    .producer] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(new)
+                        self.involvedPersonCreditsList[.producer] = creditsArray
+                    }
                 } else {
                     self.involvedPersonCreditsList[.producer] = [new]
                 }
@@ -215,11 +232,16 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.soloist.rawValue)")
                 }
-                if var creditsArray = self.musicianAndPerformerCreditsList[.soloist] {
-                    creditsArray.append(new)
-                    self.musicianAndPerformerCreditsList[.soloist] = creditsArray
+                if var creditsArray = self.musicianAndPerformerCreditsList[
+                    .soloist] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(new)
+                        self.musicianAndPerformerCreditsList[
+                            .soloist] = creditsArray
+                    }
                 } else {
-                    self.musicianAndPerformerCreditsList[.soloist] = [new]
+                    self.musicianAndPerformerCreditsList[
+                        .soloist] = [new]
                 }
             } else {
                 do {
@@ -252,9 +274,12 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
                 }
-                if var creditsArray = self.involvedPersonCreditsList[.soundEngineer] {
-                    creditsArray.append(new)
-                    self.involvedPersonCreditsList[.soundEngineer] = creditsArray
+                if var creditsArray = self.involvedPersonCreditsList[
+                    .soundEngineer] {
+                    if !creditsArray.contains(new) {
+                        creditsArray.append(new)
+                        self.involvedPersonCreditsList[.soundEngineer] = creditsArray
+                    }
                 } else {
                     self.involvedPersonCreditsList[.soundEngineer] = [new]
                 }
@@ -288,60 +313,107 @@ extension Tag {
         self.musicianAndPerformerCreditsList[role] = nil
     }
     
-    public mutating func addInvolvedPersonCredit(role: InvolvedPersonCredits, people: [String]) {
-        if let existingCredit = self.involvedPersonCreditsList.first(where: {$0.key == role }) {
-            var array = existingCredit.value
-            
-            for person in people {
-                if !array.contains(person) {
-                    array.append(person)
-                }
-            }
-            self.involvedPersonCreditsList[role] = array
-        } else {
-            self.involvedPersonCreditsList[role] = people
-        }
+    public mutating func addInvolvedPersonCredit(role: InvolvedPersonCredits, person: String) {
+
         if role == .artDirection {
-            let string = people.joined(separator: ";")
-            self.artDirector = string
-        }
-        if role == .executiveProducer {
-            let string = people.joined(separator: ";")
-            self.executiveProducer = string
+            if let existingString = self.artDirector {
+                let newString = "\(existingString);\(person)"
+                self.artDirector = newString
+            } else {
+                self.artDirector = person
+            }
         }
         if role == .director {
-            let string = people.joined(separator: ";")
-            self.director = string
+            if let existingString = self.director {
+                let newString = "\(existingString);\(person)"
+                self.director = newString
+            } else {
+                self.director = person
+            }
         }
+
+        if role == .executiveProducer {
+            if let existingString = self.executiveProducer {
+                let newString = "\(existingString);\(person)"
+                self.executiveProducer = newString
+            } else {
+                self.executiveProducer = person
+            }
+        }
+
         if role == .producer {
-            let string = people.joined(separator: ";")
-            self.producer = string
+            if let existingString = self.producer {
+                let newString = "\(existingString);\(person)"
+                self.producer = newString
+            } else {
+                self.producer = person
+            }
         }
+
         if role == .soundEngineer {
-            let string = people.joined(separator: ";")
-            self.soundEngineer = string
+            if let existingString = self.soundEngineer {
+                let newString = "\(existingString);\(person)"
+                self.soundEngineer = newString
+            } else {
+                self.soundEngineer = person
+            }
+        }
+
+        // entry exists in dictionary, may or may not contain person
+        if let existingCredit = involvedPersonCreditsList.first(where: {$0.key == role }) {
+            var creditArray = existingCredit.value
+            // contains person, do nothing
+            if creditArray.contains(person) {
+                return
+            } else {
+                // doesn't contain person, append array
+                creditArray.append(person)
+                self.involvedPersonCreditsList[role] = creditArray
+            }
+            // create entry
+        } else {
+            self.involvedPersonCreditsList[role] = [person]
         }
     }
-
-    public mutating func addMusicianOrPerformerCredit(role: MusicianAndPerformerCredits, people: [String]) {
-        if let existingCredit = self.musicianAndPerformerCreditsList.first(where: {$0.key == role }) {
-            var array = existingCredit.value
-            
-            for person in people {
-                if !array.contains(person) {
-                    array.append(person)
-                }
-            }
-            self.musicianAndPerformerCreditsList[role] = array
-        } else {
-            self.musicianAndPerformerCreditsList[role] = people
-        }
+        
+    public mutating func addMusicianOrPerformerCredit(role: MusicianAndPerformerCredits, person: String) {
+        
         if role == .performer {
-            self.performers = people
+            if var existingArray = self.performers {
+                if !existingArray.contains(person) {
+                    existingArray.append(person)
+                    self.performers = existingArray
+                } else {
+                    self.performers = existingArray
+                }
+            } else {
+                self.performers = [person]
+            }
         }
+        
         if role == .soloist {
-            let string = people.joined(separator: ";")
-            self.soloist = string
+            if let existingString = self.soloist {
+                let newString = "\(existingString);\(person)"
+                self.soloist = newString
+            } else {
+                self.soloist = person
+            }
+        }
+
+        // entry exists in dictionary, may or may not contain person
+        if let existingCredit = musicianAndPerformerCreditsList.first(where: {$0.key == role }) {
+            var creditArray = existingCredit.value
+            // contains person, do nothing
+            if creditArray.contains(person) {
+                return
+            } else {
+                // doesn't contain person, append array
+                creditArray.append(person)
+                self.musicianAndPerformerCreditsList[role] = creditArray
+            }
+            // create entry
+        } else {
+            self.musicianAndPerformerCreditsList[role] = [person]
         }
     }
 
@@ -355,10 +427,17 @@ extension Tag {
                 credits[.performer] = performers
             }
             do {
-                for credit in MusicianAndPerformerCredits.allCases {
-                    if let freeformCredit = try getFreeformMetadata(name: credit.rawValue) {
-                        let array: [String] = freeformCredit.components(separatedBy: ";")
-                        credits[credit] = array
+                var itemIdentifiers = [String]()
+                for item in try parser.listMetadataTags() {
+                    itemIdentifiers.append(item.identifier)
+                }
+                let filteredIdentifiers = itemIdentifiers.filter({MusicianAndPerformerCredits(rawValue: $0) != nil })
+                for item in filteredIdentifiers {
+                    if let credit = MusicianAndPerformerCredits(rawValue: item) {
+                        if let freeformCredit = try getFreeformMetadata(name: item) {
+                            let array: [String] = freeformCredit.components(separatedBy: ";")
+                            credits[credit] = array
+                        }
                     }
                 }
             } catch {
@@ -371,11 +450,14 @@ extension Tag {
                 let array: [String] = soloist.value
                 let string: String = array.joined(separator: ";")
                 self.soloist = string
-            } else if let performers = newValue.first(where: {$0.key == .performer}) {
+            }
+            if let performers = newValue.first(where: {$0.key == .performer}) {
                 self.performers = performers.value
-            } else {
-                if !newValue.isEmpty {
-                    for (key, value) in newValue {
+            }
+            if !newValue.isEmpty {
+                for (key, value) in newValue {
+                    let dupeKeys: [MusicianAndPerformerCredits] = [.performer, .soloist]
+                    if !dupeKeys.contains(key) {
                         let keyString: String = key.rawValue
                         let valueString: String = value.joined(separator: ";")
                         do {
@@ -385,16 +467,16 @@ extension Tag {
                             print("Unable to create freeform metadata atom for performer credit \(keyString)")
                         }
                     }
-                } else {
-                    for credit in MusicianAndPerformerCredits.allCases {
-                        do {
-                            if try getFreeformMetadata(name: credit.rawValue) != nil {
-                                try setFreeformMetadata(name: credit.rawValue, stringValue: nil)
-                            }
-                        } catch {
-                            print("Unable to remove freeform metadata atom for performer credit \(credit.rawValue)")
+                }
+            } else {
+                do {
+                    for item in try parser.listMetadataTags() {
+                        if MusicianAndPerformerCredits(rawValue: item.identifier) != nil {
+                            try setFreeformMetadata(name: item.identifier, stringValue: nil)
                         }
                     }
+                } catch {
+                    print("Unable to remove freeform metadata atom for involved person credit")
                 }
             }
         }
@@ -421,10 +503,17 @@ extension Tag {
             }
             
             do {
-                for credit in InvolvedPersonCredits.allCases {
-                    if let freeformCredit = try getFreeformMetadata(name: credit.rawValue) {
-                        let array: [String] = freeformCredit.components(separatedBy: ";")
-                        credits[credit] = array
+                var itemIdentifiers = [String]()
+                for item in try parser.listMetadataTags() {
+                    itemIdentifiers.append(item.identifier)
+                }
+                let filteredIdentifiers = itemIdentifiers.filter({InvolvedPersonCredits(rawValue: $0) != nil })
+                for item in filteredIdentifiers {
+                    if let credit = InvolvedPersonCredits(rawValue: item) {
+                        if let freeformCredit = try getFreeformMetadata(name: item) {
+                            let array: [String] = freeformCredit.components(separatedBy: ";")
+                            credits[credit] = array
+                        }
                     }
                 }
             } catch {
@@ -438,25 +527,31 @@ extension Tag {
                 let array: [String] = director.value
                 let string: String = array.joined(separator: ";")
                 self.director = string
-            } else if let artDirector = newValue.first(where: {$0.key == .artDirection}) {
+            }
+            if let artDirector = newValue.first(where: {$0.key == .artDirection}) {
                 let array: [String] = artDirector.value
                 let string: String = array.joined(separator: ";")
                 self.artDirector = string
-            } else if let executiveProducer = newValue.first(where: {$0.key == .executiveProducer}) {
+            }
+            if let executiveProducer = newValue.first(where: {$0.key == .executiveProducer}) {
                 let array: [String] = executiveProducer.value
                 let string: String = array.joined(separator: ";")
                 self.executiveProducer = string
-            } else if let producer = newValue.first(where: {$0.key == .producer}) {
+            }
+            if let producer = newValue.first(where: {$0.key == .producer}) {
                 let array: [String] = producer.value
                 let string: String = array.joined(separator: ";")
                 self.producer = string
-            } else if let soundEngineer = newValue.first(where: {$0.key == .soundEngineer}) {
+            }
+            if let soundEngineer = newValue.first(where: {$0.key == .soundEngineer}) {
                 let array: [String] = soundEngineer.value
                 let string: String = array.joined(separator: ";")
                 self.soundEngineer = string
-            } else {
-                if !newValue.isEmpty {
-                    for (key, value) in newValue {
+            }
+            if !newValue.isEmpty {
+                for (key, value) in newValue {
+                    let dupeKeys: [InvolvedPersonCredits] = [.artDirection, .director, .executiveProducer, .producer, .soundEngineer]
+                    if !dupeKeys.contains(key) {
                         let keyString: String = key.rawValue
                         let valueString: String = value.joined(separator: ";")
                         
@@ -467,16 +562,16 @@ extension Tag {
                             print("Unable to create freeform metadata atom for involved person credit \(keyString)")
                         }
                     }
-                } else {
-                    for credit in InvolvedPersonCredits.allCases {
-                        do {
-                            if try getFreeformMetadata(name: credit.rawValue) != nil {
-                                try setFreeformMetadata(name: credit.rawValue, stringValue: nil)
-                            }
-                        } catch {
-                            print("Unable to remove freeform metadata atom for involved person credit \(credit.rawValue)")
+                }
+            } else {
+                do {
+                    for item in try parser.listMetadataTags() {
+                        if InvolvedPersonCredits(rawValue: item.identifier) != nil {
+                            try setFreeformMetadata(name: item.identifier, stringValue: nil)
                         }
                     }
+                } catch {
+                    print("Unable to remove freeform metadata atom for involved person credit")
                 }
             }
         }

@@ -1027,6 +1027,20 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.involvedPersonCreditsList[.soundEngineer], ["SOUND ENGINEER"])
 
         XCTAssertEqual(tag.musicianAndPerformerCreditsList[.performer], ["PERFORMER"])
-        XCTAssertEqual(tag.musicianAndPerformerCreditsList[.soloist], ["SOLOIST"])        
+        XCTAssertEqual(tag.musicianAndPerformerCreditsList[.soloist], ["SOLOIST"])
+        
+        tag.addInvolvedPersonCredit(role: .accounting, person: "ACCOUNTANT")
+        tag.addMusicianOrPerformerCredit(role: .accompaniment, person: "ACCOMPANIST")
+        
+        let outputUrl = try localDirectory(fileName: "credits", fileExtension: "m4a")
+        try source.write(tag: tag, outputLocation: outputUrl)
+        
+        let output = try Tag(from: Mp4File(location: outputUrl))
+        print(output.musicianAndPerformerCreditsList)
+        print(output.involvedPersonCreditsList)
+        XCTAssertEqual(output["\(InvolvedPersonCredits.accounting.rawValue)"], "ACCOUNTANT")
+        XCTAssertEqual(output["\(MusicianAndPerformerCredits.accompaniment.rawValue)"], "ACCOMPANIST")
+        XCTAssertEqual(output.involvedPersonCreditsList[.accounting], ["ACCOUNTANT"])
+        XCTAssertEqual(output.musicianAndPerformerCreditsList[.accompaniment], ["ACCOMPANIST"])
     }
 }
