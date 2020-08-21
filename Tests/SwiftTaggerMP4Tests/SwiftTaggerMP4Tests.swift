@@ -1013,5 +1013,20 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output["ORIGINAL_RADIO_URL"])
         XCTAssertNil(output["STATION_OWNER"])
         XCTAssertNil(output["OFFICIAL_AUDIO_SOURCE_URL"])
-    }    
+    }
+    
+    func testCreditLists() throws {
+        let url = fileVersion.withMeta.url
+        let source = try Mp4File(location: url)
+        var tag = try Tag(from: source)
+        
+        XCTAssertEqual(tag.involvedPersonCreditsList[.director], ["DIRECTOR"])
+        XCTAssertEqual(tag.involvedPersonCreditsList[.artDirection], ["ARTDIRECTOR"])
+        XCTAssertEqual(tag.involvedPersonCreditsList[.executiveProducer], ["EXEC PRODUCER"])
+        XCTAssertEqual(tag.involvedPersonCreditsList[.producer], ["PRODUCER"])
+        XCTAssertEqual(tag.involvedPersonCreditsList[.soundEngineer], ["SOUND ENGINEER"])
+
+        XCTAssertEqual(tag.musicianAndPerformerCreditsList[.performer], ["PERFORMER"])
+        XCTAssertEqual(tag.musicianAndPerformerCreditsList[.soloist], ["SOLOIST"])        
+    }
 }
