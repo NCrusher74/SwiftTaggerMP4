@@ -50,7 +50,7 @@ extension Tag {
     public mutating func clearInvolvementCreditList() {
         self.involvementCreditsList = [:]
         for credit in InvolvedPersonCredits.allCases {
-            removeInvolvedPersonCredit(credit)
+            removeInvolvementCredit(credit)
         }
     }
     
@@ -160,7 +160,7 @@ extension Tag {
     public mutating func clearPerformanceCreditList() {
         self.performanceCreditsList = [:]
         for credit in MusicianAndPerformerCredits.allCases {
-            removePerformerCredit(credit)
+            removePerformanceCredit(credit)
         }
     }
     
