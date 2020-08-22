@@ -191,6 +191,36 @@ extension Tag {
         }
     }
     
+    public var artDirector: String? {
+        get {
+            do {
+                return try parser.get(.artDirector)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.artDirector.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.artDirector,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.artDirector.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.artDirector,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artDirector.rawValue)")
+                }
+            }
+        }
+    }
+    
     public var artist: String? {
         get {
             do {
@@ -626,6 +656,36 @@ extension Tag {
         }
     }
     
+    public var director: String? {
+        get {
+            do {
+                return try parser.get(.director)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.director.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.director,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.director.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.director,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.director.rawValue)")
+                }
+            }
+        }
+    }
+    
     public var editDateAndDescription1: String? {
         get {
             do {
@@ -972,7 +1032,38 @@ extension Tag {
             }
         }
     }
+
+    public var executiveProducer: String? {
+        get {
+            do {
+                return try parser.get(.executiveProducer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.executiveProducer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.executiveProducer,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
+                }
+            }
+        }
+    }
     
+
     // MARK: - F-K
     public var fileType: FileType? {
         get {
@@ -1523,6 +1614,38 @@ extension Tag {
         }
     }
     
+    public var performers: [String]? {
+        get {
+            do {
+                if try parser.get(.performers).isEmpty {
+                    return nil
+                } else {
+                    return try parser.get(.performers)
+                }
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.titleKeywords.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, !new.isEmpty {
+                do {
+                    try parser.set(.performers,
+                                   arrayValue: new)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.performers.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.performers,
+                                   arrayValue: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.performers.rawValue)")
+                }
+            }
+        }
+    }
+    
     public var podcastID: String? {
         get {
             do {
@@ -1634,6 +1757,36 @@ extension Tag {
                 self["TPRO"] = new
             } else {
                 self["TPRO"] = nil
+            }
+        }
+    }
+    
+    public var producer: String? {
+        get {
+            do {
+                return try parser.get(.producer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.producer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.producer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.producer.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.producer,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.producer.rawValue)")
+                }
             }
         }
     }
@@ -1900,6 +2053,36 @@ extension Tag {
         }
     }
     
+    public var soloist: String? {
+        get {
+            do {
+                return try parser.get(.soloist)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.soloist.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.soloist,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.soloist.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.soloist,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.soloist.rawValue)")
+                }
+            }
+        }
+    }
+    
     public var songDescription: String? {
         get {
             do {
@@ -1930,6 +2113,36 @@ extension Tag {
         }
     }
     
+    public var soundEngineer: String? {
+        get {
+            do {
+                return try parser.get(.soundEngineer)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.soundEngineer,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
+                }
+            } else {
+                do {
+                    try parser.set(.soundEngineer,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
+                }
+            }
+        }
+    }
+
     public var sourceCredit: String? {
         get {
             do {

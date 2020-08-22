@@ -10,6 +10,17 @@
 import Foundation
 
 public enum MusicianAndPerformerCredits: String, CaseIterable {
+
+    static func performanceFromAtomID(_ id: String) -> MusicianAndPerformerCredits? {
+        switch id {
+            case "\u{00A9}ART": return .featuredArtist
+            case "\u{00A9}nrt": return .narrator
+            case "\u{00A9}prf": return .performer
+            case "\u{00A9}sol": return .soloist
+            default: return nil
+        }
+    }
+
     case none = ""
     case performer = "Performer"
     case cast = "Cast"

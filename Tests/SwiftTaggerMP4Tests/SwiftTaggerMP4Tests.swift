@@ -1020,27 +1020,19 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let source = try Mp4File(location: url)
         var tag = try Tag(from: source)
         
-        XCTAssertEqual(tag.involvedPersonCreditsList[.director], ["DIRECTOR"])
-        XCTAssertEqual(tag.involvedPersonCreditsList[.artDirection], ["ARTDIRECTOR"])
-        XCTAssertEqual(tag.involvedPersonCreditsList[.executiveProducer], ["EXEC PRODUCER"])
-        XCTAssertEqual(tag.involvedPersonCreditsList[.producer], ["PRODUCER"])
-        XCTAssertEqual(tag.involvedPersonCreditsList[.soundEngineer], ["SOUND ENGINEER"])
-
-        XCTAssertEqual(tag.musicianAndPerformerCreditsList[.performer], ["PERFORMER"])
-        XCTAssertEqual(tag.musicianAndPerformerCreditsList[.soloist], ["SOLOIST"])
-        
-        tag.addInvolvedPersonCredit(role: .accounting, person: "ACCOUNTANT")
-        tag.addMusicianOrPerformerCredit(role: .accompaniment, person: "ACCOMPANIST")
-        
-        let outputUrl = try localDirectory(fileName: "credits", fileExtension: "m4a")
-        try source.write(tag: tag, outputLocation: outputUrl)
-        
-        let output = try Tag(from: Mp4File(location: outputUrl))
-        print(output.musicianAndPerformerCreditsList)
-        print(output.involvedPersonCreditsList)
-        XCTAssertEqual(output["\(InvolvedPersonCredits.accounting.rawValue)"], "ACCOUNTANT")
-        XCTAssertEqual(output["\(MusicianAndPerformerCredits.accompaniment.rawValue)"], "ACCOMPANIST")
-        XCTAssertEqual(output.involvedPersonCreditsList[.accounting], ["ACCOUNTANT"])
-        XCTAssertEqual(output.musicianAndPerformerCreditsList[.accompaniment], ["ACCOMPANIST"])
+        XCTAssertEqual(tag.involvementCreditsList[.artDirection], ["ARTDIRECTOR"])
+        XCTAssertEqual(tag.involvementCreditsList[.arranger], ["ARRANGER"])
+        XCTAssertEqual(tag.involvementCreditsList[.composer], ["COMPOSER"])
+        XCTAssertEqual(tag.involvementCreditsList[.conductor], ["CONDUCTOR"])
+        XCTAssertEqual(tag.involvementCreditsList[.director], ["DIRECTOR"])
+        XCTAssertEqual(tag.involvementCreditsList[.executiveProducer], ["EXEC PRODUCER"])
+        XCTAssertEqual(tag.involvementCreditsList[.producer], ["PRODUCER"])
+        XCTAssertEqual(tag.involvementCreditsList[.publisher], ["PUBLISHER"])
+        XCTAssertEqual(tag.involvementCreditsList[.soundEngineer], ["SOUND ENGINEER"])
+        XCTAssertEqual(tag.involvementCreditsList[.writer], ["WRITER"])
+        XCTAssertEqual(tag.performanceCreditsList[.featuredArtist], ["ARTIST"])
+        XCTAssertEqual(tag.performanceCreditsList[.narrator], ["NARRATOR"])
+        XCTAssertEqual(tag.performanceCreditsList[.performer], ["PERFORMER"])
+        XCTAssertEqual(tag.performanceCreditsList[.soloist], ["SOLOIST"])
     }
 }

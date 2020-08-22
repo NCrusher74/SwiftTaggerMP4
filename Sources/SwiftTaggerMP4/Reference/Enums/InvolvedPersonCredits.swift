@@ -10,6 +10,24 @@
 import Foundation
 
 public enum InvolvedPersonCredits: String, CaseIterable {
+    
+    static func involvementFromAtomID(_ id: String) -> InvolvedPersonCredits? {
+        switch id {
+            case "\u{00A9}ard": return .artDirection
+            case "\u{00A9}arg": return .arranger
+            case "\u{00A9}com": return .composer
+            case "\u{00A9}con": return .conductor
+            case "\u{00A9}dir": return .director
+            case "\u{00A9}xpd": return .executiveProducer
+            case "\u{00A9}aut": return .lyricist
+            case "\u{00A9}prd": return .producer
+            case "\u{00A9}pub": return .publisher
+            case "\u{00A9}sne": return .soundEngineer
+            case "\u{00A9}wrt": return .writer
+            default: return nil
+        }
+    }
+    
     case none = ""
     case producer = "Producer"
     case executiveProducer = "Executive Producer"
