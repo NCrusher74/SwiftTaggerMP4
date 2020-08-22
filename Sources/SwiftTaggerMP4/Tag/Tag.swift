@@ -79,13 +79,22 @@ public struct Tag {
         set {
             if let new = newValue {
                 do {
-                    try setFreeformMetadata(name: name ?? "", stringValue: new)
+                    if let name = name {
+                        try setFreeformMetadata(name: name,
+                                            stringValue: nil)
+                        try setFreeformMetadata(name: name,
+                                                stringValue: new)
+                    } else {
+                        try setFreeformMetadata(name: "Unnamed Freeform Atom",
+                                                stringValue: new)
+                    }
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.unknown.rawValue)")
                 }
             } else {
                 do {
-                    try setFreeformMetadata(name: name ?? "", stringValue: nil)
+                    try setFreeformMetadata(name: name ?? "Unnamed Freeform Atom",
+                                            stringValue: nil)
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.unknown.rawValue)")
                 }

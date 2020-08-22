@@ -31,9 +31,184 @@ extension Tag {
     
     public mutating func removeInvolvedPersonCredit(_ role: InvolvedPersonCredits) {
         self.involvementCreditsList[role] = nil
+        switch role {
+            case .artDirection: self.artDirector = nil
+            case .arranger: self.arranger = nil
+            case .composer: self.composer = nil
+            case .conductor: self.conductor = nil
+            case .director: self.director = nil
+            case .executiveProducer: self.executiveProducer = nil
+            case .producer: self.producer = nil
+            case .publisher: self.publisher = nil
+            case .soundEngineer: self.soundEngineer = nil
+            case .writer: self.writer = nil
+            default:
+                self[role.rawValue] = nil
+        }
     }
     
+    public mutating func clearInvolvementCreditList() {
+        self.involvementCreditsList = [:]
+        for credit in InvolvedPersonCredits.allCases {
+            removeInvolvedPersonCredit(credit)
+        }
+    }
+    
+    public mutating func addInvolvementCredit(_ role: InvolvedPersonCredits, person: String) {
+        // see if role exists and doesn't contain the person
+        if let existingCredit = involvementCreditsList[role],
+            !existingCredit.contains(person) {
+            var newCredit = existingCredit
+            newCredit.append(person)
+            involvementCreditsList[role] = newCredit
+        } else {
+            involvementCreditsList[role] = [person]
+        }
+        
+        switch role {
+            case .artDirection:
+                if let string = self.artDirector {
+                    let newString = "\(string);\(person)"
+                    self.artDirector = newString
+                } else {
+                    self.artDirector = person
+            }
+            case .arranger:
+                if let string = self.arranger {
+                    let newString = "\(string);\(person)"
+                    self.arranger = newString
+                } else {
+                    self.arranger = person
+            }
+            case .composer:
+                if let string = self.composer {
+                    let newString = "\(string);\(person)"
+                    self.composer = newString
+                } else {
+                    self.composer = person
+            }
+            case .conductor:
+                if let string = self.conductor {
+                    let newString = "\(string);\(person)"
+                    self.conductor = newString
+                } else {
+                    self.conductor = person
+            }
+            case .director:
+                if let string = self.director {
+                    let newString = "\(string);\(person)"
+                    self.director = newString
+                } else {
+                    self.director = person
+            }
+            case .executiveProducer:
+                if let string = self.executiveProducer {
+                    let newString = "\(string);\(person)"
+                    self.executiveProducer = newString
+                } else {
+                    self.executiveProducer = person
+            }
+            case .producer:
+                if let string = self.producer {
+                    let newString = "\(string);\(person)"
+                    self.producer = newString
+                } else {
+                    self.producer = person
+            }
+            case .publisher:
+                if let string = self.publisher {
+                    let newString = "\(string);\(person)"
+                    self.publisher = newString
+                } else {
+                    self.publisher = person
+            }
+            case .soundEngineer:
+                if let string = self.soundEngineer {
+                    let newString = "\(string);\(person)"
+                    self.soundEngineer = newString
+                } else {
+                    self.soundEngineer = person
+            }
+            case .writer:
+                if let string = self.writer {
+                    let newString = "\(string);\(person)"
+                    self.writer = newString
+                } else {
+                    self.writer = person
+            }
+            default:
+                if let string = self[role.rawValue] {
+                    let newString = "\(string);\(person)"
+                    self[role.rawValue] = newString
+                } else {
+                    self[role.rawValue] = person
+            }
+        }
+    }
+
     public mutating func removePerformerCredit(_ role: MusicianAndPerformerCredits) {
         self.performanceCreditsList[role] = nil
+        switch role {
+            case .featuredArtist: self.artist = nil
+            case .performer: self.performers = nil
+            case .soloist: self.soloist = nil
+            case .narrator: self.narrator = nil
+            default: self[role.rawValue] = nil
+        }
+    }
+    
+    public mutating func clearPerformanceCreditList() {
+        self.performanceCreditsList = [:]
+        for credit in MusicianAndPerformerCredits.allCases {
+            removePerformerCredit(credit)
+        }
+    }
+    
+    public mutating func addPerformerCredit(_ role: MusicianAndPerformerCredits, person: String) {
+        // see if role exists and doesn't contain the person
+        if var existingCredit = performanceCreditsList[role],
+            !existingCredit.contains(person) {
+            existingCredit.append(person)
+            self.performanceCreditsList[role] = existingCredit
+        } else {
+            self.performanceCreditsList[role] = [person]
+        }
+        switch role {
+            case .featuredArtist:
+                if let string = self.artist {
+                    let newString = "\(string);\(person)"
+                    self.artist = newString
+                } else {
+                    self.artist = person
+            }
+            case .narrator:
+                if let string = self.narrator {
+                    let newString = "\(string);\(person)"
+                    self.narrator = newString
+                } else {
+                    self.narrator = person
+            }
+            case .soloist:
+                if let string = self.soloist {
+                    let newString = "\(string);\(person)"
+                    self.soloist = newString
+                } else {
+                    self.soloist = person
+            }
+            case .performer:
+                if var array = self.performers, !array.contains(person) {
+                    array.append(person)
+                    self.performers = array
+                } else {
+                    self.performers = [person]
+            }
+            default:
+                if let string = self[role.rawValue] {
+                    let newString = "\(string);\(person)"
+                    self[role.rawValue] = newString
+                } else {
+                    self[role.rawValue] = person
+            }
+        }
     }
 }
