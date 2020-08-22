@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    public mutating func removeInvolvedPersonCredit(_ role: InvolvedPersonCredits) {
+    public mutating func removeInvolvementCredit(_ role: InvolvedPersonCredits) {
         self.involvementCreditsList[role] = nil
         switch role {
             case .artDirection: self.artDirector = nil
@@ -146,7 +146,7 @@ extension Tag {
         }
     }
 
-    public mutating func removePerformerCredit(_ role: MusicianAndPerformerCredits) {
+    public mutating func removePerformanceCredit(_ role: MusicianAndPerformerCredits) {
         self.performanceCreditsList[role] = nil
         switch role {
             case .featuredArtist: self.artist = nil
@@ -164,7 +164,7 @@ extension Tag {
         }
     }
     
-    public mutating func addPerformerCredit(_ role: MusicianAndPerformerCredits, person: String) {
+    public mutating func addPerformanceCredit(_ role: MusicianAndPerformerCredits, person: String) {
         // see if role exists and doesn't contain the person
         if var existingCredit = performanceCreditsList[role],
             !existingCredit.contains(person) {
