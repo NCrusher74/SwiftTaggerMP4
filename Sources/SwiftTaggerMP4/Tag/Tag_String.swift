@@ -179,6 +179,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.arranger.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.arranger] = array
             } else {
                 do {
                     try parser.set(.arranger,
@@ -187,6 +189,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.arranger.rawValue)")
                 }
+                self.involvementCreditsList[.arranger] = nil
             }
         }
     }
@@ -209,6 +212,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artDirector.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.artDirection] = array
             } else {
                 do {
                     try parser.set(.artDirector,
@@ -217,6 +222,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artDirector.rawValue)")
                 }
+                self.involvementCreditsList[.artDirection] = nil
             }
         }
     }
@@ -239,6 +245,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artist.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.performanceCreditsList[.featuredArtist] = array
             } else {
                 do {
                     try parser.set(.artist,
@@ -247,6 +255,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artist.rawValue)")
                 }
+                self.performanceCreditsList[.featuredArtist] = nil
             }
         }
     }
@@ -425,6 +434,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.composer.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.composer] = array
             } else {
                 do {
                     try parser.set(.composer,
@@ -433,6 +444,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.composer.rawValue)")
                 }
+                self.involvementCreditsList[.composer] = nil
             }
         }
     }
@@ -485,6 +497,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.conductor.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.conductor] = array
             } else {
                 do {
                     try parser.set(.conductor,
@@ -493,6 +507,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.conductor.rawValue)")
                 }
+                self.involvementCreditsList[.conductor] = nil
             }
         }
     }
@@ -674,6 +689,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.director.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.director] = array
             } else {
                 do {
                     try parser.set(.director,
@@ -682,6 +699,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.director.rawValue)")
                 }
+                self.involvementCreditsList[.director] = nil
             }
         }
     }
@@ -1051,6 +1069,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.executiveProducer] = array
             } else {
                 do {
                     try parser.set(.executiveProducer,
@@ -1059,6 +1079,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.executiveProducer.rawValue)")
                 }
+                self.involvementCreditsList[.executiveProducer] = nil
             }
         }
     }
@@ -1396,6 +1417,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.lyricist.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.lyricist] = array
             } else {
                 do {
                     try parser.set(.lyricist,
@@ -1404,6 +1427,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.lyricist.rawValue)")
                 }
+                self.involvementCreditsList[.lyricist] = nil
             }
         }
     }
@@ -1473,6 +1497,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.narrator.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.performanceCreditsList[.narrator] = array
             } else {
                 do {
                     try parser.set(.narrator,
@@ -1481,6 +1507,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.narrator.rawValue)")
                 }
+                self.performanceCreditsList[.narrator] = nil
             }
         }
     }
@@ -1635,6 +1662,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.performers.rawValue)")
                 }
+                self.performanceCreditsList[.performer] = new
             } else {
                 do {
                     try parser.set(.performers,
@@ -1642,6 +1670,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.performers.rawValue)")
                 }
+                self.performanceCreditsList[.performer] = nil
             }
         }
     }
@@ -1779,6 +1808,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.producer.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.producer] = array
             } else {
                 do {
                     try parser.set(.producer,
@@ -1787,6 +1818,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.producer.rawValue)")
                 }
+                self.involvementCreditsList[.producer] = nil
             }
         }
     }
@@ -1809,6 +1841,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.publisher.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.publisher] = array
             } else {
                 do {
                     try parser.set(.publisher,
@@ -1817,6 +1851,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.publisher.rawValue)")
                 }
+                self.involvementCreditsList[.publisher] = nil
             }
         }
     }
@@ -2071,6 +2106,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.soloist.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.performanceCreditsList[.soloist] = array
             } else {
                 do {
                     try parser.set(.soloist,
@@ -2079,6 +2116,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.soloist.rawValue)")
                 }
+                self.performanceCreditsList[.soloist] = nil
             }
         }
     }
@@ -2131,6 +2169,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.soundEngineer] = array
             } else {
                 do {
                     try parser.set(.soundEngineer,
@@ -2139,6 +2179,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.soundEngineer.rawValue)")
                 }
+                self.involvementCreditsList[.soundEngineer] = nil
             }
         }
     }
@@ -2552,6 +2593,8 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.writer.rawValue)")
                 }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.writer] = array
             } else {
                 do {
                     try parser.set(.writer,
@@ -2560,6 +2603,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.writer.rawValue)")
                 }
+                self.involvementCreditsList[.writer] = nil
             }
         }
     }

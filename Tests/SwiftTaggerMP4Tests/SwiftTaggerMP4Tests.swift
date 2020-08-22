@@ -1093,7 +1093,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output1.writer)
         XCTAssertTrue(output1.involvementCreditsList.isEmpty)
         XCTAssertTrue(output1.performanceCreditsList.isEmpty)
-        
+
         output1.addInvolvementCredit(.artDirection, person: "New Art Director")
         output1.addInvolvementCredit(.arranger, person: "New Arranger")
         output1.addInvolvementCredit(.composer, person: "New Composer")
@@ -1148,11 +1148,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output1.performanceCreditsList[.soloist], ["New Soloist"])
         XCTAssertEqual(output1.performanceCreditsList[.performer], ["New Soprano", "New Alto", "New Tenor", "New Bass"])
         XCTAssertEqual(output1.performanceCreditsList[.accompaniment], ["New Accompanist"])
-        
+
         // test output1
         let output1Url = try localDirectory(fileName: "credit-adding", fileExtension: "m4a")
         try source1.write(tag: output1, outputLocation: output1Url)
-        
+
         let source2 = try Mp4File(location: output1Url)
         var output2 = try Tag(from: source2)
         XCTAssertEqual(output2.arranger, "New Arranger")
@@ -1177,7 +1177,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output2.involvementCreditsList[.soundEngineer], ["New Sound Engineer"])
         XCTAssertEqual(output2.involvementCreditsList[.writer], ["New Writer"])
         XCTAssertEqual(output2.involvementCreditsList[.accounting], ["New Accountant"])
-        
+
         XCTAssertEqual(output2.artist, "New Artist")
         XCTAssertEqual(output2.narrator, "New Narrator")
         XCTAssertEqual(output2.soloist, "New Soloist")
@@ -1220,12 +1220,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output2.performanceCreditsList[.featuredArtist], ["New Artist","Other Artist"])
         XCTAssertEqual(output2.performanceCreditsList[.accompaniment], ["New Accompanist","Other Accompanist"])
         XCTAssertEqual(output2[MusicianAndPerformerCredits.accompaniment.rawValue], "New Accompanist;Other Accompanist")
-        
-        
+
         // test output1
         let output2Url = try localDirectory(fileName: "credit-altering", fileExtension: "m4a")
         try source2.write(tag: output2, outputLocation: output2Url)
-        
+
         let source3 = try Mp4File(location: output2Url)
         let output3 = try Tag(from: source3)
         XCTAssertNil(output3.arranger)
