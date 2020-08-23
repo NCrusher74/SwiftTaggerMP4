@@ -38,6 +38,7 @@ extension Tag {
             case .conductor: self.conductor = nil
             case .director: self.director = nil
             case .executiveProducer: self.executiveProducer = nil
+            case .lyricist: self.lyricist = nil
             case .producer: self.producer = nil
             case .publisher: self.publisher = nil
             case .soundEngineer: self.soundEngineer = nil
@@ -107,6 +108,13 @@ extension Tag {
                     self.executiveProducer = newString
                 } else {
                     self.executiveProducer = person
+            }
+            case .lyricist:
+                if let string = self.lyricist {
+                    let newString = "\(string);\(person)"
+                    self.lyricist = newString
+                } else {
+                    self.lyricist = person
             }
             case .producer:
                 if let string = self.producer {
