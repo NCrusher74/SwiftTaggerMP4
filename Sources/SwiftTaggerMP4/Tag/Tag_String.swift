@@ -246,7 +246,7 @@ extension Tag {
                     print("WARNING: Unable to set metadata atom \(AtomIdentifier.artist.rawValue)")
                 }
                 let array: [String] = new.components(separatedBy: ";")
-                self.performanceCreditsList[.featuredArtist] = array
+                self.performanceCreditsList[.artist] = array
             } else {
                 do {
                     try parser.set(.artist,
@@ -255,7 +255,7 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.artist.rawValue)")
                 }
-                self.performanceCreditsList[.featuredArtist] = nil
+                self.performanceCreditsList[.artist] = nil
             }
         }
     }
