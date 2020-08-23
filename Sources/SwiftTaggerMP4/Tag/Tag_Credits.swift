@@ -157,7 +157,7 @@ extension Tag {
     public mutating func removePerformanceCredit(_ role: MusicianAndPerformerCredits) {
         self.performanceCreditsList[role] = nil
         switch role {
-            case .featuredArtist: self.artist = nil
+            case .artist: self.artist = nil
             case .performer: self.performers = nil
             case .soloist: self.soloist = nil
             case .narrator: self.narrator = nil
@@ -182,7 +182,7 @@ extension Tag {
             self.performanceCreditsList[role] = [person]
         }
         switch role {
-            case .featuredArtist:
+            case .artist:
                 if let string = self.artist {
                     let newString = "\(string);\(person)"
                     self.artist = newString
