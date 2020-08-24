@@ -44,12 +44,24 @@ public struct Tag {
         }
     }
     
-    public var languages: [SwiftMp4MetadataParser.ICULocaleCode] {
+    public var languages: [ICULocaleCode] {
         get {
-            return parser.languages
+            var array = [ICULocaleCode]()
+            for language in parser.languages {
+                if let code = ICULocaleCode(rawValue: language.rawValue) {
+                    array.append(code)
+                }
+            }
+            return array
         }
         set {
-            parser.languages = newValue
+            var array = [SwiftMp4MetadataParser.ICULocaleCode]()
+            for language in newValue {
+                if let code = SwiftMp4MetadataParser.ICULocaleCode(rawValue: language.rawValue) {
+                    array.append(code)
+                }
+            }
+            parser.languages = array
         }
     }
 
