@@ -334,7 +334,7 @@ extension Tag {
         get {
             do {
                 if let id = try parser.get(.mediaType) {
-                    if let mediaType = MediaType(rawValue: id) {
+                    if let mediaType = Stik(rawValue: id) {
                         return mediaType
                     } else {
                         return .music

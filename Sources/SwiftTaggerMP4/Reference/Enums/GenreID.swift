@@ -5342,7 +5342,7 @@ public enum Genres: Int, CaseIterable {
     static let iTunesUSet = RangeSet([
         40000000...40000181].map({ $0.lowerBound ..< $0.upperBound + 1 }))
     
-    var mediaType: MediaType? {
+    var stik: Stik? {
         if Genres.musicSet.contains(self.rawValue) {
             return .music
         } else if Genres.podcast.contains(self.rawValue) {
