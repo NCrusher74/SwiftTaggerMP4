@@ -17,6 +17,7 @@ public enum ContentRating: Int {
 
 public enum ContentAdvisory: String {
     
+    case none = ""
     case us_Movie_NR = "mpaa|NR|000|"
     case us_Movie_G = "mpaa|G|100|"
     case us_Movie_PG = "mpaa|PG|200|"
