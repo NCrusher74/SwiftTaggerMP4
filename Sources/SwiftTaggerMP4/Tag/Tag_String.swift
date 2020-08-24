@@ -512,21 +512,29 @@ extension Tag {
         }
     }
     
-    public var contentAdvisory: ContentAdvisory? {
+    public var contentAdvisory: (rating: ContentAdvisory?, ratingNotes: String?) {
         get {
             if let string = self["iTunEXTC"] {
-                if let key = ContentAdvisory(rawValue: string) {
-                    return key
-                } else {
-                    return .unknown
+                var ratingNotes: String? = nil
+                var contentRating: ContentAdvisory? = nil
+                let components: [String] = string.components(separatedBy: "|")
+                if components.count > 3 && components.count <= 4 {
+                    ratingNotes = components.last
+                    let ratingArray = components.dropLast()
+                    let ratingString = "\(ratingArray.joined(separator: "|"))|"
+                    if let rating = ContentAdvisory(rawValue: ratingString) {
+                        contentRating = rating
+                    }
                 }
+                return (contentRating, ratingNotes)
             } else {
-                return nil
+                return (nil, nil)
             }
         }
         set {
-            if let new = newValue {
-                self["iTunEXTC"] = new.rawValue
+            if newValue != (nil, nil), newValue.rating != nil {
+                let string = "\(newValue.rating?.rawValue ?? "")\(newValue.ratingNotes ?? "")"
+                self["iTunEXTC"] = string
             } else {
                 self["iTunEXTC"] = nil
             }
