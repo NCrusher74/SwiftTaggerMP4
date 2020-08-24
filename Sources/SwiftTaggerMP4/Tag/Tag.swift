@@ -35,21 +35,14 @@ public struct Tag {
         self.metadata = entries
     }
     
-    public var coverArt: NSImage? {
-        get {
-            do {
-                return try parser.getCoverArt()
-            } catch {
-                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.coverArt.rawValue)")
-                return nil
-            }
-        }
+    public func getCoverArt() throws -> NSImage? {
+        return try parser.coverArt()
     }
     
-    public func setCoverArt(imageLocation: URL) throws {
-        try parser.set(coverImage: imageLocation)
+    public func setCoverArt(url: URL) throws {
+        try parser.set(coverImage: url)
     }
-    
+        
     public func removeCoverArt() throws {
         try parser.removeCoverArt()
     }

@@ -259,8 +259,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.year = date
         
         let coverURL = fileVersion.cover.url
-        try tag.setCoverArt(imageLocation: coverURL)
-
+        try tag.setCoverArt(url: coverURL)
         let outputUrl = try localDirectory(fileName: "datetest", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
         
@@ -271,7 +270,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.releaseDate, date)
         XCTAssertEqual(output.year, date)
         
-        let coverArt = output.coverArt
+        let coverArt = try output.getCoverArt()
         let coverArtUrl = try localDirectory(fileName: "cover", fileExtension: "jpg")
         try coverArt?.data.write(to: coverArtUrl)
     }
@@ -468,7 +467,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.year = date
         
         let coverURL = fileVersion.cover.url
-        try tag.setCoverArt(imageLocation: coverURL)
+        try tag.setCoverArt(url: coverURL)
 
         tag.albumID = 123456
         tag.artistID = 234567
@@ -608,7 +607,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.releaseDate, date)
         XCTAssertEqual(output.year, date)
         
-        let coverArt = output.coverArt
+        let coverArt = try output.getCoverArt()
         let coverArtUrl = try localDirectory(fileName: "cover", fileExtension: "jpg")
         try coverArt?.data.write(to: coverArtUrl)
         XCTAssertEqual(output.albumID, 123456)
@@ -994,7 +993,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output.releaseDate)
         XCTAssertNil(output.recordingDate)
         XCTAssertNil(output.year)
-        XCTAssertNil(output.coverArt)
+        XCTAssertNil(try output.getCoverArt())
         XCTAssertNil(output["MOOD"])
         XCTAssertNil(output["KEY"])
         XCTAssertNil(output["ENCODINGTIME"])
