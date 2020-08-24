@@ -20,4 +20,5 @@ public enum MediaType: Int {
     case ringtone = 14
     case podcast = 21
     case iTunesU = 23
+    case undefined = 255
 }
