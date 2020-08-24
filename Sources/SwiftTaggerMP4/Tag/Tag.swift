@@ -14,7 +14,7 @@ import Cocoa
 /// A structure containing the metadata accessors for an mp4 file
 public struct Tag {
     public var metadata: [(identifier: AtomIdentifier, value: Any)]
-    internal var parser: SwiftMp4MetadataParser.Mp4File
+    public var parser: SwiftMp4MetadataParser.Mp4File
     internal var credits: Credits
     
     /// Initializes a `Tag` instance containing the metadata and chapter data accessors of an mp4 file
@@ -35,6 +35,24 @@ public struct Tag {
         self.metadata = entries
     }
     
+    public var use64BitOffsets: Bool {
+        get {
+            return parser.uses64bitOffsets
+        }
+        set {
+            parser.uses64bitOffsets = newValue
+        }
+    }
+    
+    public var languages: [SwiftMp4MetadataParser.ICULocaleCode] {
+        get {
+            return parser.languages
+        }
+        set {
+            parser.languages = newValue
+        }
+    }
+
     public func getCoverArt() throws -> NSImage? {
         return try parser.coverArt()
     }
