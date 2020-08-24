@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum MediaType: Int {
+public enum Stik: Int {
     case movieOld = 0
     case music = 1
     case audiobook = 2
