@@ -22,7 +22,7 @@ public enum ContentRating: Int, CaseIterable {
         }
     }
     
-    static let stringMapping: [String: ContentRating] = {
+    private static let stringMapping: [String: ContentRating] = {
         var mapping: [String: ContentRating] = [:]
         for rating in ContentRating.allCases {
             let name = rating.stringValue
@@ -31,7 +31,7 @@ public enum ContentRating: Int, CaseIterable {
         return mapping
     }()
     
-    init?(stringValue: String) {
+    public init?(stringValue: String) {
         self = ContentRating.stringMapping[stringValue] ?? .none
     }
 }
