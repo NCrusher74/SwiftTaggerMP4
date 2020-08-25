@@ -47,14 +47,14 @@ public struct Tag {
     public var language: ICULocaleCode? {
         get {
             if let language = parser.language {
-                return ICULocaleCode(rawValue: language.rawValue)
+                return language
             } else {
                 return nil
             }
         }
         set {
             if let new = newValue {
-                parser.language = SwiftMp4MetadataParser.ICULocaleCode(rawValue: new.rawValue)
+                parser.language = new
             } else {
                 parser.language = .English
             }

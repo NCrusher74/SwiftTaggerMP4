@@ -10,48 +10,6 @@ import SwiftMp4MetadataParser
 
 @available(OSX 10.13, *)
 extension Tag {
-    public var encodingTime: Date? {
-        get {
-            if let string = self["TDEN"] {
-                let formatter = ISO8601DateFormatter()
-                let date = formatter.date(from: string)
-                return date
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                let formatter = ISO8601DateFormatter()
-                let string = formatter.string(from: new)
-                self["TDEN"] = string
-            } else {
-                self["TDEN"] = nil
-            }
-        }
-    }
-    
-    public var originalReleaseTime: Date? {
-        get {
-            if let string = self["TDOR"] {
-                let formatter = ISO8601DateFormatter()
-                let date = formatter.date(from: string)
-                return date
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                let formatter = ISO8601DateFormatter()
-                let string = formatter.string(from: new)
-                self["TDOR"] = string
-            } else {
-                self["TDOR"] = nil
-            }
-        }
-    }
-    
     public var purchaseDate: Date? {
         get {
             do {
@@ -130,27 +88,6 @@ extension Tag {
         }
     }
     
-    public var taggingTime: Date? {
-        get {
-            if let string = self["TDTG"] {
-                let formatter = ISO8601DateFormatter()
-                let date = formatter.date(from: string)
-                return date
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                let formatter = ISO8601DateFormatter()
-                let string = formatter.string(from: new)
-                self["TDTG"] = string
-            } else {
-                self["TDTG"] = nil
-            }
-        }
-    }
-
     public var year: Date? {
         get {
             do {
@@ -176,5 +113,4 @@ extension Tag {
             }
         }
     }
-
 }

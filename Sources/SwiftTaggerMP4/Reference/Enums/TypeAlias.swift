@@ -8,4 +8,4 @@
 import Foundation
 import SwiftMp4MetadataParser
 
-public typealias AtomIdentifier = SwiftMp4MetadataParser.AtomIdentifier
+//public typealias AtomIdentifier = SwiftMp4MetadataParser.AtomIdentifier

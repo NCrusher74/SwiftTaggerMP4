@@ -311,41 +311,6 @@ extension Tag {
         }
     }
     
-    public var audioFileWebpage: String? {
-        get {
-            if let string = self["WOAF"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["WOAF"] = new
-            } else {
-                self["WOAF"] = nil
-            }
-        }
-    }
-    
-    public var audioSourceWebpage: String? {
-        get {
-            if let string = self["WOAS"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["WOAS"] = new
-            } else {
-                self["WOAS"] = nil
-            }
-        }
-    }
-    
-    
     // MARK: - B-C
     public var category: String? {
         get {
@@ -582,23 +547,6 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.copyrightStatement.rawValue)")
                 }
-            }
-        }
-    }
-    
-    public var copyrightWebpage: String? {
-        get {
-            if let string = self["WCOP"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["WCOP"] = new
-            } else {
-                self["WCOP"] = nil
             }
         }
     }
@@ -990,23 +938,6 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.encodedBy.rawValue)")
                 }
-            }
-        }
-    }
-    
-    public var encodingSettings: String? {
-        get {
-            if let string = self["TSSE"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TSSE"] = new
-            } else {
-                self["TSSE"] = nil
             }
         }
     }
@@ -1416,23 +1347,6 @@ extension Tag {
         }
     }
     
-    public var mood: String? {
-        get {
-            if let string = self["TMOO"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TMOO"] = new
-            } else {
-                self["TMOO"] = nil
-            }
-        }
-    }
-    
     public var movementName: String? {
         get {
             do {
@@ -1524,57 +1438,6 @@ extension Tag {
         }
     }
     
-    public var originalAlbum: String? {
-        get {
-            if let string = self["TOAL"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TOAL"] = new
-            } else {
-                self["TOAL"] = nil
-            }
-        }
-    }
-    
-    public var originalFilename: String? {
-        get {
-            if let string = self["TOFN"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TOFN"] = new
-            } else {
-                self["TOFN"] = nil
-            }
-        }
-    }
-    
-    public var originalLyricist: String? {
-        get {
-            if let string = self["TOLY"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TOLY"] = new
-            } else {
-                self["TOLY"] = nil
-            }
-        }
-    }
-    
     public var owner: String? {
         get {
             do {
@@ -1601,23 +1464,6 @@ extension Tag {
                 } catch {
                     print("WARNING: Unable to remove metadata atom \(AtomIdentifier.owner.rawValue)")
                 }
-            }
-        }
-    }
-    
-    public var paymentWebpage: String? {
-        get {
-            if let string = self["WPAY"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["WPAY"] = new
-            } else {
-                self["WPAY"] = nil
             }
         }
     }
@@ -1752,23 +1598,6 @@ extension Tag {
         }
     }
     
-    public var producedNotice: String? {
-        get {
-            if let string = self["TPRO"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TPRO"] = new
-            } else {
-                self["TPRO"] = nil
-            }
-        }
-    }
-    
     public var producer: String? {
         get {
             do {
@@ -1860,57 +1689,6 @@ extension Tag {
     }
     
     // MARK: - R-S
-    public var radioStation: String? {
-        get {
-            if let string = self["TRSN"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TRSN"] = new
-            } else {
-                self["TRSN"] = nil
-            }
-        }
-    }
-    
-    public var radioStationOwner: String? {
-        get {
-            if let string = self["TRSO"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["TRSO"] = new
-            } else {
-                self["TRSO"] = nil
-            }
-        }
-    }
-    
-    public var radioStationWebpage: String? {
-        get {
-            if let string = self["WORS"] {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["WORS"] = new
-            } else {
-                self["WORS"] = nil
-            }
-        }
-    }
-    
     public var recordCompany: String? {
         get {
             do {

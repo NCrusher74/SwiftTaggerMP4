@@ -278,27 +278,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     func testFreeFormMetadataAccessors() throws {
         let source = try mp4File(withMeta: false)
         var tag = try Tag(from: source)
-        var components = DateComponents()
-        components.year = 1979
-        components.month = 11
-        components.day = 23
-        var calendar = Calendar(identifier: .iso8601)
-        let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        calendar.timeZone = timeZone
-        let date = calendar.date(from: components)
 
         tag["UNKNOWN"] = "unknown"
-        tag.audioFileWebpage = "audio file webpage"
-        tag.audioSourceWebpage = "audio source webpage"
-        tag.copyrightWebpage = "copyright webpage"
-        tag.encodingSettings = "encoding settings"
-        tag.encodingTime = date
         tag.fileType = .M4A
-        tag.paymentWebpage = "payment webpage"
-        tag.radioStation = "radio station"
-        tag.radioStationOwner = "radio station owner"
-        tag.radioStationWebpage = "radio station webpage"
-        tag.taggingTime = date
 
         let outputUrl = try localDirectory(fileName: "freeformtest", fileExtension: "m4a")
         try source.write(tag: tag, outputLocation: outputUrl)
@@ -306,17 +288,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let output = try Tag(from: Mp4File(location: outputUrl))
         
         XCTAssertEqual(output["UNKNOWN"], "unknown")
-        XCTAssertEqual(output.audioFileWebpage, "audio file webpage")
-        XCTAssertEqual(output.audioSourceWebpage, "audio source webpage")
-        XCTAssertEqual(output.copyrightWebpage, "copyright webpage")
-        XCTAssertEqual(output.encodingSettings, "encoding settings")
-        XCTAssertEqual(tag.encodingTime, date)
         XCTAssertEqual(tag.fileType, .M4A)
-        XCTAssertEqual(tag.paymentWebpage, "payment webpage")
-        XCTAssertEqual(tag.radioStation, "radio station")
-        XCTAssertEqual(tag.radioStationOwner, "radio station owner")
-        XCTAssertEqual(tag.radioStationWebpage, "radio station webpage")
-        XCTAssertEqual(tag.taggingTime, date)
     }
 
     func testChaptering() throws {
@@ -450,17 +422,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let date = calendar.date(from: components)
         
         tag["UNKNOWN"] = "unknown"
-        tag.audioFileWebpage = "audio file webpage"
-        tag.audioSourceWebpage = "audio source webpage"
-        tag.copyrightWebpage = "copyright webpage"
-        tag.encodingSettings = "encoding settings"
-        tag.encodingTime = date
         tag.fileType = .M4A
-        tag.paymentWebpage = "payment webpage"
-        tag.radioStation = "radio station"
-        tag.radioStationOwner = "radio station owner"
-        tag.radioStationWebpage = "radio station webpage"
-        tag.taggingTime = date
         tag.purchaseDate = date
         tag.recordingDate = date
         tag.releaseDate = date
@@ -591,17 +553,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(titles, knownTitles)
         XCTAssertEqual(starts, knownStarts)
         XCTAssertEqual(output["UNKNOWN"], "unknown")
-        XCTAssertEqual(output.audioFileWebpage, "audio file webpage")
-        XCTAssertEqual(output.audioSourceWebpage, "audio source webpage")
-        XCTAssertEqual(output.copyrightWebpage, "copyright webpage")
-        XCTAssertEqual(output.encodingSettings, "encoding settings")
-        XCTAssertEqual(output.encodingTime, date)
         XCTAssertEqual(output.fileType, .M4A)
-        XCTAssertEqual(output.paymentWebpage, "payment webpage")
-        XCTAssertEqual(output.radioStation, "radio station")
-        XCTAssertEqual(output.radioStationOwner, "radio station owner")
-        XCTAssertEqual(output.radioStationWebpage, "radio station webpage")
-        XCTAssertEqual(output.taggingTime, date)
         XCTAssertEqual(output.purchaseDate, date)
         XCTAssertEqual(output.recordingDate, date)
         XCTAssertEqual(output.releaseDate, date)
