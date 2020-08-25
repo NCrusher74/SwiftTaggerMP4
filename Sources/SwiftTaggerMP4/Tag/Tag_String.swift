@@ -2159,6 +2159,39 @@ extension Tag {
         }
     }
     
+    public var songwriter: String? {
+        get {
+            do {
+                return try parser.get(.songwriter)
+            } catch {
+                print("WARNING: Unable to retrieve metadata atom \(AtomIdentifier.songwriter.rawValue)")
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                do {
+                    try parser.set(.songwriter,
+                                   stringValue: new,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to set metadata atom \(AtomIdentifier.songwriter.rawValue)")
+                }
+                let array: [String] = new.components(separatedBy: ";")
+                self.involvementCreditsList[.songwriter] = array
+            } else {
+                do {
+                    try parser.set(.soloist,
+                                   stringValue: nil,
+                                   customName: nil)
+                } catch {
+                    print("WARNING: Unable to remove metadata atom \(AtomIdentifier.songwriter.rawValue)")
+                }
+                self.involvementCreditsList[.songwriter] = nil
+            }
+        }
+    }
+    
     public var soundEngineer: String? {
         get {
             do {

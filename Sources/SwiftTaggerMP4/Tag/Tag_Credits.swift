@@ -41,6 +41,7 @@ extension Tag {
             case .lyricist: self.lyricist = nil
             case .producer: self.producer = nil
             case .publisher: self.publisher = nil
+            case .songwriter: self.songwriter = nil
             case .soundEngineer: self.soundEngineer = nil
             case .writer: self.writer = nil
             default:
@@ -129,6 +130,13 @@ extension Tag {
                     self.publisher = newString
                 } else {
                     self.publisher = person
+            }
+            case .songwriter:
+                if let string = self.songwriter {
+                    let newString = "\(string);\(person)"
+                    self.songwriter = newString
+                } else {
+                    self.songwriter = person
             }
             case .soundEngineer:
                 if let string = self.soundEngineer {

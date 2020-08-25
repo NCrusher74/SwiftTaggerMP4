@@ -100,6 +100,7 @@ public enum AtomIdentifier: String, CaseIterable {
     case softwareVersion = "\u{00A9}swr"
     case soloist = "\u{00A9}sol"
     case songDescription = "desc"
+    case songwriter = "\u{00A9}swf"
     case songwriterKeywords = "\u{00A9}swk"
     case sourceCredit = "\u{00A9}src"
     case subtitle = "\u{00A9}snm"
