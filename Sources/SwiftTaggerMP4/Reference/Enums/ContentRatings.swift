@@ -9,14 +9,34 @@
 
 import Foundation
 
-public enum ContentRating: Int {
+public enum ContentRating: Int, CaseIterable {
     case none = 0
     case explicit = 1
     case clean = 2
+    
+    var stringValue: String {
+        switch self {
+            case .none: return "None"
+            case .explicit: return "Explicit"
+            case .clean: return "Clean"
+        }
+    }
+    
+    static let stringMapping: [String: ContentRating] = {
+        var mapping: [String: ContentRating] = [:]
+        for rating in ContentRating.allCases {
+            let name = rating.stringValue
+            mapping[name] = rating
+        }
+        return mapping
+    }()
+    
+    init?(stringValue: String) {
+        self = ContentRating.stringMapping[stringValue] ?? .none
+    }
 }
 
 public enum ContentAdvisory: String {
-    
     case none = ""
     case us_Movie_NR = "mpaa|NR|000|"
     case us_Movie_G = "mpaa|G|100|"
