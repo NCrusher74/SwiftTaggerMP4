@@ -15,7 +15,7 @@ import Cocoa
 public struct Tag {
     public var metadata: [(identifier: AtomIdentifier, value: Any)]
     public var parser: SwiftMp4MetadataParser.Mp4File
-    internal var credits: Credits
+//    internal var credits: Credits
     
     /// Initializes a `Tag` instance containing the metadata and chapter data accessors of an mp4 file
     /// - Parameter file: The mp4 file being parsed
@@ -23,7 +23,7 @@ public struct Tag {
     public init(from file: Mp4File) throws {
         let parser = try SwiftMp4MetadataParser.Mp4File(location: file.location)
         self.parser = parser
-        self.credits = try Credits(parser: parser)
+//        self.credits = try Credits(parser: parser)
         let tags = try parser.listMetadataTags()
         var entries = [(AtomIdentifier, Any)]()
         for tag in tags {
