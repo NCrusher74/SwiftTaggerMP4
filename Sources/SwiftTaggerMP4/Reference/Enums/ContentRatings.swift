@@ -14,7 +14,7 @@ public enum ContentRating: Int, CaseIterable {
     case explicit = 1
     case clean = 2
     
-    var stringValue: String {
+    public var stringValue: String {
         switch self {
             case .none: return "None"
             case .explicit: return "Explicit"
