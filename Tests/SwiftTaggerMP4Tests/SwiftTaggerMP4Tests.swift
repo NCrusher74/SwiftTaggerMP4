@@ -195,7 +195,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.conductorID = 456789
         tag.gaplessPlayback = true
         tag.genreID = .audiobooks
-        tag.stik = .audiobook
+        tag.mediaContent = .audiobook
         tag.movementCount = 9
         tag.movementNumber = 8
         tag.playlistID = 567890
@@ -224,7 +224,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.conductorID, 456789)
         XCTAssertEqual(output.gaplessPlayback, true)
         XCTAssertEqual(output.genreID, .audiobooks)
-        XCTAssertEqual(output.stik, .audiobook)
+        XCTAssertEqual(output.mediaContent, .audiobook)
         XCTAssertEqual(output.movementCount, 9)
         XCTAssertEqual(output.movementNumber, 8)
         XCTAssertEqual(output.playlistID, 567890)
@@ -439,7 +439,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.conductorID = 456789
         tag.gaplessPlayback = true
         tag.genreID = .audiobooks
-        tag.stik = .audiobook
+        tag.mediaContent = .audiobook
         tag.movementCount = 9
         tag.movementNumber = 8
         tag.playlistID = 567890
@@ -570,7 +570,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.conductorID, 456789)
         XCTAssertEqual(output.gaplessPlayback, true)
         XCTAssertEqual(output.genreID, .audiobooks)
-        XCTAssertEqual(output.stik, .audiobook)
+        XCTAssertEqual(output.mediaContent, .audiobook)
         XCTAssertEqual(output.movementCount, 9)
         XCTAssertEqual(output.movementNumber, 8)
         XCTAssertEqual(output.playlistID, 567890)
@@ -709,7 +709,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.conductorID = nil
         tag.gaplessPlayback = nil
         tag.genreID = nil
-        tag.stik = nil
+        tag.mediaContent = nil
         tag.movementCount = nil
         tag.movementNumber = nil
         tag.playlistID = nil
@@ -848,7 +848,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(output.conductorID)
         XCTAssertNil(output.gaplessPlayback)
         XCTAssertNil(output.genreID)
-        XCTAssertNil(output.stik)
+        XCTAssertNil(output.mediaContent)
         XCTAssertNil(output.movementCount)
         XCTAssertNil(output.movementNumber)
         XCTAssertNil(output.playlistID)

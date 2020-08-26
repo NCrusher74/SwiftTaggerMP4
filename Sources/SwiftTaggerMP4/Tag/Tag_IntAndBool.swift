@@ -330,7 +330,7 @@ extension Tag {
         }
     }
     
-    public var stik: Stik? {
+    public var mediaContent: Stik? {
         get {
             do {
                 if let id = try parser.get(.mediaType) {
