@@ -1145,27 +1145,6 @@ extension Tag {
         }
     }
     
-//    public var initialKey: KeySignature? {
-//        get {
-//            if let string = self["TKEY"] {
-//                if let key = KeySignature(rawValue: string) {
-//                    return key
-//                } else {
-//                    return .unknown
-//                }
-//            } else {
-//                return nil
-//            }
-//        }
-//        set {
-//            if let new = newValue {
-//                self["TKEY"] = new.rawValue
-//            } else {
-//                self["TKEY"] = nil
-//            }
-//        }
-//    }
-    
     public var isrc: String? {
         get {
             do {
