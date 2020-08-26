@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Stik: Int {
+public enum Stik: Int, CaseIterable {
     case movieOld = 0
     case music = 1
     case audiobook = 2
@@ -21,4 +21,35 @@ public enum Stik: Int {
     case podcast = 21
     case iTunesU = 23
     case undefined = 255
+    
+    public var stringValue: String {
+        switch self {
+            case .movieOld: return "Movie (Old)"
+            case .music: return "Music"
+            case .audiobook: return "Audiobook"
+            case .whackedBookmark: return "Whacked Bookmark"
+            case .musicVideo: return "Music Video"
+            case .movie: return "Movie"
+            case .tvShow: return "TV Show"
+            case .booklet: return "Booklet"
+            case .ringtone: return "Ringtone"
+            case .podcast: return "Podcast"
+            case .iTunesU: return "iTunes U"
+            case .undefined: return ""
+        }
+    }
+    
+    private static let stringMapping: [String: Stik] = {
+        var mapping: [String: Stik] = [:]
+        for type in Stik.allCases {
+            let string = type.stringValue
+            mapping[string] = type
+        }
+        return mapping
+    }()
+    
+    public init?(stringValue: String) {
+        self = Stik.stringMapping[stringValue] ?? .undefined
+    }
+
 }
