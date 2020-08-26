@@ -11,9 +11,9 @@ import Foundation
 
 public enum ContentRating: Int, CaseIterable {
     case none = 0
-    case explicit = 1
     case clean = 2
-    
+    case explicit = 4
+
     public var stringValue: String {
         switch self {
             case .none: return "None"
