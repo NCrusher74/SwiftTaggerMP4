@@ -262,7 +262,7 @@ If you wish to make these accessors compatible with a particular app, change the
 For example, to make `mood` compatible with `Yate`, you would change "TMOO" to "MOOD"
 
 ```swift
-public var mood: String? {
+var mood: String? {
     get {
         if let string = self["TMOO"] { 
             return string

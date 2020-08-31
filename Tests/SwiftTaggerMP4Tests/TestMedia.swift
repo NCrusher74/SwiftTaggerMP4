@@ -30,24 +30,22 @@ enum fileVersion {
     }
 }
 
-@available(OSX 10.13, *)
-func mp4File(withMeta: Bool) throws -> Mp4File {
-    if withMeta {
-        return try Mp4File(location: fileVersion.withMeta.url)
-    } else {
-        return try Mp4File(location: fileVersion.noMeta.url)
-    }
-}
-
-@available(OSX 10.13, *)
-func tag(withMeta: Bool) throws -> Tag {
-    if withMeta {
-        return try Tag(from: mp4File(withMeta: true))
-    } else {
-        return try Tag(from: mp4File(withMeta: false))
-    }
-}
-
+//func mp4File(withMeta: Bool) throws -> Mp4File {
+//    if withMeta {
+//        return try Mp4File(location: fileVersion.withMeta.url)
+//    } else {
+//        return try Mp4File(location: fileVersion.noMeta.url)
+//    }
+//}
+//
+//func tag(withMeta: Bool) throws -> Tag {
+//    if withMeta {
+//        return try Tag(from: mp4File(withMeta: true))
+//    } else {
+//        return try Tag(from: mp4File(withMeta: false))
+//    }
+//}
+//
 @available(OSX 10.13, *)
 func tempDirectory() throws -> URL {
     let tempDirectory = FileManager.default.temporaryDirectory
