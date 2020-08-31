@@ -13,7 +13,7 @@ extension Data.SubSequence {
     ///
     /// The first four bytes of an atom are always its size
     mutating func extractAtomSize() -> Int {
-        return self.extractFirstToInt(4)
+        return self.extractTo32BitInt()
     }
     /// Extracts 4 bytes and converts to a `ISO-8859-1`-encoded string
     ///
@@ -29,7 +29,6 @@ extension Data.SubSequence {
         guard let atomID = extractAtomID() else {
             return nil
         }
-        
         var size = Int()
         var payload = Data()
         if preliminarySize == 0 {
@@ -37,7 +36,7 @@ extension Data.SubSequence {
             size = self.count + 8
         } else if preliminarySize == 1 {
             // if used, the extendedSizeData comes after the idData
-            size = self.extractFirstToInt(8)
+            size = self.extractTo64BitInt()
             payload = self.extractFirst(size - 16)
         } else {
             size = preliminarySize
@@ -45,19 +44,28 @@ extension Data.SubSequence {
         }
         
         
-        if let identifier = AtomIdentifier(rawValue: atomID) {
-            return try identifier.parse(size: size, payload: payload)
-        } else if let identifier = DataReferenceType(rawValue: atomID) {
-            return try identifier.parse(size: size, payload: payload)
-        } else if let identifier = TrackReferenceType(rawValue: atomID) {
-            return try identifier.parse(size: size, payload: payload)
-        } else if atomID == "----" {
+        if atomID == "----" {
             return try StringMetadataAtom(identifier: atomID,
                                           size: size,
                                           payload: payload)
         } else {
-            let identifier = try MetadataIdentifier(identifier: atomID)
-            return try identifier.parse(size: size, payload: payload)
+            if let identifier = AtomIdentifier(rawValue: atomID) {
+                return try identifier.parse(
+                    size: size, payload: payload)
+            } else if let identifier = DataReferenceType(
+                rawValue: atomID) {
+                return try identifier.parse(
+                    size: size, payload: payload)
+            } else if let identifier = TrackReferenceType(
+                rawValue: atomID) {
+                return try identifier.parse(
+                    size: size, payload: payload)
+            } else {
+                let identifier = try MetadataIdentifier(
+                    identifier: atomID)
+                return try identifier.parse(
+                    size: size, payload: payload)
+            }
         }
     }
 }

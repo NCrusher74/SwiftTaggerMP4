@@ -19,7 +19,7 @@ class Chpl: Atom {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
         self.reserved = data.extractFirst(1)
-        self.chapterCount = data.extractFirstToInt(32)
+        self.chapterCount = data.extractTo32BitInt()
         
         self.chapterTable = ChapterTable(from: data)
         
@@ -38,7 +38,7 @@ class Chpl: Atom {
         var payload = Data()
         payload.append(self.versionAndFlags)
         payload.append(self.reserved)
-        payload.append(self.chapterCount.beData(32))
+        payload.append(self.chapterCount.beDataFrom32BitInt)
         payload.append(self.chapterTable.entryData)
         
         let size = payload.count + 8
@@ -52,8 +52,8 @@ class Chpl: Atom {
             var chapterArray: [(startTime: Int, title: String)] = []
             var remainder = data
             while !remainder.isEmpty {
-                let chapterStartTime = remainder.extractFirstToInt(8)
-                let titleSize = remainder.extractFirstToInt(1)
+                let chapterStartTime = remainder.extractTo64BitInt()
+                let titleSize = remainder.extractTo8BitInt()
                 let title = remainder.extractFirst(titleSize).toStringUtf8 ?? ""
                 let chapter = (chapterStartTime, title)
                 chapterArray.append(chapter)
@@ -68,8 +68,8 @@ class Chpl: Atom {
         var entryData: Data {
             var data = Data()
             for chapter in self.chapters {
-                data.append(chapter.startTime.beData(64))
-                data.append(chapter.title.count.beData(8))
+                data.append(chapter.startTime.beDataFrom64BitInt)
+                data.append(chapter.title.count.beDataFrom8BitInt)
                 data.append(Data(chapter.title.utf8))
             }
             return data
@@ -80,7 +80,7 @@ class Chpl: Atom {
         var data = Data()
         data.append(self.versionAndFlags)
         data.append(self.reserved)
-        data.append(self.chapterCount.beData(32))
+        data.append(self.chapterCount.beDataFrom32BitInt)
         data.append(self.chapterTable.entryData)
         return data
     }

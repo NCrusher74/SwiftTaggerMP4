@@ -23,11 +23,11 @@ class Trex: Atom {
         var data = payload
         
         self.versionAndFlags = data.extractFirst(4)
-        self.trackID = data.extractFirstToInt(32)
-        self.defaultSampleDescriptionIndex = data.extractFirstToInt(32)
-        self.defaultSampleDuration = data.extractFirstToInt(32)
-        self.defaultSampleSize = data.extractFirstToInt(32)
-        self.defaultSampleFlags = data.extractFirstToInt(32)
+        self.trackID = data.extractTo32BitInt()
+        self.defaultSampleDescriptionIndex = data.extractTo32BitInt()
+        self.defaultSampleDuration = data.extractTo32BitInt()
+        self.defaultSampleSize = data.extractTo32BitInt()
+        self.defaultSampleFlags = data.extractTo32BitInt()
 
         try super.init(identifier: identifier,
                    size: size,
@@ -37,11 +37,11 @@ class Trex: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.trackID.beData(32))
-        data.append(self.defaultSampleDescriptionIndex.beData(32))
-        data.append(self.defaultSampleDuration.beData(32))
-        data.append(self.defaultSampleSize.beData(32))
-        data.append(self.defaultSampleFlags.beData(32))
+        data.append(self.trackID.beDataFrom32BitInt)
+        data.append(self.defaultSampleDescriptionIndex.beDataFrom32BitInt)
+        data.append(self.defaultSampleDuration.beDataFrom32BitInt)
+        data.append(self.defaultSampleSize.beDataFrom32BitInt)
+        data.append(self.defaultSampleFlags.beDataFrom32BitInt)
         return data
     }
 }

@@ -17,7 +17,7 @@ class Dmax: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.duration = data.extractFirstToInt(32)
+        self.duration = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -26,7 +26,7 @@ class Dmax: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.duration.beData(32))
+        data.append(self.duration.beDataFrom32BitInt)
         return data
     }
 }

@@ -37,7 +37,7 @@ class Moov: Atom {
         self.tracks = tracks
         
         if let soundtrack = tracks.first(where: {
-            $0.mdia?.hdlr?.handlerSubtype == .soun
+            $0.mdia.hdlr.handlerSubtype == .soun
         }) {
             self.soundTrack = soundtrack
         } else {
@@ -58,25 +58,35 @@ class Moov: Atom {
         return data
     }
     
-//    /// Initialize a `moov` atom from its children
-//    init(children: [Atom]) throws {
-//        var size: Int = 8
-//        for child in children {
-//            size += child.size
-//        }
-//        try super.init(identifier: "moov",
-//                       size: size,
-//                       children: children)
-//        guard children.contains(where: {$0.identifier == "mvhd"}) else {
-//            throw Mp4File.Error.MvhdAtomNotFound
-//        }
-//        guard children.contains(where: {$0.identifier == "trak"}) else {
-//            throw Mp4File.Error.TrakAtomNotFound
-//        }
-//        if let trak = children.first(where: {$0.identifier == "trak"}) as? Trak {
-//            guard trak.trackType == .soun else {
-//                throw Mp4File.Error.TrakAtomNotFound
-//            }
-//        }
-//    }
+    /// Initialize a `moov` atom from its children
+    init(children: [Atom]) throws {
+        var size: Int = 8
+        for child in children {
+            size += child.size
+        }
+        
+        if let mvhd = children.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
+            self.mvhd = mvhd
+        } else {
+            throw Mp4File.Error.MvhdAtomNotFound
+        }
+
+        let tracks = children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
+        guard !tracks.isEmpty else {
+            throw Mp4File.Error.TrakAtomNotFound
+        }
+        self.tracks = tracks
+
+        if let soundtrack = tracks.first(where: {
+            $0.mdia.hdlr.handlerSubtype == .soun
+        }) {
+            self.soundTrack = soundtrack
+        } else {
+            throw Mp4File.Error.TrakAtomNotFound
+        }
+
+        try super.init(identifier: "moov",
+                       size: size,
+                       children: children)
+    }
 }

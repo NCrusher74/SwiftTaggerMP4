@@ -15,16 +15,34 @@ extension Data {
         return Int(uint8)
     }
     
+    /// Converts 1 byte of data to double, assumes big endianness
+    var to8BitDouble: Double {
+        let uint8 = UInt8(parsing: self, .bigEndian)
+        return Double(uint8)
+    }
+    
     /// Converts 2 bytes of data to integer, assumes big endianness
     var toInt16: Int {
         let uint16 = UInt16(parsing: self, .bigEndian)
         return Int(uint16)
     }
-    
+
+    /// Converts 2 bytes of data to double, assumes big endianness
+    var to16BitDouble: Double {
+        let uint16 = UInt16(parsing: self, .bigEndian)
+        return Double(uint16)
+    }
+
     /// Converts 4 bytes of data to integer, assumes big endianness
     var toInt32: Int {
         let uint32 = UInt32(parsing: self, .bigEndian)
         return Int(uint32)
+    }
+    
+    /// Converts 4 bytes of data to double, assumes big endianness
+    var to32BitDouble: Double {
+        let uint32 = UInt32(parsing: self, .bigEndian)
+        return Double(uint32)
     }
     
     /// Converts 8 bytes of data to integer, assumes big endianness
@@ -33,6 +51,12 @@ extension Data {
         return Int(uint64)
     }
     
+    /// Converts 8 bytes of data to double, assumes big endianness
+    var to64BitDouble: Double {
+        let uint64 = UInt64(parsing: self, .bigEndian)
+        return Double(uint64)
+    }
+
     /// Converts 1 byte of data to UInt8, assumes big endianness
     var toUInt8: UInt8 {
         return UInt8(parsing: self, .bigEndian)

@@ -37,30 +37,31 @@ class Mvhd: Atom {
         self.versionAndFlags = data.extractFirst(4)
         self.creationTime = data.extractFirst(4).toUInt32
         self.modificationTime = data.extractFirst(4).toUInt32
-        self.timeScale = data.extractFirstToInt(4)
-        let preliminaryDuration = data.extractFirstToInt(4)
-        if timeScale == 1000 {
+        let preliminaryTimeScale = data.extractTo32BitDouble()
+        let preliminaryDuration = data.extractTo32BitDouble()
+        if preliminaryTimeScale == 1000 {
             // duration is already in milliseconds, no need to calculate
-            self.duration = preliminaryDuration
+            self.duration = Int(preliminaryDuration)
         } else {
             // divide the raw duration by the timescale to get the time in seconds
-            let durationInSeconds: Double = Double(preliminaryDuration / timeScale)
+            let durationInSeconds: Double = preliminaryDuration / preliminaryTimeScale
             // multiply the duration in seconds by 1000 to get milliseconds
-            self.duration = Int(durationInSeconds * Double(1000))
+            self.duration = Int(durationInSeconds * 1000)
         }
+        self.timeScale = Int(preliminaryTimeScale)
         
-        self.preferredRate = data.extractFirstToInt(4)
-        self.preferredVolume = data.extractFirstToInt(2)
+        self.preferredRate = data.extractTo32BitInt()
+        self.preferredVolume = data.extractTo16BitInt()
         self.reserved = data.extractFirst(10)
         // we're not touching this
         self.matrixStructure = data.extractFirst(36)
-        self.previewTime = data.extractFirstToInt(4)
-        self.previewDuration = data.extractFirstToInt(4)
-        self.posterTime = data.extractFirstToInt(4)
-        self.selectionTime = data.extractFirstToInt(4)
-        self.selectionDuration = data.extractFirstToInt(4)
-        self.currentTime = data.extractFirstToInt(4)
-        self.nextTrackID = data.extractFirstToInt(4)
+        self.previewTime = data.extractTo32BitInt()
+        self.previewDuration = data.extractTo32BitInt()
+        self.posterTime = data.extractTo32BitInt()
+        self.selectionTime = data.extractTo32BitInt()
+        self.selectionDuration = data.extractTo32BitInt()
+        self.currentTime = data.extractTo32BitInt()
+        self.nextTrackID = data.extractTo32BitInt()
         
         try super.init(identifier: identifier, size: size, payload: payload)
     }
@@ -75,19 +76,19 @@ class Mvhd: Atom {
         data.append(self.versionAndFlags)
         data.append(self.creationTime.beData)
         data.append(self.modificationTime.beData)
-        data.append(self.timeScale.beData(32))
-        data.append(self.duration.beData(32))
-        data.append(self.preferredRate.beData(32))
-        data.append(self.preferredVolume.beData(16))
+        data.append(self.timeScale.beDataFrom32BitInt)
+        data.append(self.duration.beDataFrom32BitInt)
+        data.append(self.preferredRate.beDataFrom32BitInt)
+        data.append(self.preferredVolume.beDataFrom16BitInt)
         data.append(self.reserved)
         data.append(self.matrixStructure)
-        data.append(self.previewTime.beData(32))
-        data.append(self.previewDuration.beData(32))
-        data.append(self.posterTime.beData(32))
-        data.append(self.selectionTime.beData(32))
-        data.append(self.selectionDuration.beData(32))
-        data.append(self.currentTime.beData(32))
-        data.append(self.nextTrackID.beData(32))
+        data.append(self.previewTime.beDataFrom32BitInt)
+        data.append(self.previewDuration.beDataFrom32BitInt)
+        data.append(self.posterTime.beDataFrom32BitInt)
+        data.append(self.selectionTime.beDataFrom32BitInt)
+        data.append(self.selectionDuration.beDataFrom32BitInt)
+        data.append(self.currentTime.beDataFrom32BitInt)
+        data.append(self.nextTrackID.beDataFrom32BitInt)
         return data
     }
 }

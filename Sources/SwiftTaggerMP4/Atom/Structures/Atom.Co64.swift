@@ -19,7 +19,7 @@ class Co64: Atom {
         
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.chunkOffsetTable = ChunkOffsetTable(from: data)
         
         try super.init(identifier: identifier,
@@ -34,7 +34,7 @@ class Co64: Atom {
             var offsetArray: [Int] = []
             var remainder = data
             while !remainder.isEmpty {
-                let chunkOffset = remainder.extractFirstToInt(8)
+                let chunkOffset = remainder.extractTo64BitInt()
                 offsetArray.append(chunkOffset)
             }
             self.entries = offsetArray
@@ -55,7 +55,7 @@ class Co64: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.beData(64))
+                data.append(entry.beDataFrom64BitInt)
             }
             return data
         }
@@ -77,13 +77,13 @@ class Co64: Atom {
     init(startingOffset: Int, titles: [String]) throws {
         let offsetArray = Co64.calculateOffsets(
             startingOffset: startingOffset, titles: titles)
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.entryCount = offsetArray.count
         self.chunkOffsetTable = ChunkOffsetTable(from: offsetArray)
         
         var payload = Data()
         payload.append(self.versionAndFlags)
-        payload.append(self.entryCount.beData(32))
+        payload.append(self.entryCount.beDataFrom32BitInt)
         payload.append(self.chunkOffsetTable.entryData)
         let size = payload.count + 8
         
@@ -95,7 +95,7 @@ class Co64: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.chunkOffsetTable.entryData)
         return data
     }

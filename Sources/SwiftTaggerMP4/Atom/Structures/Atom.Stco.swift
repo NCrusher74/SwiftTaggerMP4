@@ -18,7 +18,7 @@ class Stco: Atom {
         
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.chunkOffsetTable = ChunkOffsetTable(from: data)
         
         try super.init(identifier: identifier,
@@ -33,7 +33,7 @@ class Stco: Atom {
             var entryArray: [Int] = []
             var remainder = data
             while !remainder.isEmpty {
-                let entry = remainder.extractFirstToInt(32)
+                let entry = remainder.extractTo32BitInt()
                 entryArray.append(entry)
             }
             self.entries = entryArray
@@ -54,7 +54,7 @@ class Stco: Atom {
         var entryData: Data {
             var data = Data()
             for entry in entries {
-                data.append(entry.beData(32))
+                data.append(entry.beDataFrom32BitInt)
             }
             return data
         }
@@ -76,13 +76,13 @@ class Stco: Atom {
     init(startingOffset: Int, titles: [String]) throws {
         let offsetArray = Stco.calculateOffsets(
             startingOffset: startingOffset, titles: titles)
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.entryCount = offsetArray.count
         self.chunkOffsetTable = ChunkOffsetTable(from: offsetArray)
         
         var payload = Data()
         payload.append(self.versionAndFlags)
-        payload.append(self.entryCount.beData(32))
+        payload.append(self.entryCount.beDataFrom32BitInt)
         payload.append(self.chunkOffsetTable.entryData)
         let size = payload.count + 8
         
@@ -94,7 +94,7 @@ class Stco: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.chunkOffsetTable.entryData)
         return data
     }

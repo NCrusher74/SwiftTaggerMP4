@@ -25,7 +25,7 @@ class Mdat: Atom {
     init(titleArray: [String]) throws {
         var payload = Data()
         for title in titleArray {
-            let countData = title.count.beData(16)
+            let countData = title.count.beDataFrom16BitInt
             let titleData = title.encodedUtf8
             payload.append(countData)
             payload.append(titleData)

@@ -14,6 +14,7 @@ class Mp4File {
     var rootAtoms: [Atom]
     var moov: Moov
     var mdats: [Mdat]
+    var data: Data
     
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -26,31 +27,30 @@ class Mp4File {
             throw Mp4File.Error.InvalidFileFormat
         }
         
-        var data = try Data(contentsOf: location)
+        self.data = try Data(contentsOf: location)
         var atoms = [Atom]()
-        var moovAtom: Moov? = nil
-        if let atom = try data.extractAndParseToAtom() {
-            if atom.identifier == "moov" {
-                if let moov = atom as? Moov {
-                    self.moov = moov
-                    moovAtom = moov
-                } else {
-                    throw Mp4File.Error.MoovAtomNotFound
-                }
+
+        while !data.isEmpty {
+            if let atom = try data.extractAndParseToAtom() {
+                atoms.append(atom)
             } else {
-                throw Mp4File.Error.MoovAtomNotFound
+                throw Mp4File.Error.UnableToInitializeAtoms
             }
-            if let moov = moovAtom {
-                let fileProperties = try FilePropertyReference(
-                    moov: moov, data: data)
-                atom.fileProperties = fileProperties
-            }
-            atoms.append(atom)
-        } else {
-            throw Mp4File.Error.UnableToInitializeAtoms
         }
         self.rootAtoms = atoms
         
+        if let moov = atoms.first(where: {$0.identifier == "moov"}) as? Moov {
+            self.moov = moov
+            Mp4File.timeScale = moov.mvhd.timeScale
+            Mp4File.duration = moov.mvhd.duration
+            if let elst = moov.soundTrack.edts?.elst {
+                Mp4File.elstDuration = elst.editListTable.duration
+            }
+        } else {
+            throw Mp4File.Error.MoovAtomNotFound
+        }
+        
+
         self.mdats = atoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
         guard !mdats.isEmpty else {
             throw Mp4File.Error.MdatAtomNotFound

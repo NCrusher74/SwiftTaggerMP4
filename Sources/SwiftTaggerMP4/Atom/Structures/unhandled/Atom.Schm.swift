@@ -12,13 +12,13 @@ import Foundation
 /// Not currently implemented
 class Schm: Atom {
 
-    var schemeType: Int // 4
-    var schemeVersion: Int // 4
+    var schemeType: Int
+    var schemeVersion: Int
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.schemeType = data.extractFirstToInt(32)
-        self.schemeVersion = data.extractFirstToInt(32)
+        self.schemeType = data.extractTo32BitInt()
+        self.schemeVersion = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -27,8 +27,8 @@ class Schm: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.schemeType.beData(32))
-        data.append(self.schemeVersion.beData(32))
+        data.append(self.schemeType.beDataFrom32BitInt)
+        data.append(self.schemeVersion.beDataFrom32BitInt)
         return data
     }
 }

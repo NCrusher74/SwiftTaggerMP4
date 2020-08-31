@@ -17,7 +17,7 @@ class Trpy: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.bytes = data.extractFirstToInt(8)
+        self.bytes = data.extractTo64BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -26,7 +26,7 @@ class Trpy: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.bytes.beData(64))
+        data.append(self.bytes.beDataFrom64BitInt)
         return data
     }
 }

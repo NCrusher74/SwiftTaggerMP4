@@ -35,9 +35,9 @@ class Amr: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.reserved1 = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirstToInt(2)
+        self.dataReferenceIndex = data.extractTo16BitInt()
         self.reserved2 = data.extractFirst(8)
-        self.timeScale = data.extractFirstToInt(2)
+        self.timeScale = data.extractTo16BitIntViaDouble()
         self.reserved3 = data.extractFirst(4)
         
         var children = [Atom]()
@@ -59,9 +59,9 @@ class Amr: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.reserved1)
-        data.append(self.dataReferenceIndex.beData(16))
+        data.append(self.dataReferenceIndex.beDataFrom16BitInt)
         data.append(self.reserved2)
-        data.append(self.timeScale.beData(16))
+        data.append(self.timeScale.beDataFrom16BitInt)
         data.append(self.reserved3)
         return data
     }

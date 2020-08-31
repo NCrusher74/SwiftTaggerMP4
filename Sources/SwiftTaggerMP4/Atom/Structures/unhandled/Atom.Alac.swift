@@ -29,19 +29,19 @@ class Alac: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.reserved1 = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirstToInt(2)
-        self.soundVersion = data.extractFirstToInt(2)
+        self.dataReferenceIndex = data.extractTo16BitInt()
+        self.soundVersion = data.extractTo16BitInt()
         self.reserved2 = data.extractFirst(6)
-        self.channels = data.extractFirstToInt(2)
-        self.compressionID = data.extractFirstToInt(2)
-        self.packetSize = data.extractFirstToInt(2)
-        self.timeScale = data.extractFirstToInt(32)
+        self.channels = data.extractTo16BitInt()
+        self.compressionID = data.extractTo16BitInt()
+        self.packetSize = data.extractTo16BitInt()
+        self.timeScale = data.extractTo32BitIntViaDouble()
         
         if soundVersion > 0 {
-            self.samplesPerPacket = data.extractFirstToInt(32)
-            self.bytesPerPacket = data.extractFirstToInt(32)
-            self.bytesPerFrame = data.extractFirstToInt(32)
-            self.bytesPerSample = data.extractFirstToInt(32)
+            self.samplesPerPacket = data.extractTo32BitInt()
+            self.bytesPerPacket = data.extractTo32BitInt()
+            self.bytesPerFrame = data.extractTo32BitInt()
+            self.bytesPerSample = data.extractTo32BitInt()
         }
         if soundVersion == 2 {
             self.reserved3 = data.extractFirst(20)
@@ -62,17 +62,17 @@ class Alac: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.reserved1)
-        data.append(self.dataReferenceIndex.beData(16))
-        data.append(self.soundVersion.beData(16))
+        data.append(self.dataReferenceIndex.beDataFrom16BitInt)
+        data.append(self.soundVersion.beDataFrom16BitInt)
         data.append(self.reserved2)
-        data.append(self.channels.beData(16))
-        data.append(self.compressionID.beData(16))
-        data.append(self.packetSize.beData(16))
-        data.append(self.timeScale.beData(32))
-        data.append(self.samplesPerPacket?.beData(32) ?? Data())
-        data.append(self.bytesPerPacket?.beData(32) ?? Data())
-        data.append(self.bytesPerFrame?.beData(32) ?? Data())
-        data.append(self.bytesPerSample?.beData(32) ?? Data())
+        data.append(self.channels.beDataFrom16BitInt)
+        data.append(self.compressionID.beDataFrom16BitInt)
+        data.append(self.packetSize.beDataFrom16BitInt)
+        data.append(self.timeScale.beDataFrom32BitInt)
+        data.append(self.samplesPerPacket?.beDataFrom32BitInt ?? Data())
+        data.append(self.bytesPerPacket?.beDataFrom32BitInt ?? Data())
+        data.append(self.bytesPerFrame?.beDataFrom32BitInt ?? Data())
+        data.append(self.bytesPerSample?.beDataFrom32BitInt ?? Data())
         data.append(self.reserved3 ?? Data())
         return data
     }

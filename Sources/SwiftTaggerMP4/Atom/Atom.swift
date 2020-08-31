@@ -25,7 +25,7 @@ class Atom {
             }
         }
     }
-    weak var fileProperties: FilePropertyReference?
+
     weak var parent: Atom?
     /// the other atoms descended from the same parent atom
     var siblings: [Atom]? {
@@ -94,11 +94,11 @@ class Atom {
         if preliminarySize > UInt32.max {
             size = 1 // use extended size UInt64 instead
         }
-        data.append(size.beData(32))
+        data.append(size.beDataFrom32BitInt)
         data.append(self.identifier.encodedISOLatin1)
         
         if preliminarySize > UInt32.max {
-            let extendedSize = preliminarySize.beData(64)
+            let extendedSize = preliminarySize.beDataFrom64BitInt
             data.append(extendedSize)
         }
         

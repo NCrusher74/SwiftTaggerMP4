@@ -16,7 +16,7 @@ class Tims: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.timeScale = data.extractFirstToInt(32)
+        self.timeScale = data.extractTo32BitIntViaDouble()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -25,7 +25,7 @@ class Tims: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.timeScale.beData(32))
+        data.append(self.timeScale.beDataFrom32BitInt)
         return data
     }
 }

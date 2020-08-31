@@ -32,11 +32,11 @@ extension Moov {
     
     var chapterTrack: Trak? {
         get {
-            self.tracks.first(where: {$0.tkhd?.trackID == chapterTrackID})
+            self.tracks.first(where: {$0.tkhd.trackID == chapterTrackID})
         }
         set {
             if let new = newValue {
-                var newTracks: [Trak] = self.tracks.filter({$0.tkhd?.trackID == chapterTrackID})
+                var newTracks: [Trak] = self.tracks.filter({$0.tkhd.trackID == chapterTrackID})
                 newTracks.append(new)
                 self.tracks = newTracks
             }

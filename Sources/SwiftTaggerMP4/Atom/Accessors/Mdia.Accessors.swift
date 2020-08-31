@@ -7,20 +7,6 @@
 
 import Foundation
 extension Mdia {
-    /// Gets and sets a `minf` atom
-    var minf: Minf? {
-        get {
-            return children.first(where: { $0.identifier == "minf"}) as? Minf
-        }
-        set {
-            if let new = newValue {
-                var newChildren = children.filter({$0.identifier != "minf"})
-                newChildren.append(new)
-                self.children = newChildren
-            }
-        }
-    }
-    
     /// Gets and sets an `elng` atom
     @available(OSX 10.12, *)
     var elng: Elng? {
@@ -33,9 +19,10 @@ extension Mdia {
                 newChildren.append(new)
                 self.children = newChildren
                 
-                if let parent = self.parent as? Trak, parent.trackType == .soun {
-                    mdhd?.language = Mdhd.getLanguage(from: new)
-                } else if let duration = mdhd?.duration {
+                if let mdia = self.siblings?.first(where: {$0.identifier == "mdia"}) as? Mdia, mdia.hdlr.handlerSubtype == .soun {
+                    mdhd.language = Mdhd.getLanguage(from: new)
+                } else {
+                    let duration = mdhd.duration
                     do {
                         mdhd = try Mdhd(mvhdDuration: duration, elng: new)
                     } catch {
@@ -44,34 +31,6 @@ extension Mdia {
                 }
             } else {
                 let newChildren = children.filter({$0.identifier != "elng"})
-                self.children = newChildren
-            }
-        }
-    }
-    
-    /// Gets and sets a `hdlr` atom
-    var hdlr: Hdlr? {
-        get {
-            return children.first(where: { $0.identifier == "hdlr"}) as? Hdlr
-        }
-        set {
-            if let new = newValue {
-                var newChildren = children.filter({$0.identifier != "hdlr"})
-                newChildren.append(new)
-                self.children = newChildren
-            }
-        }
-    }
-    
-    /// Gets and sets the `mdhd` atom
-    var mdhd: Mdhd? {
-        get {
-            return children.first(where: { $0.identifier == "mdhd"}) as? Mdhd
-        }
-        set {
-            if let new = newValue {
-                var newChildren = children.filter({$0.identifier != "mdhd"})
-                newChildren.append(new)
                 self.children = newChildren
             }
         }

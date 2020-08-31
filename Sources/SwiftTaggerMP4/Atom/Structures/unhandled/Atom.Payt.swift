@@ -18,7 +18,7 @@ class Payt: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         
         var data = payload
-        self.payloadNumber = data.extractFirstToInt(32)
+        self.payloadNumber = data.extractTo32BitInt()
         self.rtpMap = String(decoding: data, as: UTF8.self)
 
         try super.init(identifier: identifier,
@@ -28,7 +28,7 @@ class Payt: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.payloadNumber.beData(32))
+        data.append(self.payloadNumber.beDataFrom32BitInt)
         data.append(Data(self.rtpMap.utf8))
         return data
     }

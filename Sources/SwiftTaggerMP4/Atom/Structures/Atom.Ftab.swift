@@ -18,7 +18,7 @@ class Ftab: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         
         var data = payload
-        self.entryCount = data.extractFirstToInt(2)
+        self.entryCount = data.extractTo16BitInt()
         self.fontTable = FontTable(from: data)
         
         try super.init(identifier: identifier, size: size, payload: payload)
@@ -31,7 +31,7 @@ class Ftab: Atom {
             var entryArray: [(Int, String)] = []
             var remainder = data
             while !data.isEmpty {
-                let fontID = remainder.extractFirstToInt(2)
+                let fontID = remainder.extractTo16BitInt()
                 if let fontName = remainder.toStringUtf8 {
                     let entry = (fontID, fontName)
                     entryArray.append(entry)
@@ -47,7 +47,7 @@ class Ftab: Atom {
         var entryData: Data {
             var data = Data()
             for entry in entries {
-                data.append(entry.fontID.beData(16))
+                data.append(entry.fontID.beDataFrom16BitInt)
                 data.append(Data(entry.fontName.utf8))
             }
             return data
@@ -56,7 +56,7 @@ class Ftab: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.entryCount.beData(16))
+        data.append(self.entryCount.beDataFrom16BitInt)
         data.append(self.fontTable.entryData)
         return data
     }

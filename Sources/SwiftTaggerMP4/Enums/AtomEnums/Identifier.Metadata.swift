@@ -15,6 +15,7 @@ enum MetadataIdentifier {
     case discNumber(String)
     case trackNumber(String)
     case podcastFeed(String)
+//    case unknown(String)
     
     init(identifier: String) throws {
         if identifier == "covr" {

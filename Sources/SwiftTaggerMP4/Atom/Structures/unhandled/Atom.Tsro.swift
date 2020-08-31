@@ -16,7 +16,7 @@ class Tsro: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.offsetValue = data.extractFirstToInt(32)
+        self.offsetValue = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -25,7 +25,7 @@ class Tsro: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.offsetValue.beData(32))
+        data.append(self.offsetValue.beDataFrom32BitInt)
         return data
     }
 }

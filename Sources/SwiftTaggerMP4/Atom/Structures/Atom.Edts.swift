@@ -9,6 +9,7 @@ import Foundation
 
 /// A class representing a `edts` atom in an `Mp4File`'s atom structure
 class Edts: Atom {
+    var elst: Elst
     /// Initialize a `edts` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -19,12 +20,16 @@ class Edts: Atom {
                 children.append(child)
             }
         }
+        
+        if let elst = children.first(where: {$0.identifier == "elst"}) as? Elst {
+            self.elst = elst
+        } else {
+            throw Mp4File.Error.ElstAtomNotFound
+        }
+        
         try super.init(identifier: identifier,
                        size: size,
                        children: children)
-        guard children.contains(where: {$0.identifier == "elst"}) else {
-            throw Mp4File.Error.ElstAtomNotFound
-        }
     }
     
     override var contentData: Data {

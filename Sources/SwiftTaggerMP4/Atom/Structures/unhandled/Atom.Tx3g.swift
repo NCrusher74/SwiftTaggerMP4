@@ -41,7 +41,7 @@ class Tx3g: Atom {
         var data = payload
         self.reserved1 = data.extractFirst(4)
         self.reserved2 = data.extractFirst(2)
-        self.dataReferenceIndex = data.extractFirstToInt(2)
+        self.dataReferenceIndex = data.extractTo16BitInt()
         self.displayFlags = data.extractToUInt32BE()
         self.horizontalJustification = data.extractFirst(1).toUInt8
         self.verticalJustification = data.extractFirst(1).toUInt8
@@ -79,7 +79,7 @@ class Tx3g: Atom {
         var data = Data()
         data.append(self.reserved1)
         data.append(self.reserved2)
-        data.append(self.dataReferenceIndex.beData(16))
+        data.append(self.dataReferenceIndex.beDataFrom16BitInt)
         data.append(self.displayFlags.beData)
         data.append(Data([self.horizontalJustification]))
         data.append(Data([self.verticalJustification]))

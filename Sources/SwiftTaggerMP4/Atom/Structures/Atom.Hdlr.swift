@@ -10,13 +10,15 @@ import Foundation
 /// A class representing a `hdlr` atom in an `Mp4File`'s atom structure
 class Hdlr: Atom {
     
-    private var versionAndFlags: Data // 4 bytes
+    private var versionAndFlags: Data
     // mhlr or dhlr if parent is mdia, or mdta if parent is meta, but will probably actually be 0
-    private var handlerTypeRaw: Data // 4 bytes
+    private var handlerTypeRaw: Data
     // will be mdir if parent is meta
-    private var handlerSubtypeRaw: Data // 4 bytes
-    private var reserved: Data // 12 bytes set to 0
-    var componentName: Data // at least one 0
+    private var handlerSubtypeRaw: Data
+     // 12 bytes set to 0
+    private var reserved: Data
+     // at least one 0
+    var componentName: Data
     
     /// Initialize a `hdlr` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -62,7 +64,7 @@ class Hdlr: Atom {
     ///
     /// Specifically for building a chapter track. May not work in other contexts
     init(trackType: TrackType) throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         
         let handler: HandlerType = .mhlr
         let handlerString = handler.rawValue
@@ -72,7 +74,7 @@ class Hdlr: Atom {
         let subHandlerString = subHandler.rawValue
         self.handlerSubtypeRaw = subHandlerString.data(using: .isoLatin1)!
         self.reserved = Data(repeating: 0x00, count: 12)
-        self.componentName = Data(repeating: 0x00, count: 1)
+        self.componentName = 0.beDataFrom8BitInt
         
         var payload = Data()
         payload.append(versionAndFlags)
@@ -91,7 +93,7 @@ class Hdlr: Atom {
     ///
     /// Specifically for use in metadata lists. May not work in other contexts
     init() throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.handlerTypeRaw = Data(repeating: 0x00, count: 4)
         
         let subHandler: HandlerType = .mdir

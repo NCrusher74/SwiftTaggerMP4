@@ -61,8 +61,8 @@ class PartAndTotalMetadataAtom: Atom {
         self.part = part
         self.total = total
         var data = Data(repeating: 0x00, count: 2)
-        data.append(part.beData(16))
-        if let totalData = total?.beData(16) {
+        data.append(part.beDataFrom16BitInt)
+        if let totalData = total?.beDataFrom16BitInt {
             data.append(totalData)
         }
         if identifier == "trkn" {

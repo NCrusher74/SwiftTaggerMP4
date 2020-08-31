@@ -10,13 +10,13 @@ import Foundation
 /// A class representing a `mdhd` atom in an `Mp4File`'s atom structure
 class Mdhd: Atom {
     // contentData count should be a total of 24 bytes
-    private var versionAndFlags: Data // 4 bytes
-    var creationTime: UInt32 // 4 bytes
-    var modificationTime: UInt32 // 4 bytes
-    var timeScale: Int // 4 bytes
-    var duration: Int // 4 bytes
-    private var languageUInt16: UInt16 // 2 bytes
-    var quality: Int // 2 bytes
+    private var versionAndFlags: Data
+    var creationTime: UInt32
+    var modificationTime: UInt32
+    var timeScale: Int
+    var duration: Int
+    private var languageUInt16: UInt16
+    var quality: Int
     
     /// Initialize a `mdhd` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -29,10 +29,20 @@ class Mdhd: Atom {
         self.versionAndFlags = data.extractFirst(4)
         self.creationTime = data.extractToUInt32BE()
         self.modificationTime = data.extractToUInt32BE()
-        self.timeScale = data.extractFirstToInt(32)
-        self.duration = data.extractFirstToInt(32)
+        let preliminaryTimeScale = data.extractTo32BitDouble()
+        let preliminaryDuration = data.extractTo32BitDouble()
+        if preliminaryTimeScale == 1000 {
+            // duration is already in milliseconds, no need to calculate
+            self.duration = Int(preliminaryDuration)
+        } else {
+            // divide the raw duration by the timescale to get the time in seconds
+            let durationInSeconds: Double = preliminaryDuration / preliminaryTimeScale
+            // multiply the duration in seconds by 1000 to get milliseconds
+            self.duration = Int(durationInSeconds * 1000)
+        }
+        self.timeScale = Int(preliminaryTimeScale)
         self.languageUInt16 = data.extractToUInt16BE()
-        self.quality = data.extractFirstToInt(2)
+        self.quality = data.extractTo16BitInt()
         
         try super.init(identifier: identifier,
                        size: size,
@@ -119,11 +129,11 @@ class Mdhd: Atom {
     /// Initialize a `mdhd` atom from a duration and language for use in a CHAPTER TRAK ONLY
     @available(OSX 10.12, *)
     init(mvhdDuration: Int, language: ISO6392Code) throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
-        self.timeScale = 1000
-        self.duration = FilePropertyReference.duration
+        self.timeScale = Mp4File.timeScale
+        self.duration = Mp4File.duration
         self.languageUInt16 = language.getUInt16Code()
         self.quality = 0
         
@@ -131,10 +141,10 @@ class Mdhd: Atom {
         payload.append(self.versionAndFlags)
         payload.append(self.creationTime.beData)
         payload.append(self.modificationTime.beData)
-        payload.append(self.timeScale.beData(32))
-        payload.append(self.duration.beData(32))
+        payload.append(self.timeScale.beDataFrom32BitInt)
+        payload.append(self.duration.beDataFrom32BitInt)
         payload.append(self.languageUInt16.beData)
-        payload.append(self.quality.beData(16))
+        payload.append(self.quality.beDataFrom16BitInt)
         guard payload.count == 24 else { fatalError("Byte count is \(payload.count). A valid mdhd atom requires 24 bytes of content plus the header data.")
         }
         
@@ -148,11 +158,11 @@ class Mdhd: Atom {
     init(mvhdDuration: Int, elng: Elng) throws {
         let isoCode = Mdhd.getLanguage(from: elng)
         
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
-        self.timeScale = 1000
-        self.duration = FilePropertyReference.duration
+        self.timeScale = Mp4File.timeScale
+        self.duration = Mp4File.duration
         self.languageUInt16 = isoCode.getUInt16Code()
         self.quality = 0
         
@@ -160,10 +170,10 @@ class Mdhd: Atom {
         payload.append(self.versionAndFlags)
         payload.append(self.creationTime.beData)
         payload.append(self.modificationTime.beData)
-        payload.append(self.timeScale.beData(32))
-        payload.append(self.duration.beData(32))
+        payload.append(self.timeScale.beDataFrom32BitInt)
+        payload.append(self.duration.beDataFrom32BitInt)
         payload.append(self.languageUInt16.beData)
-        payload.append(self.quality.beData(16))
+        payload.append(self.quality.beDataFrom16BitInt)
         guard payload.count == 24 else { fatalError("Byte count is \(payload.count). A valid mdhd atom requires 24 bytes of content plus the header data.")
         }
         
@@ -177,10 +187,10 @@ class Mdhd: Atom {
         data.append(self.versionAndFlags)
         data.append(self.creationTime.beData)
         data.append(self.modificationTime.beData)
-        data.append(self.timeScale.beData(32))
-        data.append(self.duration.beData(32))
+        data.append(self.timeScale.beDataFrom32BitInt)
+        data.append(self.duration.beDataFrom32BitInt)
         data.append(self.languageUInt16.beData)
-        data.append(self.quality.beData(16))
+        data.append(self.quality.beDataFrom16BitInt)
         return data
     }
 }

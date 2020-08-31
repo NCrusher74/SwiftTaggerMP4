@@ -22,11 +22,11 @@ class Hmhd: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.maxPduSize = data.extractFirstToInt(2)
-        self.averagePduSize  = data.extractFirstToInt(2)
-        self.maxBitrate = data.extractFirstToInt(32)
-        self.averageBitrate = data.extractFirstToInt(32)
-        self.slidingAverageBitrate = data.extractFirstToInt(32)
+        self.maxPduSize = data.extractTo16BitInt()
+        self.averagePduSize  = data.extractTo16BitInt()
+        self.maxBitrate = data.extractTo32BitInt()
+        self.averageBitrate = data.extractTo32BitInt()
+        self.slidingAverageBitrate = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -36,11 +36,11 @@ class Hmhd: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.maxPduSize.beData(16))
-        data.append(averagePduSize.beData(16))
-        data.append(maxBitrate.beData(32))
-        data.append(averageBitrate.beData(32))
-        data.append(slidingAverageBitrate.beData(32))
+        data.append(self.maxPduSize.beDataFrom16BitInt)
+        data.append(averagePduSize.beDataFrom16BitInt)
+        data.append(maxBitrate.beDataFrom32BitInt)
+        data.append(averageBitrate.beDataFrom32BitInt)
+        data.append(slidingAverageBitrate.beDataFrom32BitInt)
         return data
     }
 }

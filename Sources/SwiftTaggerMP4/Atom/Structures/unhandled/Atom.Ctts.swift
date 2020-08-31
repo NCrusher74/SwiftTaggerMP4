@@ -20,7 +20,7 @@ class Ctts: Atom {
         
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.sampleTable = SampleTable(from: data)
         
         try super.init(identifier: identifier,
@@ -35,8 +35,8 @@ class Ctts: Atom {
             var remainder = data
             var entryArray: [(sampleCount: Int, sampleOffset: Int)] = []
             while !remainder.isEmpty {
-                let sampleCount = remainder.extractFirstToInt(32)
-                let sampleOffset = remainder.extractFirstToInt(32)
+                let sampleCount = remainder.extractTo32BitInt()
+                let sampleOffset = remainder.extractTo32BitInt()
                 let entry = (sampleCount, sampleOffset)
                 entryArray.append(entry)
             }
@@ -46,8 +46,8 @@ class Ctts: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.sampleCount.beData(32))
-                data.append(entry.sampleOffset.beData(32))
+                data.append(entry.sampleCount.beDataFrom32BitInt)
+                data.append(entry.sampleOffset.beDataFrom32BitInt)
             }
             return data
         }
@@ -56,7 +56,7 @@ class Ctts: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.sampleTable.entryData)
         return data
     }

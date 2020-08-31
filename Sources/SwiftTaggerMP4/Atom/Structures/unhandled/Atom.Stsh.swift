@@ -20,7 +20,7 @@ class Stsh: Atom {
         
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.sampleTable = SampleTable(from: data)
         
         try super.init(identifier: identifier,
@@ -35,8 +35,8 @@ class Stsh: Atom {
             var remainder = data
             var entryArray: [(shadowedSampleNumber: Int, syncSampleNumber: Int)] = []
             while !remainder.isEmpty {
-                let shadowSampleNumber = remainder.extractFirstToInt(32)
-                let syncSampleNumber = remainder.extractFirstToInt(32)
+                let shadowSampleNumber = remainder.extractTo32BitInt()
+                let syncSampleNumber = remainder.extractTo32BitInt()
                 let entry = (shadowSampleNumber, syncSampleNumber)
                 entryArray.append(entry)
             }
@@ -46,8 +46,8 @@ class Stsh: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.shadowedSampleNumber.beData(32))
-                data.append(entry.syncSampleNumber.beData(32))
+                data.append(entry.shadowedSampleNumber.beDataFrom32BitInt)
+                data.append(entry.syncSampleNumber.beDataFrom32BitInt)
             }
             return data
         }
@@ -56,7 +56,7 @@ class Stsh: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.sampleTable.entryData)
         return data
     }

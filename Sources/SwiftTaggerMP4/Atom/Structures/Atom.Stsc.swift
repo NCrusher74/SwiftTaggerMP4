@@ -23,7 +23,7 @@ class Stsc: Atom {
     override init(identifier: String, size: Int, payload: Data) throws  {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.sampleToChunkTable = SampleToChunkTable(from: data)
         try super.init(identifier: identifier,
                        size: size,
@@ -38,11 +38,11 @@ class Stsc: Atom {
             var entryArray: [(firstChunk: Int, samplesPerChunk: Int, sampleDescriptionID: Int)] = []
             
             while !remainder.isEmpty {
-                let firstChunk = remainder.extractFirstToInt(32)
+                let firstChunk = remainder.extractTo32BitInt()
                 
-                let samplesPerChunk = remainder.extractFirstToInt(32)
+                let samplesPerChunk = remainder.extractTo32BitInt()
                 
-                let sampleDescriptionID = remainder.extractFirstToInt(32)
+                let sampleDescriptionID = remainder.extractTo32BitInt()
                 
                 let entry = (firstChunk, samplesPerChunk, sampleDescriptionID)
                 entryArray.append(entry)
@@ -53,9 +53,9 @@ class Stsc: Atom {
         var entryData: Data {
             var data = Data()
             for entry in entries {
-                data.append(entry.firstChunk.beData(32))
-                data.append(entry.samplesPerChunk.beData(32))
-                data.append(entry.sampleDescriptionID.beData(32))
+                data.append(entry.firstChunk.beDataFrom32BitInt)
+                data.append(entry.samplesPerChunk.beDataFrom32BitInt)
+                data.append(entry.sampleDescriptionID.beDataFrom32BitInt)
             }
             return data
         }
@@ -63,7 +63,7 @@ class Stsc: Atom {
     
     /// Initialize an `stsc` atom with default properties for building a chapter track
     init() throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.entryCount = 1
         let defaultFirstChunk: [UInt8] = [0x00, 0x00, 0x00, 0x01]
         let defaultSamplesPerChunk: [UInt8] = [0x00, 0x00, 0x00, 0x01]
@@ -76,7 +76,7 @@ class Stsc: Atom {
         
         var payload = Data()
         payload.append(versionAndFlags)
-        payload.append(entryCount.beData(32))
+        payload.append(entryCount.beDataFrom32BitInt)
         payload.append(defaultTableData)
         let size = payload.count + 8
         
@@ -86,7 +86,7 @@ class Stsc: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.sampleToChunkTable.entryData)
         return data
     }

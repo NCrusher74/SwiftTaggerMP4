@@ -17,7 +17,7 @@ class Pmax: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.bytes = data.extractFirstToInt(4)
+        self.bytes = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -26,7 +26,7 @@ class Pmax: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.bytes.beData(32))
+        data.append(self.bytes.beDataFrom32BitInt)
         return data
     }
 }

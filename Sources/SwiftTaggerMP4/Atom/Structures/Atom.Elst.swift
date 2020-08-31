@@ -19,8 +19,8 @@ class Elst: Atom {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
         var versionData = versionAndFlags
-        let version = versionData.extractFirstToInt(1)
-        self.entryCount = data.extractFirstToInt(32)
+        let version = versionData.extractTo8BitInt()
+        self.entryCount = data.extractTo32BitInt()
         self.editListTable = EditListTable(from: data, version: version)
         
         try super.init(identifier: identifier,
@@ -31,13 +31,13 @@ class Elst: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.editListTable.entryData)
         return data
     }
     
     class EditListTable {
-        /// Segment duration is the duration in the movie's timeScale
+        /// SegmentDuration: A 32-bit integer containing the starting time within the media of this edit segment (in MEDIA (derived from mdhd atom )timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit
         var entries: [(segmentDuration: Int, mediaTime: Int, mediaRate: Int, reserved: Data)]
         var version: Int
         
@@ -50,13 +50,15 @@ class Elst: Atom {
                 var segmentDuration: Int = 0
                 var mediaTime: Int = 0
                 if version == 1 {
-                    segmentDuration = remainder.extractFirstToInt(8)
-                    mediaTime = remainder.extractFirstToInt(8)
+                    let preliminarySegmentDuration = remainder.extractTo64BitIntViaDouble()
+                    segmentDuration = preliminarySegmentDuration / Mp4File.timeScale
+                    mediaTime = remainder.extractTo64BitInt()
                 } else {
-                    segmentDuration = remainder.extractFirstToInt(32)
-                    mediaTime = remainder.extractFirstToInt(32)
+                    let preliminarySegmentDuration = remainder.extractTo32BitIntViaDouble()
+                    segmentDuration = preliminarySegmentDuration / Mp4File.timeScale
+                    mediaTime = remainder.extractTo32BitInt()
                 }
-                let mediaRate = remainder.extractFirstToInt(2)
+                let mediaRate = remainder.extractTo16BitInt()
                 let reserved = remainder.extractFirst(2)
                 let entry = (segmentDuration, mediaTime, mediaRate, reserved)
                 entryArray.append(entry)
@@ -68,13 +70,13 @@ class Elst: Atom {
             var data = Data()
             for entry in self.entries {
                 if self.version == 1 {
-                    data.append(entry.segmentDuration.beData(64))
-                    data.append(entry.mediaTime.beData(64))
+                    data.append(entry.segmentDuration.beDataFrom64BitInt)
+                    data.append(entry.mediaTime.beDataFrom64BitInt)
                 } else {
-                    data.append(entry.segmentDuration.beData(32))
-                    data.append(entry.mediaTime.beData(32))
+                    data.append(entry.segmentDuration.beDataFrom32BitInt)
+                    data.append(entry.mediaTime.beDataFrom32BitInt)
                 }
-                data.append(entry.mediaRate.beData(16))
+                data.append(entry.mediaRate.beDataFrom16BitInt)
                 data.append(entry.reserved)
             }
             return data

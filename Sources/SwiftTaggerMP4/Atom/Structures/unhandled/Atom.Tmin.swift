@@ -17,7 +17,7 @@ class Tmin: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.milliseconds = data.extractFirstToInt(32)
+        self.milliseconds = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -26,7 +26,7 @@ class Tmin: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.milliseconds.beData(32))
+        data.append(self.milliseconds.beDataFrom32BitInt)
         return data
     }
 }

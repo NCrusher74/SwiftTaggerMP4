@@ -17,7 +17,7 @@ class Dref: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         
         var children = [Atom]()
         while !data.isEmpty {
@@ -34,7 +34,7 @@ class Dref: Atom {
     ///
     /// May not work in other contexts
     init() throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.entryCount = 1
         // these default values will build a "url " atom identical to what I have found in other files with chapter tracks
         let childPayload = Data(repeating: 0x00, count: 3) + Data(repeating: 0x01, count: 1)
@@ -43,7 +43,7 @@ class Dref: Atom {
         
         var payload = Data()
         payload.append(self.versionAndFlags)
-        payload.append(entryCount.beData(32))
+        payload.append(entryCount.beDataFrom32BitInt)
         payload.append(childData)
         let size = payload.count + 8
         
@@ -53,7 +53,7 @@ class Dref: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         for child in self.children {
             data.append(child.encode())
         }

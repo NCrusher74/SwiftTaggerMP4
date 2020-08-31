@@ -18,9 +18,9 @@ class Btrt: Atom {
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.bufferSizeDB = data.extractFirstToInt(32)
-        self.averageBitrate = data.extractFirstToInt(32)
-        self.maxBitrate = data.extractFirstToInt(32)
+        self.bufferSizeDB = data.extractTo32BitInt()
+        self.averageBitrate = data.extractTo32BitInt()
+        self.maxBitrate = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -29,9 +29,9 @@ class Btrt: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.bufferSizeDB.beData(32))
-        data.append(self.averageBitrate.beData(32))
-        data.append(self.maxBitrate.beData(32))
+        data.append(self.bufferSizeDB.beDataFrom32BitInt)
+        data.append(self.averageBitrate.beDataFrom32BitInt)
+        data.append(self.maxBitrate.beDataFrom32BitInt)
         return data
     }
 }

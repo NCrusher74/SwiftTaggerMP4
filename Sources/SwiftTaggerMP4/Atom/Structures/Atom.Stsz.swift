@@ -26,8 +26,8 @@ class Stsz: Atom {
         var data = payload
         
         self.versionAndFlags = data.extractFirst(4)
-        self.sampleSize = data.extractFirstToInt(32)
-        self.entryCount = data.extractFirstToInt(32)
+        self.sampleSize = data.extractTo32BitInt()
+        self.entryCount = data.extractTo32BitInt()
         
         // if sampleSize if 0, it means the samples have different size values, and the table is used
         // otherwise, the samples all have the same size, which is stored here
@@ -48,7 +48,7 @@ class Stsz: Atom {
             var remainder = data
             var entryArray: [Int] = []
             while !remainder.isEmpty {
-                let entry = remainder.extractFirstToInt(32)
+                let entry = remainder.extractTo32BitInt()
                 entryArray.append(entry)
             }
             self.entries = entryArray
@@ -70,7 +70,7 @@ class Stsz: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.beData(32))
+                data.append(entry.beDataFrom32BitInt)
             }
             return data
         }
@@ -82,7 +82,7 @@ class Stsz: Atom {
         for title in titles {
             sizes.append(title.count + 2)
         }
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         if sizes.allAreEqual() {
             if let firstSize = sizes.first {
                 self.sampleSize = firstSize
@@ -98,8 +98,8 @@ class Stsz: Atom {
         
         var payload = Data()
         payload.append(versionAndFlags)
-        payload.append(sampleSize.beData(32))
-        payload.append(entryCount.beData(32))
+        payload.append(sampleSize.beDataFrom32BitInt)
+        payload.append(entryCount.beDataFrom32BitInt)
         payload.append(sampleSizeTable?.entryData ?? Data())
         let size = payload.count + 8
         
@@ -111,8 +111,8 @@ class Stsz: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.sampleSize.beData(32))
-        data.append(self.entryCount.beData(32))
+        data.append(self.sampleSize.beDataFrom32BitInt)
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.sampleSizeTable?.entryData ?? Data())
         return data
     }

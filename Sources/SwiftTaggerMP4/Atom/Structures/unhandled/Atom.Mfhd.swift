@@ -18,7 +18,7 @@ class Mfhd: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.sequenceNumber = data.extractFirstToInt(32)
+        self.sequenceNumber = data.extractTo32BitInt()
         
         try super.init(identifier: identifier,
                    size: size,
@@ -28,7 +28,7 @@ class Mfhd: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.sequenceNumber.beData(32))
+        data.append(self.sequenceNumber.beDataFrom32BitInt)
         return data
     }
 }

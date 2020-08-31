@@ -19,7 +19,7 @@ class Stsd: Atom {
     override init(identifier: String, size: Int, payload: Data) throws  {
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.sampleDescriptionTable = SampleDescriptionTable(from: data)
         try super.init(identifier: identifier,
                        size: size,
@@ -33,12 +33,12 @@ class Stsd: Atom {
             var remainder = data
             var entryArray: [(entrySize: Int, dataFormat: String, reservedData: Data, dataReferenceIndex: Int, additionalContent: Data)] = []
             while !remainder.isEmpty {
-                let size = remainder.extractFirstToInt(32)
+                let size = remainder.extractTo32BitInt()
                 
                 let format = remainder.extractAtomID() ?? ""
                 let reserved = remainder.extractFirst(6)
                 
-                let index = remainder.extractFirstToInt(2)
+                let index = remainder.extractTo16BitInt()
                 
                 let additionalContentDataCount = size - 16
                 var additionalContentData = Data()
@@ -54,10 +54,10 @@ class Stsd: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.entrySize.beData(32))
+                data.append(entry.entrySize.beDataFrom32BitInt)
                 data.append(Data(entry.dataFormat.utf8))
                 data.append(entry.reservedData)
-                data.append(entry.dataReferenceIndex.beData(16))
+                data.append(entry.dataReferenceIndex.beDataFrom16BitInt)
                 data.append(entry.additionalContent)
             }
             return data
@@ -66,12 +66,12 @@ class Stsd: Atom {
     
     /// Initialize an `stsd` atom with default properties for building a chapter track
     init() throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.entryCount = 1
         let child = try Text()
         var payload = Data()
         payload.append(self.versionAndFlags)
-        payload.append(entryCount.beData(32))
+        payload.append(entryCount.beDataFrom32BitInt)
         payload.append(child.encode())
         let size = payload.count + 8
         try super.init(identifier: "stsd", size: size, children: [child])
@@ -80,18 +80,17 @@ class Stsd: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         
         let stbl = self.parent
         let minf = stbl?.parent
-        let mdia = minf?.parent
-        let trak = mdia?.parent as? Trak
+        let hdlr = minf?.siblings?.first(where: {$0.identifier == "hdlr"}) as? Hdlr
         
-        if trak?.trackType == .text {
+        if hdlr?.handlerSubtype == .text {
             do {
                 let textAtom = try Text()
                 let textSize = textAtom.size
-                let textSizeEncoded = textSize.beData(32)
+                let textSizeEncoded = textSize.beDataFrom32BitInt
                 data.append(textSizeEncoded)
                 
                 let textID = textAtom.identifier

@@ -7,8 +7,8 @@
 
 import Foundation
 class Trak: Atom {
-    var trackID: Int
-    var trackType: TrackType
+    var tkhd: Tkhd
+    var mdia: Mdia
     
     /// Initialize an `trak` atom for parsing from the root structure
     override init(identifier: String,
@@ -22,19 +22,17 @@ class Trak: Atom {
             }
         }
         
-        guard children.contains(where: {$0.identifier == "tkhd"}) else {
+        if let tkhd = children.first(where: {$0.identifier == "tkhd"}) as? Tkhd {
+            self.tkhd = tkhd
+        } else {
             throw Mp4File.Error.TkhdAtomNotFound
         }
-        guard children.contains(where: {$0.identifier == "mdia"}) else {
+
+        if let mdia = children.first(where: {$0.identifier == "mdia"}) as? Mdia {
+            self.mdia = mdia
+        } else {
             throw Mp4File.Error.MdiaAtomNotFound
         }
-        
-        let mdia = children.first(where: {$0.identifier == "mdia"})!
-        let hdlr = mdia.children.first(where: {$0.identifier == "hdlr"}) as! Hdlr
-        self.trackType = hdlr.handlerSubtype
-        
-        let tkhd = children.first(where: {$0.identifier == "tkhd"}) as! Tkhd
-        self.trackID = tkhd.trackID
         
         try super.init(identifier: identifier,
                        size: size,
@@ -56,20 +54,18 @@ class Trak: Atom {
         for child in children {
             size += child.size
         }
-        guard children.contains(where: {$0.identifier == "tkhd"}) else {
+        if let tkhd = children.first(where: {$0.identifier == "tkhd"}) as? Tkhd {
+            self.tkhd = tkhd
+        } else {
             throw Mp4File.Error.TkhdAtomNotFound
         }
-        guard children.contains(where: {$0.identifier == "mdia"}) else {
+        
+        if let mdia = children.first(where: {$0.identifier == "mdia"}) as? Mdia {
+            self.mdia = mdia
+        } else {
             throw Mp4File.Error.MdiaAtomNotFound
         }
-        
-        let mdia = children.first(where: {$0.identifier == "mdia"})!
-        let hdlr = mdia.children.first(where: {$0.identifier == "hdlr"}) as! Hdlr
-        self.trackType = hdlr.handlerSubtype
-        
-        let tkhd = children.first(where: {$0.identifier == "tkhd"}) as! Tkhd
-        self.trackID = tkhd.trackID
-        
+
         try super.init(identifier: "trak",
                        size: size,
                        children: children)

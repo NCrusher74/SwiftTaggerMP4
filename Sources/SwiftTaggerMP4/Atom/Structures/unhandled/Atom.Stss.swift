@@ -20,7 +20,7 @@ class Stss: Atom {
         
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.sampleTable = SampleTable(from: data)
         
         try super.init(identifier: identifier,
@@ -35,7 +35,7 @@ class Stss: Atom {
             var entryArray: [Int] = []
             var remainder = data
             while !remainder.isEmpty {
-                let sampleNumber = remainder.extractFirstToInt(32)
+                let sampleNumber = remainder.extractTo32BitInt()
                 entryArray.append(sampleNumber)
             }
             self.entries = entryArray
@@ -44,7 +44,7 @@ class Stss: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.beData(32))
+                data.append(entry.beDataFrom32BitInt)
             }
             return data
         }
@@ -53,7 +53,7 @@ class Stss: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.sampleTable.entryData)
         return data
     }

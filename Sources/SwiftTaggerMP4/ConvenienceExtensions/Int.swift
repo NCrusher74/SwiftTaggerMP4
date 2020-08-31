@@ -7,22 +7,11 @@
 
 import Foundation
 extension Int {
-    /// Converts integer to big endian data appropriate for the chosen bits
-    func beData(_ bits: Int?) -> Data {
-        switch bits {
-            case 64: return self.uInt64BEData
-            case 32: return self.uInt32BEData
-            case 16: return self.uInt16BEData
-            case 8: return self.uInt8BEData
-            default: return self.uInt32BEData
-        }
-    }
-    
     private var uInt64: UInt64 {
         return UInt64(truncatingIfNeeded: self)
     }
     
-    private var uInt64BEData: Data {
+    var beDataFrom64BitInt: Data {
         return uInt64.beData
     }
     
@@ -30,7 +19,7 @@ extension Int {
         return UInt32(truncatingIfNeeded: self)
     }
     
-    private var uInt32BEData: Data {
+   var beDataFrom32BitInt: Data {
         return uInt32.beData
     }
     
@@ -38,7 +27,7 @@ extension Int {
         return UInt16(truncatingIfNeeded: self)
     }
     
-    private var uInt16BEData: Data {
+    var beDataFrom16BitInt: Data {
         return uInt16.beData
     }
     
@@ -46,7 +35,7 @@ extension Int {
         return UInt8(truncatingIfNeeded: self)
     }
     
-    private var uInt8BEData: Data {
+    var beDataFrom8BitInt: Data {
         return uInt8.beData
     }
 }

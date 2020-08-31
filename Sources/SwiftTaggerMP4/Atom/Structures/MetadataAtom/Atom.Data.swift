@@ -17,7 +17,7 @@ class DataAtom: Atom {
     /// Initialize a `data` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        let typeInt = data.extractFirstToInt(4)
+        let typeInt = data.extractTo32BitInt()
         if let type = DataType(rawValue: typeInt) {
             self.dataType = type
         } else {
@@ -33,7 +33,7 @@ class DataAtom: Atom {
     override var contentData: Data {
         var data = Data()
         let typeInt = self.dataType.rawValue
-        data.append(typeInt.beData(32))
+        data.append(typeInt.beDataFrom32BitInt)
         data.append(locale)
         data.append(self.data)
         return data
@@ -53,7 +53,7 @@ class DataAtom: Atom {
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.beData(32))
+        payload.append(typeInt.beDataFrom32BitInt)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8
@@ -70,7 +70,7 @@ class DataAtom: Atom {
 
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.beData(32))
+        payload.append(typeInt.beDataFrom32BitInt)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8
@@ -90,18 +90,18 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         switch identifier {
             case "rtng", "cpil", "pcst", "stik", "pgap", "shwm":
-                self.data = intValue.beData(8)
+                self.data = intValue.beDataFrom8BitInt
             case "tmpo", "\u{00A9}mvi", "\u{00A9}mvc":
-                self.data = intValue.beData(16)
+                self.data = intValue.beDataFrom16BitInt
             case "plID":
-                self.data = intValue.beData(64)
+                self.data = intValue.beDataFrom64BitInt
             default:
-                self.data = intValue.beData(32)
+                self.data = intValue.beDataFrom32BitInt
         }
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.beData(32))
+        payload.append(typeInt.beDataFrom32BitInt)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8
@@ -118,7 +118,7 @@ class DataAtom: Atom {
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.beData(32))
+        payload.append(typeInt.beDataFrom32BitInt)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8

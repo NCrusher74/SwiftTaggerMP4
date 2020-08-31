@@ -18,7 +18,7 @@ class TrefSubatom: Atom {
         
         var ids: [Int] = []
         while !data.isEmpty {
-            let id = data.extractFirstToInt(32)
+            let id = data.extractTo32BitInt()
             ids.append(id)
         }
         
@@ -34,13 +34,13 @@ class TrefSubatom: Atom {
         self.trackIDs = [chapterTrackID]
         try super.init(identifier: "chap",
                        size: 12,
-                       payload: chapterTrackID.beData(32))
+                       payload: chapterTrackID.beDataFrom32BitInt)
     }
     
     override var contentData: Data {
         var data = Data()
         for id in self.trackIDs {
-            data.append(id.beData(32))
+            data.append(id.beDataFrom32BitInt)
         }
         return data
     }

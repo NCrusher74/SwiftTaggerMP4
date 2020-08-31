@@ -19,7 +19,7 @@ class Stts: Atom {
         
         var data = payload
         self.versionAndFlags = data.extractFirst(4)
-        self.entryCount = data.extractFirstToInt(32)
+        self.entryCount = data.extractTo32BitInt()
         self.sampleTable = SampleTable(from: data)
         
         try super.init(identifier: identifier,
@@ -34,8 +34,8 @@ class Stts: Atom {
             var remainder = data
             var entryArray: [(sampleCount: Int, sampleDuration: Int)] = []
             while !remainder.isEmpty {
-                let sampleCount = remainder.extractFirstToInt(32)
-                let sampleDelta = remainder.extractFirstToInt(32)
+                let sampleCount = remainder.extractTo32BitInt()
+                let sampleDelta = remainder.extractTo32BitInt()
                 let entry = (sampleCount, sampleDelta)
                 entryArray.append(entry)
             }
@@ -49,8 +49,8 @@ class Stts: Atom {
         var entryData: Data {
             var data = Data()
             for entry in self.entries {
-                data.append(entry.sampleCount.beData(32))
-                data.append(entry.sampleDuration.beData(32))
+                data.append(entry.sampleCount.beDataFrom32BitInt)
+                data.append(entry.sampleDuration.beDataFrom32BitInt)
             }
             return data
         }
@@ -119,13 +119,13 @@ class Stts: Atom {
         
         self.sampleTable = SampleTable(from: entries)
         self.entryCount = entries.count
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         
         let tableData = sampleTable.entryData
         
         var payload = Data()
         payload.append(versionAndFlags)
-        payload.append(entryCount.beData(32))
+        payload.append(entryCount.beDataFrom32BitInt)
         payload.append(tableData)
         let size = payload.count + 8
         
@@ -135,7 +135,7 @@ class Stts: Atom {
     override var contentData: Data {
         var data = Data()
         data.append(self.versionAndFlags)
-        data.append(self.entryCount.beData(32))
+        data.append(self.entryCount.beDataFrom32BitInt)
         data.append(self.sampleTable.entryData)
         return data
     }

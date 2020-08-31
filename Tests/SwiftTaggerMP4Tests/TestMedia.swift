@@ -10,42 +10,15 @@
 import Foundation
 import SwiftTaggerMP4
 
+let sampleBookUrl: URL =
+    testMediaDirectory
+        .appendingPathComponent("SampleBook")
+        .appendingPathExtension("m4b")
+
 let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
 
-enum fileVersion {
-    case withMeta
-    case noMeta
-    case cover
-    case chaptered
-    
-    var url: URL {
-        switch self {
-            case .withMeta: return testMediaDirectory.appendingPathComponent("mp4-full-meta.m4a")
-            case .noMeta: return testMediaDirectory.appendingPathComponent("mp4-nometa.m4a")
-            case .chaptered: return testMediaDirectory.appendingPathComponent("mp4-chaptered.m4a")
-            case .cover: return testMediaDirectory.appendingPathComponent("samplecover-green.jpg")
-        }
-    }
-}
-
-//func mp4File(withMeta: Bool) throws -> Mp4File {
-//    if withMeta {
-//        return try Mp4File(location: fileVersion.withMeta.url)
-//    } else {
-//        return try Mp4File(location: fileVersion.noMeta.url)
-//    }
-//}
-//
-//func tag(withMeta: Bool) throws -> Tag {
-//    if withMeta {
-//        return try Tag(from: mp4File(withMeta: true))
-//    } else {
-//        return try Tag(from: mp4File(withMeta: false))
-//    }
-//}
-//
 @available(OSX 10.13, *)
 func tempDirectory() throws -> URL {
     let tempDirectory = FileManager.default.temporaryDirectory

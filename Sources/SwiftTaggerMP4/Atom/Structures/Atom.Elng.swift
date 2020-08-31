@@ -27,7 +27,7 @@ class Elng: Atom {
     
     /// Initialize a `elng` atom from its content
     init(from locale: ICULocaleCode) throws {
-        self.versionAndFlags = Data(repeating: 0x00, count: 4)
+        self.versionAndFlags = Atom.versionAndFlags
         self.language = locale.rawValue
         
         var payload = Data()
