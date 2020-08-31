@@ -13,7 +13,6 @@ class Atom {
     /// The byte count of the whole atom, including header data
     var size: Int
     /// The atoms sub-atom content
-    
     private var _children: [Atom]
     var children: [Atom] {
         get {
@@ -26,7 +25,7 @@ class Atom {
             }
         }
     }
-    
+    weak var fileProperties: FilePropertyReference?
     weak var parent: Atom?
     /// the other atoms descended from the same parent atom
     var siblings: [Atom]? {

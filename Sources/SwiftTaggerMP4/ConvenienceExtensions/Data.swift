@@ -67,4 +67,25 @@ extension Data {
     var toStringISO88591: String? {
         return String(data: self, encoding: .isoLatin1)
     }
+    
+    mutating func extractAsStringUntilNullTermination() -> String {
+        var remainder = self
+        search: while let null = remainder.firstIndex(of: 0) {
+            remainder = self[null...].dropFirst()
+        }
+        
+        var stringBytes: Data.SubSequence
+        if remainder.startIndex == self.startIndex {
+            // No null found.
+            stringBytes = self
+            self = self[self.endIndex...]
+        } else {
+            // Null found.
+            stringBytes = self[..<remainder.startIndex]
+            self = remainder
+            stringBytes = stringBytes.dropLast()
+        }
+        return String(decoding: Data(stringBytes), as: UTF8.self)
+
+    }
 }

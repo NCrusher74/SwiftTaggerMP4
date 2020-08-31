@@ -9,12 +9,11 @@
 import Foundation
 
 /// A type representing an audio file stored locally
-struct Mp4File {
+class Mp4File {
     
-    private let location: URL
-//    var metadata: [()]
     var rootAtoms: [Atom]
-    var reference: FilePropertyReference
+    var moov: Moov
+    var mdats: [Mdat]
     
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -23,17 +22,38 @@ struct Mp4File {
         let validExtensions = ["mp4", "m4a", "m4b", "aac", "m4r", "m4p", "aax"]
         if validExtensions.contains(
             location.pathExtension.lowercased()) {
-            self.location = location
         } else {
             throw Mp4File.Error.InvalidFileFormat
         }
         
         var data = try Data(contentsOf: location)
         var atoms = [Atom]()
+        var moovAtom: Moov? = nil
         if let atom = try data.extractAndParseToAtom() {
+            if atom.identifier == "moov" {
+                if let moov = atom as? Moov {
+                    self.moov = moov
+                    moovAtom = moov
+                } else {
+                    throw Mp4File.Error.MoovAtomNotFound
+                }
+            } else {
+                throw Mp4File.Error.MoovAtomNotFound
+            }
+            if let moov = moovAtom {
+                let fileProperties = try FilePropertyReference(
+                    moov: moov, data: data)
+                atom.fileProperties = fileProperties
+            }
             atoms.append(atom)
+        } else {
+            throw Mp4File.Error.UnableToInitializeAtoms
         }
         self.rootAtoms = atoms
-        self.reference = try FilePropertyReference(rootAtoms: atoms)
+        
+        self.mdats = atoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
+        guard !mdats.isEmpty else {
+            throw Mp4File.Error.MdatAtomNotFound
+        }
     }
 }

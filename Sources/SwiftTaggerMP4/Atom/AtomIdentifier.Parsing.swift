@@ -63,9 +63,9 @@ extension AtomIdentifier {
 //            case .moov: return try Moov(id: idString,
 //                                        size: size,
 //                                        payload: payload)
-//            case .mvhd: return try Mvhd(id: idString,
-//                                        size: size,
-//                                        payload: payload)
+            case .mvhd: return try Mvhd(identifier: self.rawValue,
+                                        size: size,
+                                        payload: payload)
 //            case .name: return try Name(id: idString,
 //                                        size: size,
 //                                        payload: payload)

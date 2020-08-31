@@ -29,4 +29,19 @@ extension Data.SubSequence {
                 return extraction.toInt32
         }
     }
+    
+    mutating func extractToUInt32BE() -> UInt32 {
+        let extraction = self.extractFirst(4)
+        return UInt32(parsing: extraction, .bigEndian)
+    }
+    
+    mutating func extractToUInt16BE() -> UInt16 {
+        let extraction = self.extractFirst(2)
+        return UInt16(parsing: extraction, .bigEndian)
+    }
+
+    mutating func extractToUInt64BE() -> UInt64 {
+        let extraction = self.extractFirst(8)
+        return UInt64(parsing: extraction, .bigEndian)
+    }
 }
