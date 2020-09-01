@@ -1,9 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 8/2/20.
-//
+/*
+  Moov.swift
+
+
+  Created by Nolaine Crusher on 8/2/20.
+*/
 
 import Foundation
 /// Initialize an `moov` atom for parsing from the root structure

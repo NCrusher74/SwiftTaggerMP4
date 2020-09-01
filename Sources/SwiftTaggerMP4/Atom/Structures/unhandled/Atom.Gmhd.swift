@@ -1,15 +1,15 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+ Gmhd.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `gmhd` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Gmhd: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

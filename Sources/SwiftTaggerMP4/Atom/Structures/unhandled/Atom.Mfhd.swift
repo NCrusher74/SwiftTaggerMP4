@@ -1,19 +1,19 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+ Mfhd.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `mfhd` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Mfhd: Atom {
 
-    private var versionAndFlags: Data // 4
-    var sequenceNumber: Int // 4
+    private var versionAndFlags: Data
+    var sequenceNumber: Int
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

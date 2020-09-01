@@ -1,34 +1,34 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 7/5/20.
-//
+/*
+  Text.swift
+
+
+  Created by Nolaine Crusher on 7/5/20.
+*/
 
 import Foundation
 
 /// A class representing a `text` atom in an `Mp4File`'s atom structure
 class Text: Atom {
     
-    private var reserved1: Data // 6
-    var dataReferenceIndex: UInt16 // 2
-    var displayFlags: UInt32 // 4
-    var textJustification: UInt32 // 4
-    var bgColorRed: UInt16 // 2
-    var bgColorGreen: UInt16 // 2
-    var bgColorBlue: UInt16 // 2
-    var defineTextBoxTop: UInt16 // 2
-    var defineTextBoxLeft: UInt16 // 2
-    var defineTextBoxBottom: UInt16 // 2
-    var defineTextBoxRight: UInt16 // 2
-    private var reserved2: Data // 8
-    var fontID: UInt16 // 2
-    var fontFace: UInt16 // 2
-    private var reserved3: Data // 1
-    private var reserved4: Data // 2
-    var fontColorRed: UInt16 // 2
-    var fontColorGreen: UInt16 // 2
-    var fontColorBlue: UInt16 // 2
+    private var reserved1: Data
+    var dataReferenceIndex: UInt16
+    var displayFlags: UInt32
+    var textJustification: UInt32
+    var bgColorRed: UInt16
+    var bgColorGreen: UInt16
+    var bgColorBlue: UInt16
+    var defineTextBoxTop: UInt16
+    var defineTextBoxLeft: UInt16
+    var defineTextBoxBottom: UInt16
+    var defineTextBoxRight: UInt16
+    private var reserved2: Data
+    var fontID: UInt16
+    var fontFace: UInt16
+    private var reserved3: Data
+    private var reserved4: Data
+    var fontColorRed: UInt16
+    var fontColorGreen: UInt16
+    var fontColorBlue: UInt16
     
     /// Initialize a `text` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {

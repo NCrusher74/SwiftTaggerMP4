@@ -1,9 +1,9 @@
-//
-//  Data.swift
-//  
-//
-//  Created by Nolaine Crusher on 6/2/20.
-//
+/*
+  Data.swift
+  
+
+  Created by Nolaine Crusher on 6/2/20.
+*/
 
 import Foundation
 

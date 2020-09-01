@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Elng.swift
 //
 //
 //  Created by Nolaine Crusher on 7/2/20.
@@ -9,7 +9,7 @@ import Foundation
 
 /// A class representing a `elng` atom in an `Mp4File`'s atom structure
 class Elng: Atom {
-    private var versionAndFlags: Data // 4
+    private var versionAndFlags: Data
     var language: String
     
     /// Initialize a `elng` atom for parsing from the root structure

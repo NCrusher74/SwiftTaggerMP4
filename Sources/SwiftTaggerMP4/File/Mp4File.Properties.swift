@@ -1,9 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/31/20.
-//
+/*
+ Mp4File.Properties.swift
+ 
+ 
+ Created by Nolaine Crusher on 8/30/20.
+ */
 
 import Foundation
 

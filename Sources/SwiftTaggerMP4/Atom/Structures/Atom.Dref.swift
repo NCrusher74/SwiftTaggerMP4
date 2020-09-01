@@ -1,17 +1,17 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Dref.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `dref` atom in an `Mp4File`'s atom structure
 class Dref: Atom {
     
-    private var versionAndFlags: Data // 4
-    var entryCount: Int // 4
+    private var versionAndFlags: Data
+    var entryCount: Int
     
     /// Initialize a `dref` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {

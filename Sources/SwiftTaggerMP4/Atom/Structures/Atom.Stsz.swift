@@ -1,9 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/21/20.
-//
+/*
+  Stsz.swift
+
+
+  Created by Nolaine Crusher on 6/21/20.
+*/
 
 import Foundation
 
@@ -16,10 +16,10 @@ import Foundation
  *Note*: In chaptering terms, this describes the byte-count of the chapter title data */
 class Stsz: Atom {
     
-    private var versionAndFlags: Data // 4 bytess
-    var sampleSize: Int // 4 bytes
-    var entryCount: Int // 4 bytes
-    var sampleSizeTable: SampleSizeTable? // whatever is left
+    private var versionAndFlags: Data
+    var sampleSize: Int
+    var entryCount: Int
+    var sampleSizeTable: SampleSizeTable?
     
     /// Initialize a `stsz` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws  {

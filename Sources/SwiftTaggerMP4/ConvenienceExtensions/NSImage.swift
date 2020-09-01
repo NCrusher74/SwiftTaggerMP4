@@ -1,9 +1,9 @@
-//
-//  NSImage.swift
-//  
-//
-//  Created by Nolaine Crusher on 6/8/20.
-//
+/*
+  NSImage.swift
+  
+
+  Created by Nolaine Crusher on 6/8/20.
+*/
 
 import AppKit
 

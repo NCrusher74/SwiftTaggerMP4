@@ -1,19 +1,19 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Stss.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `stss` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Stss: Atom {
 
-    private var versionAndFlags: Data // 4
-    var entryCount: Int // 4
+    private var versionAndFlags: Data
+    var entryCount: Int
     var sampleTable: SampleTable
     
     override init(identifier: String, size: Int, payload: Data) throws {

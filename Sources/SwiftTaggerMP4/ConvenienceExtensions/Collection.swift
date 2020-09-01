@@ -1,9 +1,9 @@
-//
-//  File 2.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/30/20.
-//
+/*
+  File 2.swift
+  
+
+  Created by Nolaine Crusher on 8/30/20.
+*/
 
 import Foundation
 extension Collection where Element: Equatable {

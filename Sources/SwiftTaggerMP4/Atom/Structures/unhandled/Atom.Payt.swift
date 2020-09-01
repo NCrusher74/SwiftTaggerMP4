@@ -1,18 +1,18 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+ Payt.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `payt` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Payt: Atom {
 
-    var payloadNumber: Int // 4
+    var payloadNumber: Int
     var rtpMap: String
     
     override init(identifier: String, size: Int, payload: Data) throws {

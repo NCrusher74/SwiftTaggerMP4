@@ -1,9 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/30/20.
-//
+/*
+ Mp4File.Debug.swift
+ 
+ 
+ Created by Nolaine Crusher on 8/30/20.
+ */
 
 import Foundation
 
@@ -83,6 +83,5 @@ extension Mp4File {
             childrenSize += child.size
         }
         return atomSize - childrenSize
-    }
-    
+    }    
 }

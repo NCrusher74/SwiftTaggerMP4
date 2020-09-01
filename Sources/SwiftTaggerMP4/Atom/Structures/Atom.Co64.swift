@@ -1,9 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+  Co64.swift
+
+
+  Created by Nolaine Crusher on 7/4/20.
+*/
 
 import Foundation
 
@@ -66,7 +66,7 @@ class Co64: Atom {
         var offsets: [Int] = [startingOffset]
         var offset = startingOffset
         for title in titles.dropLast() {
-            let chunkSize = title.count + 2 // UInt16 size bytes
+            let chunkSize = title.count + 2
             offset = offset + chunkSize
             offsets.append(offset)
         }

@@ -1,23 +1,23 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Trex.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `trex` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Trex: Atom {
 
-    private var versionAndFlags: Data // 4
-    var trackID: Int // 4
-    var defaultSampleDescriptionIndex: Int // 4
-    var defaultSampleDuration: Int // 4
-    var defaultSampleSize: Int // 4
-    var defaultSampleFlags: Int // 4
+    private var versionAndFlags: Data
+    var trackID: Int
+    var defaultSampleDescriptionIndex: Int
+    var defaultSampleDuration: Int
+    var defaultSampleSize: Int
+    var defaultSampleFlags: Int
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

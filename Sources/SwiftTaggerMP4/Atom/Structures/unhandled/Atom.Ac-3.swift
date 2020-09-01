@@ -1,25 +1,25 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+ Ac3.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `ac3` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Ac3: Atom {
     
-    private var reserved1: Data // 6 bytes
-    var dataReferenceIndex: Int // 2 bytes, uint16
-    private var reserved2: Data // 8 bytes
-    var channelCount: Int // 2 bytes, uint16
-    var sampleSize: Int // 2 bytes, uint16
-    private var reserved3: Data // 4 bytes
-    var samplingRate: Int // 2 bytes, uint16
-    private var reserved4: Data // 2 bytes
+    private var reserved1: Data
+    var dataReferenceIndex: Int
+    private var reserved2: Data
+    var channelCount: Int
+    var sampleSize: Int
+    private var reserved3: Data
+    var samplingRate: Int
+    private var reserved4: Data
 
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

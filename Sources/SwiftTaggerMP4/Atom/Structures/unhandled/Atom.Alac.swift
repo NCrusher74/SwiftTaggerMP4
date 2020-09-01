@@ -1,30 +1,30 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 7/5/20.
-//
+/*
+ Alac.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `alac` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Alac: Atom {
     
-    private var reserved1: Data // 6 bytes
-    var dataReferenceIndex: Int // 2 bytes uint16
-    var soundVersion: Int // 2 bytes uint16
-    private var reserved2: Data // 6 bytes
-    var channels: Int // uint16, 2 bytes
-    var compressionID: Int // uint16, 2 bytes
-    var packetSize: Int // uint16, 2 bytes
-    var timeScale: Int // uint32, 4 bytes
-    var samplesPerPacket: Int? // UInt32
-    var bytesPerPacket: Int? // Uint32
-    var bytesPerFrame: Int? // UInt32
-    var bytesPerSample: Int? //UInt32
-    private var reserved3: Data? // 20 bytes
+    private var reserved1: Data
+    var dataReferenceIndex: Int
+    var soundVersion: Int
+    private var reserved2: Data
+    var channels: Int
+    var compressionID: Int
+    var packetSize: Int
+    var timeScale: Int
+    var samplesPerPacket: Int?
+    var bytesPerPacket: Int?
+    var bytesPerFrame: Int?
+    var bytesPerSample: Int?
+    private var reserved3: Data?
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

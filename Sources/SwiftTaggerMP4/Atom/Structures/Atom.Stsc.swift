@@ -1,9 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/21/20.
-//
+/*
+  Stsc.swift
+
+
+  Created by Nolaine Crusher on 6/21/20.
+*/
 
 import Foundation
 
@@ -15,8 +15,8 @@ import Foundation
  *NOTE* For the purposes of chaptering, we probably won't need this atom, but it's here just in case. */
 class Stsc: Atom {
     
-    private var versionAndFlags: Data // 4
-    var entryCount: Int // 4 bytes
+    private var versionAndFlags: Data
+    var entryCount: Int
     var sampleToChunkTable: SampleToChunkTable
     
     /// Initialize a `stsc` atom for parsing from the root structure

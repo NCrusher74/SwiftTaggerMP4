@@ -1,9 +1,9 @@
-//  GenreID
-//  SwiftTaggerMP4
-//
-//  Created by Nolaine Crusher on 5/2/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*  GenreID
+  SwiftTaggerMP4
+
+  Created by Nolaine Crusher on 5/2/20.
+  Copyright © 2020 Nolaine Crusher. All rights reserved.
+*/
 
 import SE0270_RangeSet
 

@@ -1,9 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/15/20.
-//
+/*
+  DataType.swift
+  
+
+  Created by Nolaine Crusher on 7/15/20.
+*/
 
 import Foundation
 

@@ -1,15 +1,15 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Traf.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `traf` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Traf: Atom {
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

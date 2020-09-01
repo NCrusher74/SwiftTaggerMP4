@@ -1,16 +1,16 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Subatoms.Tref.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing the child atoms of a `tref` atom in an `Mp4File`'s atom structure
 class TrefSubatom: Atom {
     /// The trackIDs of the referenced tracks
-    var trackIDs: [Int] // 4
+    var trackIDs: [Int]
     
     /// Initialize track reference atoms upon parsing
     override init(identifier: String, size: Int, payload: Data) throws {

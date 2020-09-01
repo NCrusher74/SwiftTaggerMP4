@@ -1,17 +1,17 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Stts.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `stts` atom in an `Mp4File`'s atom structure
 class Stts: Atom {
     
-    private var versionAndFlags: Data // 4
-    var entryCount: Int // 4
+    private var versionAndFlags: Data
+    var entryCount: Int
     var sampleTable: SampleTable
     
     /// Initialize a `stts` atom for parsing from the root structure

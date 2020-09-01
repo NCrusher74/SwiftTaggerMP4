@@ -1,9 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/30/20.
-//
+/*
+ ImageMetadataAtom.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 import Cocoa
@@ -23,8 +23,6 @@ class ImageMetadataAtom: Atom {
             }
         }
         
-        // jpg [0xff, 0xd8, 0xff, 0xe0]
-        // png [0x89, 0x50, 0x4e, 0x47]
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
             let data = dataAtom.data
             if dataAtom.dataType == .jpeg ||

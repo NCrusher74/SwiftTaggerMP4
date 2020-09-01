@@ -1,9 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/21/20.
-//
+/*
+  Stsd.swift
+
+
+  Created by Nolaine Crusher on 6/21/20.
+*/
 
 import Foundation
 /// A class representing a `stsd` atom in an `Mp4File`'s atom structure
@@ -11,8 +11,8 @@ import Foundation
 /** The sample description atom has an atom type of 'stsd'. The sample description atom contains a table of sample descriptions. A media may have one or more sample descriptions, depending upon the number of different encoding schemes used in the media and on the number of files used to store the data. The sample-to-chunk atom identifies the sample description for each sample in the media by specifying the index into this table for the appropriate description (see Sample-to-Chunk Atoms). */
 class Stsd: Atom {
     
-    private var versionAndFlags: Data // 4 bytes
-    var entryCount: Int // 4
+    private var versionAndFlags: Data
+    var entryCount: Int
     var sampleDescriptionTable: SampleDescriptionTable?
     
     /// Initialize a `stsd` atom for parsing from the root structure

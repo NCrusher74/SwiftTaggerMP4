@@ -1,9 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Ilst.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
@@ -19,9 +19,6 @@ class Ilst: Atom {
             }
         }
         
-//        // prevent duplicate unknown atoms
-//        let culledChildren = Ilst.cullDuplicateUnknowns(children: children)
-        
         try super.init(identifier: identifier,
                        size: size,
                        children: children)
@@ -34,36 +31,4 @@ class Ilst: Atom {
         }
         return data
     }
-    
-//    /// Initialize a `ilst` atom for building a metadata track
-//    init(children: [Atom]) throws {
-//
-//        let culledChildren = Ilst.cullDuplicateUnknowns(children: children)
-//        var size: Int = 8
-//        for child in culledChildren {
-//            size += child.size
-//        }
-//        try super.init(identifier: "ilst",
-//                       size: size,
-//                       children: culledChildren)
-//    }
-    
-//    /// Eliminate `unknown` metadata atoms with the same name
-//    private static func cullDuplicateUnknowns(children: [Atom]) -> [Atom] {
-//        // filter out any duplicates
-//        var knownChildren = children.filter({$0.identifier != "----"})
-//        let unknownChildren = children.filter({$0.identifier == "----"}) as! [StringMetadataAtom]
-//        
-//        var unknownChildrenDict = [String: Atom]()
-//        for child in unknownChildren {
-//            unknownChildrenDict[child.name] = child
-//        }
-//        
-//        var culledChildren = [Atom]()
-//        for child in unknownChildrenDict {
-//            culledChildren.append(child.value)
-//        }
-//        knownChildren.append(contentsOf: culledChildren)
-//        return knownChildren
-//    }
 }

@@ -1,18 +1,18 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+ Odkm.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `odkm` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Odkm: Atom {
 
-    private var versionAndFlags: Data // 4
+    private var versionAndFlags: Data
 
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

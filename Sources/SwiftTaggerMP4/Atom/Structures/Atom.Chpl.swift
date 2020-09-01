@@ -1,17 +1,17 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Chpl.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `chpl` atom in an `Mp4File`'s atom structure
 class Chpl: Atom {
-    private var versionAndFlags: Data // 4 bytes
-    private var reserved: Data // 1 byte
-    var chapterCount: Int // 4 bytes
+    private var versionAndFlags: Data
+    private var reserved: Data
+    var chapterCount: Int
     var chapterTable: ChapterTable
     
     /// Initialize a `chpl` atom for parsing from the root structure

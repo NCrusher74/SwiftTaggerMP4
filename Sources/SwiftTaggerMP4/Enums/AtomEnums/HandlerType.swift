@@ -1,9 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/30/20.
-//
+/*
+  HandlerType.swift
+  
+
+  Created by Nolaine Crusher on 8/30/20.
+*/
 
 import Foundation
 enum HandlerType: String {

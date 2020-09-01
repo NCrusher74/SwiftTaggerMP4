@@ -1,15 +1,15 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/5/20.
-//
+/*
+  Tx3g.swift
+  
+
+  Created by Nolaine Crusher on 7/5/20.
+*/
 
 import Foundation
 
 /// A class representing a `tx3g` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Tx3g: Atom {
 
     private var reserved1: Data

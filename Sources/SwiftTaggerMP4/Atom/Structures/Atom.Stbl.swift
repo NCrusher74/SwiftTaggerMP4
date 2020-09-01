@@ -1,17 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/4/20.
-//
+/*
+  Stbl.swift
+  
 
-import Foundation
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 7/1/20.
-//
+  Created by Nolaine Crusher on 8/4/20.
+*/
 
 import Foundation
 

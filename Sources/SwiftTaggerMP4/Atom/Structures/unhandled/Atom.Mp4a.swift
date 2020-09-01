@@ -1,15 +1,15 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/5/20.
-//
+/*
+ Mp4a.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `mp4a` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Mp4a: Atom {
     
     private var reserved1: Data

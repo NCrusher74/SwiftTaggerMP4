@@ -1,20 +1,20 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+ Amr.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `amr` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Amr: Atom {
     
-    private var reserved1: Data // 6 bytes
-    var dataReferenceIndex: Int // 2 bytes, uint16
-    private var reserved2: Data // 16 bytes
+    private var reserved1: Data
+    var dataReferenceIndex: Int
+    private var reserved2: Data
     /*
     // property reserved2 has non-zero fixed values
     static uint8_t reserved2[16] = {
@@ -29,8 +29,8 @@ class Amr: Atom {
     m_pProperties[2]->SetReadOnly(true);
 }
     */
-    var timeScale: Int // 2 bytes, uint16
-    private var reserved3: Data // 4 bytes
+    var timeScale: Int
+    private var reserved3: Data
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

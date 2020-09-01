@@ -1,9 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 8/30/20.
-//
+/*
+  Identifier.Atom.swift
+  
+
+  Created by Nolaine Crusher on 8/30/20.
+*/
 
 import Foundation
 enum AtomIdentifier: String, CaseIterable {

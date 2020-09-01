@@ -1,16 +1,16 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Stco.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `stco` atom in an `Mp4File`'s atom structure
 class Stco: Atom {
     private var versionAndFlags: Data
-    var entryCount: Int // 4
+    var entryCount: Int
     var chunkOffsetTable: ChunkOffsetTable
     
     /// Initialize a `stco` atom for parsing from the root structure
@@ -65,7 +65,7 @@ class Stco: Atom {
         var offsets: [Int] = [startingOffset]
         var offset = startingOffset
         for title in titles.dropLast() {
-            let chunkSize = title.count + 2 // UInt16 size bytes
+            let chunkSize = title.count + 2
             offset = offset + chunkSize
             offsets.append(offset)
         }

@@ -1,10 +1,10 @@
-//
-//  MediaType.swift
-//  SwiftTaggerMP4
-//
-//  Created by Nolaine Crusher on 5/2/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+  MediaType.swift
+  SwiftTaggerMP4
+
+  Created by Nolaine Crusher on 5/2/20.
+  Copyright © 2020 Nolaine Crusher. All rights reserved.
+*/
 
 import Foundation
 

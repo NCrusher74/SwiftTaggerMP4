@@ -1,15 +1,15 @@
-//
-//  File.swift
-//  
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+ Gmin.swift
+ SwiftTaggerMP4
+ 
+ Created by Nolaine Crusher on 8/4/20.
+ */
 
 import Foundation
 
 /// A class representing a `gmin` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Gmin: Atom {
 
     var graphicsMode: UInt16
@@ -17,7 +17,7 @@ class Gmin: Atom {
     var opColorGreen: UInt16
     var opColorBlue: UInt16
     var balance: UInt16
-    private var reserved: Data // 2 bytes
+    private var reserved: Data
 
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

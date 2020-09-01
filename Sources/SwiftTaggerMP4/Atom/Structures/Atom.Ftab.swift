@@ -1,18 +1,18 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 7/4/20.
-//
+/*
+  Ftab.swift
+
+
+  Created by Nolaine Crusher on 7/4/20.
+*/
 
 import Foundation
 
 /// A class representing a `ftab` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Ftab: Atom {
     
-    var entryCount: Int // 2 bytes UInt16
+    var entryCount: Int
     var fontTable: FontTable
     
     override init(identifier: String, size: Int, payload: Data) throws {

@@ -238,23 +238,23 @@ To facilitate compatibility with `ID3` metadata, some freeform tags have been pr
 
 These tags are:
 
-* `audioFileWebpage // custom name "WOAF"`
-* `audioSourceWebpage // custom name "WOAS"`
-* `copyrightWebpage// custom name "WCOP"`
-* `encodingSettings // custom name "TSSE"`
-* `encodingTime // custom name "TDEN"`
-* `initialKey // custom name "TKEY"`
-* `mood // custom name "TMOO"`
-* `originalAlbum // custom name "TOAL"`
-* `originalFilename // custom name "TOFN"`
-* `originalLyricist // custom name "TOLY"`
-* `originalReleaseTIME // custom name "TDOR"`
-* `paymentWebpage // custom name "WPAY"`
-* `producedNotice // custom name "TPRO"`
-* `radioStation // custom name "TRSN"`
-* `radioStationOwner // custom name "TRSO"`
-* `radioStationWebpage // custom name "WORS"`
-* `taggingTime // custom name "TDTG"`
+* `audioFileWebpage // custom name ""`
+* `audioSourceWebpage // custom name ""`
+* `copyrightWebpage// custom name ""`
+* `encodingSettings // custom name ""`
+* `encodingTime // custom name ""`
+* `initialKey // custom name ""`
+* `mood // custom name ""`
+* `originalAlbum // custom name ""`
+* `originalFilename // custom name ""`
+* `originalLyricist // custom name ""`
+* `originalReleaseTIME // custom name ""`
+* `paymentWebpage // custom name ""`
+* `producedNotice // custom name ""`
+* `radioStation // custom name ""`
+* `radioStationOwner // custom name ""`
+* `radioStationWebpage // custom name "`
+* `taggingTime // custom name ""`
 
 
 If you wish to make these accessors compatible with a particular app, change the `name` parameter of the subscript accessor. 

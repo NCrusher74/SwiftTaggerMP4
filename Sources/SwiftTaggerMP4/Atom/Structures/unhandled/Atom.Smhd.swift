@@ -1,19 +1,19 @@
-//
-//  File.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//
+/*
+  Smhd.swift
+
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
 
 import Foundation
 
 /// A class representing a `smhd` atom in an `Mp4File`'s atom structure
 ///
-/// Not currently implemented
+/// **Not currently implemented**
 class Smhd: Atom {
 
-    private var versionAndFlags: Data // 4
-    private var reserved: Data // 4
+    private var versionAndFlags: Data
+    private var reserved: Data
 
     override init(identifier: String, size: Int, payload: Data) throws {
         

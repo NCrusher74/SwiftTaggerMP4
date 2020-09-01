@@ -1,9 +1,9 @@
-//
-//  String.swift
-//  
-//
-//  Created by Nolaine Crusher on 6/3/20.
-//
+/*
+  String.swift
+  
+
+  Created by Nolaine Crusher on 6/3/20.
+*/
 
 import Foundation
 
