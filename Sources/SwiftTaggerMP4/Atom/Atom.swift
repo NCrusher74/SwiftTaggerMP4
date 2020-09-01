@@ -109,5 +109,8 @@ class Atom {
     static var versionAndFlags: Data {
         return Data(repeating: 0x00, count: 4)
     }
-
+    
+    func addReserveData(_ k: Int) -> Data {
+        return Data(repeating: 0x00, count: k)
+    }
 }

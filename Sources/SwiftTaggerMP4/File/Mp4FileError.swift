@@ -48,6 +48,8 @@ extension Mp4File {
         case UnableToSetCoverImage
         /// Error thrown when a required root atom is missing
         case MoovAtomNotFound
+        /// Error thrown when a required atom is missing
+        case dac3AtomNotFound
         /// Error thrown when a required root atom is missing
         case MdatAtomNotFound
         /// Error thrown when a required atom is missing
