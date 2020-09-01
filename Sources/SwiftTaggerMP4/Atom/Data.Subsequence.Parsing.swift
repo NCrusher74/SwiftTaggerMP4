@@ -13,7 +13,7 @@ extension Data.SubSequence {
     ///
     /// The first four bytes of an atom are always its size
     mutating func extractAtomSize() -> Int {
-        return self.extractTo32BitInt()
+        return self.extractFirst(4).int32BE.toInt
     }
     /// Extracts 4 bytes and converts to a `ISO-8859-1`-encoded string
     ///
@@ -36,7 +36,7 @@ extension Data.SubSequence {
             size = self.count + 8
         } else if preliminarySize == 1 {
             // if used, the extendedSizeData comes after the idData
-            size = self.extractTo64BitInt()
+            size = self.extractFirst(8).int64BE.toInt
             payload = self.extractFirst(size - 16)
         } else {
             size = preliminarySize

@@ -9,14 +9,17 @@
 //
 ///// A class representing a `elng` atom in an `Mp4File`'s atom structure
 //class Elng: Atom {
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var language: String
 //    
 //    /// Initialize a `elng` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
 //        
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
+
 //        let languageString = data.extractAsStringUntilNullTermination()
 //        self.language = languageString
 //        
@@ -43,7 +46,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(language.encodedUtf8WithNullTerminator)
 //        return data
 //    }

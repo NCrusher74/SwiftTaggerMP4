@@ -6,6 +6,7 @@
 */
 
 import Foundation
+import SwiftConvenienceExtensions
 
 class Atom {
     /// The atom's unique four byte identifier
@@ -94,11 +95,11 @@ class Atom {
         if preliminarySize > UInt32.max {
             size = 1 // use extended size UInt64 instead
         }
-        data.append(size.beDataFrom32BitInt)
+        data.append(size.int32.beData)
         data.append(self.identifier.encodedISOLatin1)
         
         if preliminarySize > UInt32.max {
-            let extendedSize = preliminarySize.beDataFrom64BitInt
+            let extendedSize = preliminarySize.int64.beData
             data.append(extendedSize)
         }
         
@@ -106,8 +107,12 @@ class Atom {
         return data
     }
     
-    static var versionAndFlags: Data {
-        return Data(repeating: 0x00, count: 4)
+    static var version: Data {
+        return UInt8(0x00).beData
+    }
+    
+    static var flags: Data {
+        return Data(repeating: 0x00, count: 3)
     }
     
     func addReserveData(_ k: Int) -> Data {

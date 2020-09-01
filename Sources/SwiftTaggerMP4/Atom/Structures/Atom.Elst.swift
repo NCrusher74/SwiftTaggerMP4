@@ -10,14 +10,17 @@
 ///// A class representing a `elst` atom in an `Mp4File`'s atom structure
 //class Elst: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var entryCount: Int
 //    var editListTable: EditListTable
 //    
 //    /// Initialize a `elst` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
+
 //        var versionData = versionAndFlags
 //        let version = versionData.extractTo8BitInt()
 //        self.entryCount = data.extractTo32BitInt()
@@ -30,7 +33,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.entryCount.beDataFrom32BitInt)
 //        data.append(self.editListTable.entryData)
 //        return data

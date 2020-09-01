@@ -9,7 +9,8 @@
 //
 ///// A class representing a `chpl` atom in an `Mp4File`'s atom structure
 //class Chpl: Atom {
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    private var reserved: Data
 //    var chapterCount: Int
 //    var chapterTable: ChapterTable
@@ -17,7 +18,9 @@
 //    /// Initialize a `chpl` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
+
 //        self.reserved = data.extractFirst(1)
 //        self.chapterCount = data.extractTo32BitInt()
 //        
@@ -78,7 +81,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.reserved)
 //        data.append(self.chapterCount.beDataFrom32BitInt)
 //        data.append(self.chapterTable.entryData)

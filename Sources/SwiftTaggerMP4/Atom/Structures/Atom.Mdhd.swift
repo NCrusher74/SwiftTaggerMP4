@@ -10,7 +10,8 @@
 ///// A class representing a `mdhd` atom in an `Mp4File`'s atom structure
 //class Mdhd: Atom {
 //    // contentData count should be a total of 24 bytes
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var creationTime: UInt32
 //    var modificationTime: UInt32
 //    var timeScale: Int
@@ -26,7 +27,9 @@
 //            throw Mp4File.Error.InvalidMediaHeaderData
 //        }
 //        
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
+
 //        self.creationTime = data.extractToUInt32BE()
 //        self.modificationTime = data.extractToUInt32BE()
 //        let preliminaryTimeScale = data.extractTo32BitDouble()
@@ -184,7 +187,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.creationTime.beData)
 //        data.append(self.modificationTime.beData)
 //        data.append(self.timeScale.beDataFrom32BitInt)

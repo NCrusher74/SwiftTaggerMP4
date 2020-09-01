@@ -10,7 +10,8 @@
 ///// A class representing a `mvhd` atom in an `Mp4File`'s atom structure
 //class Mvhd: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var creationTime: UInt32
 //    var modificationTime: UInt32
 //    /// the number of "ticks" per second in the media
@@ -34,7 +35,9 @@
 //        var data = payload
 //        guard data.count == 100 else { throw Mp4File.Error.InvalidMovieHeaderData }
 //        
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
+
 //        self.creationTime = data.extractFirst(4).toUInt32
 //        self.modificationTime = data.extractFirst(4).toUInt32
 //        let preliminaryTimeScale = data.extractTo32BitDouble()
@@ -73,7 +76,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.creationTime.beData)
 //        data.append(self.modificationTime.beData)
 //        data.append(self.timeScale.beDataFrom32BitInt)

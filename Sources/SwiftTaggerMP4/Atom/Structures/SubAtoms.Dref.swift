@@ -16,7 +16,8 @@
 //    /// Initialize a dref child atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.data = data
 //        try super.init(identifier: identifier,
 //                       size: size,
@@ -25,7 +26,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.data)
 //        return data
 //    }

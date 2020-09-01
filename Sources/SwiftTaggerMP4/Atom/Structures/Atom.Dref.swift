@@ -10,13 +10,15 @@
 ///// A class representing a `dref` atom in an `Mp4File`'s atom structure
 //class Dref: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var entryCount: Int
 //    
 //    /// Initialize a `dref` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.entryCount = data.extractTo32BitInt()
 //        
 //        var children = [Atom]()
@@ -52,7 +54,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.entryCount.beDataFrom32BitInt)
 //        for child in self.children {
 //            data.append(child.encode())

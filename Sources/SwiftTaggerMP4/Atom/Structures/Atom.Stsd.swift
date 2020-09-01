@@ -11,14 +11,16 @@
 ///** The sample description atom has an atom type of 'stsd'. The sample description atom contains a table of sample descriptions. A media may have one or more sample descriptions, depending upon the number of different encoding schemes used in the media and on the number of files used to store the data. The sample-to-chunk atom identifies the sample description for each sample in the media by specifying the index into this table for the appropriate description (see Sample-to-Chunk Atoms). */
 //class Stsd: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var entryCount: Int
 //    var sampleDescriptionTable: SampleDescriptionTable?
 //    
 //    /// Initialize a `stsd` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws  {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.entryCount = data.extractTo32BitInt()
 //        self.sampleDescriptionTable = SampleDescriptionTable(from: data)
 //        try super.init(identifier: identifier,
@@ -79,7 +81,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.entryCount.beDataFrom32BitInt)
 //        
 //        let stbl = self.parent

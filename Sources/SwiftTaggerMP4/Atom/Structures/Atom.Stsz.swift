@@ -16,7 +16,8 @@
 // *Note*: In chaptering terms, this describes the byte-count of the chapter title data */
 //class Stsz: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var sampleSize: Int
 //    var entryCount: Int
 //    var sampleSizeTable: SampleSizeTable?
@@ -25,7 +26,8 @@
 //    override init(identifier: String, size: Int, payload: Data) throws  {
 //        var data = payload
 //        
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.sampleSize = data.extractTo32BitInt()
 //        self.entryCount = data.extractTo32BitInt()
 //        
@@ -110,7 +112,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.sampleSize.beDataFrom32BitInt)
 //        data.append(self.entryCount.beDataFrom32BitInt)
 //        data.append(self.sampleSizeTable?.entryData ?? Data())

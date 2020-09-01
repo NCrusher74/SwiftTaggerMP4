@@ -10,7 +10,8 @@
 ///// A class representing a `tkhd` atom in an `Mp4File`'s atom structure
 //class Tkhd: Atom {
 //    // contentData count should be a total of 84 bytes
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var creationTime: UInt32
 //    var modificationTime: UInt32
 //    var trackID: Int
@@ -33,7 +34,8 @@
 //            throw Mp4File.Error.InvalidTrackHeaderData
 //        }
 //        
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.creationTime = data.extractToUInt32BE()
 //        self.modificationTime = data.extractToUInt32BE()
 //        self.trackID = data.extractTo32BitInt()
@@ -112,7 +114,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.creationTime.beData)
 //        data.append(self.modificationTime.beData)
 //        data.append(self.trackID.beDataFrom32BitInt)

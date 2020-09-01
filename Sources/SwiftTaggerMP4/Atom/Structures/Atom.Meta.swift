@@ -10,7 +10,8 @@
 ///// A class representing a `meta` atom in an `Mp4File`'s atom structure
 //class Meta: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var hdlr: Hdlr
 //    var ilst: Ilst
 //    
@@ -18,7 +19,8 @@
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
 //        
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        
 //        var children = [Atom]()
 //        while !data.isEmpty {
@@ -73,7 +75,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        
 //        for child in self.children {
 //            data.append(child.encode())

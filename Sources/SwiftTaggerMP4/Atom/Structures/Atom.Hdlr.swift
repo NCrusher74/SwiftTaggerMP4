@@ -10,7 +10,8 @@
 ///// A class representing a `hdlr` atom in an `Mp4File`'s atom structure
 //class Hdlr: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    // mhlr or dhlr if parent is mdia, or mdta if parent is meta, but will probably actually be 0
 //    private var handlerTypeRaw: Data
 //    // will be mdir if parent is meta
@@ -23,7 +24,8 @@
 //    /// Initialize a `hdlr` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.handlerTypeRaw = data.extractFirst(4)
 //        self.handlerSubtypeRaw = data.extractFirst(4)
 //        self.reserved = data.extractFirst(12)
@@ -117,7 +119,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.handlerTypeRaw)
 //        data.append(self.handlerSubtypeRaw)
 //        data.append(self.reserved)

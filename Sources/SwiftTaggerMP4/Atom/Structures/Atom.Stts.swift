@@ -10,7 +10,8 @@
 ///// A class representing a `stts` atom in an `Mp4File`'s atom structure
 //class Stts: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var entryCount: Int
 //    var sampleTable: SampleTable
 //    
@@ -18,7 +19,8 @@
 //    override init(identifier: String, size: Int, payload: Data) throws {
 //        
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.entryCount = data.extractTo32BitInt()
 //        self.sampleTable = SampleTable(from: data)
 //        
@@ -134,7 +136,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.entryCount.beDataFrom32BitInt)
 //        data.append(self.sampleTable.entryData)
 //        return data

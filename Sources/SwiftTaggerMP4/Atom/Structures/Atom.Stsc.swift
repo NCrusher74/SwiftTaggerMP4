@@ -15,14 +15,16 @@
 // *NOTE* For the purposes of chaptering, we probably won't need this atom, but it's here just in case. */
 //class Stsc: Atom {
 //    
-//    private var versionAndFlags: Data
+//    private var version: Data
+//    private var flags: Data
 //    var entryCount: Int
 //    var sampleToChunkTable: SampleToChunkTable
 //    
 //    /// Initialize a `stsc` atom for parsing from the root structure
 //    override init(identifier: String, size: Int, payload: Data) throws  {
 //        var data = payload
-//        self.versionAndFlags = data.extractFirst(4)
+//        self.version = data.extractFirst(1)
+//        self.flags = data.extractFirst(3)
 //        self.entryCount = data.extractTo32BitInt()
 //        self.sampleToChunkTable = SampleToChunkTable(from: data)
 //        try super.init(identifier: identifier,
@@ -85,7 +87,8 @@
 //    
 //    override var contentData: Data {
 //        var data = Data()
-//        data.append(self.versionAndFlags)
+//        data.append(self.version)
+//        data.append(self.flags)
 //        data.append(self.entryCount.beDataFrom32BitInt)
 //        data.append(self.sampleToChunkTable.entryData)
 //        return data

@@ -6,58 +6,68 @@
  */
 
 import Foundation
+import SwiftConvenienceExtensions
 
 /// A class representing a `ac3` atom in an `Mp4File`'s atom structure
 ///
 /// **Not currently implemented**
 class Ac3: Atom {
     
-    private var reserved1: Data
-    var dataReferenceIndex: Int
-    private var reserved2: Data
-    var channelCount: Int
-    var sampleSize: Int
-    private var reserved3: Data
-    var samplingRate: Int
-    private var reserved4: Data
-
-    override init(identifier: String, size: Int, payload: Data) throws {
+    var dataReferenceIndex: Int16
+    var channelCount: Int16
+    var sampleSize: Int16
+    var samplingRate: Int16
+    var dac3: Dac3
+    
+    override init(identifier: String,
+                  size: Int,
+                  payload: Data,
+                  children: [Atom]) throws {
         var data = payload
-        self.reserved1 = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractTo16BitInt()
-        self.reserved2 = data.extractFirst(8)
-        self.channelCount = data.extractTo16BitInt()
-        self.sampleSize = data.extractTo16BitInt()
-        self.reserved3 = data.extractFirst(4)
-        self.samplingRate = data.extractTo16BitInt()
-        self.reserved4 = data.extractFirst(2)
+        // required, 6 bytes of reserved data
+        _ = data.extractFirst(6)
+        self.dataReferenceIndex = data.extractFirst(2).int16BE
+        // required, 2 bytes of reserved data
+        _ = data.extractFirst(2)
+        self.channelCount = data.extractFirst(2).int16BE
+        self.sampleSize = data.extractFirst(2).int16BE
+        // required, 4 bytes of reserved data
+        _ = data.extractFirst(4)
+        self.samplingRate = data.extractFirst(2).int16BE
+        // required, 2 bytes of reserved data
+        _ = data.extractFirst(2)
         
         var children = [Atom]()
         while !data.isEmpty {
             if let child = try data.extractAndParseToAtom() {
-            children.append(child)
+                children.append(child)
             }
         }
-        try super.init(identifier: identifier,
-                   size: size,
-                   payload: payload,
-                   children: children)
-
-        guard children.contains(where: {$0.identifier == "dac3"}) else {
+        if let dac3 = children.first(where: {$0.identifier == "dac3"}) as? Dac3 {
+            self.dac3 = dac3
+        } else {
             throw Mp4File.Error.Dac3AtomNotFound
         }
+        
+        try super.init(identifier: identifier,
+                       size: size,
+                       payload: payload,
+                       children: children)
     }
     
     override var contentData: Data {
         var data = Data()
-        data.append(self.reserved1)
-        data.append(self.dataReferenceIndex.beDataFrom16BitInt)
-        data.append(self.reserved2)
-        data.append(self.channelCount.beDataFrom16BitInt)
-        data.append(self.sampleSize.beDataFrom16BitInt)
-        data.append(self.reserved3)
-        data.append(self.samplingRate.beDataFrom16BitInt)
-        data.append(self.reserved4)
+        data.append(addReserveData(6))
+        data.append(self.dataReferenceIndex.beData)
+        data.append(addReserveData(2))
+        data.append(self.channelCount.beData)
+        data.append(self.sampleSize.beData)
+        data.append(addReserveData(4))
+        data.append(self.samplingRate.beData)
+        data.append(addReserveData(2))
+        for child in children {
+            data.append(child.encode())
+        }
         return data
     }
 }
