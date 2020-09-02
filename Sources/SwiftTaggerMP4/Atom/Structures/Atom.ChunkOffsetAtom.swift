@@ -53,7 +53,7 @@ class ChunkOffsetAtom: Atom {
     }
     
     /// Initialize a `chunkOffsetAtom` with chapter track data
-    init(startingOffset: Int, titles: [String]) throws {
+    init(use64BitOffset: Bool, startingOffset: Int, titles: [String]) throws {
         let offsetArray = ChunkOffsetAtom.calculateOffsets(
             startingOffset: startingOffset, titles: titles)
         self.version = Atom.version
@@ -67,7 +67,7 @@ class ChunkOffsetAtom: Atom {
         
         payload.append(self.entryCount.int32.beData)
         for offset in self.chunkOffsetTable {
-            if Mp4File.uses64BitOffsets {
+            if use64BitOffset {
                 payload.append(offset.int64.beData)
             } else {
                 payload.append(offset.int32.beData)
@@ -75,7 +75,7 @@ class ChunkOffsetAtom: Atom {
         }
         let size = payload.count + 8
         
-        if Mp4File.uses64BitOffsets {
+        if use64BitOffset {
             try super.init(identifier: "co64",
                            size: size,
                            payload: payload)
@@ -92,7 +92,7 @@ class ChunkOffsetAtom: Atom {
         data.append(self.flags)
         data.append(self.entryCount.int32.beData)
         for offset in self.chunkOffsetTable {
-            if Mp4File.uses64BitOffsets {
+            if self.identifier == "co64" {
                 data.append(offset.int64.beData)
             } else {
                 data.append(offset.int32.beData)

@@ -17,11 +17,8 @@ enum DataReferenceType: String {
 
 extension DataReferenceType {
     func parse(size: Int, payload: Data) throws -> Atom {
-        switch self {
-            default:
-                return try PassThrough(identifier: self.rawValue,
-                                       size: size,
-                                       payload: payload)
-        }
+        return try DrefSubatom(identifier: self.rawValue,
+                               size: size,
+                               payload: payload)
     }
 }

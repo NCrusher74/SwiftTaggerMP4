@@ -52,12 +52,12 @@ extension Data.SubSequence {
             if let identifier = AtomIdentifier(rawValue: atomID) {
                 return try identifier.parse(
                     size: size, payload: payload)
-            } else if let identifier = DataReferenceType(
-                rawValue: atomID) {
+            } else if let identifier =
+                DataReferenceType(rawValue: atomID) {
                 return try identifier.parse(
                     size: size, payload: payload)
-            } else if let identifier = TrackReferenceType(
-                rawValue: atomID) {
+            } else if let identifier =
+                TrackReferenceType(rawValue: atomID) {
                 return try identifier.parse(
                     size: size, payload: payload)
             } else {

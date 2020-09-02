@@ -15,10 +15,7 @@ enum AtomIdentifier: String, CaseIterable {
     case bitr
     case btrt
     case burl
-    case cdsc
-    case chap
     case chpl
-    case clcp
     case co64
     case colr
     case ctry
@@ -31,7 +28,6 @@ enum AtomIdentifier: String, CaseIterable {
     case dinf
     case dmax
     case dmed
-    case dpnd
     case dref
     case drep
     case edts
@@ -40,9 +36,6 @@ enum AtomIdentifier: String, CaseIterable {
     case enca
     case encv
     case esds
-    case fall
-    case folw
-    case forc
     case free
     case frma
     case ftab
@@ -50,7 +43,6 @@ enum AtomIdentifier: String, CaseIterable {
     case gmhd
     case gmin
     case hdlr
-    case hinf
     case hint
     case hmhd
     case hnti
@@ -59,7 +51,6 @@ enum AtomIdentifier: String, CaseIterable {
     case imif
     case ilst
     case iods
-    case ipir
     case iSFM
     case keys
     case lang
@@ -75,7 +66,6 @@ enum AtomIdentifier: String, CaseIterable {
     case minf
     case moof
     case moov
-    case mpod
     case mp4a
     case mp4s
     case mp4v
@@ -99,7 +89,6 @@ enum AtomIdentifier: String, CaseIterable {
     case sbgp
     case schi
     case schm
-    case scpt
     case sdp = "sdp "
     case sdtp
     case sgpd
@@ -107,7 +96,6 @@ enum AtomIdentifier: String, CaseIterable {
     case skip
     case smhd
     case snro
-    case ssrc
     case stbl
     case stco
     case stdp
@@ -118,7 +106,6 @@ enum AtomIdentifier: String, CaseIterable {
     case stsz
     case stts
     case stz2
-    case sync
     case tagc
     case text
     case tfhd
@@ -126,7 +113,6 @@ enum AtomIdentifier: String, CaseIterable {
     case tims
     case tkhd
     case tmax
-    case tmcd
     case tmin
     case tnam
     case tpyl

@@ -107,10 +107,7 @@ class Atom {
         return data
     }
     
-    static var version: Data {
-        return UInt8(0x00).beData
-    }
-    
+    static var version: Data = UInt8(0x00).beData
     static var flags: Data {
         return Data(repeating: 0x00, count: 3)
     }

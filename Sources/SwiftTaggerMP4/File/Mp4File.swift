@@ -41,15 +41,12 @@ class Mp4File {
         
         if let moov = atoms.first(where: {$0.identifier == "moov"}) as? Moov {
             self.moov = moov
-            Mp4File.timeScale = moov.mvhd.timeScale
-            Mp4File.duration = moov.mvhd.duration
-            if let elst = moov.soundTrack.edts?.elst {
-                Mp4File.elstDuration = elst.editListTable.first?.segmentDuration
-            }
+            Atom.version = moov.mvhd.version
+            Mp4File.mediaTimeScale = Double(moov.soundTrack.mdia.mdhd.timeScale)
+            Mp4File.mediaDuration = Double(moov.soundTrack.mdia.mdhd.duration)
         } else {
             throw Mp4File.Error.MoovAtomNotFound
         }
-        
 
         self.mdats = atoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
         guard !mdats.isEmpty else {

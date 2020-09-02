@@ -22,9 +22,8 @@ extension Mdia {
                 if let mdia = self.siblings?.first(where: {$0.identifier == "mdia"}) as? Mdia, mdia.hdlr.handlerSubtype == .soun {
                     mdhd.language = Mdhd.getLanguage(from: new)
                 } else {
-                    let duration = mdhd.duration
                     do {
-                        mdhd = try Mdhd(mvhdDuration: duration, elng: new)
+                        mdhd = try Mdhd(elng: new)
                     } catch {
                         fatalError("Unable to initialize 'mdhd' atom for using 'elng' locale")
                     }

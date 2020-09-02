@@ -14,8 +14,7 @@ class Stsd: Atom {
     private var version: Data
     private var flags: Data
     var entryCount: Int
-    var sampleDescriptionTable: [(entrySize: Int, dataFormat: String, dataReferenceIndex: Int, additionalContent: Data)]?
-    
+
     /// Initialize a `stsd` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws  {
         var data = payload
@@ -23,26 +22,17 @@ class Stsd: Atom {
         self.flags = data.extractFirst(3)
         self.entryCount = data.extractToInt(4)
         
-        var entryArray = [(entrySize: Int, dataFormat: String, dataReferenceIndex: Int, additionalContent: Data)]()
+        var children = [Atom]()
         while !data.isEmpty {
-            let size = data.extractToInt(4)
-            let format = data.extractAtomID() ?? ""
-            // reserved
-            _ = data.extractFirst(6)
-            let index = data.extractToInt(2)
-            let additionalContentDataCount = size - 16
-            var additionalContentData = Data()
-            if additionalContentDataCount > 0 {
-                additionalContentData = data.extractFirst(additionalContentDataCount)
+            if let child = try data.extractAndParseToAtom() {
+                children.append(child)
             }
-            let entry = (size, format, index, additionalContentData)
-            entryArray.append(entry)
         }
 
-        self.sampleDescriptionTable = entryArray
         try super.init(identifier: identifier,
                        size: size,
-                       payload: payload)
+                       payload: payload,
+                       children: children)
     }
     
     /// Initialize an `stsd` atom with default properties for building a chapter track
@@ -68,34 +58,8 @@ class Stsd: Atom {
         data.append(self.version)
         data.append(self.flags)
         data.append(self.entryCount.int32.beData)
-        
-        let stbl = self.parent
-        let minf = stbl?.parent
-        let hdlr = minf?.siblings?.first(where: {$0.identifier == "hdlr"}) as? Hdlr
-        
-        if hdlr?.handlerSubtype == .text {
-            do {
-                let textAtom = try Text()
-                let textSize = textAtom.size
-                let textSizeEncoded = textSize.int32.beData
-                data.append(textSizeEncoded)
-                
-                let textID = textAtom.identifier
-                let textIDEncoded = textID.encodedISOLatin1
-                data.append(textIDEncoded)
-                
-                data.append(textAtom.contentData)
-            } catch {
-                fatalError("Unable to create 'stsz' atom sample description table/text atom")
-            }
-        } else {
-            for entry in self.sampleDescriptionTable ?? [] {
-                data.append(entry.entrySize.int32.beData)
-                data.append(entry.dataFormat.encodedISOLatin1)
-                data.append(Atom.addReserveData(6))
-                data.append(entry.dataReferenceIndex.int16.beData)
-                data.append(entry.additionalContent)
-            }
+        for child in self.children {
+            data.append(child.encode())
         }
         return data
     }

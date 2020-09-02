@@ -21,9 +21,8 @@ extension Date {
         }
     }()
     
-    var dateIntervalSince1904: Int32 {
+    var dateIntervalSince1904: Int {
         let timeInterval = Int(timeIntervalSince(Date.mp4Epoch))
-        let int32 = Int32(timeInterval)
-        return int32
+        return timeInterval
     }
 }

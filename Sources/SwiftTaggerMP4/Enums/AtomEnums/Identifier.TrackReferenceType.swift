@@ -6,7 +6,7 @@
  */
 
 import Foundation
-enum TrackReferenceType: String {
+enum TrackReferenceType: String, CaseIterable {
     case cdsc
     case chap
     case clcp
@@ -21,16 +21,12 @@ enum TrackReferenceType: String {
     case ssrc
     case sync
     case tmcd
-    case unknown
 }
 
 extension TrackReferenceType {
     func parse(size: Int, payload: Data) throws -> Atom {
-        switch self {
-            default:
-                return try PassThrough(identifier: self.rawValue,
-                                       size: size,
-                                       payload: payload)
-        }
+        return try TrefSubatom(identifier: self.rawValue,
+                               size: size,
+                               payload: payload)
     }
 }

@@ -55,11 +55,7 @@ class Stsz: Atom {
                 size += sizeInt
             }
         } else {
-            var count = self.entryCount
-            while count > 0 {
-                size += self.sampleSize
-                count -= 1
-            }
+            size = self.sampleSize * self.entryCount
         }
         return size
     }

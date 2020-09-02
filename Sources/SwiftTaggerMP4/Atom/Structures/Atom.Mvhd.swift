@@ -10,10 +10,10 @@ import Foundation
 /// A class representing a `mvhd` atom in an `Mp4File`'s atom structure
 class Mvhd: Atom {
     
-    private var version: Data
+    var version: Data
     private var flags: Data
-    var creationTime: Int32
-    var modificationTime: Int32
+    var creationTime: Int
+    var modificationTime: Int
     /// the number of "ticks" per second in the media
     var timeScale: Int
     /// the duration in milliseconds
@@ -37,10 +37,21 @@ class Mvhd: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
 
-        self.creationTime = data.extractFirst(4).int32BE
-        self.modificationTime = data.extractFirst(4).int32BE
+        if self.version.int8BE == 0x01 {
+            self.creationTime = data.extractToInt(8)
+            self.modificationTime = data.extractToInt(8)
+        } else {
+            self.creationTime = data.extractToInt(4)
+            self.modificationTime = data.extractToInt(4)
+        }
+        
         let preliminaryTimeScale = data.extractToDouble(4)
-        let preliminaryDuration = data.extractToDouble(4)
+        var preliminaryDuration = Double()
+        if self.version.int8BE == 0x01 {
+            preliminaryDuration = data.extractToDouble(8)
+        } else {
+            preliminaryDuration = data.extractToDouble(4)
+        }
         if preliminaryTimeScale == 1000 {
             // duration is already in milliseconds, no need to calculate
             self.duration = Int(preliminaryDuration)
@@ -78,10 +89,19 @@ class Mvhd: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(self.creationTime.beData)
-        data.append(self.modificationTime.beData)
+        if self.version.int8BE == 0x01 {
+            data.append(self.creationTime.int64.beData)
+            data.append(self.modificationTime.int64.beData)
+        } else {
+            data.append(self.creationTime.int32.beData)
+            data.append(self.modificationTime.int32.beData)
+        }
         data.append(self.timeScale.int32.beData)
-        data.append(self.duration.int32.beData)
+        if self.version.int8BE == 0x01 {
+            data.append(self.duration.int64.beData)
+        } else {
+            data.append(self.duration.int32.beData)
+        }
         data.append(self.preferredRate.beData)
         data.append(self.preferredVolume.beData)
         data.append(Atom.addReserveData(10))

@@ -20,8 +20,7 @@ class TrefSubatom: Atom {
         while !data.isEmpty {
             let id = data.extractToInt(4)
             ids.append(id)
-        }
-        
+        }        
         self.trackIDs = ids
         
         try super.init(identifier: identifier,

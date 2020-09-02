@@ -35,7 +35,20 @@ class Stts: Atom {
                        size: size,
                        payload: payload)
     }
-        
+    
+    var mediaDuration: Int {
+        var preliminaryDuration = Double()
+        for entry in self.sampleTable {
+            var count = entry.sampleCount
+            while count > 0 {
+                preliminaryDuration += Double(entry.sampleDuration)
+                count -= 1
+            }
+        }
+        let duration = preliminaryDuration / Mp4File.mediaTimeScale * 1000
+        return Int(duration)
+    }
+    
     /// Calculate the durations of chapter samples
     private static func calculateDurations(from startTimes: [Int], fileDuration: Int) -> [Int] {
         var chapterDurations = [Int]()

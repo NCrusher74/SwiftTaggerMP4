@@ -8,8 +8,7 @@
 import Foundation
 
 extension Mp4File {
-    static var timeScale = Int()
-    static var duration = Int()
-    static var elstDuration: Int? = nil
-    static var uses64BitOffsets: Bool = false
+    static var mediaTimeScale = Double()
+    static var mediaDuration = Double()
+
 }
