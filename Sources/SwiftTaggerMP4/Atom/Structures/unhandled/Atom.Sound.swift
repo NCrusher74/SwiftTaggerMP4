@@ -29,7 +29,7 @@ class SoundAtom: Atom {
         var data = payload
         _ = data.extractFirst(6)
         self.dataReferenceIndex = data.extractFirst(2).int16BE
-        self.soundVersion = data.extractFirst(2).int16BE.toInt
+        self.soundVersion = data.extractToInt(2)
         _ = data.extractFirst(6)
         self.channels = data.extractFirst(2).int16BE
         self.compressionID = data.extractFirst(2).int16BE
@@ -70,10 +70,10 @@ class SoundAtom: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(addReserveData(6))
+        data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
         data.append(self.soundVersion.int16.beData)
-        data.append(addReserveData(2))
+        data.append(Atom.addReserveData(2))
         data.append(self.channels.beData)
         data.append(self.compressionID.beData)
         data.append(self.packetSize.beData)
@@ -90,7 +90,7 @@ class SoundAtom: Atom {
         if let bytesPerSample = self.bytesPerSample {
             data.append(bytesPerSample.beData)
         }
-        data.append(addReserveData(20))
+        data.append(Atom.addReserveData(20))
         for child in children {
             data.append(child.encode())
         }

@@ -41,7 +41,7 @@ class Mp4s: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(addReserveData(6))
+        data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
         for child in self.children {
             data.append(child.encode())

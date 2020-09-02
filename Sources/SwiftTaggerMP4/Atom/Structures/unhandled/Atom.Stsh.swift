@@ -23,12 +23,12 @@ class Stsh: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
 
-        self.entryCount = data.extractFirst(4).int32BE.toInt
+        self.entryCount = data.extractToInt(4)
         
         var entryArray: [(shadowedSampleNumber: Int, syncSampleNumber: Int)] = []
         while !data.isEmpty {
-            let shadowSampleNumber = data.extractFirst(4).int32BE.toInt
-            let syncSampleNumber = data.extractFirst(4).int32BE.toInt
+            let shadowSampleNumber = data.extractToInt(4)
+            let syncSampleNumber = data.extractToInt(4)
             let entry = (shadowSampleNumber, syncSampleNumber)
             entryArray.append(entry)
         }

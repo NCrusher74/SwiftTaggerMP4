@@ -39,7 +39,7 @@ class Gmin: Atom {
         data.append(self.opColorGreen.beData)
         data.append(self.opColorBlue.beData)
         data.append(self.balance.beData)
-        data.append(addReserveData(2))
+        data.append(Atom.addReserveData(2))
         return data
     }
 }

@@ -115,7 +115,7 @@ class Atom {
         return Data(repeating: 0x00, count: 3)
     }
     
-    func addReserveData(_ k: Int) -> Data {
+    static func addReserveData(_ k: Int) -> Data {
         return Data(repeating: 0x00, count: k)
     }
 }

@@ -1,110 +1,90 @@
-///*
-//  Elst.swift
-//
-//
-//  Created by Nolaine Crusher on 6/30/20.
-//*/
-//
-//import Foundation
-//
-///// A class representing a `elst` atom in an `Mp4File`'s atom structure
-//class Elst: Atom {
-//    
-//    private var version: Data
-//    private var flags: Data
-//    var entryCount: Int
-//    var editListTable: EditListTable
-//    
-//    /// Initialize a `elst` atom for parsing from the root structure
-//    override init(identifier: String, size: Int, payload: Data) throws {
-//        var data = payload
-//        self.version = data.extractFirst(1)
-//        self.flags = data.extractFirst(3)
+/*
+  Elst.swift
 
-//        var versionData = versionAndFlags
-//        let version = versionData.extractTo8BitInt()
-//        self.entryCount = data.extractTo32BitInt()
-//        self.editListTable = EditListTable(from: data, version: version)
-//        
-//        try super.init(identifier: identifier,
-//                       size: size,
-//                       payload: payload)
-//    }
-//    
-//    override var contentData: Data {
-//        var data = Data()
-//        data.append(self.version)
-//        data.append(self.flags)
-//        data.append(self.entryCount.beDataFrom32BitInt)
-//        data.append(self.editListTable.entryData)
-//        return data
-//    }
-//    
-//    class EditListTable {
-//        /// SegmentDuration: A 32-bit integer containing the starting time within the media of this edit segment (in MEDIA (derived from mdhd atom )timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit
-//        var entries: [(segmentDuration: Int, mediaTime: Int, mediaRate: Int, reserved: Data)]
-//        var version: Int
-//        
-//        init(from data: Data, version: Int) {
-//            self.version = version
-//            var remainder = data
-//            var entryArray: [(segmentDuration: Int, mediaTime: Int, mediaRate: Int, reserved: Data)] = []
-//            
-//            while !remainder.isEmpty {
-//                var segmentDuration: Int = 0
-//                var mediaTime: Int = 0
-//                if version == 1 {
-//                    let preliminarySegmentDuration = remainder.extractTo64BitIntViaDouble()
-//                    segmentDuration = preliminarySegmentDuration / Mp4File.timeScale
-//                    mediaTime = remainder.extractTo64BitInt()
-//                } else {
-//                    let preliminarySegmentDuration = remainder.extractTo32BitIntViaDouble()
-//                    segmentDuration = preliminarySegmentDuration / Mp4File.timeScale
-//                    mediaTime = remainder.extractTo32BitInt()
-//                }
-//                let mediaRate = remainder.extractTo16BitInt()
-//                let reserved = remainder.extractFirst(2)
-//                let entry = (segmentDuration, mediaTime, mediaRate, reserved)
-//                entryArray.append(entry)
-//            }
-//            self.entries = entryArray
-//        }
-//        
-//        var entryData: Data {
-//            var data = Data()
-//            for entry in self.entries {
-//                if self.version == 1 {
-//                    data.append(entry.segmentDuration.beDataFrom64BitInt)
-//                    data.append(entry.mediaTime.beDataFrom64BitInt)
-//                } else {
-//                    data.append(entry.segmentDuration.beDataFrom32BitInt)
-//                    data.append(entry.mediaTime.beDataFrom32BitInt)
-//                }
-//                data.append(entry.mediaRate.beDataFrom16BitInt)
-//                data.append(entry.reserved)
-//            }
-//            return data
-//        }
-//        
-//        var duration: Int {
-//            var duration = Int()
-//            for entry in entries {
-//                duration = duration + entry.segmentDuration
-//            }
-//            return duration
-//        }
-//        
-//        var firstStart: Int {
-//            var starts = [Int]()
-//            for entry in entries {
-//                starts.append(entry.mediaTime)
-//            }
-//            if let firstStart = starts.first {
-//                return firstStart
-//            } else {
-//                return 0
-//            }
-//        }
-//    }
-//}
-//
+
+  Created by Nolaine Crusher on 6/30/20.
+*/
+
+import Foundation
+
+/// A class representing a `elst` atom in an `Mp4File`'s atom structure
+class Elst: Atom {
+    
+    private var version: Data
+    private var flags: Data
+    var entryCount: Int
+    var editListTable: [(segmentDuration: Int, mediaTime: Int, mediaRate: Int)]
+    
+    /// Initialize a `elst` atom for parsing from the root structure
+    override init(identifier: String, size: Int, payload: Data) throws {
+        var data = payload
+        self.version = data.extractFirst(1)
+        let versionInt = self.version.int8BE.toInt
+        self.flags = data.extractFirst(3)
+        self.entryCount = data.extractToInt(4)
+        var entryArray = [(segmentDuration: Int, mediaTime: Int, mediaRate: Int)]()
+        while !data.isEmpty {
+            // SegmentDuration: A 32-bit integer that specifies the duration of this edit segment in units of the movie’s time scale. (mp4v2 uses 64 bit if version is 1)
+            var segmentDuration: Int = 0
+            // A 32-bit integer containing the starting time within the media of this edit segment (in media timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit. (mp4v2 uses 64 bit if version is 1)
+            var mediaTime: Int = 0
+            if versionInt == 1 {
+                let preliminarySegmentDuration = data.extractFirst(8).int64BE.toDouble
+                segmentDuration = Int(preliminarySegmentDuration) / Mp4File.timeScale
+                mediaTime = data.extractToInt(8)
+            } else {
+                let preliminarySegmentDuration = data.extractFirst(4).int32BE.toDouble
+                segmentDuration = Int(preliminarySegmentDuration) / Mp4File.timeScale
+                mediaTime = data.extractToInt(4)
+            }
+            // A 32-bit fixed-point number that specifies the relative rate at which to play the media corresponding to this edit segment. This rate value cannot be 0 or negative. (Mp4v2 handles this as a 16-bit int and 2 reserve bytes, rather than 32-bit int)
+            let mediaRate = data.extractToInt(2)
+            // reserved
+            _ = data.extractFirst(2)
+            let entry = (segmentDuration, mediaTime, mediaRate)
+            entryArray.append(entry)
+        }
+        self.editListTable = entryArray
+        
+        try super.init(identifier: identifier,
+                       size: size,
+                       payload: payload)
+    }
+    
+    override var contentData: Data {
+        var data = Data()
+        data.append(self.version)
+        let versionInt = self.version.int8BE.toInt
+        data.append(self.flags)
+        data.append(self.entryCount.int32.beData)
+        for entry in editListTable {
+            if versionInt == 1 {
+                data.append(entry.segmentDuration.int64.beData)
+                data.append(entry.mediaTime.int64.beData)
+            } else {
+                data.append(entry.segmentDuration.int32.beData)
+                data.append(entry.mediaTime.int32.beData)
+            }
+            data.append(entry.mediaRate.int16.beData)
+            data.append(Atom.addReserveData(2))
+        }
+        return data
+    }
+    
+    var duration: Int {
+        var duration = Int()
+        for entry in editListTable {
+            duration = duration + entry.segmentDuration
+        }
+        return duration
+    }
+    
+    var firstStart: Int {
+        if let firstEntry = editListTable.first {
+            return firstEntry.mediaTime
+        } else {
+            return 0
+        }
+    }
+}
+

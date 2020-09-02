@@ -44,7 +44,7 @@ class Mp4File {
             Mp4File.timeScale = moov.mvhd.timeScale
             Mp4File.duration = moov.mvhd.duration
             if let elst = moov.soundTrack.edts?.elst {
-                Mp4File.elstDuration = elst.editListTable.duration
+                Mp4File.elstDuration = elst.editListTable.first?.segmentDuration
             }
         } else {
             throw Mp4File.Error.MoovAtomNotFound

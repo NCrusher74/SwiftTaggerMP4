@@ -6,7 +6,6 @@
  */
 
 import Foundation
-import SwiftConvenienceExtensions
 
 /// A class representing a `ac3` atom in an `Mp4File`'s atom structure
 ///
@@ -57,14 +56,14 @@ class Ac3: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(addReserveData(6))
+        data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
-        data.append(addReserveData(2))
+        data.append(Atom.addReserveData(2))
         data.append(self.channelCount.beData)
         data.append(self.sampleSize.beData)
-        data.append(addReserveData(4))
+        data.append(Atom.addReserveData(4))
         data.append(self.samplingRate.beData)
-        data.append(addReserveData(2))
+        data.append(Atom.addReserveData(2))
         for child in children {
             data.append(child.encode())
         }

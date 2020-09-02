@@ -32,9 +32,9 @@ class Ohdr: Atom {
         self.encryptionMethod = data.extractFirst(1).int8BE
         self.encryptionPadding = data.extractFirst(1).int8BE
         self.plainTextLength = data.extractFirst(8).int64BE
-        self.contentIDLength = data.extractFirst(2).int16BE.toInt
-        self.rightsIssuerUrlLength = data.extractFirst(2).int16BE.toInt
-        self.textualHeadersLength = data.extractFirst(2).int16BE.toInt
+        self.contentIDLength = data.extractToInt(2)
+        self.rightsIssuerUrlLength = data.extractToInt(2)
+        self.textualHeadersLength = data.extractToInt(2)
         self.contentID = data.extractFirst(contentIDLength).stringASCII
         self.rightsIssuerUrl = data.extractFirst(rightsIssuerUrlLength).stringASCII
         self.textualHeaders = data.extractFirst(textualHeadersLength)

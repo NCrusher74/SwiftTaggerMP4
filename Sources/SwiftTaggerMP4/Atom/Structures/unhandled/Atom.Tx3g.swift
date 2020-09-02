@@ -77,8 +77,8 @@ class Tx3g: Atom {
     
     override var contentData: Data {
         var data = Data()
-        data.append(addReserveData(4))
-        data.append(addReserveData(2))
+        data.append(Atom.addReserveData(4))
+        data.append(Atom.addReserveData(2))
         data.append(self.dataReferenceIndex.beData)
         data.append(self.displayFlags.beData)
         data.append(self.horizontalJustification.beData)

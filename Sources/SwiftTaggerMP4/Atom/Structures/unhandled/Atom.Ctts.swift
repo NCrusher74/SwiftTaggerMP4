@@ -26,8 +26,8 @@ class Ctts: Atom {
         
         var sampleTableArray = [(sampleCount: Int, sampleOffset: Int)]()
         while !data.isEmpty {
-            let sampleCount = data.extractFirst(4).int32BE.toInt
-            let sampleOffset = data.extractFirst(4).int32BE.toInt
+            let sampleCount = data.extractToInt(4)
+            let sampleOffset = data.extractToInt(4)
             let entry = (sampleCount, sampleOffset)
             sampleTableArray.append(entry)
         }

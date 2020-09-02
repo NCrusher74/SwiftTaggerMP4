@@ -1,0 +1,103 @@
+/*
+  Co64.swift
+
+
+  Created by Nolaine Crusher on 7/4/20.
+*/
+
+import Foundation
+
+/// A class representing a `co64` or `stco` atom in an `Mp4File`'s atom structure
+///
+/// `co64` is used when offsets are in 64bit integers, otherwise, `stco` is used
+class ChunkOffsetAtom: Atom {
+    
+    private var version: Data
+    private var flags: Data
+    var entryCount: Int
+    var chunkOffsetTable: [Int]
+    
+    /// Initialize a `chunkOffsetAtom` atom for parsing from the root structure
+    override init(identifier: String, size: Int, payload: Data) throws {
+        
+        var data = payload
+        self.version = data.extractFirst(1)
+        self.flags = data.extractFirst(3)
+        self.entryCount = data.extractToInt(4)
+        
+        var offsetTable = [Int]()
+        while !data.isEmpty {
+            if identifier == "co64" {
+                offsetTable.append(data.extractToInt(8))
+            } else {
+                offsetTable.append(data.extractToInt(4))
+            }
+        }
+        self.chunkOffsetTable = offsetTable
+        
+        try super.init(identifier: identifier,
+                       size: size,
+                       payload: payload)
+    }
+    
+    /// Calculate the offsets for chapter title data
+    private static func calculateOffsets(startingOffset: Int, titles: [String]) -> [Int] {
+        var offsets: [Int] = [startingOffset]
+        var offset = startingOffset
+        for title in titles.dropLast() {
+            let chunkSize = title.count + 2
+            offset = offset + chunkSize
+            offsets.append(offset)
+        }
+        return offsets
+    }
+    
+    /// Initialize a `chunkOffsetAtom` with chapter track data
+    init(startingOffset: Int, titles: [String]) throws {
+        let offsetArray = ChunkOffsetAtom.calculateOffsets(
+            startingOffset: startingOffset, titles: titles)
+        self.version = Atom.version
+        self.flags = Atom.flags
+        self.entryCount = offsetArray.count
+        self.chunkOffsetTable = offsetArray
+        
+        var payload = Data()
+        payload.append(self.version)
+        payload.append(self.flags)
+        
+        payload.append(self.entryCount.int32.beData)
+        for offset in self.chunkOffsetTable {
+            if Mp4File.uses64BitOffsets {
+                payload.append(offset.int64.beData)
+            } else {
+                payload.append(offset.int32.beData)
+            }
+        }
+        let size = payload.count + 8
+        
+        if Mp4File.uses64BitOffsets {
+            try super.init(identifier: "co64",
+                           size: size,
+                           payload: payload)
+        } else {
+            try super.init(identifier: "stco",
+                           size: size,
+                           payload: payload)
+        }
+    }
+    
+    override var contentData: Data {
+        var data = Data()
+        data.append(self.version)
+        data.append(self.flags)
+        data.append(self.entryCount.int32.beData)
+        for offset in self.chunkOffsetTable {
+            if Mp4File.uses64BitOffsets {
+                data.append(offset.int64.beData)
+            } else {
+                data.append(offset.int32.beData)
+            }
+        }
+        return data
+    }
+}

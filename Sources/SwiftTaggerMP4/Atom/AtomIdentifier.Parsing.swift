@@ -12,9 +12,10 @@ extension AtomIdentifier {
             case .chpl: return try Chpl(identifier: self.rawValue,
                                         size: size,
                                         payload: payload)
-            case .co64: return try Co64(identifier: self.rawValue,
-                                        size: size,
-                                        payload: payload)
+            case .co64: return try ChunkOffsetAtom(
+                identifier:  self.rawValue,
+                size: size,
+                payload: payload)
             case .data: return try DataAtom(identifier: self.rawValue,
                                             size: size,
                                             payload: payload)
@@ -75,9 +76,10 @@ extension AtomIdentifier {
             case .stbl: return try Stbl(identifier: self.rawValue,
                                         size: size,
                                         payload: payload)
-            case .stco: return try Stco(identifier: self.rawValue,
-                                        size: size,
-                                        payload: payload)
+            case .stco: return try ChunkOffsetAtom(
+                identifier: self.rawValue,
+                size: size,
+                payload: payload)
             case .stsc: return try Stsc(identifier: self.rawValue,
                                         size: size,
                                         payload: payload)

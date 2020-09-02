@@ -32,7 +32,7 @@ class Smhd: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(addReserveData(4))
+        data.append(Atom.addReserveData(4))
         return data
     }
 }

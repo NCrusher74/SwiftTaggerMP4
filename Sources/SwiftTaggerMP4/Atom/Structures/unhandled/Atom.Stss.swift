@@ -23,10 +23,10 @@ class Stss: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
 
-        self.entryCount = data.extractFirst(4).int32BE.toInt
+        self.entryCount = data.extractToInt(4)
         var entryArray: [Int] = []
         while !data.isEmpty {
-            let sampleNumber = data.extractFirst(4).int32BE.toInt
+            let sampleNumber = data.extractToInt(4)
             entryArray.append(sampleNumber)
         }
         self.sampleTable = entryArray

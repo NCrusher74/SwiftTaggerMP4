@@ -1,122 +1,115 @@
-///*
-//  Stsz.swift
-//
-//
-//  Created by Nolaine Crusher on 6/21/20.
-//*/
-//
-//import Foundation
-//
-///// A class representing a `stsz` atom in an `Mp4File`'s atom structure
-/////
-///** You use sample size atoms to specify the size of each sample in the media. Sample size atoms have an atom type of 'stsz'.
-// 
-// The sample size atom contains the sample count and a table giving the size of each sample. This allows the media data itself to be unframed. The total number of samples in the media is always indicated in the sample count. If the default size is indicated, then no table follows.
-// 
-// *Note*: In chaptering terms, this describes the byte-count of the chapter title data */
-//class Stsz: Atom {
-//    
-//    private var version: Data
-//    private var flags: Data
-//    var sampleSize: Int
-//    var entryCount: Int
-//    var sampleSizeTable: SampleSizeTable?
-//    
-//    /// Initialize a `stsz` atom for parsing from the root structure
-//    override init(identifier: String, size: Int, payload: Data) throws  {
-//        var data = payload
-//        
-//        self.version = data.extractFirst(1)
-//        self.flags = data.extractFirst(3)
-//        self.sampleSize = data.extractTo32BitInt()
-//        self.entryCount = data.extractTo32BitInt()
-//        
-//        // if sampleSize if 0, it means the samples have different size values, and the table is used
-//        // otherwise, the samples all have the same size, which is stored here
-//        if sampleSize == 0 {
-//            self.sampleSizeTable = SampleSizeTable(from: data)
-//        } else {
-//            self.sampleSizeTable = nil
-//        }
-//        try super.init(identifier: identifier,
-//                       size: size,
-//                       payload: payload)
-//    }
-//    
-//    class SampleSizeTable {
-//        var entries: [Int]
-//        
-//        init(from data: Data) {
-//            var remainder = data
-//            var entryArray: [Int] = []
-//            while !remainder.isEmpty {
-//                let entry = remainder.extractTo32BitInt()
-//                entryArray.append(entry)
-//            }
-//            self.entries = entryArray
-//        }
-//        
-//        /// Initialize a sample size table from a title size array
-//        init(from array: [Int]) {
-//            self.entries = array
-//        }
-//        
-//        var totalSizes: Int {
-//            var sizes = Int()
-//            for entry in entries {
-//                sizes += entry
-//            }
-//            return sizes
-//        }
-//        
-//        var entryData: Data {
-//            var data = Data()
-//            for entry in self.entries {
-//                data.append(entry.beDataFrom32BitInt)
-//            }
-//            return data
-//        }
-//    }
-//    
-//    /// Initialize an `stsz` atom with from chapter title data
-//    init(titles: [String]) throws {
-//        var sizes = [Int]()
-//        for title in titles {
-//            sizes.append(title.count + 2)
-//        }
-//        self.versionAndFlags = Atom.versionAndFlags
-//        if sizes.allAreEqual() {
-//            if let firstSize = sizes.first {
-//                self.sampleSize = firstSize
-//                self.sampleSizeTable = nil
-//            } else {
-//                self.sampleSize = 0
-//            }
-//        } else {
-//            self.sampleSize = 0
-//            self.sampleSizeTable = SampleSizeTable(from: sizes)
-//        }
-//        self.entryCount = sizes.count
-//        
-//        var payload = Data()
-//        payload.append(versionAndFlags)
-//        payload.append(sampleSize.beDataFrom32BitInt)
-//        payload.append(entryCount.beDataFrom32BitInt)
-//        payload.append(sampleSizeTable?.entryData ?? Data())
-//        let size = payload.count + 8
-//        
-//        try super.init(identifier: "stsz",
-//                       size: size,
-//                       payload: payload)
-//    }
-//    
-//    override var contentData: Data {
-//        var data = Data()
-//        data.append(self.version)
-//        data.append(self.flags)
-//        data.append(self.sampleSize.beDataFrom32BitInt)
-//        data.append(self.entryCount.beDataFrom32BitInt)
-//        data.append(self.sampleSizeTable?.entryData ?? Data())
-//        return data
-//    }
-//}
+/*
+ Stsz.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/21/20.
+ */
+
+import Foundation
+
+/// A class representing a `stsz` atom in an `Mp4File`'s atom structure
+///
+/** You use sample size atoms to specify the size of each sample in the media. Sample size atoms have an atom type of 'stsz'.
+ 
+ The sample size atom contains the sample count and a table giving the size of each sample. This allows the media data itself to be unframed. The total number of samples in the media is always indicated in the sample count. If the default size is indicated, then no table follows.
+ 
+ *Note*: In chaptering terms, this describes the byte-count of the chapter title data */
+class Stsz: Atom {
+    
+    private var version: Data
+    private var flags: Data
+    var sampleSize: Int
+    var entryCount: Int
+    var sampleSizeTable: [Int]
+    
+    /// Initialize a `stsz` atom for parsing from the root structure
+    override init(identifier: String, size: Int, payload: Data) throws  {
+        var data = payload
+        
+        self.version = data.extractFirst(1)
+        self.flags = data.extractFirst(3)
+        self.sampleSize = data.extractToInt(4)
+        self.entryCount = data.extractToInt(4)
+        
+        // if sampleSize if 0, it means the samples have different size values, and the table is used
+        // otherwise, the samples all have the same size, which is stored here
+        if sampleSize == 0 {
+            var entryArray = [Int]()
+            while !data.isEmpty {
+                entryArray.append(data.extractToInt(4))
+            }
+            self.sampleSizeTable = entryArray
+        } else {
+            self.sampleSizeTable = []
+        }
+        
+        try super.init(identifier: identifier,
+                       size: size,
+                       payload: payload)
+    }
+    
+    var totalSizeIfSamplesAreConsecutive: Int {
+        var size = Int()
+        if self.sampleSize == 0 {
+            for sizeInt in self.sampleSizeTable {
+                size += sizeInt
+            }
+        } else {
+            var count = self.entryCount
+            while count > 0 {
+                size += self.sampleSize
+                count -= 1
+            }
+        }
+        return size
+    }
+    
+    /// Initialize an `stsz` atom with from chapter title data
+    init(titles: [String]) throws {
+        var sizes = [Int]()
+        for title in titles {
+            sizes.append(title.count + 2)
+        }
+        self.version = Atom.version
+        self.flags = Atom.flags
+        if sizes.allAreEqual() {
+            if let firstSize = sizes.first {
+                self.sampleSize = firstSize
+                self.sampleSizeTable = []
+            } else {
+                throw Mp4File.Error.UnableToInitializeAtoms
+            }
+        } else {
+            self.sampleSize = 0
+            self.sampleSizeTable = sizes
+        }
+        self.entryCount = sizes.count
+        
+        var payload = Data()
+        payload.append(self.version)
+        payload.append(self.flags)
+        payload.append(sampleSize.int32.beData)
+        payload.append(entryCount.int32.beData)
+        for size in sizes {
+            payload.append(size.int32.beData)
+        }
+
+        let size = payload.count + 8
+        
+        try super.init(identifier: "stsz",
+                       size: size,
+                       payload: payload)
+    }
+    
+    override var contentData: Data {
+        var data = Data()
+        data.append(self.version)
+        data.append(self.flags)
+        data.append(sampleSize.int32.beData)
+        data.append(entryCount.int32.beData)
+        for entry in sampleSizeTable {
+            data.append(entry.int32.beData)
+        }
+        return data
+    }
+}
