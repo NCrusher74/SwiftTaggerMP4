@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 
 class ImageMetadataAtom: Atom {
-    var image: NSImage?
+    var image: NSImage
     
     override init(identifier: String,
                   size: Int,
@@ -27,7 +27,11 @@ class ImageMetadataAtom: Atom {
             let data = dataAtom.data
             if dataAtom.dataType == .jpeg ||
                 dataAtom.dataType == .png {
-                self.image = NSImage(data: data)
+                if let image = NSImage(data: data) {
+                    self.image = image
+                } else {
+                    throw Mp4File.Error.UnableToInitializeMetadataAtom
+                }
             } else if dataAtom.dataType == .reserved || dataAtom.dataType == .undefined {
                 let firstFourBytes = data[data.startIndex ..< data.startIndex + 4]
                 let jpegMagicNumber: [UInt8] = [0xff, 0xd8, 0xff, 0xe0]
@@ -35,7 +39,11 @@ class ImageMetadataAtom: Atom {
                 guard firstFourBytes == Data(jpegMagicNumber ) || firstFourBytes == Data(pngMagicNumber) else {
                     throw Mp4File.Error.UnsupportedImageFormat
                 }
-                self.image = NSImage(data: data)
+                if let image = NSImage(data: data) {
+                    self.image = image
+                } else {
+                    throw Mp4File.Error.UnableToInitializeMetadataAtom
+                }
             } else {
                 throw Mp4File.Error.UnsupportedImageFormat
             }
@@ -49,8 +57,11 @@ class ImageMetadataAtom: Atom {
     }
     
     init(imageLocation: URL) throws {
-        self.image = NSImage(contentsOf: imageLocation)
-        
+        if let image = NSImage(contentsOf: imageLocation) {
+            self.image = image
+        } else {
+            throw Mp4File.Error.UnableToSetCoverImage
+        }
         let dataAtom = try DataAtom(imageLocation: imageLocation)
         
         let payload = dataAtom.encode()

@@ -43,29 +43,39 @@ extension Data.SubSequence {
             payload = self.extractFirst(size - 8)
         }
         
-        
-        if atomID == "----" {
-            return try StringMetadataAtom(identifier: atomID,
-                                          size: size,
-                                          payload: payload)
+        if let identifier = AtomIdentifier(rawValue: atomID) {
+            return try identifier.parse(size: size,
+                                        payload: payload)
+        } else if let identifier = TrackReferenceType(rawValue: atomID) {
+            return try identifier.parse(size: size,
+                                        payload: payload)
+        } else if let identifier = DataReferenceType(rawValue: atomID) {
+            return try identifier.parse(size: size,
+                                        payload: payload)
+        } else if let identifier =
+            IntegerMetadataIdentifier(rawValue: atomID) {
+            return try identifier.parse(size: size,
+                                        payload: payload)
+        } else if let identifier =
+            StringMetadataIdentifier(rawValue: atomID) {
+            return try identifier.parse(size: size,
+                                        payload: payload)
+        } else if atomID == "covr" {
+            return try ImageMetadataAtom(identifier: atomID,
+                                     size: size,
+                                     payload: payload)
+        } else if atomID == "trkn" || atomID == "disk" {
+            return try PartAndTotalMetadataAtom(identifier: atomID,
+                                                size: size,
+                                                payload: payload)
+        } else if atomID == "----" {
+            return try UnknownMetadataAtom(identifier: atomID,
+                                           size: size,
+                                           payload: payload)
         } else {
-            if let identifier = AtomIdentifier(rawValue: atomID) {
-                return try identifier.parse(
-                    size: size, payload: payload)
-            } else if let identifier =
-                DataReferenceType(rawValue: atomID) {
-                return try identifier.parse(
-                    size: size, payload: payload)
-            } else if let identifier =
-                TrackReferenceType(rawValue: atomID) {
-                return try identifier.parse(
-                    size: size, payload: payload)
-            } else {
-                let identifier = try MetadataIdentifier(
-                    identifier: atomID)
-                return try identifier.parse(
-                    size: size, payload: payload)
-            }
+            return try PassThrough(identifier: atomID,
+                                   size: size,
+                                   payload: payload)
         }
     }
 }

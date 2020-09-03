@@ -1,21 +1,22 @@
-/*
- StringMetadataAtom.swift
- SwiftTaggerMP4
- 
- Created by Nolaine Crusher on 8/4/20.
- */
+//
+//  File.swift
+//  
+//
+//  Created by Nolaine Crusher on 9/2/20.
+//
 
 import Foundation
-import Cocoa
 
-/// A class representing the metadata atoms in an `Mp4File`'s atom structure
-class StringMetadataAtom: Atom {
-    var dataAtom: DataAtom
+class UnknownMetadataAtom: Atom {
+    var name: String
     var stringValue: String
+    var mean: Mean
+    var nameAtom: Name
+    var dataAtom: DataAtom
     
     override init(identifier: String,
-         size: Int,
-         payload: Data) throws {
+                  size: Int,
+                  payload: Data) throws {
         var data = payload
         
         var children = [Atom]()
@@ -23,6 +24,18 @@ class StringMetadataAtom: Atom {
             if let child = try data.extractAndParseToAtom() {
                 children.append(child)
             }
+        }
+        if let mean = children.first(where: {$0.identifier == "mean"}) as? Mean {
+            self.mean = mean
+        } else {
+            throw Mp4File.Error.MeanAtomNotFound
+        }
+        
+        if let nameAtom = children.first(where: {$0.identifier == "name"}) as? Name {
+            self.nameAtom = nameAtom
+            self.name = nameAtom.stringValue
+        } else {
+            throw Mp4File.Error.NameAtomNotFound
         }
         
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
@@ -32,14 +45,12 @@ class StringMetadataAtom: Atom {
                 dataAtom.dataType == .uuid ||
                 dataAtom.dataType == .isrc ||
                 dataAtom.dataType == .url ||
-                dataAtom.dataType == .genres ||
                 dataAtom.dataType == .reserved {
                 self.stringValue = dataAtom.data.stringUtf8 ?? ""
             } else if dataAtom.dataType == .utf16 || dataAtom.dataType == .utf16Sort {
                 self.stringValue = String(data: dataAtom.data, encoding: .utf16) ?? ""
             } else {
-                print(identifier)
-                throw Mp4File.Error.testError
+                throw Mp4File.Error.UnsupportedMetadataFormat
             }
         } else {
             throw Mp4File.Error.DataAtomNotFound
@@ -50,18 +61,26 @@ class StringMetadataAtom: Atom {
                        children: children)
     }
     
-    init(identifier: StringMetadataIdentifier,
-         stringValue: String) throws {
-        self.stringValue = stringValue
+    
+    init(name: String, stringValue: String) throws {
+        let mean = try Mean()
+        self.mean = mean
+        let nameAtom = try Name(atomName: name)
+        self.nameAtom = nameAtom
+        self.name = name
         let dataAtom = try DataAtom(stringValue: stringValue)
-        if identifier == .podcastUrl {
-            dataAtom.dataType = .reserved
-        }
         self.dataAtom = dataAtom
-        let payload = dataAtom.encode()
+        self.stringValue = stringValue
+        
+        var payload = Data()
+        payload.append(mean.encode())
+        payload.append(nameAtom.encode())
+        payload.append(dataAtom.encode())
+        
         let size = payload.count + 8
-        try super.init(identifier: identifier.rawValue,
+        try super.init(identifier: "----",
                        size: size,
-                       children: [dataAtom])
-    }    
+                       children: [mean, nameAtom, dataAtom])
+    }
+
 }

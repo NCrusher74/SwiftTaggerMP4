@@ -12,6 +12,7 @@ import Foundation
 class Mp4File {
     
     var rootAtoms: [Atom]
+    public var metadataAtoms: [String: Atom]
     var moov: Moov
     var mdats: [Mdat]
     var data: Data
@@ -47,10 +48,45 @@ class Mp4File {
         } else {
             throw Mp4File.Error.MoovAtomNotFound
         }
-
         self.mdats = atoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
         guard !mdats.isEmpty else {
             throw Mp4File.Error.MdatAtomNotFound
+        }
+        
+        var metadata = [String: Atom]()
+        for atom in self.moov.udta?.meta?.ilst.children ?? [] {
+            if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
+                IntegerMetadataIdentifier(rawValue: atom.identifier) != nil ||
+                atom.identifier == "disk" || atom.identifier == "trkn" || atom.identifier == "covr" {
+                metadata[atom.identifier] = atom
+            } else if atom.identifier == "----" {
+                if let unknownAtom = atom as? UnknownMetadataAtom {
+                    metadata[unknownAtom.name] = atom
+                }
+            }
+        }
+        self.metadataAtoms = metadata
+    }
+    
+    private func setMetadataAtoms() throws {
+        var newMetadataAtoms = [Atom]()
+        for (_, atom) in metadataAtoms {
+            newMetadataAtoms.append(atom)
+        }
+        if self.moov.udta?.meta?.ilst != nil {
+            // ilst exists, alter the children array
+            self.moov.udta?.meta?.ilst.children = newMetadataAtoms
+        } else {
+            // if ilst doesn't exist, meta doesn't exist, because ilst is a required child of meta, so instead we check udta
+            let ilst = try Ilst(children: newMetadataAtoms)
+            let hdlr = try Hdlr()
+            let meta = try Meta(children: [hdlr, ilst])
+            if self.moov.udta != nil {
+                self.moov.udta?.meta = meta
+            } else {
+                let udta = try Udta(children: [meta])
+                self.moov.udta = udta
+            }
         }
     }
 }

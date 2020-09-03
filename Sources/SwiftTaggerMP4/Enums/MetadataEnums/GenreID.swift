@@ -2648,7 +2648,7 @@ enum Genres: Int, CaseIterable {
     case audiobooksErotica = 50000092
     case audiobooksLightNovels = 50000093
     
-    var predefinedGenres: String? {
+    var predefinedGenres: String {
         switch self {
             case .musicBlues : return "Music|Blues"
             case .musicComedy : return "Music|Comedy"
@@ -5289,7 +5289,7 @@ enum Genres: Int, CaseIterable {
             case .audiobooksErotica : return "Audiobooks|Erotica"
             case .audiobooksLightNovels : return "Audiobooks|Light Novels"
             default:
-            return nil
+            return ""
         }
     }
     
@@ -5368,7 +5368,7 @@ enum Genres: Int, CaseIterable {
         var mapping: [String: Genres] = [:]
         for genre in Genres.allCases {
             let name = genre.predefinedGenres
-            mapping[name ?? ""] = genre
+            mapping[name] = genre
         }
         return mapping
     }()

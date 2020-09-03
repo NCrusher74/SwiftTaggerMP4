@@ -6,36 +6,6 @@
  */
 
 import Foundation
-
-enum MetadataIdentifier {
-    
-    case string(StringMetadataIdentifier)
-    case integer(IntegerMetadataIdentifier)
-    case image(String)
-    case discNumber(String)
-    case trackNumber(String)
-    case podcastFeed(String)
-//    case unknown(String)
-    
-    init(identifier: String) throws {
-        if identifier == "covr" {
-            self = .image(identifier)
-        } else if identifier == "disk" {
-            self = .discNumber(identifier)
-        } else if identifier == "trkn" {
-            self = .trackNumber(identifier)
-        } else if identifier == "purl" {
-            self = .podcastFeed(identifier)
-        } else if let stringID = StringMetadataIdentifier(rawValue: identifier) {
-            self = .string(stringID)
-        } else if let intID = IntegerMetadataIdentifier(rawValue: identifier) {
-            self = .integer(intID)
-        } else {
-            throw Mp4File.Error.UnsupportedMetadataFormat
-        }
-    }
-}
-
 enum IntegerMetadataIdentifier: String {
     case albumID = "akID"
     case appleStoreCountryID = "sfID"
@@ -49,6 +19,7 @@ enum IntegerMetadataIdentifier: String {
     case movementCount = "\u{00A9}mvc"
     case movementNumber = "\u{00A9}mvi"
     case mediaKind = "stik"
+    case podcast = "pcst"
     case playlistID = "plID"
     case rating = "rtng"
     case showWorkAndMovement = "shwm"
@@ -109,7 +80,6 @@ enum StringMetadataIdentifier: String, CaseIterable {
     case originalArtist = "\u{00A9}ope"
     case owner = "ownr"
     case performers = "\u{00A9}prf"
-    case podcast = "pcst"
     case podcastID = "egid"
     case podcastUrl = "purl"
     case predefinedGenre = "genr"

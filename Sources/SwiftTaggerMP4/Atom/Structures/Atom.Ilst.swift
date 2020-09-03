@@ -31,4 +31,17 @@ class Ilst: Atom {
         }
         return data
     }
+    
+    /// Initialize a `meta` atom for building a metadata list
+    init(children: [Atom]) throws {
+        var size: Int = 8
+        for child in children {
+            size += child.size
+        }
+
+        try super.init(identifier: "meta",
+                       size: size,
+                       children: children)
+    }
+
 }

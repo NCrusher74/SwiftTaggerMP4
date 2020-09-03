@@ -17,11 +17,9 @@ extension Mp4File {
         case InvalidMetadataIdentifierForFormat
         /// Error thrown when cover image can't be found
         case ImageDataNotFound
-        ///
+        /// Error thrown when atoms fail to initialize
         case UnableToInitializeAtoms
-        
-        
-        
+        case testError
         /// Error thrown when required information cannot be parsed from the `mvhd` atom
         case InvalidMovieHeaderData
         /// Error thrown when required information cannot be parsed from the `tkhd` atom
@@ -49,7 +47,7 @@ extension Mp4File {
         /// Error thrown when a required root atom is missing
         case MoovAtomNotFound
         /// Error thrown when a required atom is missing
-        case dac3AtomNotFound
+        case Dac3AtomNotFound
         /// Error thrown when a required root atom is missing
         case MdatAtomNotFound
         /// Error thrown when a required atom is missing
@@ -90,8 +88,6 @@ extension Mp4File {
         case OhdrAtomNotFound
         /// Error thrown when a required atom is missing
         case MfhdAtomNotFound
-        /// Error thrown when a required atom is missing
-        case Dac3AtomNotFound
         /// Error thrown when a required atom is missing
         case DamrAtomNotFound
         /// Error thrown when a required atom is missing

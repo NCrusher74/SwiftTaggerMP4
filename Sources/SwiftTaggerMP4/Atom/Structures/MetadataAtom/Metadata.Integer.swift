@@ -7,7 +7,7 @@
 
 import Foundation
 class IntegerMetadataAtom: Atom {
-    var intValue: Int?
+    var intValue: Int
     
     override init(identifier: String,
                   size: Int,
