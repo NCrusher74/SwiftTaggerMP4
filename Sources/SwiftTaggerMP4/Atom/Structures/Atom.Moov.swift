@@ -138,7 +138,21 @@ extension Moov {
             }
         }
         set {
-            
+            if let new = newValue {
+                do {
+                    let chap = try TrefSubatom(chapterTrackID: new)
+                    if self.soundTrack.tref != nil {
+                        self.soundTrack.tref?.chap = chap
+                    } else {
+                        self.soundTrack.tref = try Tref(chapterTrackID: newValue)
+                    }
+                } catch {
+                    print("WARNING: Unable set new new chapter track ID")
+                }
+                self.mvhd.incrementNextTrackID()
+            } else {
+                self.soundTrack.tref?.chap = nil
+            }
         }
     }
     
