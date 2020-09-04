@@ -26,7 +26,8 @@ class Text: Atom {
     var fontColorGreen: Int16
     var fontColorBlue: Int16
     
-    /// Initialize a `text` atom for parsing from the root structure
+    /** Initialize a `text` atom for parsing from the root structure
+     *Note:* For chaptering purposes, this atom is the child atom of the `stsd` atom for a chapter track */
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         _ = data.extractFirst(6)

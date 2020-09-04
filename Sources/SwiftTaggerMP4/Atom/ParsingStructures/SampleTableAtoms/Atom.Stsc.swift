@@ -10,9 +10,7 @@ import Foundation
 /// A class representing a `stsc` atom in an `Mp4File`'s atom structure
 /** As samples are added to a media, they are collected into chunks that allow optimized data access. A chunk contains one or more samples. Chunks in a media may have different sizes, and the samples within a chunk may have different sizes. The sample-to-chunk atom stores chunk information for the samples in a media.
  
- Sample-to-chunk atoms have an atom type of 'stsc'. The sample-to-chunk atom contains a table that maps samples to chunks in the media data stream. By examining the sample-to-chunk atom, you can determine the chunk that contains a specific sample.
- 
- *NOTE* For the purposes of chaptering, we probably won't need this atom, but it's here just in case. */
+    Sample-to-chunk atoms have an atom type of 'stsc'. The sample-to-chunk atom contains a table that maps samples to chunks in the media data stream. By examining the sample-to-chunk atom, you can determine the chunk that contains a specific sample. */
 class Stsc: Atom {
     
     private var version: Data

@@ -39,20 +39,7 @@ class ChunkOffsetAtom: Atom {
                        size: size,
                        payload: payload)
     }
-    
-//    var chunksAreConsecutive: Bool {
-//        let offsetArray = self.chunkOffsetTable
-//        if let sizeArray = (self.siblings?.first(where: {$0.identifier == "stsz"}) as? Stsz)?.sampleSizeTable {
-//            asser
-//        }
-//    }
-//    
-//    var chunkRanges: [Range<Int>] {
-//        if chunksAreConsecutive {
-//            
-//        }
-//    }
-    
+
     /// Calculate the offsets for chapter title data
     private static func calculateOffsets(startingOffset: Int, titles: [String]) -> [Int] {
         var offsets: [Int] = [startingOffset]

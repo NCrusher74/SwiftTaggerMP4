@@ -30,12 +30,16 @@ extension Mp4File {
         case OutputFailure
         /// Error thrown when the metadata format is unrecognized
         case UnsupportedMetadataFormat
+        /// Error thrown when handling a request for a track type not supported by SwiftTaggerMP4
+        case UnsupportedTrackType
         /// Error thrown when the image format is unsupported
         case UnsupportedImageFormat
         /// Error thrown when the image cannot be read
         case ImageParsingFailure
         /// Error thrown when extraction of media data fails
         case UnableToLocateMediaData
+        /// Error thrown when extraction of chapter title data fails
+        case UnableToLocateChapterTitleData
         /// Error thrown when creating chapter atoms fails
         case UnableToBuildChapterAtoms
         /// Error thrown when a metadata-containing atom cannot be initialized

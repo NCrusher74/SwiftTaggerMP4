@@ -15,8 +15,40 @@ struct SampleTableToChapterConverter {
 
     init(readFrom mp4File: Mp4File) throws {
         self.initialMediaOffset = try mp4File.getInitialMediaOffset()
-        self.mediaData = try mp4File.isolateMediaData()
+        self.mediaData = try mp4File.isolateMediaData(forTrack: .soun)
         
+        var chapters = [Int: Chapter]()
+        if let chpl = mp4File.moov.udta?.chpl {
+            let chapterTable = chpl.chapterTable
+            for chapter in chapterTable {
+                let title = chapter.title
+                let convertedChapter = Chapter(title: title)
+                let startTime = chapter.startTime
+                chapters[startTime] = convertedChapter
+            }
+            self.chapters = chapters
+        } else {
+            let startTimes = mp4File.calculateChapterStarts()
+            var titles = try mp4File.getChapterTitleStrings()
+            
+            if startTimes.isEmpty {
+                self.chapters = [:]
+            } else {
+                if startTimes.count > titles.count {
+                    var difference = startTimes.count - titles.count
+                    while difference > 0 {
+                        titles.append("Untitled Chapter")
+                        difference -= 1
+                    }
+                }
+                
+                for (index, start) in startTimes.enumerated() {
+                    let chapter = Chapter(title: titles[index])
+                    chapters[start] = chapter
+                }
+                self.chapters = chapters
+            }
+        }
     }
 
     struct Chapter {
@@ -39,27 +71,55 @@ extension Mp4File {
         }
     }
     
-    // this is a torturous, convoluted mess of a function but necessary for files where the media data is not stored in consecutive, uninterrupted chunks
-    func isolateMediaData() throws -> Data {
-        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCIDAFD
-        let stsc = self.moov.soundTrack.mdia.minf.stbl.stsc
-        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCBBCGB
-        let stsz = self.moov.soundTrack.mdia.minf.stbl.stsz
-        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCHAEEA
-        let stco = self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom
+    // this is a torturous, unholy, convoluted mess of a function but necessary for files where the media data is not stored in consecutive, uninterrupted chunks
+    func isolateMediaData(forTrack trackType: TrackType) throws -> Data {
+        var track: Trak? = nil
+        if trackType == .soun {
+            track = self.moov.soundTrack
+        } else if trackType == .text {
+            track = self.moov.chapterTrack
+        } else {
+            throw Mp4File.Error.UnsupportedTrackType
+        }
         
-        // [(firstChunk: Int, samplesPerChunk: Int, sampleDescriptionID: Int)]
-        // firstChunk is the index of the chunkOffsetTable where each entry begins
-        // samplesPerChunk is the number of entries in the sampleSizeTable that make up each chunk from the current firstChunk to the next firstChunk
-        // We can safely ignore the description, I believe
-        let sampleToChunkTable = stsc.sampleToChunkTable
-        // [Int]
-        // the sampleSize is the byte-count of each sample.
-        let sampleSizeTable = stsz.sampleSizeTable
-        // [Int]
-        // the chunk offset is the beginning of the chunk in the FILE data, irrespective of atom structure
-        let chunkOffsetTable = stco.chunkOffsetTable
-        
+        if let track = track {
+            let stsc = track.mdia.minf.stbl.stsc
+            let stsz = track.mdia.minf.stbl.stsz
+            let stco = track.mdia.minf.stbl.chunkOffsetAtom
+            
+            // firstChunk is the index of the chunkOffsetTable where each entry begins
+            // samplesPerChunk is the number of entries in the sampleSizeTable that make up each chunk from the current firstChunk to the next firstChunk
+            let sampleToChunkTable = stsc.sampleToChunkTable
+            // the sampleSize is the byte-count of each sample.
+            let sampleSizeTable = stsz.sampleSizeTable
+            // the chunk offset is the beginning of the chunk in the FILE data, irrespective of atom structure
+            let chunkOffsetTable = stco.chunkOffsetTable
+            
+            let chunkSizes = try getChunkSizes(
+                sampleToChunkTable: sampleToChunkTable,
+                sampleSizeTable: sampleSizeTable,
+                chunkOffsetTable: chunkOffsetTable)
+            
+            // Now that we know our CHUNK sizes, we can calculate the data to isolate by adding each chunk size to its corresponding offset to create a range for the data
+            var audioData = Data()
+            for (index, entry) in chunkOffsetTable.enumerated() {
+                let startOffset = entry
+                let endOffset = startOffset + chunkSizes[index]
+                let range = startOffset ..< endOffset
+                audioData.append(self.fileData.subdata(in: range))
+            }
+            // if we did it right, the total data we've extracted should be the size of the media data (mdat) atom, minus 8 for the header data and minus any chapter title data.
+            return audioData
+        } else {
+            // this should only throw if we're looking for a text trak, because the sound track is a required atom checked for upon parsing
+            throw Mp4File.Error.TrakAtomNotFound
+        }
+    }
+    
+    /// Collates sample table atom data and returns an array of chunk sizes that can be used with chunk offsets to target chunk data
+    private func getChunkSizes(sampleToChunkTable: [(firstChunk: Int, samplesPerChunk: Int, sampleDescriptionID: Int)],
+                                 sampleSizeTable: [Int],
+                                 chunkOffsetTable: [Int]) throws -> [Int] {
         // this will keep track of where we pick up when we interate through the samplesPerChunk entries
         var newSampleIndex = Int()
         // this is the array of sizes we need to build to pull this all together
@@ -110,16 +170,81 @@ extension Mp4File {
         guard chunkSizes.count == chunkOffsetTable.count else {
             throw Mp4File.Error.UnableToLocateMediaData
         }
-        
-        // Now that we know our CHUNK sizes, we can calculate the data to isolate by adding each chunk size to its corresponding offset to create a range for the data
-        var audioData = Data()
-        for (index, entry) in chunkOffsetTable.enumerated() {
-            let startOffset = entry
-            let endOffset = startOffset + chunkSizes[index]
-            let range = startOffset ..< endOffset
-            audioData.append(self.fileData.subdata(in: range))
+        return chunkSizes
+    }
+    
+    func calculateChapterStarts() -> [Int] {
+        var firstStart = Int()
+        if let elst = self.moov.soundTrack.edts?.elst {
+            firstStart = elst.firstStart
         }
-        // if we did it right, the total data we've extracted should be the size of the media data (mdat) atom, minus 8 for the header data and minus any chapter title data.
-        return audioData
+        if let stts = self.moov.chapterTrack?.mdia.minf.stbl.stts {
+            var starts = [firstStart]
+            var currentStart = firstStart
+            for entry in stts.sampleTable.dropLast() {
+                let duration = entry.sampleDuration
+                let nextStart = currentStart + duration
+                starts.append(nextStart)
+                currentStart = nextStart
+            }
+            return starts
+        } else {
+            return []
+        }
+    }
+    
+    func getChapterTitleStrings() throws -> [String] {
+        if let track = self.moov.chapterTrack {
+            var titles = [String]()
+            let stsz = track.mdia.minf.stbl.stsz
+            let offsetAtom = track.mdia.minf.stbl.chunkOffsetAtom
+            let sampleSizeTable = stsz.sampleSizeTable
+            let chunkOffsetTable = offsetAtom.chunkOffsetTable
+            if sampleSizeTable.count == chunkOffsetTable.count {
+                // if this is true, each offset corresponds with a size and we should not assume data is in consecutive chunks
+                titles = try interpretTitleStringData(sizes: sampleSizeTable, offsets: chunkOffsetTable)
+            } else {
+                // try it this way, but it's gonne be ugly and probably won't work
+                let sampleToChunkTable = track.mdia.minf.stbl.stsc.sampleToChunkTable
+                let chunkSizes = try getChunkSizes(
+                    sampleToChunkTable: sampleToChunkTable,
+                    sampleSizeTable: sampleSizeTable,
+                    chunkOffsetTable: chunkOffsetTable)
+                
+                titles = try interpretTitleStringData(sizes: chunkSizes, offsets: chunkOffsetTable)
+            }
+            return titles
+        } else {
+            return []
+        }
+    }
+    
+    private func interpretTitleStringData(sizes: [Int], offsets: [Int]) throws -> [String] {
+        var titles = [String]()
+        for (index, offset) in offsets.enumerated() {
+            let size = sizes[index]
+            let range = offset ..< offset + size
+            var chunkData = self.fileData.subdata(in: range)
+            let stringLength = chunkData.extractToInt(2)
+            let stringData = chunkData.extractFirst(stringLength)
+            
+            // check for byte-order mark
+            let bom: [UInt8] = [0xfe, 0xff]
+            let bomRange = stringData.startIndex ..< stringData.index(stringData.startIndex, offsetBy: 2)
+            if [UInt8](stringData.subdata(in: bomRange)) == bom {
+                if let string = String(data: stringData, encoding: .utf16) {
+                    titles.append(string)
+                } else {
+                    titles.append("Unparseable UTF-16 String Data")
+                }
+            } else {
+                if let string = stringData.stringUtf8 {
+                    titles.append(string)
+                } else {
+                    titles.append("Unparseable UTF-8 String Data")
+                }
+            }
+        }
+        return titles
     }
 }

@@ -34,6 +34,20 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 1055370)
     }
     
+    func testSampleTableConverter() throws {
+        let source = try Mp4File(location: sampleBookUrl)
+        let chapterStarts = source.calculateChapterStarts()
+        let chapterTitles = try source.getChapterTitleStrings()
+        let knownChapterStarts = [0, 100002, 192013, 292014, 392004, 459020, 546000, 624019, 714016, 791013, 869018, 963007]
+        let knownTitles = ["01 - ''Frost To-Night'' - Read by BK", "02 - ''Frost To-Night'' - Read by CS", "03 - ''Frost To-Night'' - Read by EL-ALP", "04 - ''Frost To-Night'' - Read by GB", "05 - ''Frost To-Night'' - Read by KARA", "06 - ''Frost To-Night'' - Read by LAH", "07 - ''Frost To-Night'' - Read by LCW", "08 - ''Frost To-Night'' - Read by MAS", "09 - ''Frost To-Night'' - Read by PS", "10 - ''Frost To-Night'' - Read by SPC", "11 - ''Frost To-Night'' - Read by TP", "12 - ''Frost To-Night'' - Read by VB"]
+        
+        XCTAssertEqual(chapterStarts, knownChapterStarts)
+        XCTAssertEqual(chapterTitles, knownTitles)
+//        print(source.calculateChapterStarts())
+//        print(try source.getChapterTitleStrings())
+//        let converter = try SampleTableToChapterConverter(readFrom: source)
+        
+    }
     @available(OSX 10.12, *)
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookUrl)
