@@ -6,19 +6,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
         let data = try Data(contentsOf: sampleBookUrl)
-        let range = 000000187513 ..< 000000187546
+        let range = 210932 ..< 210932 + 618
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
-    
     /*
-     0 0 0 21
-     a9 67 65 6e
-     0 0 0 19
-     64 61 74 61
-     0 0 0 12
-     0 0 0 0
-     41 75 64 69 6f 62 6f 6f 6b
      */
     
     func testBasicFileParsing() throws {
@@ -44,7 +36,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     
     @available(OSX 10.12, *)
     func testTag() throws {
-        let source = try Mp4File(location: sampleBookUrl)
+        let mp4 = try Mp4File(location: sampleBookUrl)
+        var source = Tag(readFrom: mp4)
         XCTAssertEqual(source.album, "''Frost To-Night''")
         XCTAssertEqual(source.title, "FrostTonight_librivox")
         XCTAssertEqual(source.artist, "Edith M. Thomas")
@@ -54,6 +47,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
         source.metadataAtoms = [:]
         XCTAssertTrue(source.metadataAtoms.isEmpty)
+        
+        let calendar = Calendar(identifier: .iso8601)
+        let dateComponents = DateComponents(calendar: calendar, timeZone: TimeZone(secondsFromGMT: 0) ?? .current, year: 2020, month: 09, day: 01)
+        let date = calendar.date(from: dateComponents)
         
         source.acknowledgment = "Acknowledgment"
         source.album = "Album"
@@ -128,12 +125,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         source.producerKeywords = ["Producer", "Keywords"]
         source.publisher = "Publisher"
         source.publisherUrl = "www.publisher.url"
-        source.purchaseDate = Date()
+        source.purchaseDate = date
         source.rating = .clean
         source.recordCompany = "Record Company"
         source.recordingCopyright = "Recording Copyright"
-        source.recordingDate = Date()
-        source.releaseDate = Date()
+        source.recordingDate = date
+        source.releaseDate = date
         source.requirements = "Requirements"
         source.sellerID = "Seller ID"
         source.showWorkAndMovement = true
@@ -238,12 +235,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.producerKeywords,["Producer", "Keywords"])
         XCTAssertEqual(source.publisher,"Publisher")
         XCTAssertEqual(source.publisherUrl,"www.publisher.url")
-        XCTAssertEqual(source.purchaseDate,Date())
+        XCTAssertEqual(source.purchaseDate, date)
         XCTAssertEqual(source.rating,.clean)
         XCTAssertEqual(source.recordCompany,"Record Company")
         XCTAssertEqual(source.recordingCopyright,"Recording Copyright")
-        XCTAssertEqual(source.recordingDate,Date())
-        XCTAssertEqual(source.releaseDate,Date())
+        XCTAssertEqual(source.recordingDate, date)
+        XCTAssertEqual(source.releaseDate, date)
         XCTAssertEqual(source.requirements,"Requirements")
         XCTAssertEqual(source.sellerID,"Seller ID")
         XCTAssertEqual(source.showWorkAndMovement,true)

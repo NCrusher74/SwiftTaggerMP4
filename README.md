@@ -8,7 +8,7 @@ SwiftTaggerMp4 is a Swift library for reading and writing metadata and chapter t
 ```swift
 let mp4Url = URL(fileURLWithPath: "/path/to/file.m4a")
 let mp4File = try Mp4File(location: mp4Url)
-var tag = try mp4File.read()
+var tag = try Tag(readFrom: mp4File)
 
 print(tag.album)
 print(tag.artist)

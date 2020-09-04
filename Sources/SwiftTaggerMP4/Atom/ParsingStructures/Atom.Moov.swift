@@ -144,7 +144,7 @@ extension Moov {
                     if self.soundTrack.tref != nil {
                         self.soundTrack.tref?.chap = chap
                     } else {
-                        self.soundTrack.tref = try Tref(chapterTrackID: newValue)
+                        self.soundTrack.tref = try Tref(chapterTrackID: new)
                     }
                 } catch {
                     print("WARNING: Unable set new new chapter track ID")

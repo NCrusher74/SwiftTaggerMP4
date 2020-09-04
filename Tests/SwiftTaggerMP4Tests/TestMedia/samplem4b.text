@@ -9,90 +9,307 @@ Bit rate: 64 kbits/sec
 Audio tracks: 1
 Other tracks: 1
 
-000000000000 000000000024 000000000024 ftyp
-000000000024 000000210932 000000210908 moov
-    000000000032 000000000140 000000000108 mvhd
-    000000000140 000000186804 000000186664 trak
-        000000000148 000000000240 000000000092 tkhd
-        000000000240 000000186784 000000186544 mdia
-            000000000248 000000000280 000000000032 mdhd
-            000000000280 000000000313 000000000033 hdlr (soun)
-            000000000313 000000186784 000000186471 minf
-                000000000321 000000000337 000000000016 smhd
-                000000000337 000000000373 000000000036 dinf
-                000000000373 000000186784 000000186411 stbl
-                    000000000381 000000000484 000000000103 stsd
-                        000000000397 000000000484 000000000087 mp4a
-                            000000000433 000000000484 000000000051 esds
-                    000000000484 000000000508 000000000024 stts
-                    000000000508 000000182332 000000181824 stsz
-                    000000182332 000000182612 000000000280 stsc
-                    000000182612 000000186784 000000004172 stco
-        000000186784 000000186804 000000000020 tref
-    000000186804 000000187452 000000000648 trak
-        000000186812 000000186904 000000000092 tkhd
-        000000186904 000000187452 000000000548 mdia
-            000000186912 000000186944 000000000032 mdhd
-            000000186944 000000186977 000000000033 hdlr (text)
-            000000186977 000000187452 000000000475 minf
-                000000186985 000000187061 000000000076 gmhd
-                000000187061 000000187097 000000000036 dinf
-                000000187097 000000187452 000000000355 stbl
-                    000000187105 000000187180 000000000075 stsd
-                    000000187180 000000187292 000000000112 stts
-                    000000187292 000000187360 000000000068 stsz
-                    000000187360 000000187388 000000000028 stsc
-                    000000187388 000000187452 000000000064 stco
-    000000187452 000000210932 000000023480 udta
-        000000187460 000000210932 000000023472 meta
-            000000187472 000000187505 000000000033 hdlr
-            000000187505 000000210932 000000023427 ilst
-                000000187513 000000187546 000000000033 ©gen
-                    000000187521 000000187546 000000000025 data
-                000000187546 000000187571 000000000025 stik
-                    000000187554 000000187571 000000000017 data
-                000000187571 000000187618 000000000047 ©too
-                    000000187579 000000187618 000000000039 data
-                000000187618 000000187663 000000000045 ©nam
-                    000000187626 000000187663 000000000037 data
-                000000187663 000000187702 000000000039 ©ART
-                    000000187671 000000187702 000000000031 data
-                000000187702 000000187744 000000000042 ©alb
-                    000000187710 000000187744 000000000034 data
-                000000187744 000000187829 000000000085 ©cmt
-                    000000187752 000000187829 000000000077 data
-                000000187829 000000187861 000000000032 trkn
-                    000000187837 000000187861 000000000024 data
-                000000187861 000000210813 000000022952 covr
-                    000000187869 000000210813 000000022944 data
-                000000210813 000000210932 000000000119 ----
-000000210932 000008409091 000008198159 mdat
+00 ..< 24 ftyp
+24 ..< 210932 moov
+    32 ..< 140 mvhd
+    140 ..< 186804 trak
+        148 ..< 240 tkhd
+        240 ..< 186784 mdia
+            248 ..< 280 mdhd
+            280 ..< 313 hdlr (soun)
+            313 ..< 186784 minf
+                321 ..< 337 smhd
+                337 ..< 373 dinf
+                373 ..< 186784 stbl
+                    381 ..< 484 stsd
+                        397 ..< 484 mp4a
+                            433 ..< 484 esds
+                    484 ..< 508 stts
+                    508 ..< 182332 stsz
+                    182332 ..< 182612 stsc
+                    182612 ..< 186784 stco
+        186784 ..< 186804 tref
+    186804 ..< 187452 trak
+        186812 ..< 186904 tkhd
+        186904 ..< 187452 mdia
+            186912 ..< 186944 mdhd
+            186944 ..< 186977 hdlr (text)
+            186977 ..< 187452 minf
+                186985 ..< 187061 gmhd
+                187061 ..< 187097 dinf
+                187097 ..< 187452 stbl
+                    187105 ..< 187180 stsd
+                    187180 ..< 187292 stts
+                    187292 ..< 187360 stsz
+                    187360 ..< 187388 stsc
+                    187388 ..< 187452 stco
+    187452 ..< 210932 udta
+        187460 ..< 210932 meta
+            187472 ..< 187505 hdlr
+            187505 ..< 210932 ilst
+                187513 ..< 187546 ©gen
+                    187521 ..< 187546 data
+                187546 ..< 187571 stik
+                    187554 ..< 187571 data
+                187571 ..< 187618 ©too
+                    187579 ..< 187618 data
+                187618 ..< 187663 ©nam
+                    187626 ..< 187663 data
+                187663 ..< 187702 ©ART
+                    187671 ..< 187702 data
+                187702 ..< 187744 ©alb
+                    187710 ..< 187744 data
+                187744 ..< 187829 ©cmt
+                    187752 ..< 187829 data
+                187829 ..< 187861 trkn
+                    187837 ..< 187861 data
+                187861 ..< 210813 covr
+                    187869 ..< 210813 data
+                210813 ..< 210932 ----
+210932 ..< 8409091 mdat
 
-(unknown atom)
-     0 0 0 77
-     2d 2d 2d 2d // "----"
-     0 0 0 1c
-     6d 65 61 6e // "mean"
-     0 0 0 0 // version and flags
-     63 6f 6d 2e 61 70 70 6c 65 2e 69 54 75 6e 65 73 // "com.apple.iTunes"
-     
-     0 0 0 1b
-     6e 61 6d 65 // "name"
-     0 0 0 0 // version and flags
-     45 6e 63 6f 64 69 6e 67 20 50 61 72 61 6d 73 // "Encoding Params"
-     
-     0 0 0 38
-     64 61 74 61 // "data"
-     0 0 0 0 // locale
-     0 0 0 0 // reserved
-     76 65 72 73 // vers
-     0 0 0 1
-     61 63 62 66 // acbf
-     0 0 0 1
-     62 72 61 74 // brat
-     0 0 fa 0
-     73 72 63 71 // srcq
-     0 0 0 7f
-     63 64 63 76 // cdcv
-     0 1 7 1
-    
+STSZ entries count : 45451
+STCO entries count: 1039
+// Audio STSC
+TotalEntries: 22
+
+Entry: 0
+FirstChunk: 1
+SamplesPerChunk: 44
+DescriptionID: 1
+                    189 - 1 = 188
+                    44 * 188 = 8272
+                    running tally = 8272
+Entry: 1
+FirstChunk: 189
+SamplesPerChunk: 22
+DescriptionID: 1
+                    190 - 189 = 1
+                    22 * 1 = 22
+                    running tally: 8272 + 22 = 8294
+Entry: 2
+FirstChunk: 190
+SamplesPerChunk: 44
+DescriptionID: 1
+                    287 - 190 = 97
+                    44 * 97 = 4268
+                    running tally: 8294 + 4268 = 12,562
+Entry: 3
+FirstChunk: 287
+SamplesPerChunk: 40
+DescriptionID: 1
+                    288 - 287 = 1
+                    40 * 1 = 40
+                    running tally: 12,562 + 40 = 12,602
+Entry: 4
+FirstChunk: 288
+SamplesPerChunk: 44
+DescriptionID: 1
+                    385 - 288 = 97
+                    44 * 97 = 4268
+                    running tally: 12,602 + 4268 = 16,870
+Entry: 5
+FirstChunk: 385
+SamplesPerChunk: 21
+DescriptionID: 1
+                    386 - 385 = 1
+                    21 * 1 = 21
+                    running tally: 16,870 + 21 = 16,891
+Entry: 6
+FirstChunk: 386
+SamplesPerChunk: 44
+DescriptionID: 1
+                    452 - 386 = 66
+                    44 * 66 = 2904
+                    running tally: 16,891 + 2904 = 19,795
+Entry: 7
+FirstChunk: 452
+SamplesPerChunk: 12
+DescriptionID: 1
+                    453 - 452 = 1
+                    12 * 1 = 12
+                    running tally: 19,795 + 12 = 19,807
+Entry: 8
+FirstChunk: 453
+SamplesPerChunk: 44
+DescriptionID: 1
+                    537 - 453 = 84
+                    44 * 84 = 3696
+                    running tally: 19,807 + 3696 = 23,503
+Entry: 9
+FirstChunk: 537
+SamplesPerChunk: 12
+DescriptionID: 1
+                    538 - 537 = 1
+                    12 * 1 = 12
+                    running tally: 23,503 + 12 = 23,515
+Entry: 10
+FirstChunk: 538
+SamplesPerChunk: 44
+DescriptionID: 1
+                    615 - 538 = 77
+                    44 * 77 = 3388
+                    running tally: 23,515 + 3388 = 26,903
+Entry: 11
+FirstChunk: 615
+SamplesPerChunk: 8
+DescriptionID: 1
+                    616 - 615 = 1
+                    8 * 1 = 8
+                    running tally: 26,903 + 8 = 26,911
+Entry: 12
+FirstChunk: 616
+SamplesPerChunk: 44
+DescriptionID: 1
+                    703 - 616 = 87
+                    44 * 87 = 3828
+                    running tally: 26,911 + 3828 = 30,739
+Entry: 13
+FirstChunk: 703
+SamplesPerChunk: 41
+DescriptionID: 1
+                    704 - 703 = 1
+                    41 * 1 = 41
+                    running tally: 30,739 + 41 = 30,780
+Entry: 14
+FirstChunk: 704
+SamplesPerChunk: 44
+DescriptionID: 1
+                    779 - 704 = 75
+                    44 * 75 = 3300
+                    running tally: 30,780 + 3300 = 34,080
+Entry: 15
+FirstChunk: 779
+SamplesPerChunk: 11
+DescriptionID: 1
+                    780 - 779 = 1
+                    11 * 1 = 11
+                    running tally: 34,080 + 11 = 34,091
+Entry: 16
+FirstChunk: 780
+SamplesPerChunk: 44
+DescriptionID: 1
+                    856 - 780 = 76
+                    44 * 76 = 3344
+                    running tally: 34,091 + 3344 = 37,435
+Entry: 17
+FirstChunk: 856
+SamplesPerChunk: 24
+DescriptionID: 1
+                    857 - 856 = 1
+                    24 * 1 = 24
+                    running tally: 37,435 + 24 = 37,459
+Entry: 18
+FirstChunk: 857
+SamplesPerChunk: 44
+DescriptionID: 1
+                    948 - 857 = 91
+                    44 * 91 = 4004
+                    running tally: 37,459 + 4004 = 41,463
+Entry: 19
+FirstChunk: 948
+SamplesPerChunk: 24
+DescriptionID: 1
+                    949 - 948 = 1
+                    24 * 1 = 24
+                    running tally: 41,463 + 24 = 41,487
+Entry: 20
+FirstChunk: 949
+SamplesPerChunk: 44
+DescriptionID: 1
+                    1039 - 949 = 90
+                    44 * 90 = 3960
+                    running tally: 41,487 + 3960 = 45,447
+Entry: 21
+FirstChunk: 1039 <- chunk offset array count
+SamplesPerChunk: 4
+DescriptionID: 1
+                    running tally: 45,447 + 4 = 41,451 <- samples array count
+
+
+    func testPrint2() throws {
+        let source = try Mp4File(location: sampleBookUrl)
+        let data = source.fileData
+
+        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCIDAFD
+        let stsc = source.moov.soundTrack.mdia.minf.stbl.stsc
+        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCBBCGB
+        let stsz = source.moov.soundTrack.mdia.minf.stbl.stsz
+        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCHAEEA
+        let stco = source.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom
+        
+        // [(firstChunk: Int, samplesPerChunk: Int, sampleDescriptionID: Int)]
+        // firstChunk is the index of the chunkOffsetTable where each entry begins
+        // samplesPerChunk is the number of entries in the sampleSizeTable that make up each chunk from the current firstChunk to the next firstChunk
+        // We can safely ignore the description, I believe
+        let sampleToChunkTable = stsc.sampleToChunkTable
+        // [Int]
+        // the sampleSize is the byte-count of each sample.
+        let sampleSizeTable = stsz.sampleSizeTable
+        // the chunk offset is the beginning of the chunk in the FILE data, irrespective of atom structure
+        let chunkOffsetTable = stco.chunkOffsetTable
+        
+        // this will keep track of where we pick up when we cycle through the samplesPerChunk entries
+        var newSampleIndex = Int()
+        // this is the array of sizes we need to build to pull this all together
+        var chunkSizes = [Int]()
+        
+        // handle all but the last
+        for (index, entry) in sampleToChunkTable.enumerated().dropLast() {
+            // the number of samples we need to extract from the sampleSizeArray is the difference between the next firstChunk and the current firstChunk
+            var loopsRequired = Int()
+            let nextEntry = sampleToChunkTable[sampleToChunkTable.index(after: index)]
+            let nextChunk = nextEntry.firstChunk
+            loopsRequired = nextChunk - entry.firstChunk
+            // we will count "down" to zero each time we loop through this section
+            while loopsRequired > 0 {
+                // this is the samplesPerChunk value for the current table entry
+                let samplesPerChunk = entry.samplesPerChunk
+                
+                // we will start at the beginning of the sampleSizeTable and create a range from the current number of samples per chunk
+                let samplesStart = newSampleIndex
+                let samplesEnd = samplesStart + samplesPerChunk
+                let range = samplesStart ..< samplesEnd
+                let sample = sampleSizeTable[range]
+                // since each sample size is the byte-count of the sample, we can calculate the byte-count of each chunk by adding the byte-count of each sample within the samples-per-chunk range
+                // using this extension:
+                // extension Sequence where Element: AdditiveArithmetic {
+                //     func sum() -> Element { reduce(.zero, +) }
+                // }
+                let sampleSum = sample.sum()
+                // add the sum to our array
+                chunkSizes.append(sampleSum)
+                // update the samplesStart index
+                newSampleIndex = samplesEnd
+                // decremement our loop-count by 1
+                loopsRequired -= 1
+            }
+            // reset our required number of loops for the next iteration
+            loopsRequired = Int()
+        }
+        // handle last
+        let lastEntry = sampleToChunkTable.last ?? (0,0,0)
+        let lastSamplesPerChunkEntry = lastEntry.samplesPerChunk
+        // we get the start of the final range by subtracting the number of samples in this final chunk from the endIndex of the sampleSizeTable
+        let rangeStart = sampleSizeTable.endIndex - lastSamplesPerChunkEntry
+        let rangeEnd = sampleSizeTable.endIndex
+        let range = rangeStart ..< rangeEnd
+        let sample = sampleSizeTable[range]
+        let sampleSum = sample.sum()
+        // append it too the array
+        chunkSizes.append(sampleSum)
+        // make sure we did it right
+        XCTAssertEqual(chunkSizes.count, chunkOffsetTable.count)
+        
+        // Now that we know our CHUNK sizes, we can calculate the date to isolate by adding each chunk size to its corresponding offset to create a range for the data
+        var audioData = Data()
+        for (index, entry) in chunkOffsetTable.enumerated() {
+            let startOffset = entry
+            let endOffset = startOffset + chunkSizes[index]
+            let range = startOffset ..< endOffset
+            let dataToExtract = data.subdata(in: range)
+            audioData.append(dataToExtract)
+        }
+        // if we did it right, the total data we've extracted should be the size of the media data (mdat) atom, minus 8 for the header data, minus 610 for the chapter title data.
+        XCTAssertEqual(audioData.count, 8198159 - 618)
+    }

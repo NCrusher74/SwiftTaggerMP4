@@ -48,18 +48,6 @@ class Stsz: Atom {
                        payload: payload)
     }
     
-    var totalSizeIfSamplesAreConsecutive: Int {
-        var size = Int()
-        if self.sampleSize == 0 {
-            for sizeInt in self.sampleSizeTable {
-                size += sizeInt
-            }
-        } else {
-            size = self.sampleSize * self.entryCount
-        }
-        return size
-    }
-    
     /// Initialize an `stsz` atom with from chapter title data
     init(titles: [String]) throws {
         var sizes = [Int]()

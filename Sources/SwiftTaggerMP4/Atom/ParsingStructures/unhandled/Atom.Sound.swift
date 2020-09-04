@@ -34,13 +34,13 @@ class SoundAtom: Atom {
         self.channels = data.extractFirst(2).int16BE
         self.compressionID = data.extractFirst(2).int16BE
         self.packetSize = data.extractFirst(2).int16BE
-        self.timeScale = data.extractFirst(2).int32BE
+        self.timeScale = data.extractFirst(4).int32BE
         
         if soundVersion > 0 {
-            self.samplesPerPacket = data.extractFirst(2).int32BE
-            self.bytesPerPacket = data.extractFirst(2).int32BE
-            self.bytesPerFrame = data.extractFirst(2).int32BE
-            self.bytesPerSample = data.extractFirst(2).int32BE
+            self.samplesPerPacket = data.extractFirst(4).int32BE
+            self.bytesPerPacket = data.extractFirst(4).int32BE
+            self.bytesPerFrame = data.extractFirst(4).int32BE
+            self.bytesPerSample = data.extractFirst(4).int32BE
         }
         if soundVersion == 2 {
             _ = data.extractFirst(20)
@@ -73,7 +73,7 @@ class SoundAtom: Atom {
         data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
         data.append(self.soundVersion.int16.beData)
-        data.append(Atom.addReserveData(2))
+        data.append(Atom.addReserveData(6))
         data.append(self.channels.beData)
         data.append(self.compressionID.beData)
         data.append(self.packetSize.beData)

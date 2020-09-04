@@ -12,11 +12,12 @@ import Foundation
 class Mp4File {
     
     var rootAtoms: [Atom]
-    public var metadataAtoms: [String: Atom]
     var moov: Moov
     var mdats: [Mdat]
-    var data: Data
-    
+    var fileData: Data
+    static var mediaTimeScale = Double()
+    static var mediaDuration = Double()
+
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
@@ -28,7 +29,8 @@ class Mp4File {
             throw Mp4File.Error.InvalidFileFormat
         }
         
-        self.data = try Data(contentsOf: location)
+        self.fileData = try Data(contentsOf: location)
+        var data = self.fileData
         var atoms = [Atom]()
 
         while !data.isEmpty {
@@ -52,25 +54,11 @@ class Mp4File {
         guard !mdats.isEmpty else {
             throw Mp4File.Error.MdatAtomNotFound
         }
-        
-        var metadata = [String: Atom]()
-        for atom in self.moov.udta?.meta?.ilst.children ?? [] {
-            if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
-                IntegerMetadataIdentifier(rawValue: atom.identifier) != nil ||
-                atom.identifier == "disk" || atom.identifier == "trkn" || atom.identifier == "covr" {
-                metadata[atom.identifier] = atom
-            } else if atom.identifier == "----" {
-                if let unknownAtom = atom as? UnknownMetadataAtom {
-                    metadata[unknownAtom.name] = atom
-                }
-            }
-        }
-        self.metadataAtoms = metadata
     }
     
-    private func setMetadataAtoms() throws {
+    private func setMetadataAtoms(from tag: Tag) throws {
         var newMetadataAtoms = [Atom]()
-        for (_, atom) in metadataAtoms {
+        for (_, atom) in tag.metadataAtoms {
             newMetadataAtoms.append(atom)
         }
         if self.moov.udta?.meta?.ilst != nil {

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-extension Mp4File {
+extension Tag {
     public var editDateAndDescription1: String? {
         get {
             if let atom = metadataAtoms[StringMetadataIdentifier.editDateAndDescription1.rawValue] as? StringMetadataAtom {

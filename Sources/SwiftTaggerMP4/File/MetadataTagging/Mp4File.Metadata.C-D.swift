@@ -6,7 +6,7 @@
 //
 
 import Foundation
-extension Mp4File {
+extension Tag {
     public var category: String? {
         get {
             if let atom = metadataAtoms[StringMetadataIdentifier.category.rawValue] as? StringMetadataAtom {

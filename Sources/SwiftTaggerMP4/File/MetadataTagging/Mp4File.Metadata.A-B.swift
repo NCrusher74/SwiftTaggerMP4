@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Mp4File {
+extension Tag {
     public var acknowledgment: String? {
         get {
             if let atom = metadataAtoms[StringMetadataIdentifier.acknowledgment.rawValue] as? StringMetadataAtom {

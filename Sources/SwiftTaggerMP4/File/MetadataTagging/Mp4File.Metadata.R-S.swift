@@ -6,7 +6,7 @@
 //
 
 import Foundation
-extension Mp4File {
+extension Tag {
     var rating: Rating? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.rating.rawValue] as? IntegerMetadataAtom {
