@@ -18,7 +18,7 @@ class Stts: Atom {
     private var version: Data
     private var flags: Data
     var entryCount: Int
-    var sampleTable: [(sampleCount: Int, sampleDuration: Int)]
+    var sampleTable: [(sampleCount: Int, sampleDuration: Double)]
     
     /// Initialize a `stts` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -27,11 +27,11 @@ class Stts: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
         self.entryCount = data.extractToInt(4)
-        var entryArray = [(sampleCount: Int, sampleDuration: Int)]()
+        var entryArray = [(sampleCount: Int, sampleDuration: Double)]()
         while !data.isEmpty {
             let sampleCount = data.extractToInt(4)
-            let sampleDelta = data.extractToInt(4)
-            let entry = (sampleCount, sampleDelta)
+            let sampleDuration = data.extractToDouble(4)
+            let entry = (sampleCount, sampleDuration)
             entryArray.append(entry)
         }
         self.sampleTable = entryArray
@@ -39,6 +39,19 @@ class Stts: Atom {
         try super.init(identifier: identifier,
                        size: size,
                        payload: payload)
+    }
+    
+    var sampleTableWithTimeScaleCalculated: [(sampleCount: Int, sampleDuration: Double)] {
+        var newTable = [(sampleCount: Int, sampleDuration: Double)]()
+        if let mdhd = self.parent?.parent?.siblings?.first(where: {$0.identifier == "mdhd"}) as? Mdhd {
+            for entry in self.sampleTable {
+                let sampleCount = entry.sampleCount
+                let sampleDuration = entry.sampleDuration / mdhd.timeScale * 1000
+                let newEntry = (sampleCount, sampleDuration)
+                newTable.append(newEntry)
+            }
+        }
+        return newTable
     }
     
     var mediaDuration: Int {
@@ -50,18 +63,22 @@ class Stts: Atom {
                 count -= 1
             }
         }
-        let duration = preliminaryDuration / Mp4File.mediaTimeScale * 1000
+        var timeScale = Double()
+        if let moov = self.parent?.parent?.parent?.parent?.parent as? Moov {
+            timeScale = moov.soundTrack.mdia.mdhd.timeScale
+        }
+        let duration = preliminaryDuration / timeScale * 1000
         return Int(duration)
     }
     
     /// Calculate the durations of chapter samples
-    private static func calculateDurations(from startTimes: [Int], fileDuration: Int) -> [Int] {
-        var chapterDurations = [Int]()
+    private static func calculateDurations(from startTimes: [Double], fileDuration: Double) -> [Double] {
+        var chapterDurations = [Double]()
         let enumeratedStarts = startTimes.enumerated()
         let firstStart = startTimes.first ?? 0
         // Handle all but the last one.
         for (index, startTime) in enumeratedStarts.dropLast() {
-            let followingTime = startTimes[startTimes.index(after: index)]
+            let followingTime: Double = startTimes[startTimes.index(after: index)]
             chapterDurations.append(followingTime - startTime)
         }
         
@@ -73,10 +90,10 @@ class Stts: Atom {
     }
     
     /// Initialize an `stts` atom with chapter durations for building a chapter track
-    init(from startTimes: [Int], fileDuration: Int) throws {
+    init(from startTimes: [Double], fileDuration: Double) throws {
         let durationArray = Stts.calculateDurations(from: startTimes, fileDuration: fileDuration)
         
-        var entryDict = [Int: Int]() // [duration: Number of Samples With This Duration]
+        var entryDict = [Double: Int]() // [duration: Number of Samples With This Duration]
         if durationArray.count == 1 {
             let duration = durationArray[durationArray.startIndex]
             entryDict[duration] = 1
@@ -102,8 +119,8 @@ class Stts: Atom {
                 entryDict[lastDuration] = 1
             }
         }
-        var entries = [(sampleCount: Int, sampleDuration: Int)]()
-        var previous = Int()
+        var entries = [(sampleCount: Int, sampleDuration: Double)]()
+        var previous = Double()
         for duration in durationArray {
             if duration == previous {
                 continue

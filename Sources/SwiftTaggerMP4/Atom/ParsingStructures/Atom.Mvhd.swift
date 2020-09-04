@@ -15,9 +15,9 @@ class Mvhd: Atom {
     var creationTime: Int
     var modificationTime: Int
     /// the number of "ticks" per second in the media
-    var timeScale: Int
+    var timeScale: Double
     /// the duration in milliseconds
-    var duration: Int
+    var duration: Double
     var preferredRate: Int32
     var preferredVolume: Int16
     private var matrixStructure: Data
@@ -54,14 +54,14 @@ class Mvhd: Atom {
         }
         if preliminaryTimeScale == 1000 {
             // duration is already in milliseconds, no need to calculate
-            self.duration = Int(preliminaryDuration)
+            self.duration = preliminaryDuration
         } else {
             // divide the raw duration by the timescale to get the time in seconds
             let durationInSeconds: Double = preliminaryDuration / preliminaryTimeScale
             // multiply the duration in seconds by 1000 to get milliseconds
-            self.duration = Int(durationInSeconds * 1000)
+            self.duration = durationInSeconds * 1000
         }
-        self.timeScale = Int(preliminaryTimeScale)
+        self.timeScale = preliminaryTimeScale
         
         self.preferredRate = data.extractFirst(4).int32BE
         self.preferredVolume = data.extractFirst(2).int16BE

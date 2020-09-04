@@ -28,7 +28,7 @@ class Elst: Atom {
                        payload: payload)
     }
     
-    private var timeScale: Int {
+    private var timeScale: Double {
         if let mvhd = self.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
             return mvhd.timeScale
         } else {
@@ -38,22 +38,22 @@ class Elst: Atom {
     // Track duration: A 32-bit integer that specifies the duration of this edit segment in units of the movie’s time scale. (mp4v2 uses 64 bit if version is 1)
     // Media time: A 32-bit integer containing the starting time within the media of this edit segment (in media timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit. (mp4v2 uses 64 bit if version is 1)
     // Media rate: A 32-bit fixed-point number that specifies the relative rate at which to play the media corresponding to this edit segment. This rate value cannot be 0 or negative. 
-    var editListTable: [(segmentDuration: Int, mediaTime: Int, mediaRate: Int)] {
-        var entryArray = [(segmentDuration: Int, mediaTime: Int, mediaRate: Int)]()
+    var editListTable: [(segmentDuration: Double, mediaTime: Double, mediaRate: Double)] {
+        var entryArray = [(segmentDuration: Double, mediaTime: Double, mediaRate: Double)]()
         var data = self.editListData
         while !data.isEmpty {
-            var segmentDuration: Int = 0
-            var mediaTime: Int = 0
+            var segmentDuration: Double = 0
+            var mediaTime: Double = 0
             if self.version.int8BE == 0x01 {
                 let preliminarySegmentDuration = data.extractFirst(8).int64BE.toDouble
-                segmentDuration = Int(preliminarySegmentDuration) / self.timeScale
-                mediaTime = data.extractToInt(8)
+                segmentDuration = preliminarySegmentDuration / self.timeScale
+                mediaTime = data.extractToDouble(8)
             } else {
                 let preliminarySegmentDuration = data.extractFirst(4).int32BE.toDouble
-                segmentDuration = Int(preliminarySegmentDuration) / self.timeScale
-                mediaTime = data.extractToInt(4)
+                segmentDuration = preliminarySegmentDuration / self.timeScale
+                mediaTime = data.extractToDouble(4)
             }
-            let mediaRate = data.extractToInt(2)
+            let mediaRate = data.extractToDouble(2)
             // reserved
             _ = data.extractFirst(2)
             let entry = (segmentDuration, mediaTime, mediaRate)
@@ -82,15 +82,15 @@ class Elst: Atom {
         return data
     }
     
-    var duration: Int {
-        var duration = Int()
+    var duration: Double {
+        var duration = Double()
         for entry in editListTable {
             duration = duration + entry.segmentDuration
         }
         return duration
     }
     
-    var firstStart: Int {
+    var firstStart: Double {
         if let firstEntry = editListTable.first {
             return firstEntry.mediaTime
         } else {

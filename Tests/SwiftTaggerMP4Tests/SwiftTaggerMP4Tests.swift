@@ -26,8 +26,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.soundTrack.mdia.mdhd.duration, 1055370)
         XCTAssertEqual(source.moov.soundTrack.tkhd.duration, 1055370)
         XCTAssertEqual(source.moov.soundTrack.mdia.minf.stbl.stts.mediaDuration, 1055370)
-        XCTAssertEqual(Mp4File.mediaTimeScale, 44100)
-        XCTAssertEqual(Mp4File.mediaDuration, 1055370)
         XCTAssertEqual(source.moov.chapterTrack?.mdia.minf.stbl.stts.mediaDuration, 1055370)
         XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.timeScale, 44100)
         XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.duration, 1055370)
@@ -43,11 +41,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         XCTAssertEqual(chapterStarts, knownChapterStarts)
         XCTAssertEqual(chapterTitles, knownTitles)
-//        print(source.calculateChapterStarts())
-//        print(try source.getChapterTitleStrings())
-//        let converter = try SampleTableToChapterConverter(readFrom: source)
-        
+        let converter = try SampleTableToChapterConverter(readFrom: source)
+        XCTAssertEqual(converter.initialMediaOffset, 210940)
+        XCTAssertEqual(converter.mediaData.count, 8198159 - 618)
     }
+    
     @available(OSX 10.12, *)
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookUrl)

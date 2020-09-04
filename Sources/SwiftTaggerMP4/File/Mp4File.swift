@@ -15,8 +15,6 @@ class Mp4File {
     var moov: Moov
     var mdats: [Mdat]
     var fileData: Data
-    static var mediaTimeScale = Double()
-    static var mediaDuration = Double()
 
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -45,8 +43,6 @@ class Mp4File {
         if let moov = atoms.first(where: {$0.identifier == "moov"}) as? Moov {
             self.moov = moov
             Atom.version = moov.mvhd.version
-            Mp4File.mediaTimeScale = Double(moov.soundTrack.mdia.mdhd.timeScale)
-            Mp4File.mediaDuration = Double(moov.soundTrack.mdia.mdhd.duration)
         } else {
             throw Mp4File.Error.MoovAtomNotFound
         }

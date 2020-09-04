@@ -15,8 +15,8 @@ class Mdhd: Atom {
     private var flags: Data
     var creationTime: Int
     var modificationTime: Int
-    var timeScale: Int
-    var duration: Int
+    var timeScale: Double
+    var duration: Double
     private var languageInt16: Int16
     var quality: Int
     
@@ -43,14 +43,14 @@ class Mdhd: Atom {
         
         if preliminaryTimeScale == 1000 {
             // duration is already in milliseconds, no need to calculate
-            self.duration = Int(preliminaryDuration)
+            self.duration = preliminaryDuration
         } else {
             // divide the raw duration by the timescale to get the time in seconds
             let durationInSeconds: Double = preliminaryDuration / preliminaryTimeScale
             // multiply the duration in seconds by 1000 to get milliseconds
-            self.duration = Int(durationInSeconds * 1000)
+            self.duration = durationInSeconds * 1000
         }
-        self.timeScale = Int(preliminaryTimeScale)
+        self.timeScale = preliminaryTimeScale
         self.languageInt16 = data.extractFirst(2).int16BE
         self.quality = data.extractToInt(2)
         
@@ -138,13 +138,14 @@ class Mdhd: Atom {
     
     /// Initialize a `mdhd` atom from a duration and language for use in a CHAPTER TRAK ONLY
     @available(OSX 10.12, *)
-    init(language: ISO6392Code) throws {
+    init(language: ISO6392Code, moov: Moov) throws {
+        
         self.version = Atom.version
         self.flags = Atom.flags
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
-        self.timeScale = Int(Mp4File.mediaTimeScale)
-        self.duration = Int(Mp4File.mediaDuration)
+        self.timeScale = moov.soundTrack.mdia.mdhd.timeScale
+        self.duration = moov.soundTrack.mdia.mdhd.duration
         self.languageInt16 = language.getInt16Code()
         self.quality = 0
         
@@ -181,8 +182,15 @@ class Mdhd: Atom {
         self.flags = Atom.flags
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
-        self.timeScale = Int(Mp4File.mediaTimeScale)
-        self.duration = Int(Mp4File.mediaDuration)
+        
+        var mdhdDuration = Double()
+        var mdhdTimeScale = Double()
+        if let mdia = elng.parent?.siblings?.first(where: {$0.identifier == "mdia"}) as? Mdia {
+            mdhdDuration = mdia.mdhd.duration
+            mdhdTimeScale = mdia.mdhd.timeScale
+        }
+        self.timeScale = mdhdTimeScale
+        self.duration = mdhdDuration
         self.languageInt16 = isoCode.getInt16Code()
         self.quality = 0
         

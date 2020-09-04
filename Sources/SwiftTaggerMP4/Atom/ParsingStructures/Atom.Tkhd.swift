@@ -57,7 +57,7 @@ class Tkhd: Atom {
     }
     
     //    /** Duration - A time value that indicates the duration of this track (in the MOVIES’s time coordinate system (from mvhd atom)). Note that this property is derived from the track’s edits. The value of this field is equal to the sum of the durations of all of the track’s edits. If there is no edit list, then the duration is the sum of the sample durations (from stts atom?), converted into the MOVIE timescale. */
-    var duration: Int {
+    var duration: Double {
         if let edts = self.siblings?.first(where: {$0.identifier == "edts"}) as? Edts {
             return edts.elst.duration
         } else if let mvhd = self.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {

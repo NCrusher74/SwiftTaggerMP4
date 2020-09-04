@@ -9,8 +9,8 @@ import Foundation
 
 struct SampleTableToChapterConverter {
 
-    private var mediaData: Data
-    private var initialMediaOffset: Int
+    var mediaData: Data
+    var initialMediaOffset: Int
     var chapters: [Int: Chapter]
 
     init(readFrom mp4File: Mp4File) throws {
@@ -174,20 +174,24 @@ extension Mp4File {
     }
     
     func calculateChapterStarts() -> [Int] {
-        var firstStart = Int()
+        var firstStart = Double()
         if let elst = self.moov.soundTrack.edts?.elst {
             firstStart = elst.firstStart
         }
         if let stts = self.moov.chapterTrack?.mdia.minf.stbl.stts {
             var starts = [firstStart]
             var currentStart = firstStart
-            for entry in stts.sampleTable.dropLast() {
+            for entry in stts.sampleTableWithTimeScaleCalculated.dropLast() {
                 let duration = entry.sampleDuration
                 let nextStart = currentStart + duration
                 starts.append(nextStart)
                 currentStart = nextStart
             }
-            return starts
+            var startInts = [Int]()
+            for start in starts {
+                startInts.append(Int(start))
+            }
+            return startInts
         } else {
             return []
         }
