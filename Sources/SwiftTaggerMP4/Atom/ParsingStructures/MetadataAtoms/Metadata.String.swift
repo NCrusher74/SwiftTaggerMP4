@@ -38,7 +38,8 @@ class StringMetadataAtom: Atom {
             } else if dataAtom.dataType == .utf16 || dataAtom.dataType == .utf16Sort {
                 self.stringValue = String(data: dataAtom.data, encoding: .utf16) ?? ""
             } else {
-                throw Mp4File.Error.UnsupportedMetadataFormat
+                print(identifier)
+                throw Mp4File.Error.testError
             }
         } else {
             throw Mp4File.Error.DataAtomNotFound

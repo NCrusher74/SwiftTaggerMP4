@@ -5,49 +5,12 @@ import Cocoa
 final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
-        let url = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/samples/test/mp4_chaptered.m4a")
-//        let data = try Data(contentsOf: sampleBookUrl)
-        let data = try Data(contentsOf: url)
-        let range = 2060 ..< 2092
+        let data = try Data(contentsOf: sampleBookUrl)
+        let range = 210932 ..< 210932 + 618
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
-        
-        /*
-         // stsz
-         0 0 0 14
-         73 74 73 7a
-         0 0 0 0 // version and flags
-         0 0 0 17 // sample size
-         0 0 0 6 // entries
-         
-         // stsc
-         0 0 0 28
-         73 74 73 63
-         0 0 0 0 // version and flags
-         0 0 0 2 // entry count
-         0 0 0 1 first chunk
-         0 0 0 2 samples per chunk
-         0 0 0 1
-         
-         0 0 0 3 first chunk
-         0 0 0 1 samples per chunk
-         0 0 0 1
-         
-         // stco
-         0 0 0 20
-         73 74 63 6f
-         0 0 0 0
-         0 0 0 4
-         0 1 47 b1 - 83889
-         0 1 47 df - 83935 (47)
-         0 1 48 d - 83981 (46)
-         0 1 48 24 - 84004 (23)
-         */
     }
     /*
-     /Users/nolainecrusher/Downloads/audiobook_tools/samples/test/other/PoePoems_librivox.m4b
-     /Users/nolainecrusher/Downloads/audiobook_tools/samples/test/mp4_chaptered.m4a
-     /Users/nolainecrusher/Downloads/audiobook_tools/samples/audiobooks/wapo.m4b
      */
     
     func testBasicFileParsing() throws {
@@ -81,17 +44,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let converter = try SampleTableToChapterConverter(readFrom: source)
         XCTAssertEqual(converter.initialMediaOffset, 210940)
         XCTAssertEqual(converter.mediaData.count, 8198159 - 618)
-        /*
-         /Users/nolainecrusher/Downloads/audiobook_tools/samples/test/other/PoePoems_librivox.m4b
-         /Users/nolainecrusher/Downloads/audiobook_tools/samples/test/mp4_chaptered.m4a
-         /Users/nolainecrusher/Downloads/audiobook_tools/samples/audiobooks/wapo.m4b
-         */
-
-        let newsource = try Mp4File(location: URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/samples/test/mp4_chaptered.m4a"))
-        let newconverter = try SampleTableToChapterConverter(readFrom: newsource)
-        for chapter in newconverter.sortedChapters() {
-            print(chapter)
-        }
     }
     
     @available(OSX 10.12, *)

@@ -29,7 +29,7 @@ class Elst: Atom {
     }
     
     private var timeScale: Double {
-        if let mvhd = self.parent?.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
+        if let mvhd = self.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
             return mvhd.timeScale
         } else {
             fatalError("Cannot access movie header atom")

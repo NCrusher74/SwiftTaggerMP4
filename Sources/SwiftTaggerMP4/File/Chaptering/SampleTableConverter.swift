@@ -71,7 +71,6 @@ extension Mp4File {
         }
     }
     
-    // MARK: - Isolate Media Data
     // this is a torturous, unholy, convoluted mess of a function but necessary for files where the media data is not stored in consecutive, uninterrupted chunks
     func isolateMediaData(forTrack trackType: TrackType) throws -> Data {
         var track: Trak? = nil
@@ -92,22 +91,13 @@ extension Mp4File {
             // samplesPerChunk is the number of entries in the sampleSizeTable that make up each chunk from the current firstChunk to the next firstChunk
             let sampleToChunkTable = stsc.sampleToChunkTable
             // the sampleSize is the byte-count of each sample.
-            var sizeArray = [Int]()
-            if stsz.sampleSize == 0 {
-                sizeArray = stsz.sampleSizeTable
-            } else {
-                var count = stsz.entryCount
-                while count > 0 {
-                    sizeArray.append(stsz.sampleSize)
-                    count -= 1
-                }
-            }
+            let sampleSizeTable = stsz.sampleSizeTable
             // the chunk offset is the beginning of the chunk in the FILE data, irrespective of atom structure
             let chunkOffsetTable = stco.chunkOffsetTable
             
             let chunkSizes = try getChunkSizes(
                 sampleToChunkTable: sampleToChunkTable,
-                sampleSizeTable: sizeArray,
+                sampleSizeTable: sampleSizeTable,
                 chunkOffsetTable: chunkOffsetTable)
             
             // Now that we know our CHUNK sizes, we can calculate the data to isolate by adding each chunk size to its corresponding offset to create a range for the data
@@ -146,6 +136,7 @@ extension Mp4File {
             while loopsRequired > 0 {
                 // this is the samplesPerChunk value for the current table entry
                 let samplesPerChunk = entry.samplesPerChunk
+                
                 // we will start at the beginning of the sampleSizeTable and create a range from the current number of samples per chunk
                 let samplesStart = newSampleIndex
                 let samplesEnd = samplesStart + samplesPerChunk
@@ -153,7 +144,6 @@ extension Mp4File {
                 let sample = sampleSizeTable[range]
                 // since each sample size is the byte-count of the sample, we can calculate the byte-count of each chunk by adding the byte-count of each sample within the samples-per-chunk range
                 let sampleSum = sample.sum()
-                print(sampleSum)
                 // add the sum to our array
                 chunkSizes.append(sampleSum)
                 // update the samplesStart index
@@ -164,40 +154,25 @@ extension Mp4File {
             // reset our required number of loops for the next iteration
             loopsRequired = Int()
         }
-        
         // handle last
-        // we still have to iterate through any remaining chunks
-        var loopsRequired = Int()
-        if let entry = sampleToChunkTable.last {
-            let lastChunk = chunkOffsetTable.endIndex
-            loopsRequired = lastChunk - entry.firstChunk
-            // we will count "down" to zero each time we loop through this section
-            while loopsRequired > 0 {
-                // this is the samplesPerChunk value for the current table entry
-                let samplesPerChunk = entry.samplesPerChunk
-                // we will start at the beginning of the sampleSizeTable and create a range from the current number of samples per chunk
-                let samplesStart = newSampleIndex
-                let samplesEnd = samplesStart + samplesPerChunk
-                let range = samplesStart ..< samplesEnd
-                let sample = sampleSizeTable[range]
-                // since each sample size is the byte-count of the sample, we can calculate the byte-count of each chunk by adding the byte-count of each sample within the samples-per-chunk range
-                let sampleSum = sample.sum()
-                // add the sum to our array
-                chunkSizes.append(sampleSum)
-                // update the samplesStart index
-                newSampleIndex = samplesEnd
-                // decremement our loop-count by 1
-                loopsRequired -= 1
-            }
+        if let lastEntry = sampleToChunkTable.last {
+            let lastSamplesPerChunkEntry = lastEntry.samplesPerChunk
+            // we get the start of the final range by subtracting the number of samples in this final chunk from the endIndex of the sampleSizeTable
+            let rangeStart = sampleSizeTable.endIndex - lastSamplesPerChunkEntry
+            let rangeEnd = sampleSizeTable.endIndex
+            let range = rangeStart ..< rangeEnd
+            let sample = sampleSizeTable[range]
+            let sampleSum = sample.sum()
+            // append it too the array
+            chunkSizes.append(sampleSum)
         }
         // make sure we did it right
         guard chunkSizes.count == chunkOffsetTable.count else {
-            throw Mp4File.Error.testError
+            throw Mp4File.Error.UnableToLocateMediaData
         }
         return chunkSizes
     }
     
-    // MARK: - Get Chapter Data
     func calculateChapterStarts() -> [Int] {
         var firstStart = Double()
         if let elst = self.moov.soundTrack.edts?.elst {
@@ -226,28 +201,18 @@ extension Mp4File {
         if let track = self.moov.chapterTrack {
             var titles = [String]()
             let stsz = track.mdia.minf.stbl.stsz
-            var sizeArray = [Int]()
-            if stsz.sampleSize == 0 {
-                sizeArray = stsz.sampleSizeTable
-            } else {
-                var count = stsz.entryCount
-                while count > 0 {
-                    sizeArray.append(stsz.sampleSize)
-                    count -= 1
-                }
-            }
             let offsetAtom = track.mdia.minf.stbl.chunkOffsetAtom
-
+            let sampleSizeTable = stsz.sampleSizeTable
             let chunkOffsetTable = offsetAtom.chunkOffsetTable
-            if sizeArray.count == chunkOffsetTable.count {
+            if sampleSizeTable.count == chunkOffsetTable.count {
                 // if this is true, each offset corresponds with a size and we should not assume data is in consecutive chunks
-                titles = try interpretTitleStringData(sizes: sizeArray, offsets: chunkOffsetTable)
+                titles = try interpretTitleStringData(sizes: sampleSizeTable, offsets: chunkOffsetTable)
             } else {
                 // try it this way, but it's gonne be ugly and probably won't work
                 let sampleToChunkTable = track.mdia.minf.stbl.stsc.sampleToChunkTable
                 let chunkSizes = try getChunkSizes(
                     sampleToChunkTable: sampleToChunkTable,
-                    sampleSizeTable: sizeArray,
+                    sampleSizeTable: sampleSizeTable,
                     chunkOffsetTable: chunkOffsetTable)
                 
                 titles = try interpretTitleStringData(sizes: chunkSizes, offsets: chunkOffsetTable)
