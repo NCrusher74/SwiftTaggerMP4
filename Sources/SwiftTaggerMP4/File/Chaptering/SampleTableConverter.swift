@@ -168,6 +168,7 @@ extension Mp4File {
         }
         // make sure we did it right
         guard chunkSizes.count == chunkOffsetTable.count else {
+            print("\(chunkSizes.count) - \(chunkOffsetTable.count)")
             throw Mp4File.Error.UnableToLocateMediaData
         }
         return chunkSizes
