@@ -52,6 +52,29 @@ class Mp4File {
         }
     }
     
+    /// Sorts atoms into order to preserve media offsets
+    /// - Parameters:
+    ///   - identifier: the identifier of the atom being sorted
+    private func sortingGroup(forIdentifier identifier: String) -> Int {
+        switch identifier {
+            case "mdat":
+                return 2
+            case "moov":
+                return 3
+            default:
+                return 1
+        }
+    }
+    
+    /// The array of root atoms, arranged to preserve media offsets
+    var rearrangedRootAtoms: [Atom] {
+        var rearrangedAtoms = self.rootAtoms
+        rearrangedAtoms.sort(
+            by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
+        )
+        return rearrangedAtoms
+    }
+
     private func setMetadataAtoms(from tag: Tag) throws {
         var newMetadataAtoms = [Atom]()
         for (_, atom) in tag.metadataAtoms {

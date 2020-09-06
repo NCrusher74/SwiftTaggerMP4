@@ -26,6 +26,12 @@ enum IntegerMetadataIdentifier: String {
     case tvEpisodeNumber = "tves"
     case tvSeason = "tvsn"
     case year = "yrrc"
+    
+    func parse(size: Int, payload: Data) throws -> Atom {
+        return try IntegerMetadataAtom(identifier: self.rawValue,
+                                       size: size,
+                                       payload: payload)
+    }
 }
 
 enum StringMetadataIdentifier: String, CaseIterable {
@@ -116,4 +122,10 @@ enum StringMetadataIdentifier: String, CaseIterable {
     case website = "\u{00A9}url"
     case workName = "\u{00A9}wrk"
     case writer = "\u{00A9}wrt"
+    
+    func parse(size: Int, payload: Data) throws -> Atom {
+        return try StringMetadataAtom(identifier: self.rawValue,
+                                      size: size,
+                                      payload: payload)
+    }
 }

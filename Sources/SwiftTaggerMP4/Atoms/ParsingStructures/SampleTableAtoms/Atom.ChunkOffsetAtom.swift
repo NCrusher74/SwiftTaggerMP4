@@ -40,21 +40,9 @@ class ChunkOffsetAtom: Atom {
                        payload: payload)
     }
 
-    /// Calculate the offsets for chapter title data
-    private static func calculateOffsets(startingOffset: Int, titles: [String]) -> [Int] {
-        var offsets: [Int] = [startingOffset]
-        var offset = startingOffset
-        for title in titles.dropLast() {
-            let chunkSize = title.count + 2
-            offset = offset + chunkSize
-            offsets.append(offset)
-        }
-        return offsets
-    }
-    
     /// Initialize a `chunkOffsetAtom` with chapter track data
     init(use64BitOffset: Bool, startingOffset: Int, titles: [String]) throws {
-        let offsetArray = ChunkOffsetAtom.calculateOffsets(
+        let offsetArray = TextDataHandler.calculateTitleOffsets(
             startingOffset: startingOffset, titles: titles)
         self.version = Atom.version
         self.flags = Atom.flags

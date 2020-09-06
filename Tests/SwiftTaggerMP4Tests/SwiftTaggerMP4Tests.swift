@@ -38,16 +38,12 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 1055370)
     }
     
-    func testSampleTable() throws {
-        let source = try Mp4File(location: sampleBookUrl)
-        let soundTrack = source.moov.soundTrack
-        let chapterTrack = source.moov.chapterTrack!
-        let chapterSampleTable = try SampleTable(mp4File: source, track: chapterTrack)
-        let soundSampleTable = try SampleTable(mp4File: source, track: soundTrack)
-        
-        XCTAssertEqual(chapterSampleTable.chunkData.count, 610)
-        XCTAssertEqual(soundSampleTable.chunkData.count, 8198159 - 618)
-    }
+//    func testMediaTable() throws {
+//        let source = try Mp4File(location: sampleBookUrl)
+//        let soundTrack = source.moov.soundTrack
+//        let soundSampleTable = try Media(mp4File: source)
+//        XCTAssertEqual(soundSampleTable.mediaData.count, 8198159 - 618)
+//    }
     
     @available(OSX 10.12, *)
     func testTag() throws {

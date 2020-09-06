@@ -71,27 +71,9 @@ class Stts: Atom {
         return Int(duration)
     }
     
-    /// Calculate the durations of chapter samples
-    private static func calculateDurations(from startTimes: [Double], fileDuration: Double) -> [Double] {
-        var chapterDurations = [Double]()
-        let enumeratedStarts = startTimes.enumerated()
-        let firstStart = startTimes.first ?? 0
-        // Handle all but the last one.
-        for (index, startTime) in enumeratedStarts.dropLast() {
-            let followingTime: Double = startTimes[startTimes.index(after: index)]
-            chapterDurations.append(followingTime - startTime)
-        }
-        
-        // Handle the last one.
-        let lastStart = startTimes.last ?? firstStart
-        chapterDurations.append(fileDuration - lastStart)
-        
-        return chapterDurations
-    }
-    
     /// Initialize an `stts` atom with chapter durations for building a chapter track
     init(from startTimes: [Double], fileDuration: Double) throws {
-        let durationArray = Stts.calculateDurations(from: startTimes, fileDuration: fileDuration)
+        let durationArray = TextDataHandler.calculateChapterDurations(from: startTimes, fileDuration: fileDuration)
         
         var entryDict = [Double: Int]() // [duration: Number of Samples With This Duration]
         if durationArray.count == 1 {
