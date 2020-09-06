@@ -65,6 +65,11 @@ struct ChapterDataHandler {
         self.chapters = chapterList
     }
     
+    /// Sorts chapters into chronological order by `startTime` and returns an array of `(startTime: Chapter)` tuples
+    func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
+        return chapters.keys.sorted().map { ($0, chapters[$0]!) }
+    }
+
     static func getChapterTitlesFromOffsetsAndSizes(offsets: [Int], sizes: [Int], data: Data) -> [String] {
         var titles = [String]()
         for (index, offset) in offsets.enumerated() {
@@ -76,7 +81,8 @@ struct ChapterDataHandler {
             let stringLength = chunkData.extractToInt(2)
             let stringData = chunkData.extractFirst(stringLength)
             let bom: Data = Data([0xfe, 0xff])
-            if stringData[0 ..< 2] == bom {
+            let bomRange = stringData.startIndex ..< stringData.index(stringData.startIndex, offsetBy: 2)
+            if stringData.subdata(in: bomRange) == bom {
                 if let string = String(data: stringData, encoding: .utf16) {
                     titles.append(string)
                 } else {

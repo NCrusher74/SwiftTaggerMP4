@@ -3,10 +3,6 @@ import Cocoa
 @testable import SwiftTaggerMP4
 
 /*
- let knownChapterStarts = [0, 100002, 192013, 292014, 392004, 459020, 546000, 624019, 714016, 791013, 869018, 963007]
- let knownTitles = ["01 - ''Frost To-Night'' - Read by BK", "02 - ''Frost To-Night'' - Read by CS", "03 - ''Frost To-Night'' - Read by EL-ALP", "04 - ''Frost To-Night'' - Read by GB", "05 - ''Frost To-Night'' - Read by KARA", "06 - ''Frost To-Night'' - Read by LAH", "07 - ''Frost To-Night'' - Read by LCW", "08 - ''Frost To-Night'' - Read by MAS", "09 - ''Frost To-Night'' - Read by PS", "10 - ''Frost To-Night'' - Read by SPC", "11 - ''Frost To-Night'' - Read by TP", "12 - ''Frost To-Night'' - Read by VB"]
- 
-
  */
 final class SwiftTaggerMP4Tests: XCTestCase {
 
@@ -44,6 +40,33 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 //        let soundSampleTable = try Media(mp4File: source)
 //        XCTAssertEqual(soundSampleTable.mediaData.count, 8198159 - 618)
 //    }
+    
+    func testChapterHandler() throws {
+        let source = try Mp4File(location: sampleBookUrl)
+        let knownChapterStarts = [0, 100002, 192013, 292014, 392004, 459020, 546000, 624019, 714016, 791013, 869018, 963007]
+        let knownTitles = [
+            "01 - ''Frost To-Night'' - Read by BK",
+            "02 - ''Frost To-Night'' - Read by CS",
+            "03 - ''Frost To-Night'' - Read by EL-ALP",
+            "04 - ''Frost To-Night'' - Read by GB",
+            "05 - ''Frost To-Night'' - Read by KARA",
+            "06 - ''Frost To-Night'' - Read by LAH",
+            "07 - ''Frost To-Night'' - Read by LCW",
+            "08 - ''Frost To-Night'' - Read by MAS",
+            "09 - ''Frost To-Night'' - Read by PS",
+            "10 - ''Frost To-Night'' - Read by SPC",
+            "11 - ''Frost To-Night'' - Read by TP",
+            "12 - ''Frost To-Night'' - Read by VB"]
+        
+        var titles = [String]()
+        var starts = [Int]()
+        for chapter in try source.listChapters() {
+            titles.append(chapter.title)
+            starts.append(chapter.startTime)
+        }
+        XCTAssertEqual(titles, knownTitles)
+//        XCTAssertEqual(starts, knownChapterStarts)
+    }
     
     @available(OSX 10.12, *)
     func testTag() throws {
