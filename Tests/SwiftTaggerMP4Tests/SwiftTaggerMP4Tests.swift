@@ -7,16 +7,28 @@ import Cocoa
 final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
-        let data = try Data(contentsOf: sampleBookUrl)
-        let range = 210932 ..< 210932 + 618
+        let data = try Data(contentsOf: sampleBookSublerUrl)
+        let range = 000000002020 ..< 000000002060
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
     /*
+     0 0 0 28
+     73 74 73 63
+     0 0 0 0 // vf
+     0 0 0 2 // entry count
+     
+     0 0 0 1 // first chunk
+     0 0 0 2 // samplesPerChunk
+     0 0 0 1 // description ID
+     
+     0 0 0 3 // first chunk
+     0 0 0 1 // samplePerChunk
+     0 0 0 1 // description ID
      */
     
     func testBasicFileParsing() throws {
-        let source = try Mp4File(location: sampleBookUrl)
+        let source = try Mp4File(location: sampleBookCV1Url)
         XCTAssertTrue(!source.rootAtoms.isEmpty)
         XCTAssertNotNil(source.moov)
         XCTAssertTrue(!source.mdats.isEmpty)
@@ -34,16 +46,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 1055370)
     }
     
-//    func testMediaTable() throws {
-//        let source = try Mp4File(location: sampleBookUrl)
-//        let soundTrack = source.moov.soundTrack
-//        let soundSampleTable = try Media(mp4File: source)
-//        XCTAssertEqual(soundSampleTable.mediaData.count, 8198159 - 618)
-//    }
-    
-    func testChapterHandler() throws {
-        let source = try Mp4File(location: sampleBookUrl)
-        let knownChapterStarts = [0, 100002, 192013, 292014, 392004, 459020, 546000, 624019, 714016, 791013, 869018, 963007]
+    func testChapterHandlerOnChaperAndVerseFile() throws {
+        let source = try Mp4File(location: sampleBookCV1Url)
+        let knownChapterStarts = [0, 100003, 192013, 292014, 392005, 459021, 546001, 624020, 714016, 791013, 869018, 963007]
         let knownTitles = [
             "01 - ''Frost To-Night'' - Read by BK",
             "02 - ''Frost To-Night'' - Read by CS",
@@ -65,12 +70,26 @@ final class SwiftTaggerMP4Tests: XCTestCase {
             starts.append(chapter.startTime)
         }
         XCTAssertEqual(titles, knownTitles)
-//        XCTAssertEqual(starts, knownChapterStarts)
+        XCTAssertEqual(starts, knownChapterStarts)
+    }
+    
+    func testChapterHandlerOnSublerFile() throws {
+        let source = try Mp4File(location: sampleBookSublerUrl)
+        let knownStarts = [0, 600, 1300, 2100, 3300, 4600]
+        let knownTitles = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
+        var titles = [String]()
+        var starts = [Int]()
+        for chapter in try source.listChapters() {
+            titles.append(chapter.title)
+            starts.append(chapter.startTime)
+        }
+        XCTAssertEqual(titles, knownTitles)
+        XCTAssertEqual(starts, knownStarts)
     }
     
     @available(OSX 10.12, *)
     func testTag() throws {
-        let mp4 = try Mp4File(location: sampleBookUrl)
+        let mp4 = try Mp4File(location: sampleBookCV1Url)
         var source = Tag(readFrom: mp4)
         XCTAssertEqual(source.album, "''Frost To-Night''")
         XCTAssertEqual(source.title, "FrostTonight_librivox")

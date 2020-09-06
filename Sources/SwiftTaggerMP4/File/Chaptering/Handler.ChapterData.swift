@@ -40,10 +40,17 @@ struct ChapterDataHandler {
                     chapterList = [:]
                 } else {
                     let offsets = stbl.chunkOffsetAtom.chunkOffsetTable
-                    let sizes = try MediaDataHandler.chunkSizes(stbl: stbl)
-                    guard offsets.count == sizes.count else {
-                        throw TextDataHandlerError.ChunkSizeToChunkOffsetCountMismatch
+                    var sizes = [Int]()
+                    if stbl.stsz.sampleSize == 0 {
+                        sizes = stbl.stsz.sampleSizeTable
+                    } else {
+                        var count = stbl.stsz.entryCount
+                        while count > 0 {
+                            sizes.append(stbl.stsz.sampleSize)
+                            count -= 1
+                        }
                     }
+
                     var titles = ChapterDataHandler.getChapterTitlesFromOffsetsAndSizes(offsets: offsets, sizes: sizes, data: mp4File.data)
                     
                     if startTimes.count > titles.count {
@@ -72,27 +79,45 @@ struct ChapterDataHandler {
 
     static func getChapterTitlesFromOffsetsAndSizes(offsets: [Int], sizes: [Int], data: Data) -> [String] {
         var titles = [String]()
-        for (index, offset) in offsets.enumerated() {
-            let start = offset
-            let end = start + sizes[index]
-            let range = start ..< end
-            var chunkData = data.subdata(in: range)
-            
-            let stringLength = chunkData.extractToInt(2)
-            let stringData = chunkData.extractFirst(stringLength)
-            let bom: Data = Data([0xfe, 0xff])
-            let bomRange = stringData.startIndex ..< stringData.index(stringData.startIndex, offsetBy: 2)
-            if stringData.subdata(in: bomRange) == bom {
-                if let string = String(data: stringData, encoding: .utf16) {
-                    titles.append(string)
+        
+        if offsets.count == sizes.count {
+            // don't assume samples are consecutive
+            for (index, size) in sizes.enumerated() {
+                let start = offsets[index]
+                let end = start + size
+                let range = start ..< end
+                var chunkData = data.subdata(in: range)
+                let stringLength = chunkData.extractToInt(2)
+                let stringData = chunkData.extractFirst(stringLength)
+                let bom: Data = Data([0xfe, 0xff])
+                let bomRange = stringData.startIndex ..< stringData.index(stringData.startIndex, offsetBy: 2)
+                if stringData.subdata(in: bomRange) == bom {
+                    if let string = String(data: stringData, encoding: .utf16) {
+                        titles.append(string)
+                    } else {
+                        titles.append("Unparseable utf16 string")
+                    }
                 } else {
-                    titles.append("Unparseable utf16 string")
+                    if let string = stringData.stringUtf8 {
+                        titles.append(string)
+                    } else {
+                        titles.append("Unparseable utf8 string")
+                    }
                 }
-            } else {
-                if let string = stringData.stringUtf8 {
-                    titles.append(string)
-                } else {
-                    titles.append("Unparseable utf8 string")
+            }
+        } else {
+            // assume samples are consecutive, since we only have the first index to work with
+            if let firstOffset = offsets.first {
+                var offset = firstOffset
+                for size in sizes {
+                    let next = offset + size
+                    let range = offset ..< next
+                    var chunkData = data.subdata(in: range)
+                    let stringLength = chunkData.extractToInt(2)
+                    if let string = chunkData.extractFirst(stringLength).stringUtf8 {
+                        titles.append(string)
+                    }
+                    offset = next
                 }
             }
         }
@@ -106,12 +131,12 @@ struct ChapterDataHandler {
         // handle all but the last
         for item in stts.sampleTableWithTimeScaleCalculated.dropLast() {
             if item.sampleCount == 1 {
-                currentStart += Int(item.sampleDuration)
+                currentStart += Int(item.sampleDuration.rounded())
                 starts.append(currentStart)
             } else {
                 var count = item.sampleCount
                 while count > 0 {
-                    currentStart += Int(item.sampleDuration)
+                    currentStart += Int(item.sampleDuration.rounded())
                     starts.append(currentStart)
                     count -= 1
                 }

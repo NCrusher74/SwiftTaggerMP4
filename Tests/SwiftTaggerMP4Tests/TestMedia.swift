@@ -10,9 +10,19 @@
 import Foundation
 import SwiftTaggerMP4
 
-let sampleBookUrl: URL =
+let sampleBookCV1Url: URL =
     testMediaDirectory
         .appendingPathComponent("SampleBook")
+        .appendingPathExtension("m4b")
+
+let sampleBookSublerUrl: URL =
+    testMediaDirectory
+        .appendingPathComponent("mp4_chaptered")
+        .appendingPathExtension("m4a")
+
+let sampleBookCV2Url: URL =
+    testMediaDirectory
+        .appendingPathComponent("PoePoems_librivox")
         .appendingPathExtension("m4b")
 
 let testMediaDirectory = URL(fileURLWithPath: #file)
