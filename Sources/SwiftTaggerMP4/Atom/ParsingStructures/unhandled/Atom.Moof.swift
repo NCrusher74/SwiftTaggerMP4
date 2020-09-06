@@ -26,7 +26,7 @@ class Moof: Atom {
         if let mfhd = children.first(where: {$0.identifier == "mfhd"}) as? Mfhd {
             self.mfhd = mfhd
         } else {
-            throw Mp4File.Error.MfhdAtomNotFound
+            throw MoofError.MfhdAtomNotFound
         }
 
         try super.init(identifier: identifier,
@@ -40,5 +40,10 @@ class Moof: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum MoofError: Error {
+        /// Error thrown when a required atom is missing
+        case MfhdAtomNotFound
     }
 }

@@ -27,19 +27,19 @@ class Mdia: Atom {
         if let mdhd = children.first(where: {$0.identifier == "mdhd"}) as? Mdhd {
             self.mdhd = mdhd
         } else {
-            throw Mp4File.Error.MdhdAtomNotFound
+            throw MdiaError.MdhdAtomNotFound
         }
 
         if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
             self.hdlr = hdlr
         } else {
-            throw Mp4File.Error.HdlrAtomNotFound
+            throw MdiaError.HdlrAtomNotFound
         }
 
         if let minf = children.first(where: {$0.identifier == "minf"}) as? Minf {
             self.minf = minf
         } else {
-            throw Mp4File.Error.MinfAtomNotFound
+            throw MdiaError.MinfAtomNotFound
         }
 
         try super.init(identifier: identifier,
@@ -56,19 +56,19 @@ class Mdia: Atom {
         if let mdhd = children.first(where: {$0.identifier == "mdhd"}) as? Mdhd {
             self.mdhd = mdhd
         } else {
-            throw Mp4File.Error.MdhdAtomNotFound
+            throw MdiaError.MdhdAtomNotFound
         }
         
         if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
             self.hdlr = hdlr
         } else {
-            throw Mp4File.Error.HdlrAtomNotFound
+            throw MdiaError.HdlrAtomNotFound
         }
         
         if let minf = children.first(where: {$0.identifier == "minf"}) as? Minf {
             self.minf = minf
         } else {
-            throw Mp4File.Error.MinfAtomNotFound
+            throw MdiaError.MinfAtomNotFound
         }
 
         try super.init(identifier: "mdia",
@@ -112,5 +112,14 @@ extension Mdia {
                 self.children = newChildren
             }
         }
+    }
+    
+    private enum MdiaError: Error {
+        /// Error thrown when a required atom is missing
+        case HdlrAtomNotFound
+        /// Error thrown when a required atom is missing
+        case MdhdAtomNotFound
+        /// Error thrown when a required atom is missing
+        case MinfAtomNotFound
     }
 }

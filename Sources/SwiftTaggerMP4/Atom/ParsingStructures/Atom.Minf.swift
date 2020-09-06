@@ -33,19 +33,19 @@ class Minf: Atom {
         } else if let vmhd = children.first(where: {$0.identifier == "vmhd"}) {
             self.mediaInformationHeaderAtom = vmhd
         } else {
-            throw Mp4File.Error.MediaInformationHeaderAtomNotFound
+            throw MinfError.MediaInformationHeaderAtomNotFound
         }
         
         if let dinf = children.first(where: {$0.identifier == "dinf"}) as? Dinf {
             self.dinf = dinf
         } else {
-            throw Mp4File.Error.DinfAtomNotFound
+            throw MinfError.DinfAtomNotFound
         }
 
         if let stbl = children.first(where: {$0.identifier == "stbl"}) as? Stbl {
             self.stbl = stbl
         } else {
-            throw Mp4File.Error.StblAtomNotFound
+            throw MinfError.StblAtomNotFound
         }
 
         try super.init(identifier: identifier,
@@ -69,19 +69,19 @@ class Minf: Atom {
         } else if let vmhd = children.first(where: {$0.identifier == "vmhd"}) {
             self.mediaInformationHeaderAtom = vmhd
         } else {
-            throw Mp4File.Error.MediaInformationHeaderAtomNotFound
+            throw MinfError.MediaInformationHeaderAtomNotFound
         }
         
         if let dinf = children.first(where: {$0.identifier == "dinf"}) as? Dinf {
             self.dinf = dinf
         } else {
-            throw Mp4File.Error.DinfAtomNotFound
+            throw MinfError.DinfAtomNotFound
         }
         
         if let stbl = children.first(where: {$0.identifier == "stbl"}) as? Stbl {
             self.stbl = stbl
         } else {
-            throw Mp4File.Error.StblAtomNotFound
+            throw MinfError.StblAtomNotFound
         }
 
         try super.init(identifier: "minf",
@@ -95,5 +95,14 @@ class Minf: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum MinfError: Error {
+        /// Error thrown when a required atom is missing
+        case MediaInformationHeaderAtomNotFound
+        /// Error thrown when a required atom is missing
+        case DinfAtomNotFound
+        /// Error thrown when a required atom is missing
+        case StblAtomNotFound
     }
 }

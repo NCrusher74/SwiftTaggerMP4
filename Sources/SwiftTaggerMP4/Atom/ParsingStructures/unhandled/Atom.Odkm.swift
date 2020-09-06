@@ -31,7 +31,7 @@ class Odkm: Atom {
         if let ohdr = children.first(where: {$0.identifier == "ohdr"}) as? Ohdr {
             self.ohdr = ohdr
         } else {
-            throw Mp4File.Error.OhdrAtomNotFound
+            throw OdkmError.OhdrAtomNotFound
         }
         try super.init(identifier: identifier,
                    size: size,
@@ -47,5 +47,10 @@ class Odkm: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum OdkmError: Error {
+        /// Error thrown when a required atom is missing
+        case OhdrAtomNotFound
     }
 }

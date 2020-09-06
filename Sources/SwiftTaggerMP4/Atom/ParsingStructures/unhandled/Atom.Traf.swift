@@ -26,7 +26,7 @@ class Traf: Atom {
         if let tfhd = children.first(where: {$0.identifier == "tfhd"}) as? Tfhd {
             self.tfhd = tfhd
         } else {
-            throw Mp4File.Error.TfhdAtomNotFound
+            throw TrafError.TfhdAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -40,5 +40,10 @@ class Traf: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum TrafError: Error {
+        /// Error thrown when a required atom is missing
+        case TfhdAtomNotFound
     }
 }

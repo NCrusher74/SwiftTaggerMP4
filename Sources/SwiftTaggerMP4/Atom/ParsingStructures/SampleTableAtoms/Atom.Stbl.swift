@@ -30,25 +30,25 @@ class Stbl: Atom {
         if let stsd = children.first(where: {$0.identifier == "stsd"}) as? Stsd {
             self.stsd = stsd
         } else {
-            throw Mp4File.Error.StsdAtomNotFound
+            throw StblError.StsdAtomNotFound
         }
 
         if let stsc = children.first(where: {$0.identifier == "stsc"}) as? Stsc{
             self.stsc = stsc
         } else {
-            throw Mp4File.Error.StscAtomNotFound
+            throw StblError.StscAtomNotFound
         }
 
         if let stts = children.first(where: {$0.identifier == "stts"}) as? Stts {
             self.stts = stts
         } else {
-            throw Mp4File.Error.SttsAtomNotFound
+            throw StblError.SttsAtomNotFound
         }
 
         if let stsz = children.first(where: {$0.identifier == "stsz"}) as? Stsz {
             self.stsz = stsz
         } else {
-            throw Mp4File.Error.StszAtomNotFound
+            throw StblError.StszAtomNotFound
         }
 
         if let chunkOffsetAtom = children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom {
@@ -56,7 +56,7 @@ class Stbl: Atom {
         } else if let chunkOffsetAtom = children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom {
             self.chunkOffsetAtom = chunkOffsetAtom
         } else {
-            throw Mp4File.Error.ChunkOffsetAtomNotFound
+            throw StblError.ChunkOffsetAtomNotFound
         }
 
         try super.init(identifier: identifier,
@@ -74,25 +74,25 @@ class Stbl: Atom {
         if let stsd = children.first(where: {$0.identifier == "stsd"}) as? Stsd {
             self.stsd = stsd
         } else {
-            throw Mp4File.Error.StsdAtomNotFound
+            throw StblError.StsdAtomNotFound
         }
         
         if let stsc = children.first(where: {$0.identifier == "stsc"}) as? Stsc{
             self.stsc = stsc
         } else {
-            throw Mp4File.Error.StscAtomNotFound
+            throw StblError.StscAtomNotFound
         }
         
         if let stts = children.first(where: {$0.identifier == "stts"}) as? Stts {
             self.stts = stts
         } else {
-            throw Mp4File.Error.SttsAtomNotFound
+            throw StblError.SttsAtomNotFound
         }
         
         if let stsz = children.first(where: {$0.identifier == "stsz"}) as? Stsz {
             self.stsz = stsz
         } else {
-            throw Mp4File.Error.StszAtomNotFound
+            throw StblError.StszAtomNotFound
         }
         
         if let co64 = children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom {
@@ -100,7 +100,7 @@ class Stbl: Atom {
         } else if let stco = children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom {
             self.chunkOffsetAtom = stco
         } else {
-            throw Mp4File.Error.ChunkOffsetAtomNotFound
+            throw StblError.ChunkOffsetAtomNotFound
         }
 
         try super.init(identifier: "stbl",
@@ -114,5 +114,18 @@ class Stbl: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum StblError: Error {
+        /// Error thrown when a required atom is missing
+        case StsdAtomNotFound
+        /// Error thrown when a required atom is missing
+        case StscAtomNotFound
+        /// Error thrown when a required atom is missing
+        case ChunkOffsetAtomNotFound
+        /// Error thrown when a required atom is missing
+        case StszAtomNotFound
+        /// Error thrown when a required atom is missing
+        case SttsAtomNotFound
     }
 }

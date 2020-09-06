@@ -45,7 +45,7 @@ class Ac3: Atom {
         if let dac3 = children.first(where: {$0.identifier == "dac3"}) as? Dac3 {
             self.dac3 = dac3
         } else {
-            throw Mp4File.Error.Dac3AtomNotFound
+            throw Ac3Error.Dac3AtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -68,5 +68,10 @@ class Ac3: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum Ac3Error: Error {
+        /// Error thrown when a required atom is missing
+        case Dac3AtomNotFound
     }
 }

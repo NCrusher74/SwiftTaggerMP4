@@ -2,6 +2,12 @@ import XCTest
 import Cocoa
 @testable import SwiftTaggerMP4
 
+/*
+ let knownChapterStarts = [0, 100002, 192013, 292014, 392004, 459020, 546000, 624019, 714016, 791013, 869018, 963007]
+ let knownTitles = ["01 - ''Frost To-Night'' - Read by BK", "02 - ''Frost To-Night'' - Read by CS", "03 - ''Frost To-Night'' - Read by EL-ALP", "04 - ''Frost To-Night'' - Read by GB", "05 - ''Frost To-Night'' - Read by KARA", "06 - ''Frost To-Night'' - Read by LAH", "07 - ''Frost To-Night'' - Read by LCW", "08 - ''Frost To-Night'' - Read by MAS", "09 - ''Frost To-Night'' - Read by PS", "10 - ''Frost To-Night'' - Read by SPC", "11 - ''Frost To-Night'' - Read by TP", "12 - ''Frost To-Night'' - Read by VB"]
+ 
+
+ */
 final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
@@ -32,20 +38,15 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 1055370)
     }
     
-    func testSampleTableConverter() throws {
-//        let source = try Mp4File(location: sampleBookUrl)
-        let source = try Mp4File(location: URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/samples/audiobooks/alife.m4b"))
-        let chapterStarts = source.calculateChapterStarts()
-        let chapterTitles = try source.getChapterTitleStrings()
-        let knownChapterStarts = [0, 100002, 192013, 292014, 392004, 459020, 546000, 624019, 714016, 791013, 869018, 963007]
-        let knownTitles = ["01 - ''Frost To-Night'' - Read by BK", "02 - ''Frost To-Night'' - Read by CS", "03 - ''Frost To-Night'' - Read by EL-ALP", "04 - ''Frost To-Night'' - Read by GB", "05 - ''Frost To-Night'' - Read by KARA", "06 - ''Frost To-Night'' - Read by LAH", "07 - ''Frost To-Night'' - Read by LCW", "08 - ''Frost To-Night'' - Read by MAS", "09 - ''Frost To-Night'' - Read by PS", "10 - ''Frost To-Night'' - Read by SPC", "11 - ''Frost To-Night'' - Read by TP", "12 - ''Frost To-Night'' - Read by VB"]
+    func testSampleTable() throws {
+        let source = try Mp4File(location: sampleBookUrl)
+        let soundTrack = source.moov.soundTrack
+        let chapterTrack = source.moov.chapterTrack!
+        let chapterSampleTable = try SampleTable(mp4File: source, track: chapterTrack)
+        let soundSampleTable = try SampleTable(mp4File: source, track: soundTrack)
         
-//        XCTAssertEqual(chapterStarts, knownChapterStarts)
-//        XCTAssertEqual(chapterTitles, knownTitles)
-        let converter = try SampleTableToChapterConverter(readFrom: source)
-//        XCTAssertEqual(converter.initialMediaOffset, 210940)
-//        XCTAssertEqual(converter.mediaData.count, 8198159 - 618)
-        print(converter.sortedChapters())
+        XCTAssertEqual(chapterSampleTable.chunkData.count, 610)
+        XCTAssertEqual(soundSampleTable.chunkData.count, 8198159 - 618)
     }
     
     @available(OSX 10.12, *)

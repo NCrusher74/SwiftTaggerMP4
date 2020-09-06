@@ -28,14 +28,14 @@ class UnknownMetadataAtom: Atom {
         if let mean = children.first(where: {$0.identifier == "mean"}) as? Mean {
             self.mean = mean
         } else {
-            throw Mp4File.Error.MeanAtomNotFound
+            throw MetadataAtomError.MeanAtomNotFound
         }
         
         if let nameAtom = children.first(where: {$0.identifier == "name"}) as? Name {
             self.nameAtom = nameAtom
             self.name = nameAtom.stringValue
         } else {
-            throw Mp4File.Error.NameAtomNotFound
+            throw MetadataAtomError.NameAtomNotFound
         }
         
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
@@ -50,10 +50,10 @@ class UnknownMetadataAtom: Atom {
             } else if dataAtom.dataType == .utf16 || dataAtom.dataType == .utf16Sort {
                 self.stringValue = String(data: dataAtom.data, encoding: .utf16) ?? ""
             } else {
-                throw Mp4File.Error.UnsupportedMetadataFormat
+                throw MetadataAtomError.UnsupportedMetadataFormat
             }
         } else {
-            throw Mp4File.Error.DataAtomNotFound
+            throw MetadataAtomError.DataAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -82,5 +82,4 @@ class UnknownMetadataAtom: Atom {
                        size: size,
                        children: [mean, nameAtom, dataAtom])
     }
-
 }

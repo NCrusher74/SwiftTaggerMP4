@@ -32,8 +32,7 @@ class Mvhd: Atom {
     /// Initialize a `mvhd` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        guard data.count == 100 else { throw Mp4File.Error.InvalidMovieHeaderData }
-        
+
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
 

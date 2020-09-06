@@ -30,25 +30,25 @@ class ImageMetadataAtom: Atom {
                 if let image = NSImage(data: data) {
                     self.image = image
                 } else {
-                    throw Mp4File.Error.UnableToInitializeMetadataAtom
+                    throw MetadataAtomError.UnableToInitializeMetadataAtom
                 }
             } else if dataAtom.dataType == .reserved || dataAtom.dataType == .undefined {
                 let firstFourBytes = data[data.startIndex ..< data.startIndex + 4]
                 let jpegMagicNumber: [UInt8] = [0xff, 0xd8, 0xff, 0xe0]
                 let pngMagicNumber: [UInt8] = [0x89, 0x50, 0x4e, 0x47]
                 guard firstFourBytes == Data(jpegMagicNumber ) || firstFourBytes == Data(pngMagicNumber) else {
-                    throw Mp4File.Error.UnsupportedImageFormat
+                    throw MetadataAtomError.UnsupportedImageFormat
                 }
                 if let image = NSImage(data: data) {
                     self.image = image
                 } else {
-                    throw Mp4File.Error.UnableToInitializeMetadataAtom
+                    throw MetadataAtomError.UnableToInitializeMetadataAtom
                 }
             } else {
-                throw Mp4File.Error.UnsupportedImageFormat
+                throw MetadataAtomError.UnsupportedImageFormat
             }
         } else {
-            throw Mp4File.Error.DataAtomNotFound
+            throw MetadataAtomError.DataAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -60,7 +60,7 @@ class ImageMetadataAtom: Atom {
         if let image = NSImage(contentsOf: imageLocation) {
             self.image = image
         } else {
-            throw Mp4File.Error.UnableToSetCoverImage
+            throw MetadataAtomError.UnableToSetCoverImage
         }
         let dataAtom = try DataAtom(imageLocation: imageLocation)
         

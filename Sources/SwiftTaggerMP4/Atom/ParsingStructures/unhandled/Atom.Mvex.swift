@@ -26,7 +26,7 @@ class Mvex: Atom {
         if let trex = children.first(where: {$0.identifier == "trex"}) as? Trex {
             self.trex = trex
         } else {
-            throw Mp4File.Error.TrexAtomNotFound
+            throw MvexError.TrexAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -40,5 +40,10 @@ class Mvex: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum MvexError: Error {
+        /// Error thrown when a required atom is missing
+        case TrexAtomNotFound
     }
 }

@@ -34,7 +34,7 @@ class Amr: Atom {
         if let damr = children.first(where: {$0.identifier == "damr"}) as? Damr {
             self.damr = damr
         } else {
-            throw Mp4File.Error.DamrAtomNotFound
+            throw AmrError.DamrAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -51,5 +51,10 @@ class Amr: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum AmrError: Error {
+        /// Error thrown when a required atom is missing
+        case DamrAtomNotFound
     }
 }

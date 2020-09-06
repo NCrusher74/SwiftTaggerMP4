@@ -21,7 +21,7 @@ class DataAtom: Atom {
         if let type = DataType(rawValue: typeInt) {
             self.dataType = type
         } else {
-            fatalError("\(Mp4File.Error.UnsupportedMetadataFormat)")
+            fatalError("\(MetadataAtomError.UnsupportedMetadataFormat)")
         }
         self.locale = data.extractFirst(4)
         self.data = data
@@ -45,7 +45,7 @@ class DataAtom: Atom {
         } else if imageLocation.pathExtension == "png" {
             self.dataType = .png
         } else {
-            throw Mp4File.Error.UnsupportedImageFormat
+            throw MetadataAtomError.UnsupportedImageFormat
         }
         
         self.locale = Data(repeating: 0x00, count: 4)

@@ -27,12 +27,12 @@ class Moov: Atom {
         if let mvhd = children.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
             self.mvhd = mvhd
         } else {
-            throw Mp4File.Error.MvhdAtomNotFound
+            throw MoovError.MvhdAtomNotFound
         }
         
         let tracks = children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
         guard !tracks.isEmpty else {
-            throw Mp4File.Error.TrakAtomNotFound
+            throw MoovError.TrakAtomNotFound
         }
         self.tracks = tracks
         
@@ -41,7 +41,7 @@ class Moov: Atom {
         }) {
             self.soundTrack = soundtrack
         } else {
-            throw Mp4File.Error.TrakAtomNotFound
+            throw MoovError.TrakAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -68,12 +68,12 @@ class Moov: Atom {
         if let mvhd = children.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
             self.mvhd = mvhd
         } else {
-            throw Mp4File.Error.MvhdAtomNotFound
+            throw MoovError.MvhdAtomNotFound
         }
 
         let tracks = children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
         guard !tracks.isEmpty else {
-            throw Mp4File.Error.TrakAtomNotFound
+            throw MoovError.TrakAtomNotFound
         }
         self.tracks = tracks
 
@@ -82,12 +82,19 @@ class Moov: Atom {
         }) {
             self.soundTrack = soundtrack
         } else {
-            throw Mp4File.Error.TrakAtomNotFound
+            throw MoovError.TrakAtomNotFound
         }
 
         try super.init(identifier: "moov",
                        size: size,
                        children: children)
+    }
+    
+    private enum MoovError: Error {
+        /// Error thrown when a required atom is missing
+        case MvhdAtomNotFound
+        /// Error thrown when a required atom is missing
+        case TrakAtomNotFound
     }
 }
 

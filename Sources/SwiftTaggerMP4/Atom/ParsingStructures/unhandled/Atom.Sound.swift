@@ -56,7 +56,7 @@ class SoundAtom: Atom {
             self.esds = esds
         } else {
             if identifier == "mp4a" {
-                throw Mp4File.Error.EsdsAtomNotFound
+                throw SoundAtomError.EsdsAtomNotFound
             } else {
                 self.esds = nil
             }
@@ -96,4 +96,9 @@ class SoundAtom: Atom {
         }
         return data
     }
+}
+
+enum SoundAtomError: Error {
+    /// Error thrown when a required atom is missing
+    case EsdsAtomNotFound
 }

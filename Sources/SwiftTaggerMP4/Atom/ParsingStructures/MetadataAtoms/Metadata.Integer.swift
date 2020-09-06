@@ -43,10 +43,10 @@ class IntegerMetadataAtom: Atom {
             } else if  dataAtom.dataType == .signedInt64BE {
                 self.intValue = data.extractToInt(8)
             } else {
-                throw Mp4File.Error.UnsupportedMetadataFormat
+                throw MetadataAtomError.UnsupportedMetadataFormat
             }
         } else {
-            throw Mp4File.Error.DataAtomNotFound
+            throw MetadataAtomError.DataAtomNotFound
         }
         
         try super.init(identifier: identifier,

@@ -25,13 +25,13 @@ class Trak: Atom {
         if let tkhd = children.first(where: {$0.identifier == "tkhd"}) as? Tkhd {
             self.tkhd = tkhd
         } else {
-            throw Mp4File.Error.TkhdAtomNotFound
+            throw TrakError.TkhdAtomNotFound
         }
 
         if let mdia = children.first(where: {$0.identifier == "mdia"}) as? Mdia {
             self.mdia = mdia
         } else {
-            throw Mp4File.Error.MdiaAtomNotFound
+            throw TrakError.MdiaAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -57,18 +57,25 @@ class Trak: Atom {
         if let tkhd = children.first(where: {$0.identifier == "tkhd"}) as? Tkhd {
             self.tkhd = tkhd
         } else {
-            throw Mp4File.Error.TkhdAtomNotFound
+            throw TrakError.TkhdAtomNotFound
         }
         
         if let mdia = children.first(where: {$0.identifier == "mdia"}) as? Mdia {
             self.mdia = mdia
         } else {
-            throw Mp4File.Error.MdiaAtomNotFound
+            throw TrakError.MdiaAtomNotFound
         }
 
         try super.init(identifier: "trak",
                        size: size,
                        children: children)
+    }
+    
+    private enum TrakError: Error {
+        /// Error thrown when a required atom is missing
+        case TkhdAtomNotFound
+        /// Error thrown when a required atom is missing
+        case MdiaAtomNotFound
     }
 }
 

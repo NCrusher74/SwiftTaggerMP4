@@ -26,7 +26,7 @@ class Sinf: Atom {
         if let frma = children.first(where: {$0.identifier == "frma"}) as? Frma {
             self.frma = frma
         } else {
-            throw Mp4File.Error.FrmaAtomNotFound
+            throw InformationAtomError.FrmaAtomNotFound
         }
 
         try super.init(identifier: identifier,

@@ -29,7 +29,7 @@ class Mp4s: Atom {
         if let esds = children.first(where: {$0.identifier == "esds"}) as? PassThrough {
             self.esds = esds
         } else {
-            throw Mp4File.Error.EsdsAtomNotFound
+            throw SoundAtomError.EsdsAtomNotFound
         }
         
         try super.init(identifier: identifier,

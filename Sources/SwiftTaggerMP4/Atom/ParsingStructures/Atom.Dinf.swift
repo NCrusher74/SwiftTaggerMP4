@@ -25,7 +25,7 @@ class Dinf: Atom {
         if let dref = children.first(where: {$0.identifier == "dref"}) as? Dref {
             self.dref = dref
         } else {
-            throw Mp4File.Error.DrefAtomNotFound
+            throw DinfError.DrefAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -53,5 +53,10 @@ class Dinf: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum DinfError: Error {
+        /// Error thrown when a required atom is missing
+        case DrefAtomNotFound
     }
 }

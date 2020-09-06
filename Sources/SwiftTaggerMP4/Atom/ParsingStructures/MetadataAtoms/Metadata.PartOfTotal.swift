@@ -49,7 +49,7 @@ class PartAndTotalMetadataAtom: Atom {
                 self.total = nil
             }
         } else {
-            throw Mp4File.Error.DataAtomNotFound
+            throw MetadataAtomError.DataAtomNotFound
         }
         
         try super.init(identifier: identifier,

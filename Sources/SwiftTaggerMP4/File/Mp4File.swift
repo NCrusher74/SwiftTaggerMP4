@@ -14,7 +14,7 @@ class Mp4File {
     var rootAtoms: [Atom]
     var moov: Moov
     var mdats: [Mdat]
-    var fileData: Data
+    var data: Data
 
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -24,18 +24,18 @@ class Mp4File {
         if validExtensions.contains(
             location.pathExtension.lowercased()) {
         } else {
-            throw Mp4File.Error.InvalidFileFormat
+            throw Mp4FileError.InvalidFileFormat
         }
         
-        self.fileData = try Data(contentsOf: location)
-        var data = self.fileData
+        self.data = try Data(contentsOf: location)
+        var fileData = self.data
         var atoms = [Atom]()
 
-        while !data.isEmpty {
-            if let atom = try data.extractAndParseToAtom() {
+        while !fileData.isEmpty {
+            if let atom = try fileData.extractAndParseToAtom() {
                 atoms.append(atom)
             } else {
-                throw Mp4File.Error.UnableToInitializeAtoms
+                throw Mp4FileError.UnableToInitializeAtoms
             }
         }
         self.rootAtoms = atoms
@@ -44,11 +44,11 @@ class Mp4File {
             self.moov = moov
             Atom.version = moov.mvhd.version
         } else {
-            throw Mp4File.Error.MoovAtomNotFound
+            throw Mp4FileError.MoovAtomNotFound
         }
         self.mdats = atoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
         guard !mdats.isEmpty else {
-            throw Mp4File.Error.MdatAtomNotFound
+            throw Mp4FileError.MdatAtomNotFound
         }
     }
     
@@ -73,4 +73,17 @@ class Mp4File {
             }
         }
     }
+}
+
+enum Mp4FileError: Error {
+        /// Error thrown when the file is not an MP4 format audio file
+        case InvalidFileFormat
+        /// Error thrown when writing operation fails
+        case OutputFailure
+        /// Error thrown when atoms fail to initialize
+        case UnableToInitializeAtoms
+        /// Error thrown when a required root atom is missing
+        case MoovAtomNotFound
+        /// Error thrown when a required root atom is missing
+        case MdatAtomNotFound
 }

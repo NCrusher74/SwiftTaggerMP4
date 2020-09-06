@@ -32,13 +32,13 @@ class Meta: Atom {
         if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
             self.hdlr = hdlr
         } else {
-            throw Mp4File.Error.HdlrAtomNotFound
+            throw MetaAtomError.HdlrAtomNotFound
         }
         
         if let ilst = children.first(where: {$0.identifier == "ilst"}) as? Ilst {
             self.ilst = ilst
         } else {
-            throw Mp4File.Error.IlstAtomNotFound
+            throw MetaAtomError.IlstAtomNotFound
         }
         
         try super.init(identifier: identifier,
@@ -60,13 +60,13 @@ class Meta: Atom {
         if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
             self.hdlr = hdlr
         } else {
-            throw Mp4File.Error.HdlrAtomNotFound
+            throw MetaAtomError.HdlrAtomNotFound
         }
         
         if let ilst = children.first(where: {$0.identifier == "ilst"}) as? Ilst {
             self.ilst = ilst
         } else {
-            throw Mp4File.Error.IlstAtomNotFound
+            throw MetaAtomError.IlstAtomNotFound
         }
 
         try super.init(identifier: "meta",
@@ -84,4 +84,11 @@ class Meta: Atom {
         }
         return data
     }
+}
+
+enum MetaAtomError: Error {
+    /// Error thrown when a required atom is missing
+    case IlstAtomNotFound
+    /// Error thrown when a required atom is missing
+    case HdlrAtomNotFound
 }

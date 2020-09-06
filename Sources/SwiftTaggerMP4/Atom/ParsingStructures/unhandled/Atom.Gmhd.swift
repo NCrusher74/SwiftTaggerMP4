@@ -26,7 +26,7 @@ class Gmhd: Atom {
         if let gmin = children.first(where: {$0.identifier == "gmin"}) as? Gmin {
             self.gmin = gmin
         } else {
-            throw Mp4File.Error.GminAtomNotFound
+            throw GmhdError.GminAtomNotFound
         }
 
         try super.init(identifier: identifier,
@@ -41,5 +41,10 @@ class Gmhd: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    private enum GmhdError: Error {
+        /// Error thrown when a required atom is missing
+        case GminAtomNotFound
     }
 }
