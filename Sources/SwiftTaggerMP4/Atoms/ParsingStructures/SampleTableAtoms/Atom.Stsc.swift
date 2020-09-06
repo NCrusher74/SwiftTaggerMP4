@@ -43,9 +43,9 @@ class Stsc: Atom {
         self.version = Atom.version
         self.flags = Atom.flags
         self.entryCount = 1
-        let defaultFirstChunk = Data([0x00, 0x00, 0x00, 0x01])
-        let defaultSamplesPerChunk = Data([0x00, 0x00, 0x00, 0x01])
-        let defaultDescriptionID = Data([0x00, 0x00, 0x00, 0x01])
+        let defaultFirstChunk = 1.int32.beData
+        let defaultSamplesPerChunk = 1.int32.beData
+        let defaultDescriptionID = 1.int32.beData
         self.sampleToChunkTable = [(defaultFirstChunk.int32BE.toInt, defaultSamplesPerChunk.int32BE.toInt, defaultDescriptionID.int32BE.toInt)]
         
         var payload = Data()

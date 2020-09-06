@@ -42,7 +42,7 @@ class ChunkOffsetAtom: Atom {
 
     /// Initialize a `chunkOffsetAtom` with chapter track data
     init(use64BitOffset: Bool, startingOffset: Int, titles: [String]) throws {
-        let offsetArray = TextDataHandler.calculateTitleOffsets(
+        let offsetArray = ChapterDataHandler.calculateTitleOffsets(
             startingOffset: startingOffset, titles: titles)
         self.version = Atom.version
         self.flags = Atom.flags

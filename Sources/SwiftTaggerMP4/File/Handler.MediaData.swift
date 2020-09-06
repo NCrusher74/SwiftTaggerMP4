@@ -12,7 +12,7 @@ struct MediaDataHandler {
     var newOffsets: [Int]
     var newMdat: Mdat
     
-    init(mp4File: Mp4File) throws {
+    init(readFrom mp4File: Mp4File) throws {
         let stbl = mp4File.moov.soundTrack.mdia.minf.stbl
         let chunkSizes = try MediaDataHandler.chunkSizes(stbl: stbl)
         guard chunkSizes.count == stbl.chunkOffsetAtom.chunkOffsetTable.count else {
@@ -23,9 +23,9 @@ struct MediaDataHandler {
         // Now that we know our CHUNK sizes, we can calculate the data to isolate by adding each chunk size to its corresponding offset to create a range for the data
         var mediaData = Data()
         for (index, entry) in stbl.chunkOffsetAtom.chunkOffsetTable.enumerated() {
-            let startOffset = entry
-            let endOffset = startOffset + chunkSizes[index]
-            let range = startOffset ..< endOffset
+            let start = entry
+            let end = start + chunkSizes[index]
+            let range = start ..< end
             mediaData.append(data.subdata(in: range))
         }
         
@@ -59,7 +59,7 @@ struct MediaDataHandler {
         return newMdat
     }
     
-    private static func chunkSizes(stbl: Stbl) throws -> [Int] {
+    static func chunkSizes(stbl: Stbl) throws -> [Int] {
         let sampleToChunkTable = stbl.stsc.sampleToChunkTable
         var sampleSizeTable = [Int]()
         if stbl.stsz.sampleSize == 0 {
@@ -129,9 +129,8 @@ struct MediaDataHandler {
         // we don't need the last one, as it would be an offset to nothing
         var offset = newMediaDataStartingOffset
         for chunkSize in chunkSizes.dropLast() {
-            let newOffset = offset + chunkSize
-            offsets.append(newOffset)
-            offset = newOffset
+            offset += chunkSize
+            offsets.append(offset)
         }
         
         guard offsets.count == stbl.chunkOffsetAtom.chunkOffsetTable.count else {
