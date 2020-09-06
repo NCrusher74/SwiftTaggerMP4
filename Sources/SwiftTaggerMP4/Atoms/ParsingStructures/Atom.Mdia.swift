@@ -6,7 +6,7 @@
 */
 
 import Foundation
-
+import SwiftLanguageAndLocaleCodes
 /// A class representing a `mdia` atom in an `Mp4File`'s atom structure
 class Mdia: Atom {
     var mdhd: Mdhd
@@ -48,7 +48,7 @@ class Mdia: Atom {
     }
     
     /// Initialize a `mdia` atom from its child atoms
-    init(children: [Atom]) throws {
+    private init(children: [Atom]) throws {
         var size: Int = 8
         for child in children {
             size += child.size
@@ -74,6 +74,24 @@ class Mdia: Atom {
         try super.init(identifier: "mdia",
                        size: size,
                        children: children)
+    }
+    
+    @available(OSX 10.12, *)
+    convenience init(chapterHandler: ChapterDataHandler,
+                     language: ICULocaleCode?,
+                     moov: Moov) throws {
+        let minf = try Minf(chapterHandler: chapterHandler, moov: moov)
+        let hdlr = try Hdlr(trackType: .text)
+        let mdhd: Mdhd
+        if let language = language {
+            mdhd = try Mdhd(elng: try Elng(from: language))
+        } else {
+            mdhd = try Mdhd(language: .und, moov: moov)
+        }
+        try self.init(children: [mdhd, hdlr, minf])
+        if let language = language {
+            self.elng = try Elng(from: language)
+        }
     }
     
     override var contentData: Data {

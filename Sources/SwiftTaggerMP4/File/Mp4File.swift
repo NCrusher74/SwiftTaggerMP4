@@ -7,14 +7,34 @@
 */
 
 import Foundation
-
+import SwiftLanguageAndLocaleCodes
 /// A type representing an audio file stored locally
 class Mp4File {
+    var _chapterHandler: ChapterDataHandler?
+    var _language: ICULocaleCode?    
+    @available(OSX 10.12, *)
+    public var language: ICULocaleCode? {
+        get {
+            if let language = _language {
+                return language
+            } else if let elng = moov.soundTrack.mdia.elng {
+                return ICULocaleCode(rawValue: elng.language)
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self._language = new
+            }
+        }
+    }
     
     var rootAtoms: [Atom]
     var moov: Moov
     var mdats: [Mdat]
     var data: Data
+    static var use64BitOffset: Bool = false
 
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -50,6 +70,10 @@ class Mp4File {
         guard !mdats.isEmpty else {
             throw Mp4FileError.MdatAtomNotFound
         }
+        
+        if moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.identifier == "co64" {
+            Mp4File.use64BitOffset = true
+        }
     }
     
     /// Sorts atoms into order to preserve media offsets
@@ -73,6 +97,35 @@ class Mp4File {
             by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
         )
         return rearrangedAtoms
+    }
+
+    func optimizeMedia() throws {
+        self.rootAtoms = rearrangedRootAtoms.filter({
+            $0.identifier != "free" ||
+                $0.identifier != "skip" ||
+                $0.identifier != "wide"})
+        let mediaHandler = try MediaDataHandler(readFrom: self)
+        self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = mediaHandler.newOffsets
+        self.mdats = [mediaHandler.newMdat]
+    }
+    
+    @available(OSX 10.12, *)
+    func setChapterTrak() throws {
+        let trackID: Int
+        if let chapterTrackID = self.moov.chapterTrackID {
+            trackID = chapterTrackID
+        } else {
+            trackID = moov.mvhd.nextTrackID
+            self.moov.chapterTrackID = trackID
+        }
+        let titleMdat = try Mdat(titleArray: self.chapterHandler.chapterTitles)
+        self.mdats.append(titleMdat)
+        self.rootAtoms = rearrangedRootAtoms
+        let trak = try Trak(chapterHandler: self.chapterHandler,
+                            language: self._language,
+                            moov: self.moov,
+                            chapterTrackID: trackID)
+        self.moov.chapterTrack = trak
     }
 
     private func setMetadataAtoms(from tag: Tag) throws {

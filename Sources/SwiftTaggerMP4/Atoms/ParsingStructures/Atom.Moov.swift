@@ -89,13 +89,13 @@ class Moov: Atom {
                        size: size,
                        children: children)
     }
-    
-    private enum MoovError: Error {
-        /// Error thrown when a required atom is missing
-        case MvhdAtomNotFound
-        /// Error thrown when a required atom is missing
-        case TrakAtomNotFound
-    }
+}
+
+enum MoovError: Error {
+    /// Error thrown when a required atom is missing
+    case MvhdAtomNotFound
+    /// Error thrown when a required atom is missing
+    case TrakAtomNotFound
 }
 
 extension Moov {
@@ -154,7 +154,7 @@ extension Moov {
                         self.soundTrack.tref = try Tref(chapterTrackID: new)
                     }
                 } catch {
-                    print("WARNING: Unable set new new chapter track ID")
+                    fatalError("Unable set new new chapter track ID")
                 }
                 self.mvhd.incrementNextTrackID()
             } else {

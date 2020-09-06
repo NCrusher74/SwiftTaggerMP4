@@ -6,6 +6,8 @@
 */
 
 import Foundation
+import SwiftLanguageAndLocaleCodes
+
 class Trak: Atom {
     var tkhd: Tkhd
     var mdia: Mdia
@@ -49,7 +51,7 @@ class Trak: Atom {
     }
     
     /// Initialize a `trak` atom from its children
-    init(children: [Atom]) throws {
+    private init(children: [Atom]) throws {
         var size: Int = 8
         for child in children {
             size += child.size
@@ -69,6 +71,19 @@ class Trak: Atom {
         try super.init(identifier: "trak",
                        size: size,
                        children: children)
+    }
+    
+    @available(OSX 10.12, *)
+    convenience init(chapterHandler: ChapterDataHandler,
+         language: ICULocaleCode?,
+         moov: Moov,
+         chapterTrackID: Int) throws {
+        
+        let tkhd = try Tkhd(trackID: chapterTrackID)
+        let mdia = try Mdia(chapterHandler: chapterHandler,
+                            language: language,
+                            moov: moov)
+        try self.init(children: [tkhd, mdia])
     }
     
     private enum TrakError: Error {

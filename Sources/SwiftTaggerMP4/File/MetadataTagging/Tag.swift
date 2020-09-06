@@ -61,7 +61,7 @@ extension Tag {
                                                    stringValue: new)
                 self.metadataAtoms[description ?? ""] = atom
                 } catch {
-                    print("WARNING: Unable to initialize metadata atom with identifier \(description ?? "")")
+                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(description ?? "")")
                 }
             } else {
                 self.metadataAtoms[description ?? ""] = nil

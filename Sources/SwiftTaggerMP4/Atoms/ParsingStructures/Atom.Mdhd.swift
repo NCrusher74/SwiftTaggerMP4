@@ -144,8 +144,8 @@ class Mdhd: Atom {
         self.flags = Atom.flags
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
-        self.timeScale = moov.soundTrack.mdia.mdhd.timeScale
-        self.duration = moov.soundTrack.mdia.mdhd.duration
+        self.timeScale = 1000
+        self.duration = moov.mvhd.duration
         self.languageInt16 = language.getInt16Code()
         self.quality = 0
         

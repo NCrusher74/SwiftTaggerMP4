@@ -65,7 +65,7 @@ class Stbl: Atom {
     }
     
     /// Initialize an `stbl` atom from its children
-    init(children: [Atom]) throws {
+    private init(children: [Atom]) throws {
         var size: Int = 8
         for child in children {
             size += child.size
@@ -108,6 +108,32 @@ class Stbl: Atom {
                        children: children)
     }
     
+    convenience init(chapterHandler: ChapterDataHandler, moov: Moov) throws {
+        let stsd = try Stsd()
+        let stsc = try Stsc()
+
+        var starts = [Double]()
+        for start in chapterHandler.chapterStarts {
+            starts.append(Double(start))
+        }
+        let mvhd = moov.mvhd
+        let stts = try Stts(startTimes: starts,
+                             fileDuration: mvhd.duration)
+        
+        let stsz = try Stsz(titles: chapterHandler.chapterTitles)
+        let startingOffset: Int
+        if let elst = moov.soundTrack.edts?.elst {
+            startingOffset = Int(elst.firstStart)
+        } else {
+            startingOffset = 0
+        }
+        let chunkOffsetAtom = try ChunkOffsetAtom(
+            use64BitOffset: Mp4File.use64BitOffset,
+            startingOffset: startingOffset,
+            titles: chapterHandler.chapterTitles)
+        try self.init(children: [stsd, stsc, stts, stsz, chunkOffsetAtom])
+    }
+    
     override var contentData: Data {
         var data = Data()
         for child in children {
@@ -127,5 +153,6 @@ class Stbl: Atom {
         case StszAtomNotFound
         /// Error thrown when a required atom is missing
         case SttsAtomNotFound
+        case UnableToBuildStblAtom
     }
 }

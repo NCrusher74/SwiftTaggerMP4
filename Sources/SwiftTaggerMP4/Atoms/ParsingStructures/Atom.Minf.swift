@@ -54,7 +54,7 @@ class Minf: Atom {
     }
     
     /// Initialize a `minf` atom from its children
-    init(children: [Atom]) throws {
+    private init(children: [Atom]) throws {
         var size: Int = 8
         for child in children {
             size += child.size
@@ -87,6 +87,14 @@ class Minf: Atom {
         try super.init(identifier: "minf",
                        size: size,
                        children: children)
+    }
+    
+    convenience init(chapterHandler: ChapterDataHandler, moov: Moov) throws {
+        let stbl = try Stbl(chapterHandler: chapterHandler, moov: moov)
+        let dinf = try Dinf(from: try Dref())
+        let nmhd = try Nmhd()
+
+        try self.init(children: [nmhd, dinf, stbl])
     }
     
     override var contentData: Data {

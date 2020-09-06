@@ -8,11 +8,38 @@
 import Foundation
 
 struct ChapterDataHandler {
-    
-    var chapters: [Int: Chapter]
-    
     struct Chapter {
         var title: String
+    }
+    var chapters: [Int: Chapter]
+    /// The array of chapter titles
+    var chapterTitles: [String] {
+        if sortedChapters().isEmpty {
+            return []
+        } else {
+            var titles = [String]()
+            let chapters = sortedChapters()
+            for chapter in chapters {
+                let title = chapter.chapter.title
+                titles.append(title)
+            }
+            return titles
+        }
+    }
+    
+    /// The array of chapter start times (times are in milliseconds)
+    var chapterStarts: [Int] {
+        if sortedChapters().isEmpty {
+            return []
+        } else {
+            var starts = [Int]()
+            let chapters = sortedChapters()
+            for chapter in chapters {
+                let start = chapter.startTime
+                starts.append(start)
+            }
+            return starts
+        }
     }
     
     init(readFrom mp4File: Mp4File) throws {
@@ -186,7 +213,9 @@ struct ChapterDataHandler {
         return chapterDurations
     }
     
-    private enum TextDataHandlerError: Error {
-        case ChunkSizeToChunkOffsetCountMismatch
+    enum ChapterDataHandlerError: Error {
+        case UnableToBuildStblAtom
+        case UnableToBuildMinfAtom
+        case UnableToBuildMdiaAtom
     }
 }

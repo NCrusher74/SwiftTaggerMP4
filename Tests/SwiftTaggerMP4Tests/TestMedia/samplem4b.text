@@ -227,7 +227,6 @@ DescriptionID: 1
                     running tally: 45,447 + 4 = 41,451 <- samples array count
 
 
-    func testPrint2() throws {
         let source = try Mp4File(location: sampleBookUrl)
         let data = source.fileData
 
@@ -312,4 +311,3 @@ DescriptionID: 1
         }
         // if we did it right, the total data we've extracted should be the size of the media data (mdat) atom, minus 8 for the header data, minus 610 for the chapter title data.
         XCTAssertEqual(audioData.count, 8198159 - 618)
-    }
