@@ -23,7 +23,9 @@ class Stsz: Atom {
     var sampleSizeTable: [Int]
     
     /// Initialize a `stsz` atom for parsing from the root structure
-    override init(identifier: String, size: Int, payload: Data) throws  {
+    override init(identifier: String,
+                  size: Int,
+                  payload: Data) throws  {
         var data = payload
         
         self.version = data.extractFirst(1)

@@ -79,8 +79,8 @@ class Trak: Atom {
          moov: Moov,
          startingOffset: Int,
          chapterTrackID: Int) throws {
-        
-        let tkhd = try Tkhd(trackID: chapterTrackID)
+        let duration = (moov.soundTrack.mdia.mdhd.duration / moov.soundTrack.mdia.mdhd.timeScale) * 1000
+        let tkhd = try Tkhd(mediaDuration: duration, trackID: chapterTrackID)
         let mdia = try Mdia(chapterHandler: chapterHandler,
                             language: language,
                             moov: moov,

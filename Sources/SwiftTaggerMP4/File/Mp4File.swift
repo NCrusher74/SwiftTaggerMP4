@@ -14,17 +14,8 @@ class Mp4File {
 
     var rootAtoms: [Atom]
     var data: Data
+    var mdats: [Mdat]
     var moov: Moov
-    var mdats: [Mdat] {
-        get {
-            return self.rootAtoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
-        }
-        set {
-            var newRoot = self.rootAtoms.filter({$0.identifier != "mdat"})
-            newRoot.append(contentsOf: newValue)
-            self.rootAtoms = newRoot
-        }
-    }
 
     var _language: ICULocaleCode?
     @available(OSX 10.12, *)
@@ -63,7 +54,6 @@ class Mp4File {
         self.data = try Data(contentsOf: location)
         var fileData = self.data
         var atoms = [Atom]()
-
         while !fileData.isEmpty {
             if let atom = try fileData.extractAndParseToAtom() {
                 atoms.append(atom)
@@ -72,7 +62,6 @@ class Mp4File {
             }
         }
         self.rootAtoms = atoms
-        
         if let moov = atoms.first(where: {$0.identifier == "moov"}) as? Moov {
             self.moov = moov
             Atom.version = moov.mvhd.version
@@ -89,10 +78,12 @@ class Mp4File {
         }
     }
     
+    @available(OSX 10.12, *)
     public func write(to outputLocation: URL) throws {
-        try self.optimizeMedia()
+        try self.optimizeMedia()        
+        try self.setChapterTrak()
         var outputData = Data()
-        for atom in self.rootAtoms {
+        for atom in self.rearrangedRootAtoms {
             outputData.append(atom.encode())
         }
         try outputData.write(to: outputLocation)
@@ -122,24 +113,47 @@ class Mp4File {
     }
 
     func optimizeMedia() throws {
-        print(self.duration)
         let handler = try MediaDataHandler(readFrom: self)
-        print(self.duration)
         self.mdats = [handler.newMdat]
-        print(self.duration)
         self.moov.soundTrack.mdia.minf.stbl
             .chunkOffsetAtom.chunkOffsetTable = handler.newOffsets
-        print(self.duration)
-        self.rootAtoms = rearrangedRootAtoms.filter(
+        self.rootAtoms = rootAtoms.filter(
             {$0.identifier != "wide" &&
                 $0.identifier != "skip" &&
                 $0.identifier != "free"})
-        print(self.duration)
     }
     
-//    @available(OSX 10.12, *)
-//    func setChapterTrak() throws {
-//    }
+    @available(OSX 10.12, *)
+    func setChapterTrak() throws {
+        let tag = try Tag(mp4File: self)
+        let chapterHandler = tag.chapterHandler
+        
+        var chapterTitleOffset = 8
+        for atom in self.rootAtoms.filter({$0.identifier != "moov"}) {
+            chapterTitleOffset += atom.encode().count
+        }
+        var trackID = Int()
+        if let id = self.moov.chapterTrackID {
+            trackID = id
+        } else {
+            trackID = self.moov.mvhd.nextTrackID
+        }
+        let track = try Trak(
+            chapterHandler: chapterHandler,
+            language: self.language,
+            moov: self.moov,
+            startingOffset: chapterTitleOffset,
+            chapterTrackID: trackID)
+        self.moov.chapterTrack = track
+        let titleMdat = try Mdat(titleArray: chapterHandler.chapterTitles)
+        self.mdats.append(titleMdat)
+        let chpl =  try Chpl(from: tag.listChapters())
+        if self.moov.udta != nil {
+            self.moov.udta?.chpl = chpl
+        } else {
+            self.moov.udta = try Udta(children: [chpl])
+        }
+    }
 
     private func setMetadataAtoms(from tag: Tag) throws {
         var newMetadataAtoms = [Atom]()

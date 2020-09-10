@@ -56,12 +56,15 @@ struct ChapterDataHandler {
                 let stbl = chapterTrack.mdia.minf.stbl
                 let stts = stbl.stts
                 let initialStart: Int
+                let timeScale = chapterTrack.mdia.mdhd.timeScale
                 if let elst = moov.soundTrack.edts?.elst {
-                    initialStart = Int(elst.firstStart)
+                    initialStart = Int((elst.firstStart / timeScale) * 1000)
                 } else {
                     initialStart = 0
                 }
-                let startTimes = ChapterDataHandler.getStartTimesFromDurations(stts: stts, initialStart: initialStart)
+                let startTimes = ChapterDataHandler.getStartTimesFromDurations(timeScale: timeScale,
+                    stts: stts,
+                    initialStart: initialStart)
                 
                 if startTimes.isEmpty {
                     chapterList = [:]
@@ -158,19 +161,21 @@ struct ChapterDataHandler {
     }
     
     static func getStartTimesFromDurations(
-        stts: Stts, initialStart: Int) -> [Int] {
+        timeScale: Double, stts: Stts, initialStart: Int) -> [Int] {
         var starts = [initialStart]
         var currentStart = initialStart
 
         // handle all but the last
         for item in stts.sampleTable.dropLast() {
             if item.sampleCount == 1 {
-                currentStart += Int(item.sampleDuration.rounded())
+                let duration = (item.sampleDuration / timeScale) * 1000
+                currentStart += Int(duration.rounded())
                 starts.append(currentStart)
             } else {
                 var count = item.sampleCount
                 while count > 0 {
-                    currentStart += Int(item.sampleDuration.rounded())
+                    let duration = (item.sampleDuration / timeScale) * 1000
+                    currentStart += Int(duration.rounded())
                     starts.append(currentStart)
                     count -= 1
                 }
@@ -191,7 +196,7 @@ struct ChapterDataHandler {
     }
     
     /// Calculate the offsets for chapter title data
-    static func calculateTitleOffsets(
+    func calculateTitleOffsets(
         startingOffset: Int,
         titles: [String]) -> [Int] {
         var offsets: [Int] = [startingOffset]
@@ -205,19 +210,19 @@ struct ChapterDataHandler {
     }
 
     /// Calculate the durations of chapter samples
-    static func calculateChapterDurations(from startTimes: [Double], fileDuration: Double) -> [Double] {
+    func calculateDurationsFromStartTimes(fileDuration: Double) -> [Double] {
         var chapterDurations = [Double]()
-        let enumeratedStarts = startTimes.enumerated()
-        let firstStart = startTimes.first ?? 0
+        let enumeratedStarts = chapterStarts.enumerated()
+        let firstStart = chapterStarts.first ?? 0
         // Handle all but the last one.
         for (index, startTime) in enumeratedStarts.dropLast() {
-            let followingTime: Double = startTimes[startTimes.index(after: index)]
-            chapterDurations.append(followingTime - startTime)
+            let followingTime = chapterStarts[chapterStarts.index(after: index)]
+            chapterDurations.append(Double(followingTime) - Double(startTime))
         }
         
         // Handle the last one.
-        let lastStart = startTimes.last ?? firstStart
-        chapterDurations.append(fileDuration - lastStart)
+        let lastStart = chapterStarts.last ?? firstStart
+        chapterDurations.append(fileDuration - Double(lastStart))
         
         return chapterDurations
     }

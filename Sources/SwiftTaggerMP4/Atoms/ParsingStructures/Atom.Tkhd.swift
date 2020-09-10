@@ -15,7 +15,7 @@ class Tkhd: Atom {
     var creationTime: Int
     var modificationTime: Int
     var trackID: Int
-    private var durationRaw: Data?
+    private var durationRaw: Data
     var layer: Int16
     var alternateGroup: Int16
     var volume: Int16
@@ -71,13 +71,18 @@ class Tkhd: Atom {
     ///
     /// Specifically for use with chapter tracks. May not work in other contexts.
     @available(OSX 10.12, *)
-    init(trackID: Int) throws {
+    init(mediaDuration: Double, trackID: Int) throws {
         self.version = Atom.version
         self.flags = Atom.flags
 
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
         self.trackID = trackID
+        if self.version.int8BE == 0x01 {
+            self.durationRaw = mediaDuration.int64.beData
+        } else {
+            self.durationRaw = mediaDuration.int32.beData
+        }
         self.layer = 0
         self.alternateGroup = 0
         self.volume = 0
@@ -96,6 +101,7 @@ class Tkhd: Atom {
             payload.append(self.modificationTime.int32.beData)
         }
         payload.append(self.trackID.int32.beData)
+        payload.append(self.durationRaw)
         payload.append(Atom.addReserveData(4))
         payload.append(Atom.addReserveData(8))
         payload.append(self.layer.beData)
@@ -110,12 +116,10 @@ class Tkhd: Atom {
             try super.init(identifier: "tkhd",
                            size: payload.count + 16,
                            payload: payload)
-            self.durationRaw = self.duration.int64.beData
         } else {
             try super.init(identifier: "tkhd",
                            size: payload.count + 12,
                            payload: payload)
-            self.durationRaw = self.duration.int32.beData
         }
     }
     

@@ -5,11 +5,11 @@ import Cocoa
 final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
-//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
-//        let url = URL(fileURLWithPath: path)
-//        let data = try Data(contentsOf: url)
-        let data = try Data(contentsOf: sampleBookSublerUrl)
-        let range = 000000000176 ..< 000000000208
+        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
+        let url = URL(fileURLWithPath: path)
+        let data = try Data(contentsOf: url)
+//        let data = try Data(contentsOf: sampleBookSublerUrl)
+        let range = 000008408955 ..< 000008409510
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
@@ -17,13 +17,68 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     /*
      */
     @available(OSX 10.13, *)
-    func testOutput() throws {
+    func testChapterOutput() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
-        print(mp4.duration)
+        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        try mp4.write(to: outputUrl)
+        let outputMp4 = try Mp4File(location: outputUrl)
+        XCTAssertEqual(outputMp4.duration, 46541824.0)
+        let tag = try Tag(mp4File: outputMp4)
+        let knownTitles = ["01 - \'\'Frost To-Night\'\' - Read by BK",
+                           "02 - \'\'Frost To-Night\'\' - Read by CS",
+                           "03 - \'\'Frost To-Night\'\' - Read by EL-ALP",
+                           "04 - \'\'Frost To-Night\'\' - Read by GB",
+                           "05 - \'\'Frost To-Night\'\' - Read by KARA",
+                           "06 - \'\'Frost To-Night\'\' - Read by LAH",
+                           "07 - \'\'Frost To-Night\'\' - Read by LCW",
+                           "08 - \'\'Frost To-Night\'\' - Read by MAS",
+                           "09 - \'\'Frost To-Night\'\' - Read by PS",
+                           "10 - \'\'Frost To-Night\'\' - Read by SPC",
+                           "11 - \'\'Frost To-Night\'\' - Read by TP",
+                           "12 - \'\'Frost To-Night\'\' - Read by VB"]
+        let knownStarts = [0, 100003, 192013, 292014, 392005, 459021, 546001, 624020, 714016, 791013, 869018, 963007]
+        XCTAssertEqual(tag.chapterHandler.chapterStarts, knownStarts)
+        XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
+        XCTAssertEqual(outputMp4.moov.udta?.chpl?.chapterCount, 12)
+        var chplTitles = [String]()
+        var chplStarts = [Int]()
+        for entry in outputMp4.moov.udta?.chpl?.chapterTable ?? [] {
+            chplTitles.append(entry.title)
+            chplStarts.append(entry.startTime)
+        }
+        XCTAssertEqual(chplTitles, knownTitles)
+        XCTAssertEqual(chplStarts, knownStarts)
+        
+    }
+
+    func testChapterParsing() throws {
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
+        let tag = try Tag(mp4File: mp4)
+        
+        let knownTitles = ["01 - \'\'Frost To-Night\'\' - Read by BK",
+                           "02 - \'\'Frost To-Night\'\' - Read by CS",
+                           "03 - \'\'Frost To-Night\'\' - Read by EL-ALP",
+                           "04 - \'\'Frost To-Night\'\' - Read by GB",
+                           "05 - \'\'Frost To-Night\'\' - Read by KARA",
+                           "06 - \'\'Frost To-Night\'\' - Read by LAH",
+                           "07 - \'\'Frost To-Night\'\' - Read by LCW",
+                           "08 - \'\'Frost To-Night\'\' - Read by MAS",
+                           "09 - \'\'Frost To-Night\'\' - Read by PS",
+                           "10 - \'\'Frost To-Night\'\' - Read by SPC",
+                           "11 - \'\'Frost To-Night\'\' - Read by TP",
+                           "12 - \'\'Frost To-Night\'\' - Read by VB"]
+        let knownStarts = [0, 100003, 192013, 292014, 392005, 459021, 546001, 624020, 714016, 791013, 869018, 963007]
+        XCTAssertEqual(tag.chapterHandler.chapterStarts, knownStarts)
+        XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
+    }
+    
+    @available(OSX 10.13, *)
+    func testBasicOutput() throws {
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
         let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
         try mp4.write(to: outputUrl)
         let output = try Mp4File(location: outputUrl)
-        print(output.duration)
+        XCTAssertEqual(output.duration, 46541824.0)
     }
     
     func testBasicFileParsing() throws {
@@ -31,7 +86,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertTrue(!source.rootAtoms.isEmpty)
         XCTAssertNotNil(source.moov)
         XCTAssertTrue(!source.mdats.isEmpty)
-        XCTAssertTrue(!source.moov.tracks.isEmpty)
+        let tracks = source.moov.children.filter({$0.identifier == "trak"})
+        XCTAssertTrue(!tracks.isEmpty)
         XCTAssertEqual(source.rootAtoms.count, 3)
         XCTAssertEqual(source.moov.mvhd.duration, 46541824.0)
         XCTAssertEqual(source.moov.mvhd.timeScale, 44100)
@@ -48,7 +104,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     @available(OSX 10.12, *)
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
-        var source = Tag(moov: mp4.moov)
+        var source = try Tag(mp4File: mp4)
         XCTAssertEqual(source.album, "''Frost To-Night''")
         XCTAssertEqual(source.title, "FrostTonight_librivox")
         XCTAssertEqual(source.artist, "Edith M. Thomas")

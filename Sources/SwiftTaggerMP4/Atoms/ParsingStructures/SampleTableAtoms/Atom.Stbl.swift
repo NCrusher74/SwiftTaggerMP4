@@ -119,13 +119,14 @@ class Stbl: Atom {
             starts.append(Double(start))
         }
         let mvhd = moov.mvhd
-        let stts = try Stts(startTimes: starts,
+        let stts = try Stts(chapterHandler: chapterHandler,
                              fileDuration: mvhd.duration)
         
         let stsz = try Stsz(titles: chapterHandler.chapterTitles)
 
         let chunkOffsetAtom = try ChunkOffsetAtom(
             use64BitOffset: Mp4File.use64BitOffset,
+            chapterHandler: chapterHandler,
             startingOffset: startingOffset,
             titles: chapterHandler.chapterTitles)
         try self.init(children: [stsd, stsc, stts, stsz, chunkOffsetAtom])

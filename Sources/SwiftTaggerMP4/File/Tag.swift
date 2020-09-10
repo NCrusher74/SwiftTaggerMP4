@@ -10,8 +10,13 @@ import Cocoa
 
 struct Tag {
     public var metadataAtoms: [String: Atom]
-    
-    init(moov: Moov) {
+    var chapterHandler: ChapterDataHandler
+    init(mp4File: Mp4File) throws {
+        let moov = mp4File.moov
+        let data = mp4File.data
+        self.chapterHandler = try ChapterDataHandler(
+            moov: moov, fileData: data)
+
         var metadata = [String: Atom]()
         for atom in moov.udta?.meta?.ilst.children ?? [] {
             if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
