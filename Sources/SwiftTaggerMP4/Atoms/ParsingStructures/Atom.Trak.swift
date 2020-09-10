@@ -77,12 +77,14 @@ class Trak: Atom {
     convenience init(chapterHandler: ChapterDataHandler,
          language: ICULocaleCode?,
          moov: Moov,
+         startingOffset: Int,
          chapterTrackID: Int) throws {
         
         let tkhd = try Tkhd(trackID: chapterTrackID)
         let mdia = try Mdia(chapterHandler: chapterHandler,
                             language: language,
-                            moov: moov)
+                            moov: moov,
+                            startingOffset: startingOffset)
         try self.init(children: [tkhd, mdia])
     }
     

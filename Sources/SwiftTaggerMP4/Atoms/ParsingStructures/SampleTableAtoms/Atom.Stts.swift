@@ -40,34 +40,16 @@ class Stts: Atom {
                        size: size,
                        payload: payload)
     }
-    
-    var sampleTableWithTimeScaleCalculated: [(sampleCount: Int, sampleDuration: Double)] {
-        var newTable = [(sampleCount: Int, sampleDuration: Double)]()
-        if let mdhd = self.parent?.parent?.siblings?.first(where: {$0.identifier == "mdhd"}) as? Mdhd {
-            for entry in self.sampleTable {
-                let sampleCount = entry.sampleCount
-                let sampleDuration = entry.sampleDuration / mdhd.timeScale * 1000
-                let newEntry = (sampleCount, sampleDuration)
-                newTable.append(newEntry)
-            }
-        }
-        return newTable
-    }
-    
+        
     var mediaDuration: Int {
-        var preliminaryDuration = Double()
+        var duration = Double()
         for entry in self.sampleTable {
             var count = entry.sampleCount
             while count > 0 {
-                preliminaryDuration += Double(entry.sampleDuration)
+                duration += Double(entry.sampleDuration)
                 count -= 1
             }
         }
-        var timeScale = Double()
-        if let moov = self.parent?.parent?.parent?.parent?.parent as? Moov {
-            timeScale = moov.soundTrack.mdia.mdhd.timeScale
-        }
-        let duration = preliminaryDuration / timeScale * 1000
         return Int(duration)
     }
     

@@ -108,7 +108,9 @@ class Stbl: Atom {
                        children: children)
     }
     
-    convenience init(chapterHandler: ChapterDataHandler, moov: Moov) throws {
+    convenience init(chapterHandler: ChapterDataHandler,
+                     moov: Moov,
+                     startingOffset: Int) throws {
         let stsd = try Stsd()
         let stsc = try Stsc()
 
@@ -121,12 +123,7 @@ class Stbl: Atom {
                              fileDuration: mvhd.duration)
         
         let stsz = try Stsz(titles: chapterHandler.chapterTitles)
-        let startingOffset: Int
-        if let elst = moov.soundTrack.edts?.elst {
-            startingOffset = Int(elst.firstStart)
-        } else {
-            startingOffset = 0
-        }
+
         let chunkOffsetAtom = try ChunkOffsetAtom(
             use64BitOffset: Mp4File.use64BitOffset,
             startingOffset: startingOffset,

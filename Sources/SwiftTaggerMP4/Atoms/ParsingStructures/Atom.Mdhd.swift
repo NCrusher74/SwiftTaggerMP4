@@ -33,24 +33,13 @@ class Mdhd: Atom {
             self.creationTime = data.extractFirst(4).int32BE.toInt
             self.modificationTime = data.extractFirst(4).int32BE.toInt
         }
-        let preliminaryTimeScale = data.extractToDouble(4)
-        var preliminaryDuration = Double()
+        self.timeScale = data.extractToDouble(4)
         if self.version.int8BE == 0x01 {
-            preliminaryDuration = data.extractToDouble(8)
+            self.duration = data.extractToDouble(8)
         } else {
-            preliminaryDuration = data.extractToDouble(4)
+            self.duration = data.extractToDouble(4)
         }
         
-        if preliminaryTimeScale == 1000 {
-            // duration is already in milliseconds, no need to calculate
-            self.duration = preliminaryDuration
-        } else {
-            // divide the raw duration by the timescale to get the time in seconds
-            let durationInSeconds: Double = preliminaryDuration / preliminaryTimeScale
-            // multiply the duration in seconds by 1000 to get milliseconds
-            self.duration = durationInSeconds * 1000
-        }
-        self.timeScale = preliminaryTimeScale
         self.languageInt16 = data.extractFirst(2).int16BE
         self.quality = data.extractToInt(2)
         
@@ -145,7 +134,7 @@ class Mdhd: Atom {
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
         self.timeScale = 1000
-        self.duration = moov.mvhd.duration
+        self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000
         self.languageInt16 = language.getInt16Code()
         self.quality = 0
         
@@ -175,7 +164,7 @@ class Mdhd: Atom {
     
     /// Initialize a `mdhd` atom from a duration and `elng` atom for use in a CHAPTER TRAK ONLY
     @available(OSX 10.12, *)
-    init(elng: Elng) throws {
+    init(elng: Elng, moov: Moov) throws {
         let isoCode = Mdhd.getLanguage(from: elng)
         
         self.version = Atom.version
@@ -183,14 +172,8 @@ class Mdhd: Atom {
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
         
-        var mdhdDuration = Double()
-        var mdhdTimeScale = Double()
-        if let mdia = elng.parent?.siblings?.first(where: {$0.identifier == "mdia"}) as? Mdia {
-            mdhdDuration = mdia.mdhd.duration
-            mdhdTimeScale = mdia.mdhd.timeScale
-        }
-        self.timeScale = mdhdTimeScale
-        self.duration = mdhdDuration
+        self.timeScale = 1000
+        self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000
         self.languageInt16 = isoCode.getInt16Code()
         self.quality = 0
         

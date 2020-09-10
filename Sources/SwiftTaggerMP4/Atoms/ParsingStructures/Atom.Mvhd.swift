@@ -44,23 +44,12 @@ class Mvhd: Atom {
             self.modificationTime = data.extractToInt(4)
         }
         
-        let preliminaryTimeScale = data.extractToDouble(4)
-        var preliminaryDuration = Double()
+        self.timeScale = data.extractToDouble(4)
         if self.version.int8BE == 0x01 {
-            preliminaryDuration = data.extractToDouble(8)
+            self.duration = data.extractToDouble(8)
         } else {
-            preliminaryDuration = data.extractToDouble(4)
+            self.duration = data.extractToDouble(4)
         }
-        if preliminaryTimeScale == 1000 {
-            // duration is already in milliseconds, no need to calculate
-            self.duration = preliminaryDuration
-        } else {
-            // divide the raw duration by the timescale to get the time in seconds
-            let durationInSeconds: Double = preliminaryDuration / preliminaryTimeScale
-            // multiply the duration in seconds by 1000 to get milliseconds
-            self.duration = durationInSeconds * 1000
-        }
-        self.timeScale = preliminaryTimeScale
         
         self.preferredRate = data.extractFirst(4).int32BE
         self.preferredVolume = data.extractFirst(2).int16BE

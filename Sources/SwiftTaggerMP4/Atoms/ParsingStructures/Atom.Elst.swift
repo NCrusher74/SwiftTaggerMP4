@@ -28,13 +28,6 @@ class Elst: Atom {
                        payload: payload)
     }
     
-    private var timeScale: Double {
-        if let mvhd = self.parent?.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
-            return mvhd.timeScale
-        } else {
-            fatalError("Cannot access movie header atom")
-        }
-    }
     // Track duration: A 32-bit integer that specifies the duration of this edit segment in units of the movie’s time scale. (mp4v2 uses 64 bit if version is 1)
     // Media time: A 32-bit integer containing the starting time within the media of this edit segment (in media timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit. (mp4v2 uses 64 bit if version is 1)
     // Media rate: A 32-bit fixed-point number that specifies the relative rate at which to play the media corresponding to this edit segment. This rate value cannot be 0 or negative. 
@@ -45,12 +38,10 @@ class Elst: Atom {
             var segmentDuration: Double = 0
             var mediaTime: Double = 0
             if self.version.int8BE == 0x01 {
-                let preliminarySegmentDuration = data.extractFirst(8).int64BE.toDouble
-                segmentDuration = preliminarySegmentDuration / self.timeScale
+                segmentDuration = data.extractFirst(8).int64BE.toDouble
                 mediaTime = data.extractToDouble(8)
             } else {
-                let preliminarySegmentDuration = data.extractFirst(4).int32BE.toDouble
-                segmentDuration = preliminarySegmentDuration / self.timeScale
+                segmentDuration = data.extractFirst(4).int32BE.toDouble
                 mediaTime = data.extractToDouble(4)
             }
             let mediaRate = data.extractToDouble(2)

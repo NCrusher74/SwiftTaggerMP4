@@ -42,21 +42,21 @@ struct ChapterDataHandler {
         }
     }
     
-    init(readFrom mp4File: Mp4File) throws {
+    init(moov: Moov, fileData: Data) throws {
         var chapterList = [Int: Chapter]()
 
-        if let chpl = mp4File.moov.udta?.chpl {
+        if let chpl = moov.udta?.chpl {
             for item in chpl.chapterTable {
                 let startTime = item.startTime
                 let chapter = Chapter(title: item.title)
                 chapterList[startTime] = chapter
             }
         } else {
-            if let chapterTrack = mp4File.moov.chapterTrack {
+            if let chapterTrack = moov.chapterTrack {
                 let stbl = chapterTrack.mdia.minf.stbl
                 let stts = stbl.stts
                 let initialStart: Int
-                if let elst = mp4File.moov.soundTrack.edts?.elst {
+                if let elst = moov.soundTrack.edts?.elst {
                     initialStart = Int(elst.firstStart)
                 } else {
                     initialStart = 0
@@ -78,7 +78,10 @@ struct ChapterDataHandler {
                         }
                     }
 
-                    var titles = ChapterDataHandler.getChapterTitlesFromOffsetsAndSizes(offsets: offsets, sizes: sizes, data: mp4File.data)
+                    var titles = ChapterDataHandler.getChapterTitlesFromOffsetsAndSizes(
+                        offsets: offsets,
+                        sizes: sizes,
+                        data: fileData)
                     
                     if startTimes.count > titles.count {
                         var difference = startTimes.count - titles.count
@@ -104,7 +107,10 @@ struct ChapterDataHandler {
         return chapters.keys.sorted().map { ($0, chapters[$0]!) }
     }
 
-    static func getChapterTitlesFromOffsetsAndSizes(offsets: [Int], sizes: [Int], data: Data) -> [String] {
+    static func getChapterTitlesFromOffsetsAndSizes(
+        offsets: [Int],
+        sizes: [Int],
+        data: Data) -> [String] {
         var titles = [String]()
         
         if offsets.count == sizes.count {
@@ -151,12 +157,13 @@ struct ChapterDataHandler {
         return titles
     }
     
-    static func getStartTimesFromDurations(stts: Stts, initialStart: Int) -> [Int] {
+    static func getStartTimesFromDurations(
+        stts: Stts, initialStart: Int) -> [Int] {
         var starts = [initialStart]
         var currentStart = initialStart
 
         // handle all but the last
-        for item in stts.sampleTableWithTimeScaleCalculated.dropLast() {
+        for item in stts.sampleTable.dropLast() {
             if item.sampleCount == 1 {
                 currentStart += Int(item.sampleDuration.rounded())
                 starts.append(currentStart)
@@ -171,7 +178,7 @@ struct ChapterDataHandler {
         }
         // handle the last
         // we don't need the very last duration because it will create a start time for nothing
-        if let item = stts.sampleTableWithTimeScaleCalculated.last {
+        if let item = stts.sampleTable.last {
             // if this sample count is 1, this won't be executed
             var count = item.sampleCount - 1
             while count > 0 {
@@ -184,7 +191,9 @@ struct ChapterDataHandler {
     }
     
     /// Calculate the offsets for chapter title data
-    static func calculateTitleOffsets(startingOffset: Int, titles: [String]) -> [Int] {
+    static func calculateTitleOffsets(
+        startingOffset: Int,
+        titles: [String]) -> [Int] {
         var offsets: [Int] = [startingOffset]
         var offset = startingOffset
         for title in titles.dropLast() {

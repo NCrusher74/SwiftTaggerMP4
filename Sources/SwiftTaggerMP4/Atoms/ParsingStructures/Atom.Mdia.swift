@@ -79,12 +79,15 @@ class Mdia: Atom {
     @available(OSX 10.12, *)
     convenience init(chapterHandler: ChapterDataHandler,
                      language: ICULocaleCode?,
-                     moov: Moov) throws {
-        let minf = try Minf(chapterHandler: chapterHandler, moov: moov)
+                     moov: Moov,
+                     startingOffset: Int) throws {
+        let minf = try Minf(chapterHandler: chapterHandler,
+                            moov: moov,
+                            startingOffset: startingOffset)
         let hdlr = try Hdlr(trackType: .text)
         let mdhd: Mdhd
         if let language = language {
-            mdhd = try Mdhd(elng: try Elng(from: language))
+            mdhd = try Mdhd(elng: try Elng(from: language), moov: moov)
         } else {
             mdhd = try Mdhd(language: .und, moov: moov)
         }
@@ -117,10 +120,12 @@ extension Mdia {
                 self.children = newChildren
                 
                 if let mdia = self.siblings?.first(where: {$0.identifier == "mdia"}) as? Mdia, mdia.hdlr.handlerSubtype == .soun {
-                    mdhd.language = Mdhd.getLanguage(from: new)
+                    self.mdhd.language = Mdhd.getLanguage(from: new)
                 } else {
                     do {
-                        mdhd = try Mdhd(elng: new)
+                        if let moov = self.parent?.parent as? Moov {
+                            self.mdhd = try Mdhd(elng: new, moov: moov)
+                        }
                     } catch {
                         fatalError("Unable to initialize 'mdhd' atom for using 'elng' locale")
                     }

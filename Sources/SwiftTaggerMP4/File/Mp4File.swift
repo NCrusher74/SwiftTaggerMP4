@@ -10,8 +10,23 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 /// A type representing an audio file stored locally
 class Mp4File {
-    var _chapterHandler: ChapterDataHandler?
-    var _language: ICULocaleCode?    
+    static var use64BitOffset: Bool = false
+
+    var rootAtoms: [Atom]
+    var data: Data
+    var moov: Moov
+    var mdats: [Mdat] {
+        get {
+            return self.rootAtoms.filter({$0.identifier == "mdat"}) as? [Mdat] ?? []
+        }
+        set {
+            var newRoot = self.rootAtoms.filter({$0.identifier != "mdat"})
+            newRoot.append(contentsOf: newValue)
+            self.rootAtoms = newRoot
+        }
+    }
+
+    var _language: ICULocaleCode?
     @available(OSX 10.12, *)
     public var language: ICULocaleCode? {
         get {
@@ -30,12 +45,10 @@ class Mp4File {
         }
     }
     
-    var rootAtoms: [Atom]
-    var moov: Moov
-    var mdats: [Mdat]
-    var data: Data
-    static var use64BitOffset: Bool = false
-
+    public var duration: Double {
+        return moov.mvhd.duration
+    }
+    
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
@@ -76,6 +89,15 @@ class Mp4File {
         }
     }
     
+    public func write(to outputLocation: URL) throws {
+        try self.optimizeMedia()
+        var outputData = Data()
+        for atom in self.rootAtoms {
+            outputData.append(atom.encode())
+        }
+        try outputData.write(to: outputLocation)
+    }
+    
     /// Sorts atoms into order to preserve media offsets
     /// - Parameters:
     ///   - identifier: the identifier of the atom being sorted
@@ -100,33 +122,24 @@ class Mp4File {
     }
 
     func optimizeMedia() throws {
-        self.rootAtoms = rearrangedRootAtoms.filter({
-            $0.identifier != "free" ||
-                $0.identifier != "skip" ||
-                $0.identifier != "wide"})
-        let mediaHandler = try MediaDataHandler(readFrom: self)
-        self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = mediaHandler.newOffsets
-        self.mdats = [mediaHandler.newMdat]
+        print(self.duration)
+        let handler = try MediaDataHandler(readFrom: self)
+        print(self.duration)
+        self.mdats = [handler.newMdat]
+        print(self.duration)
+        self.moov.soundTrack.mdia.minf.stbl
+            .chunkOffsetAtom.chunkOffsetTable = handler.newOffsets
+        print(self.duration)
+        self.rootAtoms = rearrangedRootAtoms.filter(
+            {$0.identifier != "wide" &&
+                $0.identifier != "skip" &&
+                $0.identifier != "free"})
+        print(self.duration)
     }
     
-    @available(OSX 10.12, *)
-    func setChapterTrak() throws {
-        let trackID: Int
-        if let chapterTrackID = self.moov.chapterTrackID {
-            trackID = chapterTrackID
-        } else {
-            trackID = moov.mvhd.nextTrackID
-            self.moov.chapterTrackID = trackID
-        }
-        let titleMdat = try Mdat(titleArray: self.chapterHandler.chapterTitles)
-        self.mdats.append(titleMdat)
-        self.rootAtoms = rearrangedRootAtoms
-        let trak = try Trak(chapterHandler: self.chapterHandler,
-                            language: self._language,
-                            moov: self.moov,
-                            chapterTrackID: trackID)
-        self.moov.chapterTrack = trak
-    }
+//    @available(OSX 10.12, *)
+//    func setChapterTrak() throws {
+//    }
 
     private func setMetadataAtoms(from tag: Tag) throws {
         var newMetadataAtoms = [Atom]()

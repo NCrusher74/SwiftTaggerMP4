@@ -82,4 +82,12 @@ class UnknownMetadataAtom: Atom {
                        size: size,
                        children: [mean, nameAtom, dataAtom])
     }
+
+    override var contentData: Data {
+        var data = Data()
+        for child in children {
+            data.append(child.encode())
+        }
+        return data
+    }
 }

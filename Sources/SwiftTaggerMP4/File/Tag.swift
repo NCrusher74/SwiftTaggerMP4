@@ -11,9 +11,9 @@ import Cocoa
 struct Tag {
     public var metadataAtoms: [String: Atom]
     
-    init(readFrom mp4File: Mp4File) {
+    init(moov: Moov) {
         var metadata = [String: Atom]()
-        for atom in mp4File.moov.udta?.meta?.ilst.children ?? [] {
+        for atom in moov.udta?.meta?.ilst.children ?? [] {
             if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
                 IntegerMetadataIdentifier(rawValue: atom.identifier) != nil ||
                 atom.identifier == "disk" || atom.identifier == "trkn" || atom.identifier == "covr" {

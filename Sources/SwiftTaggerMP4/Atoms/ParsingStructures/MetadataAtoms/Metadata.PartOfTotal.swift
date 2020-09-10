@@ -77,4 +77,12 @@ class PartAndTotalMetadataAtom: Atom {
                        size: size,
                        children: [dataAtom])
     }
+
+    override var contentData: Data {
+        var data = Data()
+        for child in children {
+            data.append(child.encode())
+        }
+        return data
+    }
 }

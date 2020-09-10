@@ -2,95 +2,53 @@ import XCTest
 import Cocoa
 @testable import SwiftTaggerMP4
 
-/*
- */
 final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
+//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
+//        let url = URL(fileURLWithPath: path)
+//        let data = try Data(contentsOf: url)
         let data = try Data(contentsOf: sampleBookSublerUrl)
-        let range = 000000002020 ..< 000000002060
+        let range = 000000000176 ..< 000000000208
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
+    
     /*
-     0 0 0 28
-     73 74 73 63
-     0 0 0 0 // vf
-     0 0 0 2 // entry count
-     
-     0 0 0 1 // first chunk
-     0 0 0 2 // samplesPerChunk
-     0 0 0 1 // description ID
-     
-     0 0 0 3 // first chunk
-     0 0 0 1 // samplePerChunk
-     0 0 0 1 // description ID
      */
+    @available(OSX 10.13, *)
+    func testOutput() throws {
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
+        print(mp4.duration)
+        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        try mp4.write(to: outputUrl)
+        let output = try Mp4File(location: outputUrl)
+        print(output.duration)
+    }
     
     func testBasicFileParsing() throws {
-        let source = try Mp4File(location: sampleBookCV1Url)
+        let source = try Mp4File(location: sampleBookCVUrl)
         XCTAssertTrue(!source.rootAtoms.isEmpty)
         XCTAssertNotNil(source.moov)
         XCTAssertTrue(!source.mdats.isEmpty)
         XCTAssertTrue(!source.moov.tracks.isEmpty)
         XCTAssertEqual(source.rootAtoms.count, 3)
-        XCTAssertEqual(source.moov.mvhd.duration, 1055370)
+        XCTAssertEqual(source.moov.mvhd.duration, 46541824.0)
         XCTAssertEqual(source.moov.mvhd.timeScale, 44100)
         XCTAssertEqual(source.moov.soundTrack.mdia.mdhd.timeScale, 44100)
-        XCTAssertEqual(source.moov.soundTrack.mdia.mdhd.duration, 1055370)
-        XCTAssertEqual(source.moov.soundTrack.tkhd.duration, 1055370)
-        XCTAssertEqual(source.moov.soundTrack.mdia.minf.stbl.stts.mediaDuration, 1055370)
-        XCTAssertEqual(source.moov.chapterTrack?.mdia.minf.stbl.stts.mediaDuration, 1055370)
+        XCTAssertEqual(source.moov.soundTrack.mdia.mdhd.duration, 46541824.0)
+        XCTAssertEqual(source.moov.soundTrack.tkhd.duration, 46541824.0)
+        XCTAssertEqual(source.moov.soundTrack.mdia.minf.stbl.stts.mediaDuration, 46541824)
+        XCTAssertEqual(source.moov.chapterTrack?.mdia.minf.stbl.stts.mediaDuration, 46541824)
         XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.timeScale, 44100)
-        XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.duration, 1055370)
-        XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 1055370)
-    }
-    
-    func testChapterHandlerOnChaperAndVerseFile() throws {
-        let source = try Mp4File(location: sampleBookCV1Url)
-        let knownChapterStarts = [0, 100003, 192013, 292014, 392005, 459021, 546001, 624020, 714016, 791013, 869018, 963007]
-        let knownTitles = [
-            "01 - ''Frost To-Night'' - Read by BK",
-            "02 - ''Frost To-Night'' - Read by CS",
-            "03 - ''Frost To-Night'' - Read by EL-ALP",
-            "04 - ''Frost To-Night'' - Read by GB",
-            "05 - ''Frost To-Night'' - Read by KARA",
-            "06 - ''Frost To-Night'' - Read by LAH",
-            "07 - ''Frost To-Night'' - Read by LCW",
-            "08 - ''Frost To-Night'' - Read by MAS",
-            "09 - ''Frost To-Night'' - Read by PS",
-            "10 - ''Frost To-Night'' - Read by SPC",
-            "11 - ''Frost To-Night'' - Read by TP",
-            "12 - ''Frost To-Night'' - Read by VB"]
-        
-        var titles = [String]()
-        var starts = [Int]()
-        for chapter in try source.listChapters() {
-            titles.append(chapter.title)
-            starts.append(chapter.startTime)
-        }
-        XCTAssertEqual(titles, knownTitles)
-        XCTAssertEqual(starts, knownChapterStarts)
-    }
-    
-    func testChapterHandlerOnSublerFile() throws {
-        let source = try Mp4File(location: sampleBookSublerUrl)
-        let knownStarts = [0, 600, 1300, 2100, 3300, 4600]
-        let knownTitles = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
-        var titles = [String]()
-        var starts = [Int]()
-        for chapter in try source.listChapters() {
-            titles.append(chapter.title)
-            starts.append(chapter.startTime)
-        }
-        XCTAssertEqual(titles, knownTitles)
-        XCTAssertEqual(starts, knownStarts)
+        XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.duration, 46541824.0)
+        XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 46541824.0)
     }
     
     @available(OSX 10.12, *)
     func testTag() throws {
-        let mp4 = try Mp4File(location: sampleBookCV1Url)
-        var source = Tag(readFrom: mp4)
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
+        var source = Tag(moov: mp4.moov)
         XCTAssertEqual(source.album, "''Frost To-Night''")
         XCTAssertEqual(source.title, "FrostTonight_librivox")
         XCTAssertEqual(source.artist, "Edith M. Thomas")
