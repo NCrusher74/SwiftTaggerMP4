@@ -9,10 +9,6 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 /// A class representing a `mdia` atom in an `Mp4File`'s atom structure
 class Mdia: Atom {
-    var mdhd: Mdhd
-    var minf: Minf
-    var hdlr: Hdlr
-    
     /// Initialize a `mdia` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -24,21 +20,13 @@ class Mdia: Atom {
             }
         }
         
-        if let mdhd = children.first(where: {$0.identifier == "mdhd"}) as? Mdhd {
-            self.mdhd = mdhd
-        } else {
+        guard children.contains(where: {$0.identifier == "mdhd"}) else {
             throw MdiaError.MdhdAtomNotFound
         }
-
-        if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
-            self.hdlr = hdlr
-        } else {
+        guard children.contains(where: {$0.identifier == "hdlr"}) else {
             throw MdiaError.HdlrAtomNotFound
         }
-
-        if let minf = children.first(where: {$0.identifier == "minf"}) as? Minf {
-            self.minf = minf
-        } else {
+        guard children.contains(where: {$0.identifier == "minf"}) else {
             throw MdiaError.MinfAtomNotFound
         }
 
@@ -53,21 +41,13 @@ class Mdia: Atom {
         for child in children {
             size += child.size
         }
-        if let mdhd = children.first(where: {$0.identifier == "mdhd"}) as? Mdhd {
-            self.mdhd = mdhd
-        } else {
+        guard children.contains(where: {$0.identifier == "mdhd"}) else {
             throw MdiaError.MdhdAtomNotFound
         }
-        
-        if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
-            self.hdlr = hdlr
-        } else {
+        guard children.contains(where: {$0.identifier == "hdlr"}) else {
             throw MdiaError.HdlrAtomNotFound
         }
-        
-        if let minf = children.first(where: {$0.identifier == "minf"}) as? Minf {
-            self.minf = minf
-        } else {
+        guard children.contains(where: {$0.identifier == "minf"}) else {
             throw MdiaError.MinfAtomNotFound
         }
 
@@ -97,16 +77,76 @@ class Mdia: Atom {
         }
     }
     
+    /// Sorts atoms into order to preserve media offsets
+    /// - Parameters:
+    ///   - identifier: the identifier of the atom being sorted
+    private func sortingGroup(forIdentifier identifier: String) -> Int {
+        switch identifier {
+            case "mdhd": return 1
+            case "hdlr": return 2
+            case "minf": return 3
+            default: return 4
+        }
+    }
+    
+    /// The array of root atoms, arranged to preserve media offsets
+    var sortedAtoms: [Atom] {
+        var rearrangedAtoms = self.children
+        rearrangedAtoms.sort(
+            by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
+        )
+        return rearrangedAtoms
+    }
+    
     override var contentData: Data {
         var data = Data()
-        for child in children {
-            data.append(child.encode())
+        for atom in self.sortedAtoms {
+            data.append(atom.encode())
         }
         return data
     }
 }
 
 extension Mdia {
+    var mdhd: Mdhd {
+        get {
+            if let atom = self[.mdhd] as? Mdhd {
+                return atom
+            } else {
+                fatalError("Required child 'mdhd' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.mdhd] = newValue
+        }
+    }
+    
+    var hdlr: Hdlr {
+        get {
+            if let atom = self[.hdlr] as? Hdlr {
+                return atom
+            } else {
+                fatalError("Required child 'hdlr' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.hdlr] = newValue
+        }
+    }
+    
+    var minf: Minf {
+        get {
+            if let atom = self[.minf] as? Minf {
+                return atom
+            } else {
+                fatalError("Required child 'minf' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.minf] = newValue
+        }
+    }
+
     /// Gets and sets an `elng` atom
     @available(OSX 10.12, *)
     var elng: Elng? {

@@ -43,5 +43,4 @@ class Ilst: Atom {
                        size: size,
                        children: children)
     }
-
 }

@@ -9,8 +9,6 @@ import Foundation
 
 /// A class representing a `dinf` atom in an `Mp4File`'s atom structure
 class Dinf: Atom {
-    var dref: Dref
-    
     /// Initialize a `dinf` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -22,9 +20,7 @@ class Dinf: Atom {
             }
         }
         
-        if let dref = children.first(where: {$0.identifier == "dref"}) as? Dref {
-            self.dref = dref
-        } else {
+        guard children.contains(where: {$0.identifier == "dref"}) else {
             throw DinfError.DrefAtomNotFound
         }
         
@@ -35,7 +31,6 @@ class Dinf: Atom {
     
     /// Initialize a `dinf` atom for building a chapter track
     init(from dref: Dref) throws {
-        self.dref = dref
         let size: Int = 8 + dref.size
         try super.init(identifier: "dinf",
                        size: size,
@@ -55,6 +50,19 @@ class Dinf: Atom {
         return data
     }
     
+    var dref: Dref {
+        get {
+            if let atom = self[.dref] as? Dref {
+                return atom
+            } else {
+                fatalError("Required child 'dref' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.dref] = newValue
+        }
+    }
+
     private enum DinfError: Error {
         /// Error thrown when a required atom is missing
         case DrefAtomNotFound

@@ -50,7 +50,7 @@ class Stsz: Atom {
                        payload: payload)
     }
     
-    /// Initialize an `stsz` atom with from chapter title data
+    /// **CHAPTER TRACK ONLY** Initialize an `stsz` atom with from chapter title data
     init(titles: [String]) throws {
         var sizes = [Int]()
         for title in titles {

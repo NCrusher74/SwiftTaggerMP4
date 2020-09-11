@@ -12,6 +12,7 @@ class Name: Atom {
     private var version: Data
     private var flags: Data
     var stringValue: String
+
     /// Initialize a `name` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload

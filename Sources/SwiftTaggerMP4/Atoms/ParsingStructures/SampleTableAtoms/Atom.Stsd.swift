@@ -35,7 +35,7 @@ class Stsd: Atom {
                        children: children)
     }
     
-    /// Initialize an `stsd` atom with default properties for building a chapter track
+    /// **CHAPTER TRACK ONLY** Initialize an `stsd` atom with default properties for building a chapter track
     init() throws {
         self.version = Atom.version
         self.flags = Atom.flags

@@ -85,4 +85,17 @@ class PartAndTotalMetadataAtom: Atom {
         }
         return data
     }
+    
+    var data: DataAtom {
+        get {
+            if let atom = self[.data] as? DataAtom {
+                return atom
+            } else {
+                fatalError("Required child 'data' is missing from partOfTotal metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.data] = newValue
+        }
+    }
 }

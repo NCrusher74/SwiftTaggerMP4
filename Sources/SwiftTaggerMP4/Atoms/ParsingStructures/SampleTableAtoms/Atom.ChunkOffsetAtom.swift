@@ -40,7 +40,7 @@ class ChunkOffsetAtom: Atom {
                        payload: payload)
     }
 
-    /// Initialize a `chunkOffsetAtom` with chapter track data
+    /// **CHAPTER TRACK ONLY** Initialize a `chunkOffsetAtom` with chapter track data
     init(use64BitOffset: Bool,
          chapterHandler: ChapterDataHandler,
          startingOffset: Int,

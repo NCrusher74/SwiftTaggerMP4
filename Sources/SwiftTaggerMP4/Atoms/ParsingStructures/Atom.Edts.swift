@@ -9,7 +9,6 @@ import Foundation
 
 /// A class representing a `edts` atom in an `Mp4File`'s atom structure
 class Edts: Atom {
-    var elst: Elst
     /// Initialize a `edts` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -21,9 +20,7 @@ class Edts: Atom {
             }
         }
         
-        if let elst = children.first(where: {$0.identifier == "elst"}) as? Elst {
-            self.elst = elst
-        } else {
+        guard children.contains(where: {$0.identifier == "elst"}) else {
             throw EdtsError.ElstAtomNotFound
         }
         
@@ -43,5 +40,18 @@ class Edts: Atom {
     private enum EdtsError: Error {
         /// Error thrown when a required atom is missing
         case ElstAtomNotFound
+    }
+    
+    var elst: Elst {
+        get {
+            if let atom = self[.elst] as? Elst {
+                return atom
+            } else {
+                fatalError("Required child 'elst' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.elst] = newValue
+        }
     }
 }

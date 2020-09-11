@@ -12,8 +12,6 @@ class Meta: Atom {
     
     private var version: Data
     private var flags: Data
-    var hdlr: Hdlr
-    var ilst: Ilst
     
     /// Initialize a `meta` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -29,15 +27,10 @@ class Meta: Atom {
             }
         }
         
-        if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
-            self.hdlr = hdlr
-        } else {
+        guard children.contains(where: {$0.identifier == "hdlr"}) else {
             throw MetaAtomError.HdlrAtomNotFound
         }
-        
-        if let ilst = children.first(where: {$0.identifier == "ilst"}) as? Ilst {
-            self.ilst = ilst
-        } else {
+        guard children.contains(where: {$0.identifier == "ilst"}) else {
             throw MetaAtomError.IlstAtomNotFound
         }
         
@@ -45,8 +38,6 @@ class Meta: Atom {
                        size: size,
                        payload: payload,
                        children: children)
-        
-        
     }
     
     /// Initialize a `meta` atom for building a metadata list
@@ -57,15 +48,10 @@ class Meta: Atom {
         for child in children {
             size += child.size
         }
-        if let hdlr = children.first(where: {$0.identifier == "hdlr"}) as? Hdlr {
-            self.hdlr = hdlr
-        } else {
+        guard children.contains(where: {$0.identifier == "hdlr"}) else {
             throw MetaAtomError.HdlrAtomNotFound
         }
-        
-        if let ilst = children.first(where: {$0.identifier == "ilst"}) as? Ilst {
-            self.ilst = ilst
-        } else {
+        guard children.contains(where: {$0.identifier == "ilst"}) else {
             throw MetaAtomError.IlstAtomNotFound
         }
 
@@ -91,4 +77,32 @@ enum MetaAtomError: Error {
     case IlstAtomNotFound
     /// Error thrown when a required atom is missing
     case HdlrAtomNotFound
+}
+
+extension Meta {
+    var hdlr: Hdlr {
+        get {
+            if let atom = self[.hdlr] as? Hdlr {
+                return atom
+            } else {
+                fatalError("Required child 'hdlr' is missing from atom 'meta'")
+            }
+        }
+        set {
+            self[.hdlr] = newValue
+        }
+    }
+    
+    var ilst: Ilst {
+        get {
+            if let atom = self[.ilst] as? Ilst {
+                return atom
+            } else {
+                fatalError("Required child 'ilst' is missing from atom 'meta'")
+            }
+        }
+        set {
+            self[.ilst] = newValue
+        }
+    }
 }

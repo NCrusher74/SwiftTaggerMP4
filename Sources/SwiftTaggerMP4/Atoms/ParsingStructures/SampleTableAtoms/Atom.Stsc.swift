@@ -38,7 +38,7 @@ class Stsc: Atom {
                        payload: payload)
     }
         
-    /// Initialize an `stsc` atom with default properties for building a chapter track
+    /// **CHAPTER TRACK ONLY** Initialize an `stsc` atom with default properties for building a chapter track
     init() throws {
         self.version = Atom.version
         self.flags = Atom.flags

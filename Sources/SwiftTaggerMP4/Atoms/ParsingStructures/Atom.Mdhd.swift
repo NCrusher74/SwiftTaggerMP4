@@ -162,7 +162,7 @@ class Mdhd: Atom {
                        payload: payload)
     }
     
-    /// Initialize a `mdhd` atom from a duration and `elng` atom for use in a CHAPTER TRAK ONLY
+    /// **CHAPTER TRACK ONLY** Initialize a `mdhd` atom from a duration and `elng` atom for use in a Chapter track
     @available(OSX 10.12, *)
     init(elng: Elng, moov: Moov) throws {
         let isoCode = Mdhd.getLanguage(from: elng)

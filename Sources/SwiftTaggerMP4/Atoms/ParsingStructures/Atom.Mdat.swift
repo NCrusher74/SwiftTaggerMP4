@@ -22,6 +22,7 @@ class Mdat: Atom {
         return self.payload
     }
     
+    /// **CHAPTER TITLES ONLY**
     init(titleArray: [String]) throws {
         var payload = Data()
         for title in titleArray {

@@ -1,9 +1,9 @@
 /*
-  Atom.swift
-  
-
-  Created by Nolaine Crusher on 8/30/20.
-*/
+ Atom.swift
+ 
+ 
+ Created by Nolaine Crusher on 8/30/20.
+ */
 
 import Foundation
 import SwiftConvenienceExtensions
@@ -26,7 +26,7 @@ class Atom {
             }
         }
     }
-
+    
     weak var parent: Atom?
     /// the other atoms descended from the same parent atom
     var siblings: [Atom]? {
@@ -85,7 +85,7 @@ class Atom {
     var contentData: Data {
         fatalError("Override contentData in subclass: \(type(of: self)).")
     }
-
+    
     func encode() -> Data {
         var data = Data()
         
@@ -114,5 +114,25 @@ class Atom {
     
     static func addReserveData(_ k: Int) -> Data {
         return Data(repeating: 0x00, count: k)
+    }
+    
+    subscript(_ identifier: AtomIdentifier) -> Atom? {
+        get {
+            if let atom = children.first(where: {$0.identifier == identifier.rawValue}) {
+                return atom
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                var newChildren = self.children.filter({$0.identifier != identifier.rawValue})
+                newChildren.append(new)
+                self.children = newChildren
+            } else {
+                let newChildren = self.children.filter({$0.identifier != identifier.rawValue})
+                self.children = newChildren
+            }
+        }
     }
 }

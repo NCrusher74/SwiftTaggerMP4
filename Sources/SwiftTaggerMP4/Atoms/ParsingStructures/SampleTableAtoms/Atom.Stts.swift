@@ -53,7 +53,7 @@ class Stts: Atom {
         return Int(duration)
     }
     
-    /// Initialize an `stts` atom with chapter durations for building a chapter track
+    /// **CHAPTER TRACK ONLY** Initialize an `stts` atom with chapter durations for building a chapter track
     init(chapterHandler: ChapterDataHandler,
          fileDuration: Double) throws {
         let durationArray = chapterHandler.calculateDurationsFromStartTimes(

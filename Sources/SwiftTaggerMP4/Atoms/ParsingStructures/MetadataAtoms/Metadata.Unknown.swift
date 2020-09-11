@@ -10,9 +10,6 @@ import Foundation
 class UnknownMetadataAtom: Atom {
     var name: String
     var stringValue: String
-    var mean: Mean
-    var nameAtom: Name
-    var dataAtom: DataAtom
     
     override init(identifier: String,
                   size: Int,
@@ -25,21 +22,18 @@ class UnknownMetadataAtom: Atom {
                 children.append(child)
             }
         }
-        if let mean = children.first(where: {$0.identifier == "mean"}) as? Mean {
-            self.mean = mean
-        } else {
+        
+        guard children.contains(where: {$0.identifier == "mean"}) else {
             throw MetadataAtomError.MeanAtomNotFound
         }
-        
+
         if let nameAtom = children.first(where: {$0.identifier == "name"}) as? Name {
-            self.nameAtom = nameAtom
             self.name = nameAtom.stringValue
         } else {
             throw MetadataAtomError.NameAtomNotFound
         }
         
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
-            self.dataAtom = dataAtom
             if dataAtom.dataType == .utf8 ||
                 dataAtom.dataType == .utf8Sort ||
                 dataAtom.dataType == .uuid ||
@@ -64,12 +58,9 @@ class UnknownMetadataAtom: Atom {
     
     init(name: String, stringValue: String) throws {
         let mean = try Mean()
-        self.mean = mean
         let nameAtom = try Name(atomName: name)
-        self.nameAtom = nameAtom
         self.name = name
         let dataAtom = try DataAtom(stringValue: stringValue)
-        self.dataAtom = dataAtom
         self.stringValue = stringValue
         
         var payload = Data()
@@ -83,11 +74,70 @@ class UnknownMetadataAtom: Atom {
                        children: [mean, nameAtom, dataAtom])
     }
 
+    /// Sorts atoms into order to preserve media offsets
+    /// - Parameters:
+    ///   - identifier: the identifier of the atom being sorted
+    private func sortingGroup(forIdentifier identifier: String) -> Int {
+        switch identifier {
+            case "mean": return 1
+            case "name": return 2
+            default: return 3
+        }
+    }
+    
+    /// The array of root atoms, arranged to preserve media offsets
+    var sortedAtoms: [Atom] {
+        var rearrangedAtoms = self.children
+        rearrangedAtoms.sort(
+            by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
+        )
+        return rearrangedAtoms
+    }
+    
     override var contentData: Data {
         var data = Data()
-        for child in children {
-            data.append(child.encode())
+        for atom in self.sortedAtoms {
+            data.append(atom.encode())
         }
         return data
+    }
+    
+    var mean: Mean {
+        get {
+            if let atom = self[.mean] as? Mean {
+                return atom
+            } else {
+                fatalError("Required child 'mean' is missing from unknown atom with name '\(self.name)'")
+            }
+        }
+        set {
+            self[.mean] = newValue
+        }
+    }
+
+    var nameAtom: Name {
+        get {
+            if let atom = self[.name] as? Name {
+                return atom
+            } else {
+                fatalError("Required child 'name' is missing from unknown atom with name '\(self.name)'")
+            }
+        }
+        set {
+            self[.name] = newValue
+        }
+    }
+
+    var data: DataAtom {
+        get {
+            if let atom = self[.data] as? DataAtom {
+                return atom
+            } else {
+                fatalError("Required child 'data' is missing from unknown atom with name '\(self.name)'")
+            }
+        }
+        set {
+            self[.data] = newValue
+        }
     }
 }

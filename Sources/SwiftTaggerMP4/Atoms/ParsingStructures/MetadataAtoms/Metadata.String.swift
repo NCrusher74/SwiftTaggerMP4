@@ -10,7 +10,6 @@ import Cocoa
 
 /// A class representing the metadata atoms in an `Mp4File`'s atom structure
 class StringMetadataAtom: Atom {
-    var dataAtom: DataAtom
     var stringValue: String
     
     override init(identifier: String,
@@ -26,7 +25,6 @@ class StringMetadataAtom: Atom {
         }
         
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
-            self.dataAtom = dataAtom
             if dataAtom.dataType == .utf8 ||
                 dataAtom.dataType == .utf8Sort ||
                 dataAtom.dataType == .uuid ||
@@ -56,7 +54,6 @@ class StringMetadataAtom: Atom {
         if identifier == .podcastUrl {
             dataAtom.dataType = .reserved
         }
-        self.dataAtom = dataAtom
         let payload = dataAtom.encode()
         let size = payload.count + 8
         try super.init(identifier: identifier.rawValue,
@@ -70,5 +67,18 @@ class StringMetadataAtom: Atom {
             data.append(child.encode())
         }
         return data
+    }
+    
+    var data: DataAtom {
+        get {
+            if let atom = self[.data] as? DataAtom {
+                return atom
+            } else {
+                fatalError("Required child 'data' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.data] = newValue
+        }
     }
 }

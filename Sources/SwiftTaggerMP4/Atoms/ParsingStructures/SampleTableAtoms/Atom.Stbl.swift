@@ -9,13 +9,7 @@ import Foundation
 
 /// A class representing a `stbl` atom in an `Mp4File`'s atom structure
 class Stbl: Atom {
-    
-    var stsd: Stsd
-    var stsc: Stsc
-    var stts: Stts
-    var stsz: Stsz
-    var chunkOffsetAtom: ChunkOffsetAtom
-    
+    static var use64BitOffset: Bool = false
     /// Initialize a `stbl` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         
@@ -27,34 +21,22 @@ class Stbl: Atom {
             }
         }
         
-        if let stsd = children.first(where: {$0.identifier == "stsd"}) as? Stsd {
-            self.stsd = stsd
-        } else {
+        guard children.contains(where: {$0.identifier == "stsd"}) else {
             throw StblError.StsdAtomNotFound
         }
-
-        if let stsc = children.first(where: {$0.identifier == "stsc"}) as? Stsc{
-            self.stsc = stsc
-        } else {
+        guard children.contains(where: {$0.identifier == "stsc"}) else {
             throw StblError.StscAtomNotFound
         }
-
-        if let stts = children.first(where: {$0.identifier == "stts"}) as? Stts {
-            self.stts = stts
-        } else {
+        guard children.contains(where: {$0.identifier == "stts"}) else {
             throw StblError.SttsAtomNotFound
         }
-
-        if let stsz = children.first(where: {$0.identifier == "stsz"}) as? Stsz {
-            self.stsz = stsz
-        } else {
+        guard children.contains(where: {$0.identifier == "stsz"}) else {
             throw StblError.StszAtomNotFound
         }
-
-        if let chunkOffsetAtom = children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom {
-            self.chunkOffsetAtom = chunkOffsetAtom
-        } else if let chunkOffsetAtom = children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom {
-            self.chunkOffsetAtom = chunkOffsetAtom
+        if children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom != nil {
+            Stbl.use64BitOffset = true
+        } else if children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom != nil {
+            Stbl.use64BitOffset = false
         } else {
             throw StblError.ChunkOffsetAtomNotFound
         }
@@ -71,34 +53,22 @@ class Stbl: Atom {
             size += child.size
         }
         
-        if let stsd = children.first(where: {$0.identifier == "stsd"}) as? Stsd {
-            self.stsd = stsd
-        } else {
+        guard children.contains(where: {$0.identifier == "stsd"}) else {
             throw StblError.StsdAtomNotFound
         }
-        
-        if let stsc = children.first(where: {$0.identifier == "stsc"}) as? Stsc{
-            self.stsc = stsc
-        } else {
+        guard children.contains(where: {$0.identifier == "stsc"}) else {
             throw StblError.StscAtomNotFound
         }
-        
-        if let stts = children.first(where: {$0.identifier == "stts"}) as? Stts {
-            self.stts = stts
-        } else {
+        guard children.contains(where: {$0.identifier == "stts"}) else {
             throw StblError.SttsAtomNotFound
         }
-        
-        if let stsz = children.first(where: {$0.identifier == "stsz"}) as? Stsz {
-            self.stsz = stsz
-        } else {
+        guard children.contains(where: {$0.identifier == "stsz"}) else {
             throw StblError.StszAtomNotFound
         }
-        
-        if let co64 = children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom {
-            self.chunkOffsetAtom = co64
-        } else if let stco = children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom {
-            self.chunkOffsetAtom = stco
+        if children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom != nil {
+            Stbl.use64BitOffset = true
+        } else if children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom != nil {
+            Stbl.use64BitOffset = false
         } else {
             throw StblError.ChunkOffsetAtomNotFound
         }
@@ -125,21 +95,43 @@ class Stbl: Atom {
         let stsz = try Stsz(titles: chapterHandler.chapterTitles)
 
         let chunkOffsetAtom = try ChunkOffsetAtom(
-            use64BitOffset: Mp4File.use64BitOffset,
+            use64BitOffset: Stbl.use64BitOffset,
             chapterHandler: chapterHandler,
             startingOffset: startingOffset,
             titles: chapterHandler.chapterTitles)
         try self.init(children: [stsd, stsc, stts, stsz, chunkOffsetAtom])
     }
     
+    /// Sorts atoms into order to preserve media offsets
+    /// - Parameters:
+    ///   - identifier: the identifier of the atom being sorted
+    private func sortingGroup(forIdentifier identifier: String) -> Int {
+        switch identifier {
+            case "stsd": return 1
+            case "stsc": return 2
+            case "stts": return 3
+            case "stsz": return 4
+            default: return 5
+        }
+    }
+    
+    /// The array of root atoms, arranged to preserve media offsets
+    var sortedAtoms: [Atom] {
+        var rearrangedAtoms = self.children
+        rearrangedAtoms.sort(
+            by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
+        )
+        return rearrangedAtoms
+    }
+    
     override var contentData: Data {
         var data = Data()
-        for child in children {
-            data.append(child.encode())
+        for atom in self.sortedAtoms {
+            data.append(atom.encode())
         }
         return data
     }
-    
+
     private enum StblError: Error {
         /// Error thrown when a required atom is missing
         case StsdAtomNotFound
@@ -152,5 +144,74 @@ class Stbl: Atom {
         /// Error thrown when a required atom is missing
         case SttsAtomNotFound
         case UnableToBuildStblAtom
+    }
+    
+    var stsc: Stsc {
+        get {
+            if let atom = self[.stsc] as? Stsc {
+                return atom
+            } else {
+                fatalError("Required child 'stsc' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.stsc] = newValue
+        }
+    }
+
+    var stsd: Stsd {
+        get {
+            if let atom = self[.stsd] as? Stsd {
+                return atom
+            } else {
+                fatalError("Required child 'stsd' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.stsd] = newValue
+        }
+    }
+    
+    var stsz: Stsz {
+        get {
+            if let atom = self[.stsz] as? Stsz {
+                return atom
+            } else {
+                fatalError("Required child 'stsz' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.stsz] = newValue
+        }
+    }
+    
+    var stts: Stts {
+        get {
+            if let atom = self[.stts] as? Stts {
+                return atom
+            } else {
+                fatalError("Required child 'stts' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.stts] = newValue
+        }
+    }
+    
+    var chunkOffsetAtom: ChunkOffsetAtom {
+        get {
+            if let atom = self[.co64] as? ChunkOffsetAtom ?? self[.stco] as? ChunkOffsetAtom{
+                return atom
+            } else {
+                fatalError("Required child 'chunkOffsetAtom' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            if newValue.identifier == "co64" {
+                self[.co64] = newValue
+            } else {
+                self[.stco] = newValue
+            }
+        }
     }
 }

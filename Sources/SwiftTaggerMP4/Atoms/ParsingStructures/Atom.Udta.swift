@@ -46,34 +46,20 @@ class Udta: Atom {
     /// Gets and sets the `meta` atom in `udta`
     var meta: Meta? {
         get {
-            return children.first(where: { $0.identifier == "meta"}) as? Meta
+            self[.meta] as? Meta
         }
         set {
-            if let newValue = newValue {
-                var newChildren = children.filter({$0.identifier != "meta"})
-                newChildren.append(newValue)
-                self.children = newChildren
-            } else {
-                let newChildren = children.filter({$0.identifier != "meta"})
-                self.children = newChildren
-            }
+            self[.meta] = newValue
         }
     }
-    
+
     /// Gets and sets a nero `chpl` chapter atom
     var chpl: Chpl? {
         get {
-            return children.first(where: { $0.identifier == "chpl"}) as? Chpl
+            self[.chpl] as? Chpl
         }
         set {
-            if let newValue = newValue {
-                var newChildren = children.filter({$0.identifier != "chpl"})
-                newChildren.append(newValue)
-                self.children = newChildren
-            } else {
-                let newChildren = children.filter({$0.identifier != "chpl"})
-                self.children = newChildren
-            }
+            self[.chpl] = newValue
         }
     }
 }

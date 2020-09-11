@@ -8,13 +8,6 @@
 import Foundation
 /// Initialize an `moov` atom for parsing from the root structure
 class Moov: Atom {
-    var mvhd: Mvhd
-    var soundTrack: Trak
-    var chapterTrackID: Int?
-    var chapterTrack: Trak?
-    var otherTracks: [Trak]
-    var udta: Udta?
-    
     /// Initialize an `mdat` atom for parsing from the root structure
     override init(identifier: String,
                   size: Int,
@@ -27,31 +20,12 @@ class Moov: Atom {
             }
         }
         
-        if let mvhd = children.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
-            self.mvhd = mvhd
-        } else {
+        guard children.contains(where: {$0.identifier == "mvhd"}) else {
             throw MoovError.MvhdAtomNotFound
         }
-        
         let tracks = children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
-        if let soundTrack = tracks.first(where: {$0.mdia.hdlr.handlerSubtype == .soun}) {
-            self.soundTrack = soundTrack
-        } else {
+        guard tracks.contains(where: {$0.mdia.hdlr.handlerSubtype == .soun}) else {
             throw MoovError.TrakAtomNotFound
-        }
-        
-        if let chapterTrackID = soundTrack.tref?.chap?.trackIDs.first {
-            self.chapterTrackID = chapterTrackID
-            self.chapterTrack = tracks.first(where: {$0.tkhd.trackID == chapterTrackID })
-            self.otherTracks = tracks.filter({$0.mdia.hdlr.handlerSubtype != .soun && $0.tkhd.trackID != chapterTrackID})
-        } else {
-            self.chapterTrackID = nil
-            self.chapterTrack = nil
-            self.otherTracks = tracks.filter({$0.mdia.hdlr.handlerSubtype != .soun})
-        }
-        
-        if let udta = children.first(where: {$0.identifier == "udta"}) as? Udta {
-            self.udta = udta
         }
         
         try super.init(identifier: identifier,
@@ -59,25 +33,48 @@ class Moov: Atom {
                        children: children)
     }
     
+    /// Sorts atoms into order to preserve media offsets
+    /// - Parameters:
+    ///   - identifier: the identifier of the atom being sorted
+    private func sortingGroup(forIdentifier identifier: String) -> Int {
+        switch identifier {
+            case "mvhd": return 1
+            case "trak": return 2
+            default: return 3
+        }
+    }
+    
+    private func trackSorting(forTrackType trackType: TrackType) -> Double {
+        switch trackType {
+            case .soun: return 2.1
+            case .text: return 2.2
+            default: return 2.3
+        }
+    }
+    
+    /// The array of root atoms, arranged to preserve media offsets
+    var sortedAtoms: [Atom] {
+        var tracks = self.tracks
+        tracks.sort(
+            by: { trackSorting(forTrackType: $0.mdia.hdlr.handlerSubtype) < trackSorting(forTrackType: $1.mdia.hdlr.handlerSubtype)}
+        )
+        self.tracks = tracks
+        var rearrangedAtoms = self.children
+        rearrangedAtoms.sort(
+            by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier)}
+        )
+        
+        return rearrangedAtoms
+    }
+    
     override var contentData: Data {
         var data = Data()
-        data.append(mvhd.encode())
-        data.append(soundTrack.encode())
-        if let chapterTrack = chapterTrack {
-            data.append(chapterTrack.encode())
-        }
-        for track in otherTracks {
-            data.append(track.encode())
-        }
-        if let udta = udta {
-            data.append(udta.encode())
-        }
-        for child in children.filter({$0.identifier != "mvhd" && $0.identifier != "trak" && $0.identifier != "udta"}) {
-            data.append(child.encode())
+        for atom in self.sortedAtoms {
+            data.append(atom.encode())
         }
         return data
     }
-    
+
     /// Initialize a `moov` atom from its children
     init(children: [Atom]) throws {
         var size: Int = 8
@@ -85,33 +82,12 @@ class Moov: Atom {
             size += child.size
         }
         
-        if let mvhd = children.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
-            self.mvhd = mvhd
-        } else {
+        guard children.contains(where: {$0.identifier == "mvhd"}) else {
             throw MoovError.MvhdAtomNotFound
         }
-
         let tracks = children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
-        if let soundTrack = tracks.first(where: {
-            $0.mdia.hdlr.handlerSubtype == .soun
-        }) {
-            self.soundTrack = soundTrack
-        } else {
+        guard tracks.contains(where: {$0.mdia.hdlr.handlerSubtype == .soun}) else {
             throw MoovError.TrakAtomNotFound
-        }
-
-        if let chapterTrackID = soundTrack.tref?.chap?.trackIDs.first {
-            self.chapterTrackID = chapterTrackID
-            self.chapterTrack = tracks.first(where: {$0.tkhd.trackID == chapterTrackID })
-            self.otherTracks = tracks.filter({$0.mdia.hdlr.handlerSubtype != .soun && $0.tkhd.trackID != chapterTrackID})
-        } else {
-            self.chapterTrackID = nil
-            self.chapterTrack = nil
-            self.otherTracks = tracks.filter({$0.mdia.hdlr.handlerSubtype != .soun})
-        }
-
-        if let udta = children.first(where: {$0.identifier == "udta"}) as? Udta {
-            self.udta = udta
         }
 
         try super.init(identifier: "moov",
@@ -125,4 +101,118 @@ enum MoovError: Error {
     case MvhdAtomNotFound
     /// Error thrown when a required atom is missing
     case TrakAtomNotFound
+}
+
+extension Moov {
+    var mvhd: Mvhd {
+        get {
+            if let atom = self[.mvhd] as? Mvhd {
+                return atom
+            } else {
+                fatalError("Required child 'mvhd' is missing from atom '\(self.identifier)'")
+            }
+        }
+        set {
+            self[.mvhd] = newValue
+        }
+    }
+    
+    var soundTrack: Trak {
+        get {
+            if let atom = self[.trak] as? Trak,
+                atom.mdia.hdlr.handlerSubtype == .soun {
+                return atom
+            } else {
+                fatalError("Required child 'trak' is missing from string metadata atom with identifier '\(self.identifier)'")
+            }
+        }
+        set {
+            var newTracks = tracks.filter({$0.mdia.hdlr.handlerSubtype != .soun})
+            newTracks.append(newValue)
+            tracks = newTracks
+        }
+    }
+ 
+    private var tracks: [Trak] {
+        get {
+            return children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
+        }
+        set {
+            var newChildren = children.filter({$0.identifier != "trak"})
+            newChildren.append(contentsOf: newValue)
+            self.children = newChildren
+        }
+    }
+    
+    var chapterTrackID: Int? {
+        get {
+            if let trackID = soundTrack.tref?.chap?.trackIDs.first {
+                return trackID
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                if soundTrack.tref != nil {
+                    do {
+                        soundTrack.tref?.chap = try TrefSubatom(chapterTrackID: new)
+                    } catch {
+                        print("WARNING: Unable to initialize soundtrack.tref.chap atom with new chapter trackID")
+                    }
+                } else {
+                    do {
+                        soundTrack.tref = try Tref(chapterTrackID: new)
+                    } catch {
+                        print("WARNING: Unable to initialize soundtrack.tref atom with new chapter track ID")
+                    }
+                }
+            } else {
+                self.chapterTrack = nil
+                if let tref = soundTrack.tref, tref.children.count > 1 {
+                    tref.chap = nil
+                } else {
+                    soundTrack.tref = nil
+                }
+            }
+        }
+    }
+    
+    
+    var chapterTrack: Trak? {
+        get {
+            if let atom = tracks.first(where: {$0.tkhd.trackID == self.chapterTrackID}) {
+                return atom
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                var newTracks = self.tracks.filter({$0.tkhd.trackID != self.chapterTrackID})
+                newTracks.append(new)
+                self.tracks = newTracks
+            } else {
+                let newTracks = self.tracks.filter({$0.tkhd.trackID != self.chapterTrackID})
+                self.tracks = newTracks
+            }
+        }
+    }
+    
+    var udta: Udta? {
+        get {
+            if let atom = self[.udta] as? Udta {
+                return atom
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self[.udta] = new
+            } else {
+                self[.udta] = nil
+            }
+        }
+    }
 }

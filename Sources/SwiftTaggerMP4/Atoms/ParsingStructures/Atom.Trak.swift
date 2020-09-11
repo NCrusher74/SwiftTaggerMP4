@@ -9,9 +9,6 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 
 class Trak: Atom {
-    var tkhd: Tkhd
-    var mdia: Mdia
-    
     /// Initialize an `trak` atom for parsing from the root structure
     override init(identifier: String,
                   size: Int,
@@ -24,15 +21,10 @@ class Trak: Atom {
             }
         }
         
-        if let tkhd = children.first(where: {$0.identifier == "tkhd"}) as? Tkhd {
-            self.tkhd = tkhd
-        } else {
+        guard children.contains(where: {$0.identifier == "tkhd"}) else {
             throw TrakError.TkhdAtomNotFound
         }
-
-        if let mdia = children.first(where: {$0.identifier == "mdia"}) as? Mdia {
-            self.mdia = mdia
-        } else {
+        guard children.contains(where: {$0.identifier == "mdia"}) else {
             throw TrakError.MdiaAtomNotFound
         }
         
@@ -56,15 +48,10 @@ class Trak: Atom {
         for child in children {
             size += child.size
         }
-        if let tkhd = children.first(where: {$0.identifier == "tkhd"}) as? Tkhd {
-            self.tkhd = tkhd
-        } else {
+        guard children.contains(where: {$0.identifier == "tkhd"}) else {
             throw TrakError.TkhdAtomNotFound
         }
-        
-        if let mdia = children.first(where: {$0.identifier == "mdia"}) as? Mdia {
-            self.mdia = mdia
-        } else {
+        guard children.contains(where: {$0.identifier == "mdia"}) else {
             throw TrakError.MdiaAtomNotFound
         }
 
@@ -97,24 +84,39 @@ class Trak: Atom {
 }
 
 extension Trak {
-    /// Gets and sets a `edts` atom
-    var edts: Edts? {
+    var tkhd: Tkhd {
         get {
-            if let edts = children.first(where: {$0.identifier == "edts"}) as? Edts {
-                return edts
+            if let atom = self[.tkhd] as? Tkhd {
+                return atom
             } else {
-                return nil
+                fatalError("Required child 'tkhd' is missing from atom '\(self.identifier)'")
             }
         }
         set {
-            if let new = newValue {
-                var newChildren = self.children.filter({$0.identifier != "edts"})
-                newChildren.append(new)
-                self.children = newChildren
+            self[.tkhd] = newValue
+        }
+    }
+
+    var mdia: Mdia {
+        get {
+            if let atom = self[.mdia] as? Mdia {
+                return atom
             } else {
-                let newChildren = children.filter({$0.identifier != "edts"})
-                self.children = newChildren
+                fatalError("Required child 'mdia' is missing from atom '\(self.identifier)'")
             }
+        }
+        set {
+            self[.mdia] = newValue
+        }
+    }
+    
+    /// Gets and sets a `edts` atom
+    var edts: Edts? {
+        get {
+            self[.edts] as? Edts
+        }
+        set {
+            self[.edts] = newValue
         }
     }
     
@@ -123,7 +125,7 @@ extension Trak {
         get {
             let trackType = self.mdia.hdlr.handlerSubtype
             if trackType == .soun {
-                return children.first(where: { $0.identifier == "tref"}) as? Tref
+                return self[.tref] as? Tref
             } else {
                 return nil
             }

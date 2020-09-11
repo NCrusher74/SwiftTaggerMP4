@@ -114,7 +114,7 @@ struct MediaDataHandler {
 
     private static func newOffsetArray(mp4: Mp4File, stbl: Stbl, chunkSizes: [Int]) throws -> [Int] {
         // isolate the atoms that will come BEFORE the media atom, and get rid of any unused space-holding atoms to clean things up
-        let filteredAtoms = mp4.rearrangedRootAtoms.filter({$0.identifier != "mdat" &&
+        let filteredAtoms = mp4.rootAtoms.filter({$0.identifier != "mdat" &&
             $0.identifier != "moov" &&
             $0.identifier != "free" &&
             $0.identifier != "skip" &&

@@ -72,15 +72,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
     }
     
-    @available(OSX 10.13, *)
-    func testBasicOutput() throws {
-        let mp4 = try Mp4File(location: sampleBookCVUrl)
-        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
-        try mp4.write(to: outputUrl)
-        let output = try Mp4File(location: outputUrl)
-        XCTAssertEqual(output.duration, 46541824.0)
-    }
-    
     func testBasicFileParsing() throws {
         let source = try Mp4File(location: sampleBookCVUrl)
         XCTAssertTrue(!source.rootAtoms.isEmpty)

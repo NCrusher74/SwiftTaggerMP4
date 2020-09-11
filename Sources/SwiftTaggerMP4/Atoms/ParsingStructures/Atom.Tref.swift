@@ -44,16 +44,16 @@ class Tref: Atom {
     /// Gets and sets the `chap` child atom
     var chap: TrefSubatom? {
         get {
-            return children.first(where: { $0.identifier == "chap"}) as? TrefSubatom
+            self.children.first(where: {$0.identifier == "chap"}) as? TrefSubatom
         }
         set {
             if let new = newValue {
                 var newChildren = children.filter({$0.identifier != "chap"})
                 newChildren.append(new)
-                self.children = newChildren
+                children = newChildren
             } else {
                 let newChildren = children.filter({$0.identifier != "chap"})
-                self.children = newChildren
+                children = newChildren
             }
         }
     }
