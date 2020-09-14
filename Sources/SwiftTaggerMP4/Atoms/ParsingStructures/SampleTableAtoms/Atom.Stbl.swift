@@ -60,9 +60,6 @@ class Stbl: Atom {
         guard children.contains(where: {$0.identifier == "stsz"}) else {
             throw StblError.StszAtomNotFound
         }
-//        guard children.contains(where: {$0.identifier == "c064" || $0.identifier == "stco"}) else {
-//            throw StblError.ChunkOffsetAtomNotFound
-//        }
 
         try super.init(identifier: "stbl",
                        size: size,
@@ -116,20 +113,6 @@ class Stbl: Atom {
         return data
     }
 
-    private enum StblError: Error {
-        /// Error thrown when a required atom is missing
-        case StsdAtomNotFound
-        /// Error thrown when a required atom is missing
-        case StscAtomNotFound
-        /// Error thrown when a required atom is missing
-        case ChunkOffsetAtomNotFound
-        /// Error thrown when a required atom is missing
-        case StszAtomNotFound
-        /// Error thrown when a required atom is missing
-        case SttsAtomNotFound
-        case UnableToBuildStblAtom
-    }
-    
     var stsc: Stsc {
         get {
             if let atom = self[.stsc] as? Stsc {
@@ -198,4 +181,19 @@ class Stbl: Atom {
             }
         }
     }
+}
+
+enum StblError: Error {
+    /// Error thrown when a required atom is missing
+    case StsdAtomNotFound
+    /// Error thrown when a required atom is missing
+    case StscAtomNotFound
+    /// Error thrown when a required atom is missing
+    case ChunkOffsetAtomNotFound
+    /// Error thrown when a required atom is missing
+    case StszAtomNotFound
+    /// Error thrown when a required atom is missing
+    case SttsAtomNotFound
+    case UnableToBuildStblAtom
+    case SampleSizeArrayIsEmpty
 }

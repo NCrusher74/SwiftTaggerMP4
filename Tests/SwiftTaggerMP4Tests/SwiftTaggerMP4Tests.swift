@@ -13,10 +13,97 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
-    
-    
     /*
      */
+    
+    @available(OSX 10.13, *)
+    func testAddChapter() throws {
+        let mp4 = try Mp4File(location: sampleNoMeta)
+        var tag = try Tag(mp4File: mp4)
+        tag.addChapter(startTime: 0, title: "Chapter 01")
+        tag.addChapter(startTime: 800, title: "Chapter 02")
+        tag.addChapter(startTime: 1950, title: "Chapter 03")
+        tag.addChapter(startTime: 3800, title: "Chapter 04")
+
+
+        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4a")
+        try mp4.write(tag: tag, to: outputUrl)
+        
+        let knownTitles = ["Chapter 01",
+                           "Chapter 02",
+                           "Chapter 03",
+                           "Chapter 04"]
+        let knownStarts = [0, 800, 1950, 3800]
+        
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let outputTag = try Tag(mp4File: outputMp4)
+        XCTAssertEqual(outputTag.chapterHandler.chapterStarts, knownStarts)
+        XCTAssertEqual(outputTag.chapterHandler.chapterTitles, knownTitles)
+        XCTAssertEqual(outputMp4.moov.udta?.chpl?.chapterCount, 4)
+        var chplTitles = [String]()
+        var chplStarts = [Int]()
+        for entry in outputMp4.moov.udta?.chpl?.chapterTable ?? [] {
+            chplTitles.append(entry.title)
+            chplStarts.append(entry.startTime)
+        }
+        XCTAssertEqual(chplTitles, knownTitles)
+        XCTAssertEqual(chplStarts, knownStarts)
+    }
+    
+    @available(OSX 10.13, *)
+    func testRemoveSingleChapter() throws {
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
+        var tag = try Tag(mp4File: mp4)
+        tag.removeChapter(startTime: 192013)
+        tag.removeChapter(startTime: 624020)
+
+        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        try mp4.write(tag: tag, to: outputUrl)
+        
+        let knownTitles = ["01 - \'\'Frost To-Night\'\' - Read by BK",
+                           "02 - \'\'Frost To-Night\'\' - Read by CS",
+                           "04 - \'\'Frost To-Night\'\' - Read by GB",
+                           "05 - \'\'Frost To-Night\'\' - Read by KARA",
+                           "06 - \'\'Frost To-Night\'\' - Read by LAH",
+                           "07 - \'\'Frost To-Night\'\' - Read by LCW",
+                           "09 - \'\'Frost To-Night\'\' - Read by PS",
+                           "10 - \'\'Frost To-Night\'\' - Read by SPC",
+                           "11 - \'\'Frost To-Night\'\' - Read by TP",
+                           "12 - \'\'Frost To-Night\'\' - Read by VB"]
+        let knownStarts = [0, 100003, 292014, 392005, 459021, 546001, 714016, 791013, 869018, 963007]
+
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let outputTag = try Tag(mp4File: outputMp4)
+        XCTAssertEqual(outputTag.chapterHandler.chapterStarts, knownStarts)
+        XCTAssertEqual(outputTag.chapterHandler.chapterTitles, knownTitles)
+        XCTAssertEqual(outputMp4.moov.udta?.chpl?.chapterCount, 10)
+        var chplTitles = [String]()
+        var chplStarts = [Int]()
+        for entry in outputMp4.moov.udta?.chpl?.chapterTable ?? [] {
+            chplTitles.append(entry.title)
+            chplStarts.append(entry.startTime)
+        }
+        XCTAssertEqual(chplTitles, knownTitles)
+        XCTAssertEqual(chplStarts, knownStarts)
+    }
+
+    @available(OSX 10.13, *)
+    func testRemoveAllChapters() throws {
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
+        var tag = try Tag(mp4File: mp4)
+        tag.removeAllChapters()
+        
+        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        try mp4.write(tag: tag, to: outputUrl)
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let outputTag = try Tag(mp4File: outputMp4)
+        XCTAssertEqual(outputMp4.duration, 46541824.0)
+        XCTAssertTrue(outputTag.listChapters().isEmpty)
+        XCTAssertNil(outputMp4.moov.chapterTrack)
+        XCTAssertNil(outputMp4.moov.udta?.chpl)
+        XCTAssertNil(outputMp4.moov.chapterTrackID)
+        XCTAssertNil(outputMp4.moov.soundTrack.tref)
+    }
     
     @available(OSX 10.13, *)
     func testChapterOutput() throws {
@@ -52,7 +139,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         }
         XCTAssertEqual(chplTitles, knownTitles)
         XCTAssertEqual(chplStarts, knownStarts)
-        
     }
 
     @available(OSX 10.12, *)

@@ -20,6 +20,11 @@ let sampleBookSublerUrl: URL =
         .appendingPathComponent("mp4_chaptered")
         .appendingPathExtension("m4a")
 
+let sampleNoMeta: URL =
+    testMediaDirectory
+        .appendingPathComponent("mp4_nometa")
+        .appendingPathExtension("m4a")
+
 let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")

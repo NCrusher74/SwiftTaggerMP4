@@ -63,7 +63,8 @@ class Stsz: Atom {
                 self.sampleSize = firstSize
                 self.sampleSizeTable = []
             } else {
-                throw Mp4FileError.UnableToInitializeAtoms
+                self.sampleSize = 0
+                self.sampleSizeTable = []
             }
         } else {
             self.sampleSize = 0
