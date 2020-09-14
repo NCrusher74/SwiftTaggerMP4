@@ -33,7 +33,7 @@ extension Tag {
     public mutating func addChapter(startTime: Int, title: String) throws {
         // get the old chapters dictionary
         var chapters = chapterHandler.chapters
-        let newChapter = ChapterDataHandler.Chapter(title: title)
+        let newChapter = ChapterHandler.Chapter(title: title)
         // add the new chapter
         chapters[startTime] = newChapter
         // initialize a new converter with the new dictionary

@@ -9,7 +9,6 @@ import Foundation
 
 /// A class representing a `stbl` atom in an `Mp4File`'s atom structure
 class Stbl: Atom {
-    static var use64BitOffset: Bool = false
     /// Initialize a `stbl` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         
@@ -33,11 +32,7 @@ class Stbl: Atom {
         guard children.contains(where: {$0.identifier == "stsz"}) else {
             throw StblError.StszAtomNotFound
         }
-        if children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom != nil {
-            Stbl.use64BitOffset = true
-        } else if children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom != nil {
-            Stbl.use64BitOffset = false
-        } else {
+        guard children.contains(where: {$0.identifier == "c064" || $0.identifier == "stco"}) else {
             throw StblError.ChunkOffsetAtomNotFound
         }
 
@@ -65,22 +60,17 @@ class Stbl: Atom {
         guard children.contains(where: {$0.identifier == "stsz"}) else {
             throw StblError.StszAtomNotFound
         }
-        if children.first(where: {$0.identifier == "co64"}) as? ChunkOffsetAtom != nil {
-            Stbl.use64BitOffset = true
-        } else if children.first(where: {$0.identifier == "stco"}) as? ChunkOffsetAtom != nil {
-            Stbl.use64BitOffset = false
-        } else {
-            throw StblError.ChunkOffsetAtomNotFound
-        }
+//        guard children.contains(where: {$0.identifier == "c064" || $0.identifier == "stco"}) else {
+//            throw StblError.ChunkOffsetAtomNotFound
+//        }
 
         try super.init(identifier: "stbl",
                        size: size,
                        children: children)
     }
     
-    convenience init(chapterHandler: ChapterDataHandler,
-                     moov: Moov,
-                     startingOffset: Int) throws {
+    convenience init(chapterHandler: ChapterHandler,
+                     moov: Moov) throws {
         let stsd = try Stsd()
         let stsc = try Stsc()
 
@@ -88,18 +78,12 @@ class Stbl: Atom {
         for start in chapterHandler.chapterStarts {
             starts.append(Double(start))
         }
-        let mvhd = moov.mvhd
+        let mdhd = moov.soundTrack.mdia.mdhd
         let stts = try Stts(chapterHandler: chapterHandler,
-                             fileDuration: mvhd.duration)
+                            mediaDuration: mdhd.duration)
         
         let stsz = try Stsz(titles: chapterHandler.chapterTitles)
-
-        let chunkOffsetAtom = try ChunkOffsetAtom(
-            use64BitOffset: Stbl.use64BitOffset,
-            chapterHandler: chapterHandler,
-            startingOffset: startingOffset,
-            titles: chapterHandler.chapterTitles)
-        try self.init(children: [stsd, stsc, stts, stsz, chunkOffsetAtom])
+        try self.init(children: [stsd, stsc, stts, stsz])
     }
     
     /// Sorts atoms into order to preserve media offsets

@@ -57,13 +57,11 @@ class Mdia: Atom {
     }
     
     @available(OSX 10.12, *)
-    convenience init(chapterHandler: ChapterDataHandler,
+    convenience init(chapterHandler: ChapterHandler,
                      language: ICULocaleCode?,
-                     moov: Moov,
-                     startingOffset: Int) throws {
+                     moov: Moov) throws {
         let minf = try Minf(chapterHandler: chapterHandler,
-                            moov: moov,
-                            startingOffset: startingOffset)
+                            moov: moov)
         let hdlr = try Hdlr(trackType: .text)
         let mdhd: Mdhd
         if let language = language {

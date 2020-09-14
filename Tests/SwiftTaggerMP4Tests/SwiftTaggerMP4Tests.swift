@@ -5,22 +5,26 @@ import Cocoa
 final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testPrint() throws {
-        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
-        let url = URL(fileURLWithPath: path)
-        let data = try Data(contentsOf: url)
-//        let data = try Data(contentsOf: sampleBookSublerUrl)
-        let range = 000008408955 ..< 000008409510
+//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
+//        let url = URL(fileURLWithPath: path)
+//        let data = try Data(contentsOf: url)
+        let data = try Data(contentsOf: sampleBookCVUrl)
+        let range = 000000187388 ..< 000000187452
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
     
+    
     /*
      */
+    
     @available(OSX 10.13, *)
     func testChapterOutput() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
-        try mp4.write(to: outputUrl)
+        let sourceTag = try Tag(mp4File: mp4)
+        try mp4.write(tag: sourceTag, to: outputUrl)
+
         let outputMp4 = try Mp4File(location: outputUrl)
         XCTAssertEqual(outputMp4.duration, 46541824.0)
         let tag = try Tag(mp4File: outputMp4)
@@ -51,6 +55,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
     }
 
+    @available(OSX 10.12, *)
     func testChapterParsing() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         let tag = try Tag(mp4File: mp4)
@@ -72,6 +77,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
     }
     
+    @available(OSX 10.12, *)
     func testBasicFileParsing() throws {
         let source = try Mp4File(location: sampleBookCVUrl)
         XCTAssertTrue(!source.rootAtoms.isEmpty)

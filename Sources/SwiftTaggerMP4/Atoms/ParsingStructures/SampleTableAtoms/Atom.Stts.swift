@@ -54,11 +54,10 @@ class Stts: Atom {
     }
     
     /// **CHAPTER TRACK ONLY** Initialize an `stts` atom with chapter durations for building a chapter track
-    init(chapterHandler: ChapterDataHandler,
-         fileDuration: Double) throws {
+    init(chapterHandler: ChapterHandler,
+         mediaDuration: Double) throws {
         let durationArray = chapterHandler.calculateDurationsFromStartTimes(
-            fileDuration: fileDuration)
-        
+            mediaDuration: mediaDuration)
         var entryDict = [Double: Int]() // [duration: Number of Samples With This Duration]
         if durationArray.count == 1 {
             let duration = durationArray[durationArray.startIndex]

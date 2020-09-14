@@ -10,11 +10,12 @@ import Cocoa
 
 struct Tag {
     public var metadataAtoms: [String: Atom]
-    var chapterHandler: ChapterDataHandler
+    var chapterHandler: ChapterHandler
+
     init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
         let data = mp4File.data
-        self.chapterHandler = try ChapterDataHandler(
+        self.chapterHandler = try ChapterHandler(
             moov: moov, fileData: data)
 
         var metadata = [String: Atom]()

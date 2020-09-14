@@ -68,12 +68,10 @@ class Minf: Atom {
                        children: children)
     }
     
-    convenience init(chapterHandler: ChapterDataHandler,
-                     moov: Moov,
-                     startingOffset: Int) throws {
+    convenience init(chapterHandler: ChapterHandler,
+                     moov: Moov) throws {
         let stbl = try Stbl(chapterHandler: chapterHandler,
-                            moov: moov,
-                            startingOffset: startingOffset)
+                            moov: moov)
         let dinf = try Dinf(from: try Dref())
         let nmhd = try Nmhd()
 

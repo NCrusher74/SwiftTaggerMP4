@@ -22,14 +22,13 @@ class Mdat: Atom {
         return self.payload
     }
     
-    /// **CHAPTER TITLES ONLY**
-    init(titleArray: [String]) throws {
+    /// create an `mdat` atom with the media data up front and the chapter title data at the end
+    init(mediaData: Data, titleArray: [String]) throws {
         var payload = Data()
+        payload.append(mediaData)
         for title in titleArray {
-            let countData = title.count.int16.beData
-            let titleData = title.encodedUtf8
-            payload.append(countData)
-            payload.append(titleData)
+            payload.append(title.count.int16.beData)
+            payload.append(title.encodedUtf8)
         }
         self.payload = payload
         

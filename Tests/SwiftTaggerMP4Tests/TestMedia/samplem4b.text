@@ -227,87 +227,56 @@ DescriptionID: 1
                     running tally: 45,447 + 4 = 41,451 <- samples array count
 
 
-        let source = try Mp4File(location: sampleBookUrl)
-        let data = source.fileData
-
-        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCIDAFD
-        let stsc = source.moov.soundTrack.mdia.minf.stbl.stsc
-        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCBBCGB
-        let stsz = source.moov.soundTrack.mdia.minf.stbl.stsz
-        // https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-BBCHAEEA
-        let stco = source.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom
-        
-        // [(firstChunk: Int, samplesPerChunk: Int, sampleDescriptionID: Int)]
-        // firstChunk is the index of the chunkOffsetTable where each entry begins
-        // samplesPerChunk is the number of entries in the sampleSizeTable that make up each chunk from the current firstChunk to the next firstChunk
-        // We can safely ignore the description, I believe
-        let sampleToChunkTable = stsc.sampleToChunkTable
-        // [Int]
-        // the sampleSize is the byte-count of each sample.
-        let sampleSizeTable = stsz.sampleSizeTable
-        // the chunk offset is the beginning of the chunk in the FILE data, irrespective of atom structure
-        let chunkOffsetTable = stco.chunkOffsetTable
-        
-        // this will keep track of where we pick up when we cycle through the samplesPerChunk entries
-        var newSampleIndex = Int()
-        // this is the array of sizes we need to build to pull this all together
-        var chunkSizes = [Int]()
-        
-        // handle all but the last
-        for (index, entry) in sampleToChunkTable.enumerated().dropLast() {
-            // the number of samples we need to extract from the sampleSizeArray is the difference between the next firstChunk and the current firstChunk
-            var loopsRequired = Int()
-            let nextEntry = sampleToChunkTable[sampleToChunkTable.index(after: index)]
-            let nextChunk = nextEntry.firstChunk
-            loopsRequired = nextChunk - entry.firstChunk
-            // we will count "down" to zero each time we loop through this section
-            while loopsRequired > 0 {
-                // this is the samplesPerChunk value for the current table entry
-                let samplesPerChunk = entry.samplesPerChunk
-                
-                // we will start at the beginning of the sampleSizeTable and create a range from the current number of samples per chunk
-                let samplesStart = newSampleIndex
-                let samplesEnd = samplesStart + samplesPerChunk
-                let range = samplesStart ..< samplesEnd
-                let sample = sampleSizeTable[range]
-                // since each sample size is the byte-count of the sample, we can calculate the byte-count of each chunk by adding the byte-count of each sample within the samples-per-chunk range
-                // using this extension:
-                // extension Sequence where Element: AdditiveArithmetic {
-                //     func sum() -> Element { reduce(.zero, +) }
-                // }
-                let sampleSum = sample.sum()
-                // add the sum to our array
-                chunkSizes.append(sampleSum)
-                // update the samplesStart index
-                newSampleIndex = samplesEnd
-                // decremement our loop-count by 1
-                loopsRequired -= 1
+    static func chunkSizes(stbl: Stbl) throws -> [Int] {
+        let sampleToChunkTable = stbl.stsc.sampleToChunkTable
+        var sampleSizeTable = [Int]()
+        if stbl.stsz.sampleSize == 0 {
+            sampleSizeTable = stbl.stsz.sampleSizeTable
+        } else {
+            var count = stbl.stsz.entryCount
+            while count > 0 {
+                sampleSizeTable.append(stbl.stsz.sampleSize)
+                count -= 1
             }
-            // reset our required number of loops for the next iteration
-            loopsRequired = Int()
         }
-        // handle last
-        let lastEntry = sampleToChunkTable.last ?? (0,0,0)
-        let lastSamplesPerChunkEntry = lastEntry.samplesPerChunk
-        // we get the start of the final range by subtracting the number of samples in this final chunk from the endIndex of the sampleSizeTable
-        let rangeStart = sampleSizeTable.endIndex - lastSamplesPerChunkEntry
-        let rangeEnd = sampleSizeTable.endIndex
-        let range = rangeStart ..< rangeEnd
-        let sample = sampleSizeTable[range]
-        let sampleSum = sample.sum()
-        // append it too the array
-        chunkSizes.append(sampleSum)
-        // make sure we did it right
-        XCTAssertEqual(chunkSizes.count, chunkOffsetTable.count)
         
-        // Now that we know our CHUNK sizes, we can calculate the date to isolate by adding each chunk size to its corresponding offset to create a range for the data
-        var audioData = Data()
-        for (index, entry) in chunkOffsetTable.enumerated() {
-            let startOffset = entry
-            let endOffset = startOffset + chunkSizes[index]
-            let range = startOffset ..< endOffset
-            let dataToExtract = data.subdata(in: range)
-            audioData.append(dataToExtract)
+        var remainingSamples = sampleSizeTable
+        var chunkSizes: [Int] = []
+        for (index, group) in sampleToChunkTable.enumerated() {
+            let knownChunks: Int
+            if let nextGroup = sampleToChunkTable[index...].dropFirst().first {
+                knownChunks = nextGroup.firstChunk - group.firstChunk
+            } else {
+                // If there is no following group,
+                // we don’t know how many chunks this applies to,
+                // but there must be at least one.
+                knownChunks = 1
+            }
+            for _ in 0 ..< knownChunks {
+                var chunkSize = 0
+                for _ in 0 ..< group.samplesPerChunk {
+                    guard !remainingSamples.isEmpty else {
+                        throw MediaDataHandlerError.MissingSample
+                    }
+                    chunkSize += remainingSamples.removeFirst()
+                }
+                chunkSizes.append(chunkSize)
+            }
         }
-        // if we did it right, the total data we've extracted should be the size of the media data (mdat) atom, minus 8 for the header data, minus 610 for the chapter title data.
-        XCTAssertEqual(audioData.count, 8198159 - 618)
+        // Handle any remaining chunks according to the last group.
+        while !remainingSamples.isEmpty {
+            guard let samples = sampleToChunkTable.last?.samplesPerChunk else {
+                throw MediaDataHandlerError.MissingChunk
+            }
+            var chunkSize = 0
+            for _ in 0 ..< samples {
+                guard !remainingSamples.isEmpty else {
+                    throw MediaDataHandlerError.MissingSample
+                }
+                chunkSize += remainingSamples.removeFirst()
+            }
+            chunkSizes.append(chunkSize)
+        }
+        return chunkSizes
+    }
+

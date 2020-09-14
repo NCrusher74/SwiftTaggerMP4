@@ -89,8 +89,7 @@ class Atom {
     func encode() -> Data {
         var data = Data()
         
-        let preliminarySize = self.contentData.count + 8
-        
+        let preliminarySize = self.contentData.count + 8        
         var size = preliminarySize
         if preliminarySize > UInt32.max {
             size = 1 // use extended size UInt64 instead

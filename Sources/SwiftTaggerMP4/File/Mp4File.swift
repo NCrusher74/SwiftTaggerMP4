@@ -12,33 +12,12 @@ import SwiftLanguageAndLocaleCodes
 class Mp4File {
     var rootAtoms: [Atom]
     var data: Data
-    
-    public var duration: Double {
-        return moov.mvhd.duration
-    }
-    
     var _language: ICULocaleCode?
-    @available(OSX 10.12, *)
-    public var language: ICULocaleCode? {
-        get {
-            if let language = _language {
-                return language
-            } else if let elng = moov.soundTrack.mdia.elng {
-                return ICULocaleCode(rawValue: elng.language)
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self._language = new
-            }
-        }
-    }
-    
+    static var use64BitOffset: Bool = false
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
+    @available(OSX 10.12, *)
     init(location: URL) throws {
         let validExtensions = ["mp4", "m4a", "m4b", "aac", "m4r", "m4p", "aax"]
         if validExtensions.contains(
@@ -58,12 +37,23 @@ class Mp4File {
             }
         }
         self.rootAtoms = atoms
+        
+        if let elng = moov.soundTrack.mdia.elng {
+            let language = ICULocaleCode(rawValue: elng.language)
+            self._language = language
+        }
+        if self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.identifier == "co64" {
+            Mp4File.use64BitOffset = true
+        }
     }
     
     @available(OSX 10.12, *)
-    public func write(to outputLocation: URL) throws {
-        try self.optimizeMedia()
-        try self.setChapterTrak()
+    public func write(tag: Tag, to outputLocation: URL) throws {
+        let mediaData = try self.getMediaData()
+        try setMetadataAtoms(tag: tag)
+        try setChapterTrack(mediaData: mediaData, tag: tag)
+        try setMdat(mediaData: mediaData, tag: tag)
+        
         var outputData = Data()
         for atom in self.optimizedRoot {
             outputData.append(atom.encode())
@@ -76,12 +66,10 @@ class Mp4File {
     ///   - identifier: the identifier of the atom being sorted
     private func sortingGroup(forIdentifier identifier: String) -> Int {
         switch identifier {
-            case "mdat":
-                return 2
-            case "moov":
-                return 3
-            default:
-                return 1
+            case "ftyp": return 1
+            case "mdat": return 4
+            case "moov": return 3
+            default: return 2
         }
     }
     
@@ -94,86 +82,30 @@ class Mp4File {
         return rearrangedAtoms
     }
     
-    func optimizeMedia() throws {
-        let handler = try MediaDataHandler(readFrom: self)
-        self.mdats = [handler.newMdat]
-        self.moov.soundTrack.mdia.minf.stbl
-            .chunkOffsetAtom.chunkOffsetTable = handler.newOffsets
-        self.rootAtoms = rootAtoms.filter(
-            {$0.identifier != "wide" &&
-                $0.identifier != "skip" &&
-                $0.identifier != "free"})
+    // Public properties
+    public var duration: Double {
+        return moov.mvhd.duration
     }
     
     @available(OSX 10.12, *)
-    func setChapterTrak() throws {
-        let tag = try Tag(mp4File: self)
-        let chapterHandler = tag.chapterHandler
-        
-        var chapterTitleOffset = 8
-        for atom in self.rootAtoms.filter({$0.identifier != "moov"}) {
-            chapterTitleOffset += atom.encode().count
-        }
-        var trackID = Int()
-        if let id = self.moov.chapterTrackID {
-            trackID = id
-        } else {
-            trackID = self.moov.mvhd.nextTrackID
-        }
-        let track = try Trak(
-            chapterHandler: chapterHandler,
-            language: self.language,
-            moov: self.moov,
-            startingOffset: chapterTitleOffset,
-            chapterTrackID: trackID)
-        self.moov.chapterTrack = track
-        let titleMdat = try Mdat(titleArray: chapterHandler.chapterTitles)
-        self.mdats.append(titleMdat)
-        let chpl =  try Chpl(from: tag.listChapters())
-        if self.moov.udta != nil {
-            self.moov.udta?.chpl = chpl
-        } else {
-            self.moov.udta = try Udta(children: [chpl])
-        }
-    }
-    
-    private func setMetadataAtoms(from tag: Tag) throws {
-        var newMetadataAtoms = [Atom]()
-        for (_, atom) in tag.metadataAtoms {
-            newMetadataAtoms.append(atom)
-        }
-        if self.moov.udta?.meta?.ilst != nil {
-            // ilst exists, alter the children array
-            self.moov.udta?.meta?.ilst.children = newMetadataAtoms
-        } else {
-            // if ilst doesn't exist, meta doesn't exist, because ilst is a required child of meta, so instead we check udta
-            let ilst = try Ilst(children: newMetadataAtoms)
-            let hdlr = try Hdlr()
-            let meta = try Meta(children: [hdlr, ilst])
-            if self.moov.udta != nil {
-                self.moov.udta?.meta = meta
+    public var language: ICULocaleCode? {
+        get {
+            if let language = _language {
+                return language
+            } else if let elng = moov.soundTrack.mdia.elng {
+                return ICULocaleCode(rawValue: elng.language)
             } else {
-                let udta = try Udta(children: [meta])
-                self.moov.udta = udta
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self._language = new
             }
         }
     }
-}
-
-enum Mp4FileError: Error {
-    /// Error thrown when the file is not an MP4 format audio file
-    case InvalidFileFormat
-    /// Error thrown when writing operation fails
-    case OutputFailure
-    /// Error thrown when atoms fail to initialize
-    case UnableToInitializeAtoms
-    /// Error thrown when a required root atom is missing
-    case MoovAtomNotFound
-    /// Error thrown when a required root atom is missing
-    case MdatAtomNotFound
-}
-
-extension Mp4File {
+    
+    // MARK: Internal properties
     var moov: Moov {
         get {
             if let moov = rootAtoms.first(where: {$0.identifier == "moov"}) as? Moov {
@@ -203,4 +135,26 @@ extension Mp4File {
             rootAtoms = newRoot
         }
     }
+
+}
+
+enum Mp4FileError: Error {
+    /// Error thrown when the file is not an MP4 format audio file
+    case InvalidFileFormat
+    /// Error thrown when writing operation fails
+    case OutputFailure
+    /// Error thrown when atoms fail to initialize
+    case UnableToInitializeAtoms
+    /// Error thrown when a required root atom is missing
+    case MoovAtomNotFound
+    /// Error thrown when a required root atom is missing
+    case MdatAtomNotFound
+    /// Error thrown when samples cannot be located
+    case MissingSample
+    /// Error thrown when media chunk cannot be located
+    case MissingChunk
+    /// Error thrown when entry count of the chunkSizes array does not match the count of the chunkOffsets array
+    case ChunkSizeToChunkOffsetCountMismatch
+    /// Error thrown when the new chunk offsets array doesn't match the old chunk offsets array
+    case NewChunkOffsetArrayCountMismatch
 }

@@ -61,17 +61,15 @@ class Trak: Atom {
     }
     
     @available(OSX 10.12, *)
-    convenience init(chapterHandler: ChapterDataHandler,
+    convenience init(chapterHandler: ChapterHandler,
          language: ICULocaleCode?,
          moov: Moov,
-         startingOffset: Int,
          chapterTrackID: Int) throws {
         let duration = (moov.soundTrack.mdia.mdhd.duration / moov.soundTrack.mdia.mdhd.timeScale) * 1000
         let tkhd = try Tkhd(mediaDuration: duration, trackID: chapterTrackID)
         let mdia = try Mdia(chapterHandler: chapterHandler,
                             language: language,
-                            moov: moov,
-                            startingOffset: startingOffset)
+                            moov: moov)
         try self.init(children: [tkhd, mdia])
     }
     
