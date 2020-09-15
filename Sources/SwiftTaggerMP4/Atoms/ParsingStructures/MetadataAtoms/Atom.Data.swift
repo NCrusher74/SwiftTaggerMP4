@@ -9,19 +9,26 @@ import Foundation
 import Cocoa
 
 /// A class representing a `data` atom in an `Mp4File`'s atom structure
+///
+/// The `data` atom is always a sub-atom of a freeform or named metadata atom, found in the `moov.udta.meta.ilst` sub-atoms.
 class DataAtom: Atom {
+
+    /// The data type of a `data` atom, referred to in Apple documentation as "Well-Known Types" or in MP4v2 as `BasicType`
     var dataType: DataType
     private var locale: Data
+    /// The payload content a the `data` atom.
     var data: Data
     
     /// Initialize a `data` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
+        
+        // To determine the dataType, convert the first four bytes of the atom data to an integer an initialize the `DataType` enum with the integer as a rawValue.
         let typeInt = data.extractToInt(4)
         if let type = DataType(rawValue: typeInt) {
             self.dataType = type
         } else {
-            fatalError("\(MetadataAtomError.UnsupportedMetadataFormat)")
+            throw MetadataAtomError.UnsupportedMetadataFormat
         }
         self.locale = data.extractFirst(4)
         self.data = data
@@ -29,7 +36,8 @@ class DataAtom: Atom {
                        size: size,
                        payload: payload)
     }
-        
+    
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
         let typeInt = self.dataType.rawValue
@@ -39,8 +47,10 @@ class DataAtom: Atom {
         return data
     }
     
+    /// Initialize a `data` atom from an image file stored locally as a sub-atom for a metadata atom with image content
     init(imageLocation: URL) throws {
-        if imageLocation.pathExtension == "jpg" || imageLocation.pathExtension == "jpeg" {
+        if imageLocation.pathExtension == "jpg" ||
+            imageLocation.pathExtension == "jpeg" {
             self.dataType = .jpeg
         } else if imageLocation.pathExtension == "png" {
             self.dataType = .png
@@ -63,11 +73,12 @@ class DataAtom: Atom {
                        payload: payload)
     }
     
+    /// Initialize a `data` atom as a sub-atom for a metadata atom with string content
     init(stringValue: String) throws {
         self.dataType = .utf8
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = stringValue.encodedUtf8
-
+        
         var payload = Data()
         let typeInt = self.dataType.rawValue
         payload.append(typeInt.int32.beData)
@@ -80,6 +91,7 @@ class DataAtom: Atom {
                        payload: payload)
     }
     
+    /// Initialize a `data` atom as a sub-atom for a metadata atom with integer content
     init(identifier: String, intValue: Int) throws {
         if intValue > UInt32.max {
             self.dataType = .signedInt64BE
@@ -111,6 +123,7 @@ class DataAtom: Atom {
                        payload: payload)
     }
     
+    /// initialize a data atom for use with a metadata atom containing an unspecified content type
     init(data: Data) throws {
         self.dataType = .reserved
         self.locale = Data(repeating: 0x00, count: 4)

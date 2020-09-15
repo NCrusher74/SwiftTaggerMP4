@@ -33,10 +33,11 @@ class Trak: Atom {
                        children: children)
     }
     
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
-        for child in children {
-            let childData = child.encode()
+        for atom in sortedAtoms {
+            let childData = atom.encode()
             data.append(childData)
         }
         return data
@@ -78,6 +79,27 @@ class Trak: Atom {
         case TkhdAtomNotFound
         /// Error thrown when a required atom is missing
         case MdiaAtomNotFound
+    }
+    
+    /// Sorts atoms into order to preserve media offsets
+    /// - Parameters:
+    ///   - identifier: the identifier of the atom being sorted
+    private func sortingGroup(forIdentifier identifier: String) -> Int {
+        switch identifier {
+            case "tkhd": return 1
+            case "tref": return 2
+            case "mdia": return 4
+            default: return 3
+        }
+    }
+
+    /// The array of root atoms, arranged to preserve media offsets
+    var sortedAtoms: [Atom] {
+        var rearrangedAtoms = self.children
+        rearrangedAtoms.sort(
+            by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
+        )
+        return rearrangedAtoms
     }
 }
 

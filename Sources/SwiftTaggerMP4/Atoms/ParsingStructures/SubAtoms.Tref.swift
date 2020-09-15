@@ -36,7 +36,8 @@ class TrefSubatom: Atom {
                        payload: chapterTrackID.int32.beData)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for id in self.trackIDs {
             data.append(id.int32.beData)

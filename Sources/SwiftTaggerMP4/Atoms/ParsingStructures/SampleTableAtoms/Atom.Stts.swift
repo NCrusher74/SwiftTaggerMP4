@@ -11,13 +11,18 @@ import Foundation
  
     The atom contains time deltas: DT(n+1) = DT(n) + STTS(n) where STTS(n) is the (uncompressed) table entry for sample n and DT is the display time for sample (n). The sample entries are ordered by time stamps; therefore, the deltas are all nonnegative. The DT axis has a zero origin; DT(i) = SUM (for j=0 to i-1 of delta(j)), and the sum of all deltas gives the length of the media in the track (not mapped to the overall time scale, and not considering any edit list). The edit list atom provides the initial DT value if it is nonempty (nonzero).
  
-    In chapter terms, this describes the duration of each chapter */
+    In chaptering terms, this describes the duration of each chapter */
 /// A class representing a `stts` atom in an `Mp4File`'s atom structure
+///
+/// This atom maps the duration of each sample to a display time (start time) in the media
 class Stts: Atom {
     
     private var version: Data
     private var flags: Data
+    /// The number of elements in the sampleToTimeTable
     var entryCount: Int
+    /// `sampleCount`: the number of consecutive samples with the same duration
+    /// `sampleDuration`: the duration of each sample
     var sampleTable: [(sampleCount: Int, sampleDuration: Double)]
     
     /// Initialize a `stts` atom for parsing from the root structure
@@ -40,60 +45,73 @@ class Stts: Atom {
                        size: size,
                        payload: payload)
     }
-        
+    
+    /// The total duration of the media as the sum of the sample durations
     var mediaDuration: Int {
         var duration = Double()
         for entry in self.sampleTable {
-            var count = entry.sampleCount
-            while count > 0 {
-                duration += Double(entry.sampleDuration)
-                count -= 1
-            }
+            duration += (Double(entry.sampleCount) * entry.sampleDuration)
         }
         return Int(duration)
     }
     
+    func getStartTimesFromDurations(
+        timeScale: Double, initialStart: Int) -> [Int] {
+        var starts = [initialStart]
+        var currentStart = initialStart
+        
+        // handle all but the last
+        for item in sampleTable.dropLast() {
+            if item.sampleCount == 1 {
+                let duration = (item.sampleDuration / timeScale) * 1000
+                currentStart += Int(duration.rounded())
+                starts.append(currentStart)
+            } else {
+                var count = item.sampleCount
+                while count > 0 {
+                    let duration = (item.sampleDuration / timeScale) * 1000
+                    currentStart += Int(duration.rounded())
+                    starts.append(currentStart)
+                    count -= 1
+                }
+            }
+        }
+        // handle the last
+        // we don't need the very last duration because it will create a start time for nothing
+        if let item = sampleTable.last {
+            // if this sample count is 1, this won't be executed
+            var count = item.sampleCount - 1
+            while count > 0 {
+                currentStart += Int(item.sampleDuration)
+                starts.append(currentStart)
+                count -= 1
+            }
+        }
+        return starts
+    }
+
     /// **CHAPTER TRACK ONLY** Initialize an `stts` atom with chapter durations for building a chapter track
     init(chapterHandler: ChapterHandler,
          mediaDuration: Double) throws {
         let durationArray = chapterHandler.calculateDurationsFromStartTimes(
             mediaDuration: mediaDuration)
-        var entryDict = [Double: Int]() // [duration: Number of Samples With This Duration]
-        if durationArray.count == 1 {
-            let duration = durationArray[durationArray.startIndex]
-            entryDict[duration] = 1
-        } else {
-            // handle everything except the last
-            var sampleCount: Int = 1
-            for (index, duration) in durationArray.enumerated().dropLast() {
-                let followingIndex = durationArray.index(after: index)
-                if durationArray[index] == durationArray[followingIndex] {
-                    entryDict[duration] = sampleCount + 1
-                    sampleCount += 1
-                } else {
-                    entryDict[duration] = sampleCount
-                    sampleCount = 1
-                }
-            }
-            // handle the last one
-            let lastDuration = durationArray.last ?? 0
-            let nextToLastIndex = durationArray.index(before: durationArray.endIndex - 1)
-            if lastDuration == durationArray[nextToLastIndex] {
-                entryDict[lastDuration] = (entryDict[lastDuration] ?? 1) + 1
-            } else {
-                entryDict[lastDuration] = 1
-            }
+        guard !durationArray.isEmpty else {
+            throw StblError.SampleDurationArrayIsEmpty
         }
         var entries = [(sampleCount: Int, sampleDuration: Double)]()
-        var previous = Double()
+        var previous = durationArray.first!
+        var count = 0
         for duration in durationArray {
-            if duration == previous {
-                continue
+            if duration == previous { // for the first entry, this will always be true
+                count += 1
             } else {
+                // store the number of samples with the previous duration
+                let entry = (count, previous)
+                entries.append(entry)
+                // update previous to current duration
                 previous = duration
-                let sampleCount = entryDict[duration]!
-                let arrayEntryTuple = (sampleCount, duration)
-                entries.append(arrayEntryTuple)
+                // reset the count to 1
+                count = 1
             }
         }
         
@@ -115,7 +133,8 @@ class Stts: Atom {
         try super.init(identifier: "stts", size: size, payload: payload)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)

@@ -87,7 +87,7 @@ class Mp4File {
     var language: ICULocaleCode? {
         get {
             if let elng = moov.soundTrack.mdia.elng {
-                return ICULocaleCode(rawValue: elng.language)
+                return ICULocaleCode(rawValue: elng.language.rawValue)
             } else {
                 return nil
             }
@@ -97,15 +97,15 @@ class Mp4File {
                 let newTracks = self.moov.tracks
                 for track in newTracks {
                     if track.mdia.elng != nil {
-                        track.mdia.elng?.language = new.rawValue
+                        track.mdia.elng?.language = new
                         track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
                     } else {
                         do {
-                            let elng = try Elng(from: new)
+                            let elng = try Elng(locale: new)
                             track.mdia.elng = elng
                             track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
                         } catch {
-                            print("WARNING: Unable to initialize extended language atom")
+                            fatalError("WARNING: Unable to initialize extended language atom")
                         }
                     }
                 }

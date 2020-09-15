@@ -10,11 +10,16 @@ import Foundation
 /// A class representing a `co64` or `stco` atom in an `Mp4File`'s atom structure
 ///
 /// `co64` is used when offsets are in 64bit integers, otherwise, `stco` is used
+/// The offset table is an array of offsets for each chunk of data. The offset is the
+/// chunk's offset in the *file data as a whole*, irrespective of atom structure.
+/// When used for chaptering purposes, a chunk may be a single chapter title, or it may be the entire list of chapter titles. SwiftTaggerMP4 uses the first approach, and though it will handle parsing files where the chapter titles are presented as a single chunk, it will output chapter title data as one chunk per chapter title.
 class ChunkOffsetAtom: Atom {
     
     private var version: Data
     private var flags: Data
+    /// The number of entries in the chunk offset table
     var entryCount: Int
+    /// The array of offsets in the *file data as a whole*, irrespective of atom structure.
     var chunkOffsetTable: [Int]
     
     /// Initialize a `chunkOffsetAtom` atom for parsing from the root structure
@@ -26,6 +31,8 @@ class ChunkOffsetAtom: Atom {
         self.entryCount = data.extractToInt(4)
         
         var offsetTable = [Int]()
+        
+        // If the identifier is co64, the offsets are stored as 64bit integers
         while !data.isEmpty {
             if identifier == "co64" {
                 offsetTable.append(data.extractToInt(8))
@@ -77,7 +84,8 @@ class ChunkOffsetAtom: Atom {
         }
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)

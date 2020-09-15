@@ -10,8 +10,10 @@ import Cocoa
 
 /// A class representing the metadata atoms in an `Mp4File`'s atom structure
 class StringMetadataAtom: Atom {
+    /// The content of a string metadata atom
     var stringValue: String
     
+    /// Initialize a metadata atom with string content by parsing from file contents
     override init(identifier: String,
          size: Int,
          payload: Data) throws {
@@ -47,6 +49,7 @@ class StringMetadataAtom: Atom {
                        children: children)
     }
     
+    /// Initialize a metadata atom with string content for building a metadata list
     init(identifier: StringMetadataIdentifier,
          stringValue: String) throws {
         self.stringValue = stringValue
@@ -61,7 +64,8 @@ class StringMetadataAtom: Atom {
                        children: [dataAtom])
     }    
 
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for child in children {
             data.append(child.encode())

@@ -8,11 +8,14 @@
 import Foundation
 
 /// A class representing a `name` atom in an `Mp4File`'s atom structure
+///
+/// The `name` atom is always a sub-atom of a freeform metadata atom, found in the `moov.udta.meta.ilst` sub-atoms. It contains the free-form identifier for the atom.
 class Name: Atom {
     private var version: Data
     private var flags: Data
+    /// The freeform identifier of an unknown metadata atom
     var stringValue: String
-
+    
     /// Initialize a `name` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -42,6 +45,7 @@ class Name: Atom {
                        payload: payload)
     }
     
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
         data.append(self.version)

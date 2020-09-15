@@ -1,14 +1,17 @@
 /*
-  Ilst.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Ilst.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
 /// A class representing a `ilst` atom in an `Mp4File`'s atom structure
+///
+/// The `ilst` atom is a sub-atom of `moov.udta.meta`
 class Ilst: Atom {
+
     /// Initialize a `ilst` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -24,6 +27,7 @@ class Ilst: Atom {
                        children: children)
     }
     
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
         for child in self.children {
@@ -38,7 +42,7 @@ class Ilst: Atom {
         for child in children {
             size += child.size
         }
-
+        
         try super.init(identifier: "meta",
                        size: size,
                        children: children)

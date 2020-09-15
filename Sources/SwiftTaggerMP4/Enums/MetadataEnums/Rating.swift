@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Ratings used by iTunes store
 enum Rating: Int, CaseIterable {
     case none = 0
     case clean = 2

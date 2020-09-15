@@ -9,6 +9,7 @@ import Foundation
 
 @available(OSX 10.12, *)
 extension Date {
+    /// The `mp4Epoch` is January 1, 1904.
     private static let mp4Epoch: Date = {
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(identifier: "GMT") ?? .current

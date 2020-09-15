@@ -99,7 +99,8 @@ class Minf: Atom {
         return rearrangedAtoms
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for atom in self.sortedAtoms {
             data.append(atom.encode())

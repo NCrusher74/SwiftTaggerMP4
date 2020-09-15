@@ -7,10 +7,16 @@
 
 import Foundation
 
+/// A freeform metadata atom with the identifier `----`
+///
+/// Though the content of these atoms may be presented as integers, dates, or any number of other types, typically it is stored as a string
 class UnknownMetadataAtom: Atom {
+    /// The unrecognized identifier of the atom as a freeform string
     var name: String
+    /// The content of the atom
     var stringValue: String
     
+    /// Initialize a freeform atom by parsing from file content
     override init(identifier: String,
                   size: Int,
                   payload: Data) throws {
@@ -23,6 +29,7 @@ class UnknownMetadataAtom: Atom {
             }
         }
         
+        // required sub-atoms are `mean`, `name`, and `data`
         guard children.contains(where: {$0.identifier == "mean"}) else {
             throw MetadataAtomError.MeanAtomNotFound
         }
@@ -56,6 +63,7 @@ class UnknownMetadataAtom: Atom {
     }
     
     
+    /// Initialize a freeform atom for use in building a metadata list
     init(name: String, stringValue: String) throws {
         let mean = try Mean()
         let nameAtom = try Name(atomName: name)
@@ -94,7 +102,8 @@ class UnknownMetadataAtom: Atom {
         return rearrangedAtoms
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for atom in self.sortedAtoms {
             data.append(atom.encode())

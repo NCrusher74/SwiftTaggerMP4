@@ -26,8 +26,8 @@ class Text: Atom {
     var fontColorGreen: Int16
     var fontColorBlue: Int16
     
-    /** Initialize a `text` atom for parsing from the root structure
-     *Note:* For chaptering purposes, this atom is the child atom of the `stsd` atom for a chapter track */
+    /// Initialize a `text` atom for parsing from the root structure
+    /// *For chaptering purposes, this atom is the child atom of the `stsd` atom for a chapter track*
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         _ = data.extractFirst(6)
@@ -102,7 +102,8 @@ class Text: Atom {
                        payload: payload)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)

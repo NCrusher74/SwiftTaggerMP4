@@ -15,7 +15,7 @@ enum MetadataAtomError: Error {
     /// Error thrown when a required atom is missing
     case NameAtomNotFound
     /// Error thrown when a metadata-containing atom cannot be initialized
-    case UnableToInitializeMetadataAtom
+    case UnableToInitializeMetadataAtom(String)
     /// Error thrown when parser is unable to determine the data type of cover image file
     case UnableToDetermineImageFormat
     /// Error throws when parser is unable to set a cover image atom

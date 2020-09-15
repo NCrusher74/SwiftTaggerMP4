@@ -7,7 +7,7 @@
 */
 
 import Foundation
-
+/// MP4 file types list
 enum FileType: String {
     case threeG2A = "3g2a"
     case threeG2B = "3g2b"

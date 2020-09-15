@@ -62,7 +62,8 @@ class Chpl: Atom {
         try super.init(identifier: "chpl", size: size, payload: payload)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)

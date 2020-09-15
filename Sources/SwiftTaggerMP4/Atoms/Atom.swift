@@ -15,6 +15,7 @@ class Atom {
     var size: Int
     /// The atoms sub-atom content
     private var _children: [Atom]
+    /// The atoms sub-atom content
     var children: [Atom] {
         get {
             return _children
@@ -27,8 +28,9 @@ class Atom {
         }
     }
     
+    /// An atom from which the atom is directly descended
     weak var parent: Atom?
-    /// the other atoms descended from the same parent atom
+    /// Other atoms descended from the same parent atom
     var siblings: [Atom]? {
         get {
             return parent?.children
@@ -86,6 +88,7 @@ class Atom {
         fatalError("Override contentData in subclass: \(type(of: self)).")
     }
     
+    /// Converts an atom to data for writing to file
     func encode() -> Data {
         var data = Data()
         
@@ -105,16 +108,19 @@ class Atom {
         data.append(self.contentData)
         return data
     }
-    
+    /// Default version value
     static var version: Data = UInt8(0x00).beData
+    /// Default flags value
     static var flags: Data {
         return Data(repeating: 0x00, count: 3)
     }
     
+    /// Returns *k* bytes of null data for use in atoms with required reserve space
     static func addReserveData(_ k: Int) -> Data {
         return Data(repeating: 0x00, count: k)
     }
     
+    /// Gets and sets a sub atom with an identifier string matching `AtomIdentifier.rawValue`
     subscript(_ identifier: AtomIdentifier) -> Atom? {
         get {
             if let atom = children.first(where: {$0.identifier == identifier.rawValue}) {

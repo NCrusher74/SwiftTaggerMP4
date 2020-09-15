@@ -6,10 +6,14 @@
  */
 
 import Foundation
+/// A metadata atom with track or disc number/total content
 class PartAndTotalMetadataAtom: Atom {
+    /// The index of the track or disc in a set
     var part: Int
+    /// The total tracks or discs in a set
     var total: Int?
     
+    /// Initialize a metadata atom with `track number/total` or `disc number/total` content by parsing from file contents
     override init(identifier: String,
                   size: Int,
                   payload: Data) throws {
@@ -24,6 +28,10 @@ class PartAndTotalMetadataAtom: Atom {
         
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
             let data = dataAtom.data
+            // Typically, trkn is stored as an array of 8 bytes, where p = the part as a 16-bit integer and t = the total as a 16-bit integer, in the following format:
+            // 0 0 p p t t 0 0
+            // Typically, disk is stored as an array of 6 bytes, in the following format:
+            // 0 0 p p t t
             if data.count >= 6 {
                 let partIn = data.startIndex + 2
                 let partOut = partIn + 2
@@ -36,7 +44,7 @@ class PartAndTotalMetadataAtom: Atom {
                 let totalRange = totalIn ..< totalOut
                 let totalData = data.subdata(in: totalRange)
                 self.total = totalData.int16BE.toInt
-                
+            // if the array is only 4 bytes, it likely only contains the part data
             } else if data.count >= 4 && data.count < 6 {
                 let partIn = data.startIndex + 2
                 let partOut = partIn + 2
@@ -57,6 +65,7 @@ class PartAndTotalMetadataAtom: Atom {
                        children: children)
     }
     
+    /// Initialize a metadata atom with disc or track `part/total` content
     init(identifier: String, part: Int, total: Int?) throws {
         self.part = part
         self.total = total
@@ -78,7 +87,8 @@ class PartAndTotalMetadataAtom: Atom {
                        children: [dataAtom])
     }
 
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for child in children {
             data.append(child.encode())

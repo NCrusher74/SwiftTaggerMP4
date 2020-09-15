@@ -8,11 +8,15 @@
 import Foundation
 
 /// A class representing a `mean` atom in an `Mp4File`'s atom structure
+///
+/// The `mean` atom is always a sub-atom of a freeform metadata atom, found in the `moov.udta.meta.ilst` sub-atoms.
 class Mean: Atom {
+
     private var version: Data
     private var flags: Data
+    /// The string content of the `mean` atom. This is pretty much always `com.apple.iTunes`
     var stringValue: String
-
+    
     /// Initialize a `mean` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -39,6 +43,8 @@ class Mean: Atom {
                        size: size,
                        payload: payload)
     }
+    
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
         data.append(self.version)

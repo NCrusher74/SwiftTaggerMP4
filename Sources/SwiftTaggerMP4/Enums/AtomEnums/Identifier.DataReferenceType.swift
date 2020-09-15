@@ -6,6 +6,7 @@
 */
 
 import Foundation
+/// Types encountered when parsing a data reference `dref` parent atom
 enum DataReferenceType: String {
     /// Data reference is a Macintosh alias. An alias contains information about the file it refers to, including its full path name.
     case alis

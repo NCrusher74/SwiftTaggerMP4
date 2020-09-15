@@ -24,6 +24,7 @@ extension Data.SubSequence {
         return string
     }
     
+    /// Extracts atoms from a parent-atom's content data and determines how it will be handled based upon its identifier
     internal mutating func extractAndParseToAtom() throws -> Atom? {
         let preliminarySize = extractAtomSize()
         guard let atomID = extractAtomID() else {

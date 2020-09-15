@@ -23,7 +23,8 @@ class Burl: Atom {
                    payload: payload)
     }
 
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         if let baseUrl = self.baseUrl {
             data.append(baseUrl.encodedUtf8)

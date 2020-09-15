@@ -9,6 +9,7 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 /// A class representing a `mdia` atom in an `Mp4File`'s atom structure
 class Mdia: Atom {
+
     /// Initialize a `mdia` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -65,13 +66,13 @@ class Mdia: Atom {
         let hdlr = try Hdlr(trackType: .text)
         let mdhd: Mdhd
         if let language = language {
-            mdhd = try Mdhd(elng: try Elng(from: language), moov: moov)
+            mdhd = try Mdhd(elng: try Elng(locale: language), moov: moov)
         } else {
             mdhd = try Mdhd(language: .und, moov: moov)
         }
         try self.init(children: [mdhd, hdlr, minf])
         if let language = language {
-            self.elng = try Elng(from: language)
+            self.elng = try Elng(locale: language)
         }
     }
     
@@ -96,7 +97,8 @@ class Mdia: Atom {
         return rearrangedAtoms
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for atom in self.sortedAtoms {
             data.append(atom.encode())
@@ -165,7 +167,7 @@ extension Mdia {
                             self.mdhd = try Mdhd(elng: new, moov: moov)
                         }
                     } catch {
-                        fatalError("Unable to initialize 'mdhd' atom for using 'elng' locale")
+                        fatalError("Unable to initialize 'mdhd' atom using 'elng' locale")
                     }
                 }
             } else {

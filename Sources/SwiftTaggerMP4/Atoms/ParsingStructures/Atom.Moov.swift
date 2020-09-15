@@ -67,7 +67,8 @@ class Moov: Atom {
         return rearrangedAtoms
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         for atom in self.sortedAtoms {
             data.append(atom.encode())
@@ -158,13 +159,13 @@ extension Moov {
                     do {
                         soundTrack.tref?.chap = try TrefSubatom(chapterTrackID: new)
                     } catch {
-                        print("WARNING: Unable to initialize soundtrack.tref.chap atom with new chapter trackID")
+                        fatalError("WARNING: Unable to initialize soundtrack.tref.chap atom with new chapter trackID")
                     }
                 } else {
                     do {
                         soundTrack.tref = try Tref(chapterTrackID: new)
                     } catch {
-                        print("WARNING: Unable to initialize soundtrack.tref atom with new chapter track ID")
+                        fatalError("WARNING: Unable to initialize soundtrack.tref atom with new chapter track ID")
                     }
                 }
             } else {

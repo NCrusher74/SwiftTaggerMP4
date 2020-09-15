@@ -9,17 +9,18 @@ import Foundation
 
 /// A class representing a `stsz` atom in an `Mp4File`'s atom structure
 ///
-/** You use sample size atoms to specify the size of each sample in the media. Sample size atoms have an atom type of 'stsz'.
- 
- The sample size atom contains the sample count and a table giving the size of each sample. This allows the media data itself to be unframed. The total number of samples in the media is always indicated in the sample count. If the default size is indicated, then no table follows.
- 
- *Note*: In chaptering terms, this describes the byte-count of the chapter title data */
+/// You use sample size atoms to specify the size of each sample in the media. Sample size atoms have an atom type of 'stsz'.
+/// The sample size atom contains the sample count and a table giving the size of each sample. This allows the media data itself to be unframed. The total number of samples in the media is always indicated in the sample count. If the default size is indicated, then no table follows.
+/// In chaptering terms, this describes the byte-count of the chapter title data. Each chapter title "sample" is the length of the chapter title string as a 16-bit integer, followed by the encoded string itself. It may optionally be followed by a 12-byte `encd` atom.
 class Stsz: Atom {
     
     private var version: Data
     private var flags: Data
+    /// The size of the samples if they are all the same. Will be 0 if they're different
     var sampleSize: Int
+    /// The number of samples described by the sample size or contained in the sampleSizeTable
     var entryCount: Int
+    /// The array of sample sizes if they are not all the same
     var sampleSizeTable: [Int]
     
     /// Initialize a `stsz` atom for parsing from the root structure
@@ -33,8 +34,8 @@ class Stsz: Atom {
         self.sampleSize = data.extractToInt(4)
         self.entryCount = data.extractToInt(4)
         
-        // if sampleSize if 0, it means the samples have different size values, and the table is used
-        // otherwise, the samples all have the same size, which is stored here
+        // If sampleSize if 0, it means the samples have different size values, and the table is used
+        // Otherwise, the samples all have the same size, which is stored here
         if sampleSize == 0 {
             var entryArray = [Int]()
             while !data.isEmpty {
@@ -88,7 +89,8 @@ class Stsz: Atom {
                        payload: payload)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)

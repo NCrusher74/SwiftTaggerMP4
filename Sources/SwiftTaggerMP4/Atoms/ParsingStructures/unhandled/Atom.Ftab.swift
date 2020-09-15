@@ -33,7 +33,8 @@ class Ftab: Atom {
                        payload: payload)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.entryCount.int16.beData)
         for entry in self.fontTable {

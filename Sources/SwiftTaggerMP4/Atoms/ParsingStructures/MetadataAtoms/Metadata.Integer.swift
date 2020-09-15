@@ -6,9 +6,12 @@
  */
 
 import Foundation
+/// A metadata atom with integer content
 class IntegerMetadataAtom: Atom {
+    /// The content of an integer metadata atom
     var intValue: Int
     
+    /// Initialize a metadata atom with integer content by parsing from file contents
     override init(identifier: String,
                   size: Int,
                   payload: Data) throws {
@@ -23,6 +26,8 @@ class IntegerMetadataAtom: Atom {
         
         if let dataAtom = children.first(where: {$0.identifier == "data"}) as? DataAtom {
             var data = dataAtom.data
+            
+            // some apps require the integer to be a specific width for particular atoms, so we will determine the width by atom identifier
             if dataAtom.dataType == .signedIntBE {
                 switch identifier {
                     case "rtng", "cpil", "pcst", "stik", "pgap", "shwm":
@@ -54,6 +59,7 @@ class IntegerMetadataAtom: Atom {
                        children: children)
     }
     
+    /// Initialize a metadata atom with integer content for building a metadata list
     init(identifier: IntegerMetadataIdentifier, intValue: Int) throws {
         self.intValue = intValue
         
@@ -68,7 +74,8 @@ class IntegerMetadataAtom: Atom {
                        size: size,
                        children: [dataAtom])
     }
-
+    
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
         for child in children {
@@ -76,7 +83,7 @@ class IntegerMetadataAtom: Atom {
         }
         return data
     }
-
+    
     var data: DataAtom {
         get {
             if let atom = self[.data] as? DataAtom {

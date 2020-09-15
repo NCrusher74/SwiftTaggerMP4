@@ -7,6 +7,7 @@
 
 import Foundation
 extension AtomIdentifier {
+    /// Parses atom from parent atom content data. If the atom's identifier is not listed here, it's handled as a `PassThrough` atom whose contents are not handled by SwiftTaggerMP4
     func parse(size: Int, payload: Data) throws -> Atom {
         switch self {
             case .chpl: return try Chpl(identifier: self.rawValue,

@@ -10,12 +10,13 @@ import SwiftLanguageAndLocaleCodes
 
 /// A class representing a `mdhd` atom in an `Mp4File`'s atom structure
 class Mdhd: Atom {
-    // contentData count should be a total of 24 bytes
     private var version: Data
     private var flags: Data
     var creationTime: Int
     var modificationTime: Int
+    /// The media timescale, i.e. the number of "ticks" per second. In practical terms, this is usually the sampling rate for the audio track, or 1000 for a text track
     var timeScale: Double
+    /// The duration of the media contained in the track
     var duration: Double
     private var languageInt16: Int16
     var quality: Int
@@ -48,17 +49,16 @@ class Mdhd: Atom {
                        payload: payload)
     }
     
+    /// Retrieves the `ICULocaleCode` from the `elng` atom (if one exists) and converts it an `ISO-639-2` code
     static func getLanguage(from elng: Elng) -> ISO6392Code {
         var languageFromElng: ISO6392Code = .und
-        let language = elng.language
+        let language = elng.language.rawValue
         let langComponents: [String] = language.components(separatedBy: "_")
         if let langString: String = langComponents.first {
             if let language6392 = ISO6392Code(iso6391Code: langString) {
                 languageFromElng = language6392
             } else if let language6392 = ISO6392Code(rawValue: langString) {
                 languageFromElng = language6392
-            } else {
-                languageFromElng = .und
             }
         }
         return languageFromElng
@@ -75,7 +75,7 @@ class Mdhd: Atom {
             // if there is, it overrides anything in the language here
             if elng != nil {
                 var languageFromElng: ISO6392Code = .und
-                if let language = elng?.language {
+                if let language = elng?.language.rawValue {
                     let langComponents: [String] = language.components(separatedBy: "_")
                     if let langString: String = langComponents.first {
                         if let language6392 = ISO6392Code(iso6391Code: langString) {
@@ -110,7 +110,7 @@ class Mdhd: Atom {
             
             // if there is, use the first language as our language here
             if elng != nil {
-                if let elngLanguage = elng?.language {
+                if let elngLanguage = elng?.language.rawValue {
                     if let isoLanguage = ISO6392Code(iso6391Code: elngLanguage) {
                         self.languageInt16 = isoLanguage.getInt16Code()
                     } else if let isoLanguage = ISO6392Code(rawValue: elngLanguage) {
@@ -125,7 +125,9 @@ class Mdhd: Atom {
         }
     }
     
-    /// Initialize a `mdhd` atom from a duration and language for use in a CHAPTER TRAK ONLY
+    /// Initialize a `mdhd` atom from a duration and language.
+    ///
+    /// **NOTE:** for use in a CHAPTER TRAK ONLY
     @available(OSX 10.12, *)
     init(language: ISO6392Code, moov: Moov) throws {
         
@@ -162,7 +164,9 @@ class Mdhd: Atom {
                        payload: payload)
     }
     
-    /// **CHAPTER TRACK ONLY** Initialize a `mdhd` atom from a duration and `elng` atom for use in a Chapter track
+    /// **CHAPTER TRACK ONLY** Initialize a `mdhd` atom from a duration and `elng` atom
+    ///
+    /// **NOTE:** for use in a CHAPTER TRAK ONLY
     @available(OSX 10.12, *)
     init(elng: Elng, moov: Moov) throws {
         let isoCode = Mdhd.getLanguage(from: elng)
@@ -201,7 +205,8 @@ class Mdhd: Atom {
                        payload: payload)
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)

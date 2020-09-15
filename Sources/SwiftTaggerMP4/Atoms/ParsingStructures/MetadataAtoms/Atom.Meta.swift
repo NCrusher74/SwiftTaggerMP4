@@ -1,9 +1,9 @@
 /*
-  Meta.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Meta.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
@@ -26,7 +26,7 @@ class Meta: Atom {
                 children.append(child)
             }
         }
-        
+        // hdlr and ilst are required subatoms
         guard children.contains(where: {$0.identifier == "hdlr"}) else {
             throw MetaAtomError.HdlrAtomNotFound
         }
@@ -48,18 +48,21 @@ class Meta: Atom {
         for child in children {
             size += child.size
         }
+
+        // hdlr and ilst are required subatoms
         guard children.contains(where: {$0.identifier == "hdlr"}) else {
             throw MetaAtomError.HdlrAtomNotFound
         }
         guard children.contains(where: {$0.identifier == "ilst"}) else {
             throw MetaAtomError.IlstAtomNotFound
         }
-
+        
         try super.init(identifier: "meta",
                        size: size,
                        children: children)
     }
     
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         var data = Data()
         data.append(self.version)
@@ -70,16 +73,7 @@ class Meta: Atom {
         }
         return data
     }
-}
 
-enum MetaAtomError: Error {
-    /// Error thrown when a required atom is missing
-    case IlstAtomNotFound
-    /// Error thrown when a required atom is missing
-    case HdlrAtomNotFound
-}
-
-extension Meta {
     var hdlr: Hdlr {
         get {
             if let atom = self[.hdlr] as? Hdlr {
@@ -105,4 +99,12 @@ extension Meta {
             self[.ilst] = newValue
         }
     }
+}
+
+
+enum MetaAtomError: Error {
+    /// Error thrown when a required atom is missing
+    case IlstAtomNotFound
+    /// Error thrown when a required atom is missing
+    case HdlrAtomNotFound
 }

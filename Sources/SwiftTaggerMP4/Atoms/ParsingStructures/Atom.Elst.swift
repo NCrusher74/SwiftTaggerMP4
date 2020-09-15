@@ -12,6 +12,7 @@ class Elst: Atom {
     
     private var version: Data
     private var flags: Data
+    /// The number of elements in the edit list table
     var entryCount: Int
     private var editListData: Data
     
@@ -28,9 +29,9 @@ class Elst: Atom {
                        payload: payload)
     }
     
-    // Track duration: A 32-bit integer that specifies the duration of this edit segment in units of the movie’s time scale. (mp4v2 uses 64 bit if version is 1)
-    // Media time: A 32-bit integer containing the starting time within the media of this edit segment (in media timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit. (mp4v2 uses 64 bit if version is 1)
-    // Media rate: A 32-bit fixed-point number that specifies the relative rate at which to play the media corresponding to this edit segment. This rate value cannot be 0 or negative. 
+    /// `Track duration`: A 32-bit integer that specifies the duration of this edit segment in units of the movie’s time scale. (mp4v2 uses 64 bit if version is 1)
+    /// `Media time`: A 32-bit integer containing the starting time within the media of this edit segment (in media timescale units). If this field is set to –1, it is an empty edit. The last edit in a track should never be an empty edit. Any difference between the movie’s duration and the track’s duration is expressed as an implicit empty edit. (mp4v2 uses 64 bit if version is 1)
+    /// `Media rate`: A 32-bit fixed-point number that specifies the relative rate at which to play the media corresponding to this edit segment. This rate value cannot be 0 or negative.
     var editListTable: [(segmentDuration: Double, mediaTime: Double, mediaRate: Double)] {
         var entryArray = [(segmentDuration: Double, mediaTime: Double, mediaRate: Double)]()
         var data = self.editListData
@@ -53,7 +54,8 @@ class Elst: Atom {
         return entryArray
     }
     
-    override var contentData: Data {
+   /// Converts the atom's contents to Data when encoding the atom to write to file.
+   override var contentData: Data {
         var data = Data()
         data.append(self.version)
         let versionInt = self.version.int8BE.toInt
@@ -73,14 +75,16 @@ class Elst: Atom {
         return data
     }
     
+    /// The duration of the media as calculated by taking the sum of the segment durations
     var duration: Double {
         var duration = Double()
         for entry in editListTable {
-            duration = duration + entry.segmentDuration
+            duration += entry.segmentDuration
         }
         return duration
     }
     
+    /// The first mediaTime entry in the edit list table, for use in establishing the first chapter start
     var firstStart: Double {
         if let firstEntry = editListTable.first {
             return firstEntry.mediaTime

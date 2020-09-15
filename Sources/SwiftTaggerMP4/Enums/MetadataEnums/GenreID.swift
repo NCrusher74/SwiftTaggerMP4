@@ -7,6 +7,9 @@
 
 import SE0270_RangeSet
 
+/// Genres list recognized by iTunes store
+/// RawValue is the genreID code
+/// predefinedGenres is the list of genres used in genr atom
 enum Genres: Int, CaseIterable {
     case unknown = 0
     case musicBlues = 2
