@@ -8,7 +8,7 @@
 import Foundation
 import SwiftConvenienceExtensions
 
-class Atom {
+public class Atom {
     /// The atom's unique four byte identifier
     var identifier: String
     /// The byte count of the whole atom, including header data

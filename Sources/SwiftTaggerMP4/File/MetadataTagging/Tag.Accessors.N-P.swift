@@ -193,10 +193,10 @@ extension Tag {
     }
 
     /// Stores the genre as a string value
-    var predefinedGenre: Genres? {
+    var predefinedGenre: Genre? {
         get {
             if let atom = metadataAtoms[StringMetadataIdentifier.predefinedGenre.rawValue] as? StringMetadataAtom {
-                return Genres(genreName: atom.stringValue)
+                return Genre(genreName: atom.stringValue)
             } else {
                 return nil
             }

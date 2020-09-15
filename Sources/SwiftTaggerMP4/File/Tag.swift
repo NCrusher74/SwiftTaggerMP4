@@ -9,13 +9,13 @@ import Foundation
 import Cocoa
 import SwiftLanguageAndLocaleCodes
 
-struct Tag {
+public struct Tag {
     public var metadataAtoms: [String: Atom]
     public var language: ICULocaleCode
     var chapterHandler: ChapterHandler
     
     @available(OSX 10.12, *)
-    init(mp4File: Mp4File) throws {
+    public init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
         let data = mp4File.data
         self.chapterHandler = try ChapterHandler(

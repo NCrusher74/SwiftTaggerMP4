@@ -10,7 +10,7 @@ import SE0270_RangeSet
 /// Genres list recognized by iTunes store
 /// RawValue is the genreID code
 /// predefinedGenres is the list of genres used in genr atom
-enum Genres: Int, CaseIterable {
+public enum Genre: Int, CaseIterable {
     case unknown = 0
     case musicBlues = 2
     case musicComedy = 3
@@ -5346,30 +5346,30 @@ enum Genres: Int, CaseIterable {
         40000000...40000181].map({ $0.lowerBound ..< $0.upperBound + 1 }))
     
     var stik: Stik? {
-        if Genres.musicSet.contains(self.rawValue) {
+        if Genre.musicSet.contains(self.rawValue) {
             return .music
-        } else if Genres.podcast.contains(self.rawValue) {
+        } else if Genre.podcast.contains(self.rawValue) {
             return .podcast
-        } else if Genres.musicVideosSet.contains(self.rawValue) {
+        } else if Genre.musicVideosSet.contains(self.rawValue) {
             return .musicVideo
-        } else if Genres.tvShow.contains(self.rawValue) {
+        } else if Genre.tvShow.contains(self.rawValue) {
             return .tvShow
-        } else if Genres.movie.contains(self.rawValue) {
+        } else if Genre.movie.contains(self.rawValue) {
             return .movie
-        } else if Genres.ringtone.contains(self.rawValue) {
+        } else if Genre.ringtone.contains(self.rawValue) {
             return .ringtone
-        } else if Genres.audiobook.contains(self.rawValue) {
+        } else if Genre.audiobook.contains(self.rawValue) {
             return .audiobook
-        } else if Genres.iTunesUSet.contains(self.rawValue) {
+        } else if Genre.iTunesUSet.contains(self.rawValue) {
             return .iTunesU
         } else {
             return nil
         }
     }
     
-    static let nameMapping: [String: Genres] = {
-        var mapping: [String: Genres] = [:]
-        for genre in Genres.allCases {
+    static let nameMapping: [String: Genre] = {
+        var mapping: [String: Genre] = [:]
+        for genre in Genre.allCases {
             let name = genre.predefinedGenres
             mapping[name] = genre
         }
@@ -5377,7 +5377,7 @@ enum Genres: Int, CaseIterable {
     }()
 
     init?(genreName: String) {
-        self = Genres.nameMapping[genreName] ?? .unknown
+        self = Genre.nameMapping[genreName] ?? .unknown
     }
 
 }

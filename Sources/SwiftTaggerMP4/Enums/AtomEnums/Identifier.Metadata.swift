@@ -9,7 +9,7 @@ import Foundation
 /// Metadata atom identifiers associated with atoms containing integer content
 ///
 /// "Integer content", for our purposes, also includes boolean values, which are stored as 1 for `true` or 0 for `false`
-enum IntegerMetadataIdentifier: String {
+public enum IntegerMetadataIdentifier: String {
     /// The iTunes-store album identifier
     case albumID = "akID"
     /// The country code of the iTunes store
@@ -62,7 +62,7 @@ enum IntegerMetadataIdentifier: String {
 /// - String arrays: Content is stored as strings with components separated by a semi-colon character
 /// - Date values: Content is stored as ISO-8601-compliant strings, if the date can be formatted as such (to ensure proper storage, dates should be formatted using ISO-8601 standards)
 /// - Web urls
-enum StringMetadataIdentifier: String, CaseIterable {
+public enum StringMetadataIdentifier: String, CaseIterable {
     /// Acknowledgments
     case acknowledgment = "\u{00A9}cak"
     /// Album Title

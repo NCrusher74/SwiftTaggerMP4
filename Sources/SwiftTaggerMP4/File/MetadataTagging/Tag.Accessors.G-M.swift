@@ -259,10 +259,10 @@ extension Tag {
     }
     
     /// Records the genre as a numeric code
-    var genreID: Genres? {
+    var genreID: Genre? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.genreID.rawValue] as? IntegerMetadataAtom {
-                return Genres(rawValue: atom.intValue)
+                return Genre(rawValue: atom.intValue)
             } else {
                 return nil
             }

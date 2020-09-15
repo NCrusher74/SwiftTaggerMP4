@@ -7,7 +7,7 @@
 
 import Foundation
 /// A list of internation ratings as recognized by the iTunes store. These may be optionally appended with a string containing notes about the rating.
-enum ContentRating: String {
+public enum ContentRating: String {
     case none = ""
     /// United States - MPAA Movie rating: Not Rated
     case us_Movie_NR = "mpaa|NR|000|"
