@@ -10,7 +10,7 @@ import Foundation
 
 /// Media kind used by iTunes
 public enum Stik: Int, CaseIterable {
-    init?(stringValue: String) {
+    public init?(stringValue: String) {
         self = Stik.stringMapping[stringValue] ?? .undefined
     }
 
@@ -36,7 +36,7 @@ public enum Stik: Int, CaseIterable {
     case iTunesU = 23
     case undefined = 255
     
-    var stringValue: String {
+    public var stringValue: String {
         switch self {
             case .movieOld: return "Movie (Old)"
             case .music: return "Music"

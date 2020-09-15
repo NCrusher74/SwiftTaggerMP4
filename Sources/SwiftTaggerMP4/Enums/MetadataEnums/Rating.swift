@@ -14,7 +14,7 @@ public enum Rating: Int, CaseIterable {
     case clean = 2
     case explicit = 4
 
-    var stringValue: String {
+    public var stringValue: String {
         switch self {
             case .none: return "None"
             case .explicit: return "Explicit"
@@ -31,7 +31,7 @@ public enum Rating: Int, CaseIterable {
         return mapping
     }()
     
-    init?(stringValue: String) {
+    public init?(stringValue: String) {
         self = Rating.stringMapping[stringValue] ?? .none
     }
 }

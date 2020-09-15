@@ -51,7 +51,7 @@ extension Tag {
         }
     }
     
-    var compilation: Bool? {
+    public var compilation: Bool? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.compilation.rawValue] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -104,7 +104,7 @@ extension Tag {
         }
     }
     
-    var composerID: Int? {
+    public var composerID: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.composerID.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -192,7 +192,7 @@ extension Tag {
         }
     }
     
-    var conductorID: Int? {
+    public var conductorID: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.conductorID.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue

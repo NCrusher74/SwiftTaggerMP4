@@ -142,7 +142,7 @@ extension Tag {
         }
     }
     
-    var tvEpisodeNumber: Int? {
+    public var tvEpisodeNumber: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.tvEpisodeNumber.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -208,7 +208,7 @@ extension Tag {
         }
     }
     
-    var tvSeason: Int? {
+    public var tvSeason: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.tvSeason.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -362,7 +362,7 @@ extension Tag {
         }
     }
     
-    var year: Int? {
+    public var year: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.year.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue

@@ -272,7 +272,7 @@ extension Tag {
         }
     }
 
-    var albumID: Int? {
+    public var albumID: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.albumID.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -294,7 +294,7 @@ extension Tag {
         }
     }
     
-    var artistID: Int? {
+    public var artistID: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.artistID.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -316,7 +316,7 @@ extension Tag {
         }
     }
 
-    var appleStoreCountryID: Int? {
+    public var appleStoreCountryID: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.appleStoreCountryID.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -338,7 +338,7 @@ extension Tag {
         }
     }
 
-    var bpm: Int? {
+    public var bpm: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.bpm.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue

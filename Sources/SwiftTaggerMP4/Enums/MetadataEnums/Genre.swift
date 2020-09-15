@@ -2651,7 +2651,7 @@ public enum Genre: Int, CaseIterable {
     case audiobooksErotica = 50000092
     case audiobooksLightNovels = 50000093
     
-    var predefinedGenres: String {
+    public var predefinedGenres: String {
         switch self {
             case .musicBlues : return "Music|Blues"
             case .musicComedy : return "Music|Comedy"
@@ -5345,7 +5345,7 @@ public enum Genre: Int, CaseIterable {
     static let iTunesUSet = RangeSet([
         40000000...40000181].map({ $0.lowerBound ..< $0.upperBound + 1 }))
     
-    var stik: Stik? {
+    public var stik: Stik? {
         if Genre.musicSet.contains(self.rawValue) {
             return .music
         } else if Genre.podcast.contains(self.rawValue) {
@@ -5376,7 +5376,7 @@ public enum Genre: Int, CaseIterable {
         return mapping
     }()
 
-    init?(genreName: String) {
+    public init?(genreName: String) {
         self = Genre.nameMapping[genreName] ?? .unknown
     }
 

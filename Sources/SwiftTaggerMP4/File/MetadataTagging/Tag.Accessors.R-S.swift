@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var rating: Rating? {
+    public var rating: Rating? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.rating.rawValue] as? IntegerMetadataAtom {
                 return Rating(rawValue: atom.intValue)
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var showWorkAndMovement: Bool? {
+    public var showWorkAndMovement: Bool? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.showWorkAndMovement.rawValue] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {

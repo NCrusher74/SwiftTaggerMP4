@@ -95,7 +95,7 @@ extension Tag {
         }
     }
     
-    var playlistID: Int? {
+    public var playlistID: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.playlistID.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -117,7 +117,7 @@ extension Tag {
         }
     }
     
-    var podcast: Bool? {
+    public var podcast: Bool? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.podcast.rawValue] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -193,7 +193,7 @@ extension Tag {
     }
 
     /// Stores the genre as a string value
-    var predefinedGenre: Genre? {
+    public var predefinedGenre: Genre? {
         get {
             if let atom = metadataAtoms[StringMetadataIdentifier.predefinedGenre.rawValue] as? StringMetadataAtom {
                 return Genre(genreName: atom.stringValue)

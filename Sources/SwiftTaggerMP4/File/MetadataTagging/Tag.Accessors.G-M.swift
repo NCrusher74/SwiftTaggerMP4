@@ -227,7 +227,7 @@ extension Tag {
         }
     }
     
-    var gaplessPlayback: Bool? {
+    public var gaplessPlayback: Bool? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.gaplessPlayback.rawValue] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -259,7 +259,7 @@ extension Tag {
     }
     
     /// Records the genre as a numeric code
-    var genreID: Genre? {
+    public var genreID: Genre? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.genreID.rawValue] as? IntegerMetadataAtom {
                 return Genre(rawValue: atom.intValue)
@@ -281,7 +281,7 @@ extension Tag {
         }
     }
     
-    var movementNumber: Int? {
+    public var movementNumber: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.movementNumber.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -303,7 +303,7 @@ extension Tag {
         }
     }
     
-    var movementCount: Int? {
+    public var movementCount: Int? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.movementCount.rawValue] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -326,7 +326,7 @@ extension Tag {
     }
     
     /// Records the mediaKind aka stik as a numeric code
-    var mediaKind: Stik? {
+    public var mediaKind: Stik? {
         get {
             if let atom = metadataAtoms[IntegerMetadataIdentifier.mediaKind.rawValue] as? IntegerMetadataAtom {
                 return Stik(rawValue: atom.intValue)
