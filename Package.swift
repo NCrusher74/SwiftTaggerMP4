@@ -12,19 +12,23 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            name: "SwiftMp4MetadataParser",
-            url: "https://github.com/NCrusher74/SwiftMp4MetadataParser",
-            from: "0.1.0"),
-        .package(
             url: "https://github.com/apple/swift-se0270-range-set",
             from: "1.0.0"),
+        .package(
+            url: "https://github.com/NCrusher74/SwiftLanguageAndLocaleCodes",
+            from: "0.1.0"),
+        .package(
+            url: "https://github.com/NCrusher74/SwiftConvenienceExtensions",
+            from: "0.1.0"),
     ],
     targets: [
         .target(
             name: "SwiftTaggerMP4",
             dependencies: [
                 .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set"),
-                .product(name: "SwiftMp4MetadataParser", package: "SwiftMp4MetadataParser")],
+                .product(name: "SwiftLanguageAndLocaleCodes", package: "SwiftLanguageAndLocaleCodes"),
+                .product(name: "SwiftConvenienceExtensions", package: "SwiftConvenienceExtensions"),
+            ],
             path: "Sources"),
         .testTarget(
             name: "SwiftTaggerMP4Tests",

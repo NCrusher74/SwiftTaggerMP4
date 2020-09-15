@@ -8,7 +8,7 @@ SwiftTaggerMp4 is a Swift library for reading and writing metadata and chapter t
 ```swift
 let mp4Url = URL(fileURLWithPath: "/path/to/file.m4a")
 let mp4File = try Mp4File(location: mp4Url)
-var tag = try mp4File.read()
+var tag = try Tag(readFrom: mp4File)
 
 print(tag.album)
 print(tag.artist)
@@ -238,23 +238,23 @@ To facilitate compatibility with `ID3` metadata, some freeform tags have been pr
 
 These tags are:
 
-* `audioFileWebpage // custom name "WOAF"`
-* `audioSourceWebpage // custom name "WOAS"`
-* `copyrightWebpage// custom name "WCOP"`
-* `encodingSettings // custom name "TSSE"`
-* `encodingTime // custom name "TDEN"`
-* `initialKey // custom name "TKEY"`
-* `mood // custom name "TMOO"`
-* `originalAlbum // custom name "TOAL"`
-* `originalFilename // custom name "TOFN"`
-* `originalLyricist // custom name "TOLY"`
-* `originalReleaseTIME // custom name "TDOR"`
-* `paymentWebpage // custom name "WPAY"`
-* `producedNotice // custom name "TPRO"`
-* `radioStation // custom name "TRSN"`
-* `radioStationOwner // custom name "TRSO"`
-* `radioStationWebpage // custom name "WORS"`
-* `taggingTime // custom name "TDTG"`
+* `audioFileWebpage // custom name ""`
+* `audioSourceWebpage // custom name ""`
+* `copyrightWebpage// custom name ""`
+* `encodingSettings // custom name ""`
+* `encodingTime // custom name ""`
+* `initialKey // custom name ""`
+* `mood // custom name ""`
+* `originalAlbum // custom name ""`
+* `originalFilename // custom name ""`
+* `originalLyricist // custom name ""`
+* `originalReleaseTIME // custom name ""`
+* `paymentWebpage // custom name ""`
+* `producedNotice // custom name ""`
+* `radioStation // custom name ""`
+* `radioStationOwner // custom name ""`
+* `radioStationWebpage // custom name "`
+* `taggingTime // custom name ""`
 
 
 If you wish to make these accessors compatible with a particular app, change the `name` parameter of the subscript accessor. 
@@ -262,7 +262,7 @@ If you wish to make these accessors compatible with a particular app, change the
 For example, to make `mood` compatible with `Yate`, you would change "TMOO" to "MOOD"
 
 ```swift
-public var mood: String? {
+var mood: String? {
     get {
         if let string = self["TMOO"] { 
             return string
