@@ -7,11 +7,14 @@
 
 import Foundation
 import Cocoa
+import SwiftLanguageAndLocaleCodes
 
 struct Tag {
     public var metadataAtoms: [String: Atom]
+    public var language: ICULocaleCode
     var chapterHandler: ChapterHandler
-
+    
+    @available(OSX 10.12, *)
     init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
         let data = mp4File.data
@@ -31,19 +34,28 @@ struct Tag {
             }
         }
         self.metadataAtoms = metadata
+        if let language = mp4File.language {
+            self.language = language
+        } else {
+            self.language = .unspecified
+        }
     }
 }
 
 extension Tag {
-    public func getCoverArt() -> NSImage? {
-        if let atom = metadataAtoms["cover"] as? ImageMetadataAtom {
+    public mutating func removeAllMetadata() {
+        self.metadataAtoms = [:]
+    }
+    
+    public var coverArt: NSImage? {
+        if let atom = metadataAtoms["covr"] as? ImageMetadataAtom {
             return atom.image
         } else {
             return nil
         }
     }
     
-    public mutating func setCoverArt(imageLocation: URL) throws {
+    public mutating func setCoverArt(location imageLocation: URL) throws {
         let atom = try ImageMetadataAtom(imageLocation: imageLocation)
         metadataAtoms["covr"] = atom
     }
@@ -55,7 +67,7 @@ extension Tag {
     public subscript(_ description: String?) -> String? {
         get {
             if let atom = self.metadataAtoms[description ?? ""] as? UnknownMetadataAtom {
-                return atom.name
+                return atom.stringValue
             } else {
                 return nil
             }

@@ -133,7 +133,7 @@ extension Moov {
         }
     }
  
-    private var tracks: [Trak] {
+    var tracks: [Trak] {
         get {
             return children.filter({$0.identifier == "trak"}) as? [Trak] ?? []
         }
@@ -177,7 +177,6 @@ extension Moov {
             }
         }
     }
-    
     
     var chapterTrack: Trak? {
         get {

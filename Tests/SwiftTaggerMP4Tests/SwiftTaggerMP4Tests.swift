@@ -1,20 +1,21 @@
 import XCTest
 import Cocoa
+import SwiftLanguageAndLocaleCodes
 @testable import SwiftTaggerMP4
 
 final class SwiftTaggerMP4Tests: XCTestCase {
 
-    func testPrint() throws {
-//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
-//        let url = URL(fileURLWithPath: path)
-//        let data = try Data(contentsOf: url)
-        let data = try Data(contentsOf: sampleBookCVUrl)
-        let range = 000000187388 ..< 000000187452
-        let subdata = data.subdata(in: range)
-        print(subdata.hexadecimal())
-    }
-    /*
-     */
+//    func testPrint() throws {
+////        let path = "/Users/nolainecrusher/Desktop/TestOutput/test-output.m4b"
+////        let url = URL(fileURLWithPath: path)
+////        let data = try Data(contentsOf: url)
+//        let data = try Data(contentsOf: sampleBookCVUrl)
+//        let range = 000000187388 ..< 000000187452
+//        let subdata = data.subdata(in: range)
+//        print(subdata.hexadecimal())
+//    }
+//    /*
+//     */
     
     @available(OSX 10.13, *)
     func testAddChapter() throws {
@@ -25,8 +26,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 1950, title: "Chapter 03")
         tag.addChapter(startTime: 3800, title: "Chapter 04")
 
-
-        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4a")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
         try mp4.write(tag: tag, to: outputUrl)
         
         let knownTitles = ["Chapter 01",
@@ -57,7 +57,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.removeChapter(startTime: 192013)
         tag.removeChapter(startTime: 624020)
 
-        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4b")
         try mp4.write(tag: tag, to: outputUrl)
         
         let knownTitles = ["01 - \'\'Frost To-Night\'\' - Read by BK",
@@ -93,7 +93,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         var tag = try Tag(mp4File: mp4)
         tag.removeAllChapters()
         
-        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4b")
         try mp4.write(tag: tag, to: outputUrl)
         let outputMp4 = try Mp4File(location: outputUrl)
         let outputTag = try Tag(mp4File: outputMp4)
@@ -108,7 +108,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     @available(OSX 10.13, *)
     func testChapterOutput() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
-        let outputUrl = try localDirectory(fileName: "test-output", fileExtension: "m4b")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4b")
         let sourceTag = try Tag(mp4File: mp4)
         try mp4.write(tag: sourceTag, to: outputUrl)
 
@@ -184,242 +184,417 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 46541824.0)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.13, *)
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
-        var source = try Tag(mp4File: mp4)
-        XCTAssertEqual(source.album, "''Frost To-Night''")
-        XCTAssertEqual(source.title, "FrostTonight_librivox")
-        XCTAssertEqual(source.artist, "Edith M. Thomas")
-        XCTAssertEqual(source.customGenre, "Audiobook")
-        XCTAssertEqual(source.trackNumber.track, 1)
-        XCTAssertEqual(source.encodingTool, "Chapter and Verse V 1.5")
-        XCTAssertEqual(source.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
-        source.metadataAtoms = [:]
-        XCTAssertTrue(source.metadataAtoms.isEmpty)
+        var tag = try Tag(mp4File: mp4)
+        XCTAssertEqual(tag.album, "''Frost To-Night''")
+        XCTAssertEqual(tag.title, "FrostTonight_librivox")
+        XCTAssertEqual(tag.artist, "Edith M. Thomas")
+        XCTAssertEqual(tag.customGenre, "Audiobook")
+        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.encodingTool, "Chapter and Verse V 1.5")
+        XCTAssertEqual(tag.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
+        tag.removeAllMetadata()
+        XCTAssertTrue(tag.metadataAtoms.isEmpty)
         
         let calendar = Calendar(identifier: .iso8601)
         let dateComponents = DateComponents(calendar: calendar, timeZone: TimeZone(secondsFromGMT: 0) ?? .current, year: 2020, month: 09, day: 01)
         let date = calendar.date(from: dateComponents)
         
-        source.acknowledgment = "Acknowledgment"
-        source.album = "Album"
-        source.albumID = 12345
-        source.albumArtist = "Album Artist"
-        source.albumArtistSort = "Album Artist Sort"
-        source.albumSort = "Album Sort"
-        source.appleStoreCountryID = 23456
-        source.arranger = "Arranger"
-        source.arrangerKeywords = ["Arranger", "Keywords"]
-        source.artDirector = "Art Director"
-        source.artist = "Artist"
-        source.artistID = 34567
-        source.artistKeywords = ["Artist", "Keywords"]
-        source.artistSort = "Artist Sort"
-        source.artistUrl = "www.artist.url"
-        source.bpm = 99
-        source.category = "Category"
-        source.comment = "Comment"
-        source.compilation = true
-        source.composer = "Composer"
-        source.composerKeywords = ["Composer", "Keywords"]
-        source.composerSort = "Composer Sort"
-        source.conductor = "Conductor"
-        source.conductorID = 45678
-        source.copyright = "2020 Copyright"
-        source.copyrightStatement = "Copyright Statement"
-        source.customGenre = "Genre"
-        source.description = "Description"
-        source.director = "Director"
-        source.discNumber.disc = 1
-        source.discNumber.totalDiscs = 2
-        source.editDateAndDescription1 = "Edit Date and Description 1"
-        source.editDateAndDescription2 = "Edit Date and Description 2"
-        source.editDateAndDescription3 = "Edit Date and Description 3"
-        source.editDateAndDescription4 = "Edit Date and Description 4"
-        source.editDateAndDescription5 = "Edit Date and Description 5"
-        source.editDateAndDescription6 = "Edit Date and Description 6"
-        source.editDateAndDescription7 = "Edit Date and Description 7"
-        source.editDateAndDescription8 = "Edit Date and Description 8"
-        source.editDateAndDescription9 = "Edit Date and Description 9"
-        source.encodedBy = "Encoded By"
-        source.encodingTool = "Encoding Tool"
-        source.executiveProducer = "Executive Producer"
-        source.filmMakerUrl = "www.filmmaker.url"
-        source.format = "Format"
-        source.gaplessPlayback = true
-        source.genreID = .audiobooks
-        source.grouping = "Grouping"
-        source.information = "Information"
-        source.isrc = "123456789012"
-        source.keywords = ["Key", "Words"]
-        source.label = "Label"
-        source.linerNotes = "Liner Notes"
-        source.longDescription = "Long Description"
-        source.lyricist = "Lyricist"
-        source.lyrics = "Lyrics"
-        source.mediaKind = .audiobook
-        source.movementCount = 4
-        source.movementNumber = 3
-        source.movementName = "Movement Name"
-        source.narrator = "Narrator"
-        source.originalArtist = "Original Artist"
-        source.owner = "Owner"
-        source.performers = ["Performer"]
-        source.playlistID = 56789
-        source.podcast = true
-        source.podcastID = "Podcast ID"
-        source.podcastUrl = "www.podcast.url"
-        source.predefinedGenre = .audiobooks
-        source.producer = "Producer"
-        source.producerKeywords = ["Producer", "Keywords"]
-        source.publisher = "Publisher"
-        source.publisherUrl = "www.publisher.url"
-        source.purchaseDate = date
-        source.rating = .clean
-        source.recordCompany = "Record Company"
-        source.recordingCopyright = "Recording Copyright"
-        source.recordingDate = date
-        source.releaseDate = date
-        source.requirements = "Requirements"
-        source.sellerID = "Seller ID"
-        source.showWorkAndMovement = true
-        source.softwareVersion = "Software Version"
-        source.soloist = "Soloist"
-        source.songDescription = "Song Description"
-        source.songwriterKeywords = ["Songwriter", "Keywords"]
-        source.songwriter = "Songwriter"
-        source.soundEngineer = "Song Engineer"
-        source.sourceCredit = "Source Credit"
-        source.subtitle = "Subtitle"
-        source.subtitleKeywords = ["Subtitle", "Keywords"]
-        source.thanks = "Thanks"
-        source.title = "Title"
-        source.titleKeywords = ["Title", "Keywords"]
-        source.titleSort = "Title Sort"
-        source.trackNumber.track = 5
-        source.trackNumber.totalTracks = 6
-        source.trackSubtitle = "Track Subtitle"
-        source.tvEpisodeNumber = 7
-        source.tvSeason = 8
-        source.tvShow = "TV Show"
-        source.tvNetwork = "TV Network"
-        source.tvShowSort = "TV Show Sort"
-        source.tvEpisodeTitle = "TV Episode Title"
-        source.tvShowDescription = "TV Show Description"
-        source.website = "www.website.url"
-        source.workName = "Work Name"
-        source.writer = "Writer"
-        source.year = 2020
+        tag.removeAllChapters()
+        XCTAssertTrue(tag.listChapters().isEmpty)
+
+        tag.acknowledgment = "Acknowledgment"
+        tag.album = "Album"
+        tag.albumID = 12345
+        tag.albumArtist = "Album Artist"
+        tag.albumArtistSort = "Album Artist Sort"
+        tag.albumSort = "Album Sort"
+        tag.appleStoreCountryID = 23456
+        tag.arranger = "Arranger"
+        tag.arrangerKeywords = ["Arranger", "Keywords"]
+        tag.artDirector = "Art Director"
+        tag.artist = "Artist"
+        tag.artistID = 34567
+        tag.artistKeywords = ["Artist", "Keywords"]
+        tag.artistSort = "Artist Sort"
+        tag.artistUrl = "www.artist.url"
+        tag.bpm = 99
+        tag.category = "Category"
+        tag.comment = "Comment"
+        tag.compilation = true
+        tag.composer = "Composer"
+        tag.composerKeywords = ["Composer", "Keywords"]
+        tag.composerSort = "Composer Sort"
+        tag.conductor = "Conductor"
+        tag.conductorID = 45678
+        tag.copyright = "2020 Copyright"
+        tag.copyrightStatement = "Copyright Statement"
+        tag.customGenre = "Genre"
+        tag.description = "Description"
+        tag.director = "Director"
+        tag.discNumber.disc = 1
+        tag.discNumber.totalDiscs = 2
+        tag.editDateAndDescription1 = "Edit Date and Description 1"
+        tag.editDateAndDescription2 = "Edit Date and Description 2"
+        tag.editDateAndDescription3 = "Edit Date and Description 3"
+        tag.editDateAndDescription4 = "Edit Date and Description 4"
+        tag.editDateAndDescription5 = "Edit Date and Description 5"
+        tag.editDateAndDescription6 = "Edit Date and Description 6"
+        tag.editDateAndDescription7 = "Edit Date and Description 7"
+        tag.editDateAndDescription8 = "Edit Date and Description 8"
+        tag.editDateAndDescription9 = "Edit Date and Description 9"
+        tag.encodedBy = "Encoded By"
+        tag.encodingTool = "Encoding Tool"
+        tag.executiveProducer = "Executive Producer"
+        tag.filmMakerUrl = "www.filmmaker.url"
+        tag.format = "Format"
+        tag.gaplessPlayback = true
+        tag.genreID = .audiobooks
+        tag.grouping = "Grouping"
+        tag.information = "Information"
+        tag.isrc = "123456789012"
+        tag.keywords = ["Key", "Words"]
+        tag.label = "Label"
+        tag.linerNotes = "Liner Notes"
+        tag.longDescription = "Long Description"
+        tag.lyricist = "Lyricist"
+        tag.lyrics = "Lyrics"
+        tag.mediaKind = .audiobook
+        tag.movementCount = 4
+        tag.movementNumber = 3
+        tag.movementName = "Movement Name"
+        tag.narrator = "Narrator"
+        tag.originalArtist = "Original Artist"
+        tag.owner = "Owner"
+        tag.performers = ["Performer"]
+        tag.playlistID = 56789
+        tag.podcast = true
+        tag.podcastID = "Podcast ID"
+        tag.podcastUrl = "www.podcast.url"
+        tag.predefinedGenre = .audiobooks
+        tag.producer = "Producer"
+        tag.producerKeywords = ["Producer", "Keywords"]
+        tag.publisher = "Publisher"
+        tag.publisherUrl = "www.publisher.url"
+        tag.purchaseDate = date
+        tag.rating = .clean
+        tag.recordCompany = "Record Company"
+        tag.recordingCopyright = "Recording Copyright"
+        tag.recordingDate = date
+        tag.releaseDate = date
+        tag.requirements = "Requirements"
+        tag.sellerID = "Seller ID"
+        tag.showWorkAndMovement = true
+        tag.softwareVersion = "Software Version"
+        tag.soloist = "Soloist"
+        tag.songDescription = "Song Description"
+        tag.songwriterKeywords = ["Songwriter", "Keywords"]
+        tag.songwriter = "Songwriter"
+        tag.soundEngineer = "Song Engineer"
+        tag.sourceCredit = "Source Credit"
+        tag.subtitle = "Subtitle"
+        tag.subtitleKeywords = ["Subtitle", "Keywords"]
+        tag.thanks = "Thanks"
+        tag.title = "Title"
+        tag.titleKeywords = ["Title", "Keywords"]
+        tag.titleSort = "Title Sort"
+        tag.trackNumber.track = 5
+        tag.trackNumber.totalTracks = 6
+        tag.trackSubtitle = "Track Subtitle"
+        tag.tvEpisodeNumber = 7
+        tag.tvSeason = 8
+        tag.tvShow = "TV Show"
+        tag.tvNetwork = "TV Network"
+        tag.tvShowSort = "TV Show Sort"
+        tag.tvEpisodeTitle = "TV Episode Title"
+        tag.tvShowDescription = "TV Show Description"
+        tag.website = "www.website.url"
+        tag.workName = "Work Name"
+        tag.writer = "Writer"
+        tag.year = 2020
+        tag["Unknown"] = "unknown"
+        try tag.setCoverArt(location: sampleCover)
         
-        XCTAssertEqual(source.acknowledgment,"Acknowledgment")
-        XCTAssertEqual(source.album,"Album")
-        XCTAssertEqual(source.albumID,12345)
-        XCTAssertEqual(source.albumArtist,"Album Artist")
-        XCTAssertEqual(source.albumArtistSort,"Album Artist Sort")
-        XCTAssertEqual(source.albumSort,"Album Sort")
-        XCTAssertEqual(source.appleStoreCountryID,23456)
-        XCTAssertEqual(source.arranger,"Arranger")
-        XCTAssertEqual(source.arrangerKeywords,["Arranger", "Keywords"])
-        XCTAssertEqual(source.artDirector,"Art Director")
-        XCTAssertEqual(source.artist,"Artist")
-        XCTAssertEqual(source.artistID,34567)
-        XCTAssertEqual(source.artistKeywords,["Artist", "Keywords"])
-        XCTAssertEqual(source.artistSort,"Artist Sort")
-        XCTAssertEqual(source.artistUrl,"www.artist.url")
-        XCTAssertEqual(source.bpm,99)
-        XCTAssertEqual(source.category,"Category")
-        XCTAssertEqual(source.comment,"Comment")
-        XCTAssertEqual(source.compilation,true)
-        XCTAssertEqual(source.composer,"Composer")
-        XCTAssertEqual(source.composerKeywords,["Composer", "Keywords"])
-        XCTAssertEqual(source.composerSort,"Composer Sort")
-        XCTAssertEqual(source.conductor,"Conductor")
-        XCTAssertEqual(source.conductorID,45678)
-        XCTAssertEqual(source.copyright,"2020 Copyright")
-        XCTAssertEqual(source.copyrightStatement,"Copyright Statement")
-        XCTAssertEqual(source.customGenre,"Genre")
-        XCTAssertEqual(source.description,"Description")
-        XCTAssertEqual(source.director,"Director")
-        XCTAssertEqual(source.discNumber.disc,1)
-        XCTAssertEqual(source.discNumber.totalDiscs,2)
-        XCTAssertEqual(source.editDateAndDescription1,"Edit Date and Description 1")
-        XCTAssertEqual(source.editDateAndDescription2,"Edit Date and Description 2")
-        XCTAssertEqual(source.editDateAndDescription3,"Edit Date and Description 3")
-        XCTAssertEqual(source.editDateAndDescription4,"Edit Date and Description 4")
-        XCTAssertEqual(source.editDateAndDescription5,"Edit Date and Description 5")
-        XCTAssertEqual(source.editDateAndDescription6,"Edit Date and Description 6")
-        XCTAssertEqual(source.editDateAndDescription7,"Edit Date and Description 7")
-        XCTAssertEqual(source.editDateAndDescription8,"Edit Date and Description 8")
-        XCTAssertEqual(source.editDateAndDescription9,"Edit Date and Description 9")
-        XCTAssertEqual(source.encodedBy,"Encoded By")
-        XCTAssertEqual(source.encodingTool,"Encoding Tool")
-        XCTAssertEqual(source.executiveProducer,"Executive Producer")
-        XCTAssertEqual(source.filmMakerUrl,"www.filmmaker.url")
-        XCTAssertEqual(source.format,"Format")
-        XCTAssertEqual(source.gaplessPlayback,true)
-        XCTAssertEqual(source.genreID,.audiobooks)
-        XCTAssertEqual(source.grouping,"Grouping")
-        XCTAssertEqual(source.information,"Information")
-        XCTAssertEqual(source.isrc,"123456789012")
-        XCTAssertEqual(source.keywords,["Key", "Words"])
-        XCTAssertEqual(source.label,"Label")
-        XCTAssertEqual(source.linerNotes,"Liner Notes")
-        XCTAssertEqual(source.longDescription,"Long Description")
-        XCTAssertEqual(source.lyricist,"Lyricist")
-        XCTAssertEqual(source.lyrics,"Lyrics")
-        XCTAssertEqual(source.mediaKind,.audiobook)
-        XCTAssertEqual(source.movementCount,4)
-        XCTAssertEqual(source.movementNumber,3)
-        XCTAssertEqual(source.movementName,"Movement Name")
-        XCTAssertEqual(source.narrator,"Narrator")
-        XCTAssertEqual(source.originalArtist,"Original Artist")
-        XCTAssertEqual(source.owner,"Owner")
-        XCTAssertEqual(source.performers,["Performer"])
-        XCTAssertEqual(source.playlistID,56789)
-        XCTAssertEqual(source.podcast,true)
-        XCTAssertEqual(source.podcastID,"Podcast ID")
-        XCTAssertEqual(source.podcastUrl,"www.podcast.url")
-        XCTAssertEqual(source.predefinedGenre,.audiobooks)
-        XCTAssertEqual(source.producer,"Producer")
-        XCTAssertEqual(source.producerKeywords,["Producer", "Keywords"])
-        XCTAssertEqual(source.publisher,"Publisher")
-        XCTAssertEqual(source.publisherUrl,"www.publisher.url")
-        XCTAssertEqual(source.purchaseDate, date)
-        XCTAssertEqual(source.rating,.clean)
-        XCTAssertEqual(source.recordCompany,"Record Company")
-        XCTAssertEqual(source.recordingCopyright,"Recording Copyright")
-        XCTAssertEqual(source.recordingDate, date)
-        XCTAssertEqual(source.releaseDate, date)
-        XCTAssertEqual(source.requirements,"Requirements")
-        XCTAssertEqual(source.sellerID,"Seller ID")
-        XCTAssertEqual(source.showWorkAndMovement,true)
-        XCTAssertEqual(source.softwareVersion,"Software Version")
-        XCTAssertEqual(source.soloist,"Soloist")
-        XCTAssertEqual(source.songDescription,"Song Description")
-        XCTAssertEqual(source.songwriterKeywords,["Songwriter", "Keywords"])
-        XCTAssertEqual(source.songwriter,"Songwriter")
-        XCTAssertEqual(source.soundEngineer,"Song Engineer")
-        XCTAssertEqual(source.sourceCredit,"Source Credit")
-        XCTAssertEqual(source.subtitle,"Subtitle")
-        XCTAssertEqual(source.subtitleKeywords,["Subtitle", "Keywords"])
-        XCTAssertEqual(source.thanks,"Thanks")
-        XCTAssertEqual(source.title,"Title")
-        XCTAssertEqual(source.titleKeywords,["Title", "Keywords"])
-        XCTAssertEqual(source.titleSort,"Title Sort")
-        XCTAssertEqual(source.trackNumber.track,5)
-        XCTAssertEqual(source.trackNumber.totalTracks,6)
-        XCTAssertEqual(source.trackSubtitle,"Track Subtitle")
-        XCTAssertEqual(source.tvEpisodeNumber,7)
-        XCTAssertEqual(source.tvSeason,8)
-        XCTAssertEqual(source.tvShow,"TV Show")
-        XCTAssertEqual(source.tvNetwork,"TV Network")
-        XCTAssertEqual(source.tvShowSort,"TV Show Sort")
-        XCTAssertEqual(source.tvEpisodeTitle,"TV Episode Title")
-        XCTAssertEqual(source.tvShowDescription,"TV Show Description")
-        XCTAssertEqual(source.website,"www.website.url")
-        XCTAssertEqual(source.workName,"Work Name")
-        XCTAssertEqual(source.writer,"Writer")
-        XCTAssertEqual(source.year,2020)
+        tag.addChapter(startTime: 0, title: "01 - Read by BK")
+        tag.addChapter(startTime: 100003, title: "02 - Read by CS")
+        tag.addChapter(startTime: 192013, title: "03 - Read by EL-ALP")
+        tag.addChapter(startTime: 292014, title: "04 - Read by GB")
+        tag.addChapter(startTime: 392005, title: "05 - Read by KARA")
+        tag.addChapter(startTime: 459021, title: "06 - Read by LAH")
+        tag.addChapter(startTime: 546001, title: "07 - Read by LCW")
+        tag.addChapter(startTime: 624020, title: "08 - Read by MAS")
+        tag.addChapter(startTime: 714016, title: "09 - Read by PS")
+        tag.addChapter(startTime: 791013, title: "10 - Read by SPC")
+        tag.addChapter(startTime: 869018, title: "11 - Read by TP")
+        tag.addChapter(startTime: 963007, title: "12 - Read by VB")
+
+        XCTAssertNotNil(tag.coverArt)
+        XCTAssertEqual(tag.acknowledgment,"Acknowledgment")
+        XCTAssertEqual(tag.album,"Album")
+        XCTAssertEqual(tag.albumID,12345)
+        XCTAssertEqual(tag.albumArtist,"Album Artist")
+        XCTAssertEqual(tag.albumArtistSort,"Album Artist Sort")
+        XCTAssertEqual(tag.albumSort,"Album Sort")
+        XCTAssertEqual(tag.appleStoreCountryID,23456)
+        XCTAssertEqual(tag.arranger,"Arranger")
+        XCTAssertEqual(tag.arrangerKeywords,["Arranger", "Keywords"])
+        XCTAssertEqual(tag.artDirector,"Art Director")
+        XCTAssertEqual(tag.artist,"Artist")
+        XCTAssertEqual(tag.artistID,34567)
+        XCTAssertEqual(tag.artistKeywords,["Artist", "Keywords"])
+        XCTAssertEqual(tag.artistSort,"Artist Sort")
+        XCTAssertEqual(tag.artistUrl,"www.artist.url")
+        XCTAssertEqual(tag.bpm,99)
+        XCTAssertEqual(tag.category,"Category")
+        XCTAssertEqual(tag.comment,"Comment")
+        XCTAssertEqual(tag.compilation,true)
+        XCTAssertEqual(tag.composer,"Composer")
+        XCTAssertEqual(tag.composerKeywords,["Composer", "Keywords"])
+        XCTAssertEqual(tag.composerSort,"Composer Sort")
+        XCTAssertEqual(tag.conductor,"Conductor")
+        XCTAssertEqual(tag.conductorID,45678)
+        XCTAssertEqual(tag.copyright,"2020 Copyright")
+        XCTAssertEqual(tag.copyrightStatement,"Copyright Statement")
+        XCTAssertEqual(tag.customGenre,"Genre")
+        XCTAssertEqual(tag.description,"Description")
+        XCTAssertEqual(tag.director,"Director")
+        XCTAssertEqual(tag.discNumber.disc,1)
+        XCTAssertEqual(tag.discNumber.totalDiscs,2)
+        XCTAssertEqual(tag.editDateAndDescription1,"Edit Date and Description 1")
+        XCTAssertEqual(tag.editDateAndDescription2,"Edit Date and Description 2")
+        XCTAssertEqual(tag.editDateAndDescription3,"Edit Date and Description 3")
+        XCTAssertEqual(tag.editDateAndDescription4,"Edit Date and Description 4")
+        XCTAssertEqual(tag.editDateAndDescription5,"Edit Date and Description 5")
+        XCTAssertEqual(tag.editDateAndDescription6,"Edit Date and Description 6")
+        XCTAssertEqual(tag.editDateAndDescription7,"Edit Date and Description 7")
+        XCTAssertEqual(tag.editDateAndDescription8,"Edit Date and Description 8")
+        XCTAssertEqual(tag.editDateAndDescription9,"Edit Date and Description 9")
+        XCTAssertEqual(tag.encodedBy,"Encoded By")
+        XCTAssertEqual(tag.encodingTool,"Encoding Tool")
+        XCTAssertEqual(tag.executiveProducer,"Executive Producer")
+        XCTAssertEqual(tag.filmMakerUrl,"www.filmmaker.url")
+        XCTAssertEqual(tag.format,"Format")
+        XCTAssertEqual(tag.gaplessPlayback,true)
+        XCTAssertEqual(tag.genreID,.audiobooks)
+        XCTAssertEqual(tag.grouping,"Grouping")
+        XCTAssertEqual(tag.information,"Information")
+        XCTAssertEqual(tag.isrc,"123456789012")
+        XCTAssertEqual(tag.keywords,["Key", "Words"])
+        XCTAssertEqual(tag.label,"Label")
+        XCTAssertEqual(tag.linerNotes,"Liner Notes")
+        XCTAssertEqual(tag.longDescription,"Long Description")
+        XCTAssertEqual(tag.lyricist,"Lyricist")
+        XCTAssertEqual(tag.lyrics,"Lyrics")
+        XCTAssertEqual(tag.mediaKind,.audiobook)
+        XCTAssertEqual(tag.movementCount,4)
+        XCTAssertEqual(tag.movementNumber,3)
+        XCTAssertEqual(tag.movementName,"Movement Name")
+        XCTAssertEqual(tag.narrator,"Narrator")
+        XCTAssertEqual(tag.originalArtist,"Original Artist")
+        XCTAssertEqual(tag.owner,"Owner")
+        XCTAssertEqual(tag.performers,["Performer"])
+        XCTAssertEqual(tag.playlistID,56789)
+        XCTAssertEqual(tag.podcast,true)
+        XCTAssertEqual(tag.podcastID,"Podcast ID")
+        XCTAssertEqual(tag.podcastUrl,"www.podcast.url")
+        XCTAssertEqual(tag.predefinedGenre,.audiobooks)
+        XCTAssertEqual(tag.producer,"Producer")
+        XCTAssertEqual(tag.producerKeywords,["Producer", "Keywords"])
+        XCTAssertEqual(tag.publisher,"Publisher")
+        XCTAssertEqual(tag.publisherUrl,"www.publisher.url")
+        XCTAssertEqual(tag.purchaseDate, date)
+        XCTAssertEqual(tag.rating,.clean)
+        XCTAssertEqual(tag.recordCompany,"Record Company")
+        XCTAssertEqual(tag.recordingCopyright,"Recording Copyright")
+        XCTAssertEqual(tag.recordingDate, date)
+        XCTAssertEqual(tag.releaseDate, date)
+        XCTAssertEqual(tag.requirements,"Requirements")
+        XCTAssertEqual(tag.sellerID,"Seller ID")
+        XCTAssertEqual(tag.showWorkAndMovement,true)
+        XCTAssertEqual(tag.softwareVersion,"Software Version")
+        XCTAssertEqual(tag.soloist,"Soloist")
+        XCTAssertEqual(tag.songDescription,"Song Description")
+        XCTAssertEqual(tag.songwriterKeywords,["Songwriter", "Keywords"])
+        XCTAssertEqual(tag.songwriter,"Songwriter")
+        XCTAssertEqual(tag.soundEngineer,"Song Engineer")
+        XCTAssertEqual(tag.sourceCredit,"Source Credit")
+        XCTAssertEqual(tag.subtitle,"Subtitle")
+        XCTAssertEqual(tag.subtitleKeywords,["Subtitle", "Keywords"])
+        XCTAssertEqual(tag.thanks,"Thanks")
+        XCTAssertEqual(tag.title,"Title")
+        XCTAssertEqual(tag.titleKeywords,["Title", "Keywords"])
+        XCTAssertEqual(tag.titleSort,"Title Sort")
+        XCTAssertEqual(tag.trackNumber.track,5)
+        XCTAssertEqual(tag.trackNumber.totalTracks,6)
+        XCTAssertEqual(tag.trackSubtitle,"Track Subtitle")
+        XCTAssertEqual(tag.tvEpisodeNumber,7)
+        XCTAssertEqual(tag.tvSeason,8)
+        XCTAssertEqual(tag.tvShow,"TV Show")
+        XCTAssertEqual(tag.tvNetwork,"TV Network")
+        XCTAssertEqual(tag.tvShowSort,"TV Show Sort")
+        XCTAssertEqual(tag.tvEpisodeTitle,"TV Episode Title")
+        XCTAssertEqual(tag.tvShowDescription,"TV Show Description")
+        XCTAssertEqual(tag.website,"www.website.url")
+        XCTAssertEqual(tag.workName,"Work Name")
+        XCTAssertEqual(tag.writer,"Writer")
+        XCTAssertEqual(tag.year,2020)
+        XCTAssertEqual(tag["Unknown"], "unknown")
+        
+        let knownTitles = ["01 - Read by BK",
+                           "02 - Read by CS",
+                           "03 - Read by EL-ALP",
+                           "04 - Read by GB",
+                           "05 - Read by KARA",
+                           "06 - Read by LAH",
+                           "07 - Read by LCW",
+                           "08 - Read by MAS",
+                           "09 - Read by PS",
+                           "10 - Read by SPC",
+                           "11 - Read by TP",
+                           "12 - Read by VB"]
+        let knownStarts = [0, 100003, 192013, 292014, 392005, 459021, 546001, 624020, 714016, 791013, 869018, 963007]
+
+        XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
+        XCTAssertEqual(tag.chapterHandler.chapterStarts, knownStarts)
+
+//        let outputUrl = try localDirectory(fileName: "test", fileExtension: "m4a")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        try mp4.write(tag: tag, to: outputUrl)
+                
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let output = try Tag(mp4File: outputMp4)
+
+        XCTAssertEqual(output.acknowledgment,"Acknowledgment")
+        XCTAssertEqual(output.album,"Album")
+        XCTAssertEqual(output.albumID,12345)
+        XCTAssertEqual(output.albumArtist,"Album Artist")
+        XCTAssertEqual(output.albumArtistSort,"Album Artist Sort")
+        XCTAssertEqual(output.albumSort,"Album Sort")
+        XCTAssertEqual(output.appleStoreCountryID,23456)
+        XCTAssertEqual(output.arranger,"Arranger")
+        XCTAssertEqual(output.arrangerKeywords,["Arranger", "Keywords"])
+        XCTAssertEqual(output.artDirector,"Art Director")
+        XCTAssertEqual(output.artist,"Artist")
+        XCTAssertEqual(output.artistID,34567)
+        XCTAssertEqual(output.artistKeywords,["Artist", "Keywords"])
+        XCTAssertEqual(output.artistSort,"Artist Sort")
+        XCTAssertEqual(output.artistUrl,"www.artist.url")
+        XCTAssertEqual(output.bpm,99)
+        XCTAssertEqual(output.category,"Category")
+        XCTAssertEqual(output.comment,"Comment")
+        XCTAssertEqual(output.compilation,true)
+        XCTAssertEqual(output.composer,"Composer")
+        XCTAssertEqual(output.composerKeywords,["Composer", "Keywords"])
+        XCTAssertEqual(output.composerSort,"Composer Sort")
+        XCTAssertEqual(output.conductor,"Conductor")
+        XCTAssertEqual(output.conductorID,45678)
+        XCTAssertEqual(output.copyright,"2020 Copyright")
+        XCTAssertEqual(output.copyrightStatement,"Copyright Statement")
+        XCTAssertEqual(output.customGenre,"Genre")
+        XCTAssertEqual(output.description,"Description")
+        XCTAssertEqual(output.director,"Director")
+        XCTAssertEqual(output.discNumber.disc,1)
+        XCTAssertEqual(output.discNumber.totalDiscs,2)
+        XCTAssertEqual(output.editDateAndDescription1,"Edit Date and Description 1")
+        XCTAssertEqual(output.editDateAndDescription2,"Edit Date and Description 2")
+        XCTAssertEqual(output.editDateAndDescription3,"Edit Date and Description 3")
+        XCTAssertEqual(output.editDateAndDescription4,"Edit Date and Description 4")
+        XCTAssertEqual(output.editDateAndDescription5,"Edit Date and Description 5")
+        XCTAssertEqual(output.editDateAndDescription6,"Edit Date and Description 6")
+        XCTAssertEqual(output.editDateAndDescription7,"Edit Date and Description 7")
+        XCTAssertEqual(output.editDateAndDescription8,"Edit Date and Description 8")
+        XCTAssertEqual(output.editDateAndDescription9,"Edit Date and Description 9")
+        XCTAssertEqual(output.encodedBy,"Encoded By")
+        XCTAssertEqual(output.encodingTool,"Encoding Tool")
+        XCTAssertEqual(output.executiveProducer,"Executive Producer")
+        XCTAssertEqual(output.filmMakerUrl,"www.filmmaker.url")
+        XCTAssertEqual(output.format,"Format")
+        XCTAssertEqual(output.gaplessPlayback,true)
+        XCTAssertEqual(output.genreID,.audiobooks)
+        XCTAssertEqual(output.grouping,"Grouping")
+        XCTAssertEqual(output.information,"Information")
+        XCTAssertEqual(output.isrc,"123456789012")
+        XCTAssertEqual(output.keywords,["Key", "Words"])
+        XCTAssertEqual(output.label,"Label")
+        XCTAssertEqual(output.linerNotes,"Liner Notes")
+        XCTAssertEqual(output.longDescription,"Long Description")
+        XCTAssertEqual(output.lyricist,"Lyricist")
+        XCTAssertEqual(output.lyrics,"Lyrics")
+        XCTAssertEqual(output.mediaKind,.audiobook)
+        XCTAssertEqual(output.movementCount,4)
+        XCTAssertEqual(output.movementNumber,3)
+        XCTAssertEqual(output.movementName,"Movement Name")
+        XCTAssertEqual(output.narrator,"Narrator")
+        XCTAssertEqual(output.originalArtist,"Original Artist")
+        XCTAssertEqual(output.owner,"Owner")
+        XCTAssertEqual(output.performers,["Performer"])
+        XCTAssertEqual(output.playlistID,56789)
+        XCTAssertEqual(output.podcast,true)
+        XCTAssertEqual(output.podcastID,"Podcast ID")
+        XCTAssertEqual(output.podcastUrl,"www.podcast.url")
+        XCTAssertEqual(output.predefinedGenre,.audiobooks)
+        XCTAssertEqual(output.producer,"Producer")
+        XCTAssertEqual(output.producerKeywords,["Producer", "Keywords"])
+        XCTAssertEqual(output.publisher,"Publisher")
+        XCTAssertEqual(output.publisherUrl,"www.publisher.url")
+        XCTAssertEqual(output.purchaseDate, date)
+        XCTAssertEqual(output.rating,.clean)
+        XCTAssertEqual(output.recordCompany,"Record Company")
+        XCTAssertEqual(output.recordingCopyright,"Recording Copyright")
+        XCTAssertEqual(output.recordingDate, date)
+        XCTAssertEqual(output.releaseDate, date)
+        XCTAssertEqual(output.requirements,"Requirements")
+        XCTAssertEqual(output.sellerID,"Seller ID")
+        XCTAssertEqual(output.showWorkAndMovement,true)
+        XCTAssertEqual(output.softwareVersion,"Software Version")
+        XCTAssertEqual(output.soloist,"Soloist")
+        XCTAssertEqual(output.songDescription,"Song Description")
+        XCTAssertEqual(output.songwriterKeywords,["Songwriter", "Keywords"])
+        XCTAssertEqual(output.songwriter,"Songwriter")
+        XCTAssertEqual(output.soundEngineer,"Song Engineer")
+        XCTAssertEqual(output.sourceCredit,"Source Credit")
+        XCTAssertEqual(output.subtitle,"Subtitle")
+        XCTAssertEqual(output.subtitleKeywords,["Subtitle", "Keywords"])
+        XCTAssertEqual(output.thanks,"Thanks")
+        XCTAssertEqual(output.title,"Title")
+        XCTAssertEqual(output.titleKeywords,["Title", "Keywords"])
+        XCTAssertEqual(output.titleSort,"Title Sort")
+        XCTAssertEqual(output.trackNumber.track,5)
+        XCTAssertEqual(output.trackNumber.totalTracks,6)
+        XCTAssertEqual(output.trackSubtitle,"Track Subtitle")
+        XCTAssertEqual(output.tvEpisodeNumber,7)
+        XCTAssertEqual(output.tvSeason,8)
+        XCTAssertEqual(output.tvShow,"TV Show")
+        XCTAssertEqual(output.tvNetwork,"TV Network")
+        XCTAssertEqual(output.tvShowSort,"TV Show Sort")
+        XCTAssertEqual(output.tvEpisodeTitle,"TV Episode Title")
+        XCTAssertEqual(output.tvShowDescription,"TV Show Description")
+        XCTAssertEqual(output.website,"www.website.url")
+        XCTAssertEqual(output.workName,"Work Name")
+        XCTAssertEqual(output.writer,"Writer")
+        XCTAssertEqual(output.year,2020)
+        XCTAssertEqual(output.chapterHandler.chapterTitles, knownTitles)
+        XCTAssertEqual(output.chapterHandler.chapterStarts, knownStarts)
+        XCTAssertNotNil(output.coverArt)
+        XCTAssertEqual(output["Unknown"], "unknown")
+    }
+    
+    @available(OSX 10.13, *)
+    func testLanguage() throws {
+        let mp4 = try Mp4File(location: sampleBookSublerUrl)
+        var tag = try Tag(mp4File: mp4)
+        XCTAssertEqual(mp4.language, .english)
+        XCTAssertEqual(tag.language, .english)
+        tag.language = .englishWorld
+        let outputUrl = try tempDirectory().appendingPathComponent("language-test.m4a")
+//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        try mp4.write(tag: tag, to: outputUrl)
+                
+        let output = try Mp4File(location: outputUrl)
+        let outputTag = try Tag(mp4File: output)
+        XCTAssertEqual(output.language, .englishWorld)
+        XCTAssertEqual(outputTag.language, .englishWorld)
     }
 }

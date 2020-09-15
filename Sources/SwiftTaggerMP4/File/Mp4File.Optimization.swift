@@ -205,4 +205,13 @@ extension Mp4File {
         self.mdats = [mdat]
         self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = try calculateNewMediaOffsets()
     }
+    
+    @available(OSX 10.12, *)
+    func setLanguage(tag: Tag) {
+        if tag.language != .unspecified {
+            self.language = tag.language
+        } else {
+            self.language = nil
+        }
+    }
 }

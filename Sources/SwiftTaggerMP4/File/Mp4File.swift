@@ -12,7 +12,6 @@ import SwiftLanguageAndLocaleCodes
 class Mp4File {
     var rootAtoms: [Atom]
     var data: Data
-    var _language: ICULocaleCode?
     static var use64BitOffset: Bool = false
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -38,10 +37,6 @@ class Mp4File {
         }
         self.rootAtoms = atoms
         
-        if let elng = moov.soundTrack.mdia.elng {
-            let language = ICULocaleCode(rawValue: elng.language)
-            self._language = language
-        }
         if self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.identifier == "co64" {
             Mp4File.use64BitOffset = true
         }
@@ -51,6 +46,7 @@ class Mp4File {
     public func write(tag: Tag, to outputLocation: URL) throws {
         let mediaData = try self.getMediaData()
         try setMetadataAtoms(tag: tag)
+        setLanguage(tag: tag)
         try setChapterTrack(mediaData: mediaData, tag: tag)
         try setMdat(mediaData: mediaData, tag: tag)
         
@@ -88,11 +84,9 @@ class Mp4File {
     }
     
     @available(OSX 10.12, *)
-    public var language: ICULocaleCode? {
+    var language: ICULocaleCode? {
         get {
-            if let language = _language {
-                return language
-            } else if let elng = moov.soundTrack.mdia.elng {
+            if let elng = moov.soundTrack.mdia.elng {
                 return ICULocaleCode(rawValue: elng.language)
             } else {
                 return nil
@@ -100,7 +94,29 @@ class Mp4File {
         }
         set {
             if let new = newValue {
-                self._language = new
+                let newTracks = self.moov.tracks
+                for track in newTracks {
+                    if track.mdia.elng != nil {
+                        track.mdia.elng?.language = new.rawValue
+                        track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
+                    } else {
+                        do {
+                            let elng = try Elng(from: new)
+                            track.mdia.elng = elng
+                            track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
+                        } catch {
+                            print("WARNING: Unable to initialize extended language atom")
+                        }
+                    }
+                }
+                self.moov.tracks = newTracks
+            } else {
+                self.moov.soundTrack.mdia.elng = nil
+                self.moov.soundTrack.mdia.mdhd.language = .und
+                if self.moov.chapterTrack != nil {
+                    self.moov.chapterTrack?.mdia.elng = nil
+                    self.moov.chapterTrack?.mdia.mdhd.language = .und
+                }
             }
         }
     }

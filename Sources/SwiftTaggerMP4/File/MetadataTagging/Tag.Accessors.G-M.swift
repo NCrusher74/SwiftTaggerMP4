@@ -21,7 +21,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .grouping, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.grouping.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.grouping)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.grouping)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.grouping.rawValue] = nil
@@ -43,7 +43,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .information, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.information.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.information)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.information)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.information.rawValue] = nil
@@ -65,7 +65,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .isrc, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.isrc.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.isrc)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.isrc)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.isrc.rawValue] = nil
@@ -87,7 +87,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .label, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.label.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.label)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.label)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.label.rawValue] = nil
@@ -109,7 +109,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .linerNotes, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.linerNotes.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.linerNotes)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.linerNotes)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.linerNotes.rawValue] = nil
@@ -131,7 +131,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .longDescription, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.longDescription.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.longDescription)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.longDescription)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.longDescription.rawValue] = nil
@@ -153,7 +153,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .lyricist, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.lyricist.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.lyricist)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.lyricist)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.lyricist.rawValue] = nil
@@ -175,7 +175,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .lyrics, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.lyrics.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.lyrics)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.lyrics)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.lyrics.rawValue] = nil
@@ -197,7 +197,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .keywords, stringValue: new.toString)
                     metadataAtoms[StringMetadataIdentifier.keywords.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.keywords)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.keywords)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.keywords.rawValue] = nil
@@ -228,7 +228,7 @@ extension Tag {
                         metadataAtoms[IntegerMetadataIdentifier.gaplessPlayback.rawValue] = atom
                     }
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.gaplessPlayback)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.gaplessPlayback)")
                 }
             } else {
                 metadataAtoms[IntegerMetadataIdentifier.gaplessPlayback.rawValue] = nil
@@ -251,7 +251,7 @@ extension Tag {
                     let atom = try IntegerMetadataAtom(identifier: .genreID, intValue: new.rawValue)
                     metadataAtoms[IntegerMetadataIdentifier.genreID.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.genreID)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.genreID)")
                 }
             } else {
                 metadataAtoms[IntegerMetadataIdentifier.genreID.rawValue] = nil
@@ -273,7 +273,7 @@ extension Tag {
                     let atom = try IntegerMetadataAtom(identifier: .movementNumber, intValue: new)
                     metadataAtoms[IntegerMetadataIdentifier.movementNumber.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.movementNumber)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.movementNumber)")
                 }
             } else {
                 metadataAtoms[IntegerMetadataIdentifier.movementNumber.rawValue] = nil
@@ -295,7 +295,7 @@ extension Tag {
                     let atom = try IntegerMetadataAtom(identifier: .movementCount, intValue: new)
                     metadataAtoms[IntegerMetadataIdentifier.movementCount.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.movementCount)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.movementCount)")
                 }
             } else {
                 metadataAtoms[IntegerMetadataIdentifier.movementCount.rawValue] = nil
@@ -318,7 +318,7 @@ extension Tag {
                     let atom = try IntegerMetadataAtom(identifier: .mediaKind, intValue: new.rawValue)
                     metadataAtoms[IntegerMetadataIdentifier.mediaKind.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.mediaKind)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.mediaKind)")
                 }
             } else {
                 metadataAtoms[IntegerMetadataIdentifier.mediaKind.rawValue] = nil
@@ -340,7 +340,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .movementName, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.movementName.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.movementName)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.movementName)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.movementName.rawValue] = nil

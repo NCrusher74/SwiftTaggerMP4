@@ -21,7 +21,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription1, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription1.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription1)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription1)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription1.rawValue] = nil
@@ -43,7 +43,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription2, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription2.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription2)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription2)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription2.rawValue] = nil
@@ -65,7 +65,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription3, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription3.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription3)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription3)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription3.rawValue] = nil
@@ -87,7 +87,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription4, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription4.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription4)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription4)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription4.rawValue] = nil
@@ -109,7 +109,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription5, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription5.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription5)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription5)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription5.rawValue] = nil
@@ -131,7 +131,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription6, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription6.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription6)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription6)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription6.rawValue] = nil
@@ -153,7 +153,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription7, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription7.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription7)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription7)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription7.rawValue] = nil
@@ -175,7 +175,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription8, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription8.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription8)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription8)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription8.rawValue] = nil
@@ -197,7 +197,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .editDateAndDescription9, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.editDateAndDescription9.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription9)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.editDateAndDescription9)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.editDateAndDescription9.rawValue] = nil
@@ -219,7 +219,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .encodedBy, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.encodedBy.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.encodedBy)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.encodedBy)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.encodedBy.rawValue] = nil
@@ -241,7 +241,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .encodingTool, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.encodingTool.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.encodingTool)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.encodingTool)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.encodingTool.rawValue] = nil
@@ -263,7 +263,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .executiveProducer, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.executiveProducer.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.executiveProducer)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.executiveProducer)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.executiveProducer.rawValue] = nil
@@ -285,7 +285,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .format, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.format.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.format)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.format)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.format.rawValue] = nil
@@ -307,7 +307,7 @@ extension Tag {
                     let atom = try StringMetadataAtom(identifier: .filmMakerUrl, stringValue: new)
                     metadataAtoms[StringMetadataIdentifier.filmMakerUrl.rawValue] = atom
                 } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.filmMakerUrl)")
+                    print("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.filmMakerUrl)")
                 }
             } else {
                 metadataAtoms[StringMetadataIdentifier.filmMakerUrl.rawValue] = nil

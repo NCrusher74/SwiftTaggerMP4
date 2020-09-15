@@ -25,6 +25,11 @@ let sampleNoMeta: URL =
         .appendingPathComponent("mp4_nometa")
         .appendingPathExtension("m4a")
 
+let sampleCover: URL =
+    testMediaDirectory
+        .appendingPathComponent("samplecover-green")
+        .appendingPathExtension("jpg")
+
 let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
