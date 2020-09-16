@@ -196,6 +196,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
+        print(tag.metadata)
         XCTAssertEqual(tag.album, "''Frost To-Night''")
         XCTAssertEqual(tag.title, "FrostTonight_librivox")
         XCTAssertEqual(tag.artist, "Edith M. Thomas")

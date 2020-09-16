@@ -10,7 +10,8 @@ import Cocoa
 import SwiftLanguageAndLocaleCodes
 
 public struct Tag {
-    public var metadataAtoms: [String: Atom]
+    public var metadata: [(String, Any)]
+    var metadataAtoms: [String: Atom]
     public var language: ICULocaleCode
     public var duration: Int
     var chapterHandler: ChapterHandler
@@ -35,6 +36,31 @@ public struct Tag {
             }
         }
         self.metadataAtoms = metadata
+        
+        var metadataList = [(String, Any)]()
+        for item in metadata {
+            if StringMetadataIdentifier(rawValue: item.key) != nil {
+                let atom = item.value as! StringMetadataAtom
+                metadataList.append((item.key, atom.stringValue))
+            } else if IntegerMetadataIdentifier(rawValue: item.key) != nil {
+                let atom = item.value as! IntegerMetadataAtom
+                metadataList.append((item.key, atom.intValue))
+            } else if item.key == "trkn" || item.key == "disk" {
+                let atom = item.value as! PartAndTotalMetadataAtom
+                let value = "\(atom.part) of \(atom.total ?? 0)"
+                let entry = (item.key, value)
+                metadataList.append(entry)
+            } else if item.key == "covr" {
+                continue
+            } else {
+                let atom = item.value as! UnknownMetadataAtom
+                let entry = (item.key, atom.stringValue)
+                metadataList.append(entry)
+            }
+        }
+        
+        self.metadata = metadataList
+        
         if let language = mp4File.language {
             self.language = language
         } else {
