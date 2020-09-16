@@ -214,17 +214,32 @@ extension Tag {
         }
     }
     
-    public var contentRating: ContentRating? {
+    public var contentRating: (contentRating: ContentRating, ratingNotes: String?) {
         get {
-            if let rating = ContentRating(rawValue: self["iTunEXTC"] ?? ""), rating != .none {
-                return rating
+            if let ratingString = self["iTunEXTC"] {
+                let components: [String] = ratingString.components(separatedBy: "|")
+                var rating: ContentRating = .none
+                var notes: String? = nil
+                if components.count == 3 {
+                    if let contentRating = ContentRating(rawValue: ratingString) {
+                        rating = contentRating
+                    }
+                } else {
+                    let string = components.dropLast().joined(separator: "|")
+                    if let contentRating = ContentRating(rawValue: string) {
+                        rating = contentRating
+                    }
+                    notes = components.dropFirst(3).joined()
+                }
+                return (rating, notes)
             } else {
-                return nil
+                return (.none, nil)
             }
         }
         set {
-            if let new = newValue {
-                self["iTunEXTC"] = new.rawValue
+            if newValue != (.none, nil) {
+                let string = "\(newValue.contentRating.rawValue)|\(newValue.ratingNotes ?? "")"
+                self["iTunEXTC"] = string
             } else {
                 self["iTunEXTC"] = nil
             }
