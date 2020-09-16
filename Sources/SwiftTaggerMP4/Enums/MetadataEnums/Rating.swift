@@ -1,4 +1,4 @@
-/* ContentRatings.swift
+/* Rating.swift
   SwiftTaggerMP4
 
   Created by Nolaine Crusher on 5/2/20.

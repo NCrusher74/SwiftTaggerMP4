@@ -214,6 +214,23 @@ extension Tag {
         }
     }
     
+    public var contentRating: ContentRating? {
+        get {
+            if let rating = ContentRating(rawValue: self["iTunEXTC"] ?? ""), rating != .none {
+                return rating
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["iTunEXTC"] = new.rawValue
+            } else {
+                self["iTunEXTC"] = nil
+            }
+        }
+    }
+    
     public var copyright: String? {
         get {
             if let atom = metadataAtoms[StringMetadataIdentifier.copyright.rawValue] as? StringMetadataAtom {
