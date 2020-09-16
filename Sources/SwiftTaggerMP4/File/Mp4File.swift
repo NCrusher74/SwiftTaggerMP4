@@ -79,7 +79,7 @@ public class Mp4File {
     }
     
     // Public properties
-    public var duration: Double {
+    var duration: Double {
         return moov.mvhd.duration
     }
     

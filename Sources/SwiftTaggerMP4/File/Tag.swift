@@ -12,6 +12,7 @@ import SwiftLanguageAndLocaleCodes
 public struct Tag {
     public var metadataAtoms: [String: Atom]
     public var language: ICULocaleCode
+    public var duration: Int
     var chapterHandler: ChapterHandler
     
     @available(OSX 10.12, *)
@@ -39,6 +40,7 @@ public struct Tag {
         } else {
             self.language = .unspecified
         }
+        self.duration = Int(mp4File.duration)
     }
 }
 
