@@ -5,25 +5,26 @@ import SwiftLanguageAndLocaleCodes
 
 final class SwiftTaggerMP4Tests: XCTestCase {
 
-//    func testPrint() throws {
-//
-//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test.m4a"
-//        let url = URL(fileURLWithPath: path)
-//        let data = try Data(contentsOf: url)
-////        let data = try Data(contentsOf: sampleBookCVUrl)
-//        let range = 000000000764 ..< 000000000788
-//        let subdata = data.subdata(in: range)
-//        print(subdata.hexadecimal())
-//        
-//        /*
-//         0 0 0 18
-//         73 74 74 73
-//         0 0 0 0
-//         0 0 0 1
-//         0 0 b1 8b
-//         0 0 04 00
-//         */
-//    }
+    func testPrint() throws {
+
+        let path = "/Users/nolainecrusher/Documents/Git/SwiftTagger/Tests/SwiftTaggerTests/TestMedia/mp4-meta.m4a"
+        let url = URL(fileURLWithPath: path)
+        let data = try Data(contentsOf: url)
+//        let data = try Data(contentsOf: sampleBookCVUrl)
+        let range = 000000092504 ..< 000000092529
+        let subdata = data.subdata(in: range)
+        print(subdata.hexadecimal())
+        
+        /*
+         0 0 0 19
+         61 6b 49 44
+         0 0 0 11
+         64 61 74 61
+         0 0 0 15
+         0 0 0 0
+         0
+         */
+    }
     
     @available(OSX 10.13, *)
     func testAddChapter() throws {
@@ -552,5 +553,23 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
 //        let outputUrl = try localDirectory(fileName: "mp4-meta", fileExtension: "m4a")
         XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
+    }
+    
+    @available(OSX 10.13, *)
+    func testCoverArt() throws {
+        let mp4 = try Mp4File(location: sampleNoMeta)
+        var tag = try Tag(mp4File: mp4)
+        
+        XCTAssertNil(tag.coverArt)
+        
+        try tag.setCoverArt(location: sampleCover)
+        XCTAssertNotNil(tag.coverArt)
+
+//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        let outputUrl = try localDirectory(fileName: "mp4-covertest", fileExtension: "m4a")
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
+        
+        let output = try Tag(mp4File: try Mp4File(location: outputUrl))
+        XCTAssertNotNil(output.coverArt)
     }
 }

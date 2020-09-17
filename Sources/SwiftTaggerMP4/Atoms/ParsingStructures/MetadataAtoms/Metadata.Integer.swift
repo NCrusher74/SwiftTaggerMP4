@@ -30,7 +30,7 @@ class IntegerMetadataAtom: Atom {
             // some apps require the integer to be a specific width for particular atoms, so we will determine the width by atom identifier
             if dataAtom.dataType == .signedIntBE {
                 switch identifier {
-                    case "rtng", "cpil", "pcst", "stik", "pgap", "shwm":
+                    case "rtng", "cpil", "pcst", "stik", "pgap", "shwm", "akID":
                         self.intValue = data.extractToInt(1)
                     case "tmpo", "\u{00A9}mvi", "\u{00A9}mvc":
                         self.intValue = data.extractToInt(2)
