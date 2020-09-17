@@ -25,7 +25,7 @@ enum MetadataAtomError: Error {
     /// Error thrown when the image cannot be read
     case ImageParsingFailure
     /// Error thrown when the metadata format is unrecognized
-    case UnsupportedMetadataFormat
+    case UnsupportedMetadataFormat(String)
     /// Error thrown when trying to use an invalid metadata type for a given tag
     case InvalidMetadataIdentifierForFormat
     /// Error thrown when cover image can't be found

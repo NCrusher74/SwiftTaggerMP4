@@ -48,7 +48,7 @@ class IntegerMetadataAtom: Atom {
             } else if  dataAtom.dataType == .signedInt64BE {
                 self.intValue = data.extractToInt(8)
             } else {
-                throw MetadataAtomError.UnsupportedMetadataFormat
+                throw MetadataAtomError.UnsupportedMetadataFormat("UnsupportedMetadataAtomError on atom with identifier \(identifier)")
             }
         } else {
             throw MetadataAtomError.DataAtomNotFound

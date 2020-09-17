@@ -28,7 +28,7 @@ class DataAtom: Atom {
         if let type = DataType(rawValue: typeInt) {
             self.dataType = type
         } else {
-            throw MetadataAtomError.UnsupportedMetadataFormat
+            throw MetadataAtomError.UnsupportedMetadataFormat("UnsupportedMetadataAtomError on atom with dataType rawValue: \(typeInt)")
         }
         self.locale = data.extractFirst(4)
         self.data = data
