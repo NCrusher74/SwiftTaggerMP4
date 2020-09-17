@@ -43,7 +43,7 @@ class Ilst: Atom {
             size += child.size
         }
         
-        try super.init(identifier: "meta",
+        try super.init(identifier: "ilst",
                        size: size,
                        children: children)
     }

@@ -116,20 +116,14 @@ extension Mp4File {
             for (_, atom) in tag.metadataAtoms {
                 newMetadataAtoms.append(atom)
             }
-            if self.moov.udta?.meta?.ilst != nil {
-                // ilst exists, alter the children array
-                self.moov.udta?.meta?.ilst.children = newMetadataAtoms
+            let ilst = try Ilst(children: newMetadataAtoms)
+            let hdlr = try Hdlr()
+            let meta = try Meta(children: [hdlr, ilst])
+            if self.moov.udta != nil {
+                self.moov.udta?.meta = meta
             } else {
-                // if ilst doesn't exist, meta doesn't exist, because ilst is a required child of meta, so instead we check udta
-                let ilst = try Ilst(children: newMetadataAtoms)
-                let hdlr = try Hdlr()
-                let meta = try Meta(children: [hdlr, ilst])
-                if self.moov.udta != nil {
-                    self.moov.udta?.meta = meta
-                } else {
-                    let udta = try Udta(children: [meta])
-                    self.moov.udta = udta
-                }
+                let udta = try Udta(children: [meta])
+                self.moov.udta = udta
             }
         }
     }

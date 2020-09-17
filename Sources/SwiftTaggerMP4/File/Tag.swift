@@ -24,42 +24,49 @@ public struct Tag {
             moov: moov, fileData: data)
 
         var metadata = [String: Atom]()
-        for atom in moov.udta?.meta?.ilst.children ?? [] {
-            if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
-                IntegerMetadataIdentifier(rawValue: atom.identifier) != nil ||
-                atom.identifier == "disk" || atom.identifier == "trkn" || atom.identifier == "covr" {
-                metadata[atom.identifier] = atom
-            } else if atom.identifier == "----" {
-                if let unknownAtom = atom as? UnknownMetadataAtom {
-                    metadata[unknownAtom.name] = atom
+        if moov.udta?.meta?.ilst.children == nil {
+            self.metadataAtoms = [:]
+        } else {
+            for atom in moov.udta?.meta?.ilst.children ?? [] {
+                if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
+                    IntegerMetadataIdentifier(rawValue: atom.identifier) != nil ||
+                    atom.identifier == "disk" || atom.identifier == "trkn" || atom.identifier == "covr" {
+                    metadata[atom.identifier] = atom
+                } else if atom.identifier == "----" {
+                    if let unknownAtom = atom as? UnknownMetadataAtom {
+                        metadata[unknownAtom.name] = atom
+                    }
                 }
             }
+            self.metadataAtoms = metadata
         }
-        self.metadataAtoms = metadata
         
-        var metadataList = [(String, Any)]()
-        for item in metadata {
-            if StringMetadataIdentifier(rawValue: item.key) != nil {
-                let atom = item.value as! StringMetadataAtom
-                metadataList.append((item.key, atom.stringValue))
-            } else if IntegerMetadataIdentifier(rawValue: item.key) != nil {
-                let atom = item.value as! IntegerMetadataAtom
-                metadataList.append((item.key, atom.intValue))
-            } else if item.key == "trkn" || item.key == "disk" {
-                let atom = item.value as! PartAndTotalMetadataAtom
-                let value = "\(atom.part) of \(atom.total ?? 0)"
-                let entry = (item.key, value)
-                metadataList.append(entry)
-            } else if item.key == "covr" {
-                continue
-            } else {
-                let atom = item.value as! UnknownMetadataAtom
-                let entry = (item.key, atom.stringValue)
-                metadataList.append(entry)
+        if !metadata.isEmpty {
+            var metadataList = [(String, Any)]()
+            for item in metadata {
+                if StringMetadataIdentifier(rawValue: item.key) != nil {
+                    let atom = item.value as! StringMetadataAtom
+                    metadataList.append((item.key, atom.stringValue))
+                } else if IntegerMetadataIdentifier(rawValue: item.key) != nil {
+                    let atom = item.value as! IntegerMetadataAtom
+                    metadataList.append((item.key, atom.intValue))
+                } else if item.key == "trkn" || item.key == "disk" {
+                    let atom = item.value as! PartAndTotalMetadataAtom
+                    let value = "\(atom.part) of \(atom.total ?? 0)"
+                    let entry = (item.key, value)
+                    metadataList.append(entry)
+                } else if item.key == "covr" {
+                    continue
+                } else {
+                    let atom = item.value as! UnknownMetadataAtom
+                    let entry = (item.key, atom.stringValue)
+                    metadataList.append(entry)
+                }
             }
+            self.metadata = metadataList
+        } else {
+            self.metadata = []
         }
-        
-        self.metadata = metadataList
         
         if let language = mp4File.language {
             self.language = language
