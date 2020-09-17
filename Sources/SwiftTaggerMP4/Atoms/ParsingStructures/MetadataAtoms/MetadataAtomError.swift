@@ -30,4 +30,6 @@ enum MetadataAtomError: Error {
     case InvalidMetadataIdentifierForFormat
     /// Error thrown when cover image can't be found
     case ImageDataNotFound
+    case UnableToParseDataToString(String)
+    case UnableToConvertStringContentToInteger(String)
 }

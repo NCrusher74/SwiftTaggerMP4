@@ -45,8 +45,24 @@ class IntegerMetadataAtom: Atom {
                 self.intValue = data.extractToInt(2)
             } else if dataAtom.dataType == .signedInt32BE {
                 self.intValue = data.extractToInt(4)
-            } else if  dataAtom.dataType == .signedInt64BE {
+            } else if dataAtom.dataType == .signedInt64BE {
                 self.intValue = data.extractToInt(8)
+            } else if dataAtom.dataType == .utf8 ||
+                dataAtom.dataType == .utf8Sort ||
+                dataAtom.dataType == .uuid ||
+                dataAtom.dataType == .isrc ||
+                dataAtom.dataType == .url ||
+                dataAtom.dataType == .genres ||
+                dataAtom.dataType == .reserved {
+                if let string = data.stringUtf8 {
+                    if let int = Int(string) {
+                        self.intValue = int
+                    } else {
+                        throw MetadataAtomError.UnableToConvertStringContentToInteger("Atom identifier: '\(identifier)'")
+                    }
+                } else {
+                    throw MetadataAtomError.UnableToParseDataToString("Atom identifier: '\(identifier)'")
+                }
             } else {
                 throw MetadataAtomError.UnsupportedMetadataFormat("UnsupportedMetadataAtomError on atom with identifier \(identifier)")
             }
