@@ -10,7 +10,6 @@ import Cocoa
 import SwiftLanguageAndLocaleCodes
 
 public struct Tag {
-    public var metadata: [(String, Any)]
     var metadataAtoms: [String: Atom]
     public var language: ICULocaleCode
     public var duration: Int
@@ -40,10 +39,21 @@ public struct Tag {
             }
             self.metadataAtoms = metadata
         }
-        
-        if !metadata.isEmpty {
-            var metadataList = [(String, Any)]()
-            for item in metadata {
+                
+        if let language = mp4File.language {
+            self.language = language
+        } else {
+            self.language = .unspecified
+        }
+        self.duration = Int(mp4File.duration)
+    }
+}
+
+extension Tag {
+    public var metadata: [(identifier: String, value: Any)] {
+        var metadataList = [(String, Any)]()
+        if !self.metadataAtoms.isEmpty {
+            for item in self.metadataAtoms {
                 if StringMetadataIdentifier(rawValue: item.key) != nil {
                     let atom = item.value as! StringMetadataAtom
                     metadataList.append((item.key, atom.stringValue))
@@ -63,21 +73,12 @@ public struct Tag {
                     metadataList.append(entry)
                 }
             }
-            self.metadata = metadataList
         } else {
-            self.metadata = []
+            metadataList = []
         }
-        
-        if let language = mp4File.language {
-            self.language = language
-        } else {
-            self.language = .unspecified
-        }
-        self.duration = Int(mp4File.duration)
+        return metadataList
     }
-}
 
-extension Tag {
     public mutating func removeAllMetadata() {
         self.metadataAtoms = [:]
     }

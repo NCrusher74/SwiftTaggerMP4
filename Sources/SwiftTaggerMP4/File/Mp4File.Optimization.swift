@@ -110,7 +110,12 @@ extension Mp4File {
     
     func setMetadataAtoms(tag: Tag) throws {
         if tag.metadataAtoms.isEmpty {
-            return
+            if let udta = self.moov.udta, udta.children.count > 1 {
+                udta.meta = nil
+                self.moov.udta = udta
+            } else {
+                self.moov.udta = nil
+            }
         } else {
             var newMetadataAtoms = [Atom]()
             for (_, atom) in tag.metadataAtoms {

@@ -191,12 +191,35 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.duration, 46541824.0)
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 46541824.0)
     }
+    @available(OSX 10.13, *)
+    func testRemoveMetadata() throws {
+        let mp4 = try Mp4File(location: sampleBookCVUrl)
+        var tag = try Tag(mp4File: mp4)
+        print(tag.metadata)
+        XCTAssertEqual(tag.album, "''Frost To-Night''")
+        XCTAssertEqual(tag.title, "FrostTonight_librivox")
+        XCTAssertEqual(tag.artist, "Edith M. Thomas")
+        XCTAssertEqual(tag.customGenre, "Audiobook")
+        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.encodingTool, "Chapter and Verse V 1.5")
+        XCTAssertEqual(tag.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
+        tag.removeAllMetadata()
+        XCTAssertTrue(tag.metadataAtoms.isEmpty)
+        XCTAssertTrue(tag.metadata.isEmpty)
+//        let outputUrl = try localDirectory(fileName: "test-removeMeta", fileExtension: "m4b")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        try mp4.write(tag: tag, to: outputUrl)
+        
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let output = try Tag(mp4File: outputMp4)
+        XCTAssertTrue(output.metadata.isEmpty)
+        XCTAssertTrue(output.metadataAtoms.isEmpty)
+    }
     
     @available(OSX 10.13, *)
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
-        print(tag.metadata)
         XCTAssertEqual(tag.album, "''Frost To-Night''")
         XCTAssertEqual(tag.title, "FrostTonight_librivox")
         XCTAssertEqual(tag.artist, "Edith M. Thomas")
@@ -339,8 +362,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 869018, title: "11 - Read by TP")
         tag.addChapter(startTime: 963007, title: "12 - Read by VB")
         
-        let outputUrl = try localDirectory(fileName: "test", fileExtension: "m4b")
-//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+//        let outputUrl = try localDirectory(fileName: "test", fileExtension: "m4b")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
         try mp4.write(tag: tag, to: outputUrl)
                 
         let outputMp4 = try Mp4File(location: outputUrl)
@@ -493,11 +516,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     }
     
     @available(OSX 10.13, *)
-    func testMp4() throws {
+    func testMetadataOnBlankFile() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)
-        tag.removeAllMetadata()
-        tag.removeAllChapters()
 
         var components = DateComponents()
         var calendar = Calendar(identifier: .iso8601)
@@ -507,105 +528,18 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         components.day = 17
         let date = calendar.date(from: components)
 
-        tag.acknowledgment = "Acknowledgement"
         tag.album = "Album"
-        tag.albumArtist = "Album Artist"
-        tag.albumArtistSort = "Album Artist Sort"
         tag.albumID = 12345678
-        tag.albumSort = "Album Sort"
-        tag.appleStoreCountryID = 23456789
-        tag.arranger = "Arranger"
-        tag.arrangerKeywords = ["Arranger", "Keywords"]
-        tag.artDirector = "Art Director"
         tag.artist = "Artist"
         tag.artistID = 34567890
         tag.artistKeywords = ["Artist", "Keywords"]
         tag.artistSort = "Artist Sort"
-        tag.bpm = 99
-        tag.comment = "Comment"
         tag.compilation = true
-        tag.composer = "Composer"
-        tag.composerID = 45678901
-        tag.composerKeywords = ["Composer", "Keywords"]
-        tag.composerSort = "Composer Sort"
-        tag.conductor = "Conductor"
-        tag.conductorID = 56789012
-        tag.contentRating.contentRating = .au_Movie_G
-        tag.contentRating.ratingNotes = "Rating Notation"
-        tag.rating = .explicit
-        tag.mediaKind = .audiobook
-        tag.copyright = "Copyright"
-        tag.description = "Description"
-        tag.director = "Director"
-        tag.discNumber.disc = 2
-        tag.discNumber.totalDiscs = 3
-        tag.encodedBy = "Encoded By"
-        tag.encodingTool = "Encoding Tool"
-        tag.executiveProducer = "Executive Producer"
-        tag.gaplessPlayback = true
-        tag.customGenre = "Genre"
-        tag.genreID = .audiobooks
-        tag.grouping = "Grouping"
-        tag.information = "Information"
-        tag.isrc = "123456789012"
-        tag.label = "Label"
         tag.language = .english
         tag.duration = 5016
-        tag.linerNotes = "Liner Notes"
-        tag.longDescription = "Long Description"
-        tag.lyricist = "Lyricist"
-        tag.lyrics = "Lyrics"
-        tag.movementName = "Movement"
-        tag.movementCount = 5
-        tag.movementNumber = 4
-        tag.narrator = "Narrator"
-        tag.originalArtist = "Original Artist"
-        tag.owner = "Owner"
-        tag.playlistID = 67890123
-        tag.podcast = true
-        tag.category = "Podcast Category"
-        tag.podcastUrl = "Podcast Feed"
-        tag.podcastID = "Podcast ID"
-        tag.keywords = ["Podcast", "Keywords"]
-        tag.predefinedGenre = .audiobooks
-        tag.producer = "Producer"
-        tag.producerKeywords = ["Producer", "Keywords"]
-        tag.publisher = "Publisher"
-        tag.recordCompanyUrl = "Publisher Webpage"
-        tag.purchaseDate = date
-        tag.recordCompany = "Record Company"
-        tag.recordingCopyright = "Recording Copyright"
-        tag.recordingDate = date
         tag.releaseDate = date
-        tag.requirements = "Requirements"
-        tag.sellerID = "Seller ID"
-        tag.showWorkAndMovement = true
-        tag.softwareVersion = "Software Version"
-        tag.soloist = "Soloist"
-        tag.songDescription = "Song Description"
-        tag.songwriter = "Songwriter"
-        tag.songwriterKeywords = ["Songwriter", "Keywords"]
-        tag.soundEngineer = "Sound Engineer"
-        tag.sourceCredit = "Source Credit"
-        tag.subtitle = "Subtitle"
-        tag.subtitleKeywords = ["Subtitle", "Keywords"]
-        tag.thanks = "Thanks"
-        tag.title = "Title"
-        tag.titleKeywords = ["Title", "Keywords"]
-        tag.titleSort = "Title Sort"
         tag.trackNumber.track = 7
         tag.trackNumber.totalTracks = 8
-        tag.trackSubtitle = "Track Subtitle"
-        tag.tvEpisodeNumber = 9
-        tag.tvEpisodeTitle = "TV Episode Title"
-        tag.tvSeason = 1
-        tag.tvNetwork = "TV Network"
-        tag.tvShow = "TV Show"
-        tag.tvShowDescription = "TV Show Description"
-        tag.tvShowSort = "TV Show Sort"
-        tag.website = "Website"
-        tag.workName = "Work"
-        tag.writer = "Writer"
         tag.year = 1992
 
         tag.addChapter(startTime: 0, title: "Chapter 1")
@@ -614,8 +548,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 2100, title: "Chapter 4")
         tag.addChapter(startTime: 3300, title: "Chapter 5")
         tag.addChapter(startTime: 4600, title: "Chapter 6")
-        
-        let outputUrl = try localDirectory(fileName: "mp4-meta", fileExtension: "m4a")
-        try mp4.write(tag: tag, to: outputUrl)
+
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+//        let outputUrl = try localDirectory(fileName: "mp4-meta", fileExtension: "m4a")
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
     }
 }
