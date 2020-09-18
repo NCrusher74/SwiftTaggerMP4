@@ -37,7 +37,7 @@ class Href: Atom {
         data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
         for child in self.children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

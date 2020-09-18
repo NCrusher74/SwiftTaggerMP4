@@ -66,7 +66,7 @@ class Ac3: Atom {
         data.append(self.samplingRate.beData)
         data.append(Atom.addReserveData(2))
         for child in children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

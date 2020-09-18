@@ -43,7 +43,7 @@ class Dref: Atom {
         // these default values will build a "url " atom identical to what I have found in other files with chapter tracks
         let childPayload = Data(repeating: 0x00, count: 3) + Data(repeating: 0x01, count: 1)
         let child = try DrefSubatom(identifier: "url ", size: 12, payload: childPayload)
-        let childData = child.encode()
+        let childData = child.encode
         
         var payload = Data()
         payload.append(self.version)
@@ -62,7 +62,7 @@ class Dref: Atom {
         data.append(self.flags)
         data.append(self.entryCount.int32.beData)
         for child in self.children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

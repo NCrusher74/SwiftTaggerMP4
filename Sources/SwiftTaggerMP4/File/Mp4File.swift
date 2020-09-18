@@ -52,7 +52,7 @@ public class Mp4File {
         
         var outputData = Data()
         for atom in self.optimizedRoot {
-            outputData.append(atom.encode())
+            outputData.append(atom.encode)
         }
         try outputData.write(to: outputLocation)
     }

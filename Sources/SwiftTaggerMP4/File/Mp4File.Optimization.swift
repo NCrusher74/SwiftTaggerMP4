@@ -89,7 +89,7 @@ extension Mp4File {
             $0.identifier != "wide"})
         var newMediaDataStartingOffset = 8 // to account for mdat size and identifier bytes
         for atom in filteredAtoms {
-            newMediaDataStartingOffset += atom.encode().count
+            newMediaDataStartingOffset += atom.encode.count
         }
         
         // we already know our first offset
@@ -175,7 +175,7 @@ extension Mp4File {
                     $0.identifier != "skip" &&
                     $0.identifier != "wide"})
             for atom in filteredAtoms {
-                offset += atom.encode().count
+                offset += atom.encode.count
             }
             // we still need to add the chunk offset atom, but the starting offset will include the atom itself, which doesn't exist yet, so we need to calculate its size
             // +4 for size, +4 identifier, +4 version and flags +4 entry count

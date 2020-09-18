@@ -71,7 +71,7 @@ class Moov: Atom {
    override var contentData: Data {
         var data = Data()
         for atom in self.sortedAtoms {
-            data.append(atom.encode())
+            data.append(atom.encode)
         }
         return data
     }

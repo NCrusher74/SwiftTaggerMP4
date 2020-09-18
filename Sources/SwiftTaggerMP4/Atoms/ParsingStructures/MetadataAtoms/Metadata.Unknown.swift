@@ -72,9 +72,9 @@ class UnknownMetadataAtom: Atom {
         self.stringValue = stringValue
         
         var payload = Data()
-        payload.append(mean.encode())
-        payload.append(nameAtom.encode())
-        payload.append(dataAtom.encode())
+        payload.append(mean.encode)
+        payload.append(nameAtom.encode)
+        payload.append(dataAtom.encode)
         
         let size = payload.count + 8
         try super.init(identifier: "----",
@@ -106,7 +106,7 @@ class UnknownMetadataAtom: Atom {
    override var contentData: Data {
         var data = Data()
         for atom in self.sortedAtoms {
-            data.append(atom.encode())
+            data.append(atom.encode)
         }
         return data
     }

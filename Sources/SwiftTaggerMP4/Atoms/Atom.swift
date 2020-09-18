@@ -89,7 +89,7 @@ public class Atom {
     }
     
     /// Converts an atom to data for writing to file
-    func encode() -> Data {
+    var encode: Data {
         var data = Data()
         
         let preliminarySize = self.contentData.count + 8        

@@ -37,7 +37,7 @@ class Trak: Atom {
     override var contentData: Data {
         var data = Data()
         for atom in sortedAtoms {
-            let childData = atom.encode()
+            let childData = atom.encode
             data.append(childData)
         }
         return data

@@ -31,7 +31,7 @@ class Ilst: Atom {
     override var contentData: Data {
         var data = Data()
         for child in self.children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }
