@@ -45,7 +45,7 @@ class Odkm: Atom {
         data.append(self.version)
         data.append(self.flags)
         for child in self.children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

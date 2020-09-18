@@ -79,7 +79,7 @@ class PartAndTotalMetadataAtom: Atom {
         }
         let dataAtom = try DataAtom(data: data)
         
-        let payload = dataAtom.encode()
+        let payload = dataAtom.encode
         let size = payload.count + 8
         
         try super.init(identifier: identifier,
@@ -91,7 +91,7 @@ class PartAndTotalMetadataAtom: Atom {
    override var contentData: Data {
         var data = Data()
         for child in children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

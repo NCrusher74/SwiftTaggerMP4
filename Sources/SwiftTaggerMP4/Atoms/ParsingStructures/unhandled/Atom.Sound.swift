@@ -93,7 +93,7 @@ class SoundAtom: Atom {
         }
         data.append(Atom.addReserveData(20))
         for child in children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

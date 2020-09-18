@@ -46,7 +46,7 @@ class Dinf: Atom {
    override var contentData: Data {
         var data = Data()
         for child in children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

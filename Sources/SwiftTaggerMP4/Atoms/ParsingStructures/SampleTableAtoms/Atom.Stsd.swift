@@ -49,7 +49,7 @@ class Stsd: Atom {
         payload.append(self.version)
         payload.append(self.flags)
         payload.append(entryCount.int32.beData)
-        payload.append(child.encode())
+        payload.append(child.encode)
         let size = payload.count + 8
         try super.init(identifier: "stsd",
                        size: size,
@@ -63,7 +63,7 @@ class Stsd: Atom {
         data.append(self.flags)
         data.append(self.entryCount.int32.beData)
         for child in self.children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

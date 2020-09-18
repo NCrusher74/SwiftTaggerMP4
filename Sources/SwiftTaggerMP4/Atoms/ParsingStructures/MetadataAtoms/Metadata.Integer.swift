@@ -83,7 +83,7 @@ class IntegerMetadataAtom: Atom {
             identifier: identifier.rawValue,
             intValue: intValue)
         
-        let payload = dataAtom.encode()
+        let payload = dataAtom.encode
         let size = payload.count + 8
         
         try super.init(identifier: identifier.rawValue,
@@ -95,7 +95,7 @@ class IntegerMetadataAtom: Atom {
     override var contentData: Data {
         var data = Data()
         for child in children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

@@ -69,7 +69,7 @@ class Meta: Atom {
         data.append(self.flags)
         
         for child in self.children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }

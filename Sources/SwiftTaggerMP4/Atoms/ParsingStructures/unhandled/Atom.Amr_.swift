@@ -49,7 +49,7 @@ class Amr: Atom {
         data.append(self.dataReferenceIndex.beData)
         data.append(self.timeScale.beData)
         for child in children {
-            data.append(child.encode())
+            data.append(child.encode)
         }
         return data
     }
