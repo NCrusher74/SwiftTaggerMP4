@@ -7,7 +7,7 @@
 
 import Foundation
 /// A list of internation ratings as recognized by the iTunes store. These may be optionally appended with a string containing notes about the rating.
-public enum ContentRating: String {
+enum ContentRating: String {
     case none = ""
     /// United States - MPAA Movie rating: Not Rated
     case us_Movie_NR = "mpaa|NR|000|"
@@ -315,15 +315,15 @@ public enum ContentRating: String {
     case hk_Movie_400 = "hk-movie|第ii類|400|"
     /// Hong Kong - Movie rating: Unrated
     case hk_Movie_Unrated = "hk-movie|未作評級|???|"
-    /// Czech Republic - Movie rating: U
+    /// Czech Republic- Movie rating: U
     case cz_Movie_U = "cz-movies|U|100|"
-    /// Czech Republic - Movie rating: 12
+    /// Czech Republic- Movie rating: 12
     case cz_Movie_12 = "cz-movies|12+|200|"
-    /// Czech Republic - Movie rating: 15
+    /// Czech Republic- Movie rating: 15
     case cz_Movie_15 = "cz-movies|15+|350|"
-    /// Czech Republic - Movie rating: 18
+    /// Czech Republic- Movie rating: 18
     case cz_Movie_18 = "cz-movies|18+|400|"
-    /// Czech Republic - Movie rating: Unrated
+    /// Czech Republic- Movie rating: Unrated
     case cz_Movie_Unrated = "cz-movies|neklasifikováno|???|"
     /// India - Movie rating: U
     case in_Movie_U = "in-movies|U|000|"

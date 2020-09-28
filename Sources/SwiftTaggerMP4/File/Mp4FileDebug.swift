@@ -10,7 +10,7 @@ import Foundation
 extension Mp4File {
     // MARK: - Debug Description
     // gives a visual representation of the nesting of the actual atoms
-    public var debugDescription: String {
+    var debugDescription: String {
         var atomString = String()
         var offset = Int()
         for atom in rootAtoms { // top level

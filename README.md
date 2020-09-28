@@ -150,6 +150,7 @@ Here's a complete list of the atoms handled by SwiftTaggeMP4:
 *  `grouping = "\u{00A9}grp"`
 *  `information = "\u{00A9}inf"`
 *  `isrc = "\u{00A9}isr"`
+*  `iTunesAccount = "apID"`
 *  `label = "\u{00A9}lab"`
 *  `linerNotes = "\u{00A9}lnt"`
 *  `longDescription = "ldes"`
@@ -201,7 +202,6 @@ Here's a complete list of the atoms handled by SwiftTaggeMP4:
 *  `titleKeywords = "\u{00A9}nak"`
 
 ### Integer Metadata Identifiers
-*  `albumID = "akID"`
 *  `appleStoreCountryID = "sfID"`
 *  `artistID = "atID"`
 *  `bpm = "tmpo"`
@@ -210,6 +210,7 @@ Here's a complete list of the atoms handled by SwiftTaggeMP4:
 *  `conductorID = "cnID"`
 *  `gaplessPlayback = "pgap"`
 *  `genreID = "geID"`
+*  `iTunesAccountType = "akID"`
 *  `mediaType = "stik"`
 *  `movementCount = "\u{00A9}mvc"`
 *  `movementNumber = "\u{00A9}mvi"`

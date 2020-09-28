@@ -8,7 +8,7 @@
 import Foundation
 /// The an enumeration of the data types commonly used in the `data` atom, referred to in Apple documentation as "Well-Known Types": https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW34
 /// This enum is actually an amalgamation of the Apple "Well-Known Types" and Mp4v2's `ItmfBasicType` enum. SwiftTaggerMp4 does not support the more obscure types.
-public enum DataType: Int {
+enum DataType: Int {
     case reserved = 0
     /// Without any count or NULL terminator
     case utf8 = 1

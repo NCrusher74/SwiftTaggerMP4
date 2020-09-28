@@ -9,12 +9,12 @@
 import Foundation
 
 /// Ratings used by iTunes store
-public enum Rating: Int, CaseIterable {
+enum Rating: Int, CaseIterable {
     case none = 0
     case clean = 2
     case explicit = 4
 
-    public var stringValue: String {
+    var stringValue: String {
         switch self {
             case .none: return "None"
             case .explicit: return "Explicit"
@@ -31,7 +31,7 @@ public enum Rating: Int, CaseIterable {
         return mapping
     }()
     
-    public init?(stringValue: String) {
+    init?(stringValue: String) {
         self = Rating.stringMapping[stringValue] ?? .none
     }
 }

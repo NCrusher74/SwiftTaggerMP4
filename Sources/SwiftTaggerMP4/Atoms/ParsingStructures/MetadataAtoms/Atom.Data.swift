@@ -101,7 +101,7 @@ class DataAtom: Atom {
         
         self.locale = Data(repeating: 0x00, count: 4)
         switch identifier {
-            case "rtng", "cpil", "pcst", "stik", "pgap", "shwm":
+            case "rtng", "cpil", "pcst", "stik", "pgap", "shwm", "akID":
                 self.data = intValue.int8.beData
             case "tmpo", "\u{00A9}mvi", "\u{00A9}mvc":
                 self.data = intValue.int16.beData

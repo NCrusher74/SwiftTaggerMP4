@@ -196,7 +196,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     func testRemoveMetadata() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
-        print(tag.metadata)
+        print(tag.metadataAtoms)
         XCTAssertEqual(tag.album, "''Frost To-Night''")
         XCTAssertEqual(tag.title, "FrostTonight_librivox")
         XCTAssertEqual(tag.artist, "Edith M. Thomas")
@@ -206,14 +206,14 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
         tag.removeAllMetadata()
         XCTAssertTrue(tag.metadataAtoms.isEmpty)
-        XCTAssertTrue(tag.metadata.isEmpty)
+        XCTAssertTrue(tag.metadataAtoms.isEmpty)
 //        let outputUrl = try localDirectory(fileName: "test-removeMeta", fileExtension: "m4b")
         let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
         try mp4.write(tag: tag, to: outputUrl)
         
         let outputMp4 = try Mp4File(location: outputUrl)
         let output = try Tag(mp4File: outputMp4)
-        XCTAssertTrue(output.metadata.isEmpty)
+        XCTAssertTrue(output.metadataAtoms.isEmpty)
         XCTAssertTrue(output.metadataAtoms.isEmpty)
     }
     
@@ -240,7 +240,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         tag.acknowledgment = "Acknowledgment"
         tag.album = "Album"
-        tag.albumID = 12345
         tag.albumArtist = "Album Artist"
         tag.albumArtistSort = "Album Artist Sort"
         tag.albumSort = "Album Sort"
@@ -288,6 +287,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.grouping = "Grouping"
         tag.information = "Information"
         tag.isrc = "123456789012"
+        tag.iTunesAccount = "iTunes Account"
+        tag.iTunesAccountType = 123
         tag.keywords = ["Key", "Words"]
         tag.label = "Label"
         tag.linerNotes = "Liner Notes"
@@ -363,8 +364,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 869018, title: "11 - Read by TP")
         tag.addChapter(startTime: 963007, title: "12 - Read by VB")
         
-//        let outputUrl = try localDirectory(fileName: "test", fileExtension: "m4b")
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        let outputUrl = try localDirectory(fileName: "test", fileExtension: "m4b")
+//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
         try mp4.write(tag: tag, to: outputUrl)
                 
         let outputMp4 = try Mp4File(location: outputUrl)
@@ -386,7 +387,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         XCTAssertEqual(output.acknowledgment,"Acknowledgment")
         XCTAssertEqual(output.album,"Album")
-        XCTAssertEqual(output.albumID,12345)
         XCTAssertEqual(output.albumArtist,"Album Artist")
         XCTAssertEqual(output.albumArtistSort,"Album Artist Sort")
         XCTAssertEqual(output.albumSort,"Album Sort")
@@ -434,6 +434,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.grouping,"Grouping")
         XCTAssertEqual(output.information,"Information")
         XCTAssertEqual(output.isrc,"123456789012")
+        XCTAssertEqual(output.iTunesAccount, "iTunes Account")
+        XCTAssertEqual(output.iTunesAccountType,123)
         XCTAssertEqual(output.keywords,["Key", "Words"])
         XCTAssertEqual(output.label,"Label")
         XCTAssertEqual(output.linerNotes,"Liner Notes")
@@ -530,7 +532,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let date = calendar.date(from: components)
 
         tag.album = "Album"
-        tag.albumID = 12345678
+        tag.iTunesAccountType = 12
         tag.artist = "Artist"
         tag.artistID = 34567890
         tag.artistKeywords = ["Artist", "Keywords"]
@@ -550,9 +552,38 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 3300, title: "Chapter 5")
         tag.addChapter(startTime: 4600, title: "Chapter 6")
 
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
-//        let outputUrl = try localDirectory(fileName: "mp4-meta", fileExtension: "m4a")
+//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        let outputUrl = try localDirectory(fileName: "mp4-meta", fileExtension: "m4a")
         XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
+        
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let output = try outputMp4.tag()
+        
+        XCTAssertEqual(output.album, tag.album)
+        XCTAssertEqual(output.iTunesAccountType, tag.iTunesAccountType)
+        XCTAssertEqual(output.artist, tag.artist)
+        XCTAssertEqual(output.artistID, tag.artistID)
+        XCTAssertEqual(output.artistKeywords, tag.artistKeywords)
+        XCTAssertEqual(output.artistSort, tag.artistSort)
+        XCTAssertEqual(output.compilation, tag.compilation)
+        XCTAssertEqual(output.language, tag.language)
+        XCTAssertEqual(output.duration, tag.duration)
+        XCTAssertEqual(output.releaseDate, tag.releaseDate)
+        XCTAssertEqual(output.trackNumber.track, tag.trackNumber.track)
+        XCTAssertEqual(output.trackNumber.track, tag.trackNumber.track)
+        XCTAssertEqual(output.trackNumber.totalTracks, tag.trackNumber.totalTracks)
+        XCTAssertEqual(output.listChapters()[0].startTime, 0)
+        XCTAssertEqual(output.listChapters()[0].title, "Chapter 1")
+        XCTAssertEqual(output.listChapters()[1].startTime, 600)
+        XCTAssertEqual(output.listChapters()[1].title, "Chapter 2")
+        XCTAssertEqual(output.listChapters()[2].startTime, 1300)
+        XCTAssertEqual(output.listChapters()[2].title, "Chapter 3")
+        XCTAssertEqual(output.listChapters()[3].startTime, 2100)
+        XCTAssertEqual(output.listChapters()[3].title, "Chapter 4")
+        XCTAssertEqual(output.listChapters()[4].startTime, 3300)
+        XCTAssertEqual(output.listChapters()[4].title, "Chapter 5")
+        XCTAssertEqual(output.listChapters()[5].startTime, 4600)
+        XCTAssertEqual(output.listChapters()[5].title, "Chapter 6")
     }
     
     @available(OSX 10.13, *)
@@ -565,8 +596,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         try tag.setCoverArt(location: sampleCover)
         XCTAssertNotNil(tag.coverArt)
 
-//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
-        let outputUrl = try localDirectory(fileName: "mp4-covertest", fileExtension: "m4a")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+//        let outputUrl = try localDirectory(fileName: "mp4-covertest", fileExtension: "m4a")
         XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
         
         let output = try Tag(mp4File: try Mp4File(location: outputUrl))

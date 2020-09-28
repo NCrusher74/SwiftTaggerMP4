@@ -10,7 +10,7 @@ import SE0270_RangeSet
 /// Genres list recognized by iTunes store
 /// RawValue is the genreID code
 /// predefinedGenres is the list of genres used in genr atom
-public enum Genre: Int, CaseIterable {
+enum Genre: Int, CaseIterable {
     case unknown = 0
     case musicBlues = 2
     case musicComedy = 3
@@ -2651,7 +2651,7 @@ public enum Genre: Int, CaseIterable {
     case audiobooksErotica = 50000092
     case audiobooksLightNovels = 50000093
     
-    public var predefinedGenres: String {
+    var predefinedGenres: String {
         switch self {
             case .musicBlues : return "Music|Blues"
             case .musicComedy : return "Music|Comedy"
@@ -5345,7 +5345,7 @@ public enum Genre: Int, CaseIterable {
     static let iTunesUSet = RangeSet([
         40000000...40000181].map({ $0.lowerBound ..< $0.upperBound + 1 }))
     
-    public var stik: Stik? {
+    var stik: Stik? {
         if Genre.musicSet.contains(self.rawValue) {
             return .music
         } else if Genre.podcast.contains(self.rawValue) {
@@ -5376,7 +5376,7 @@ public enum Genre: Int, CaseIterable {
         return mapping
     }()
 
-    public init?(genreName: String) {
+    init?(genreName: String) {
         self = Genre.nameMapping[genreName] ?? .unknown
     }
 

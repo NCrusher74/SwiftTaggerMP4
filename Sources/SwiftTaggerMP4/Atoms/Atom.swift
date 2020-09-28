@@ -8,9 +8,9 @@
 import Foundation
 import SwiftConvenienceExtensions
 
-public class Atom {
+class Atom {
     /// The atom's unique four byte identifier
-    public var identifier: String
+    var identifier: String
     /// The byte count of the whole atom, including header data
     var size: Int
     /// The atoms sub-atom content
@@ -86,6 +86,19 @@ public class Atom {
     /// The atom's subatoms or properties as data
     var contentData: Data {
         fatalError("Override contentData in subclass: \(type(of: self)).")
+    }
+    
+    var atomKey: AtomKey {
+        if self.identifier == "----" {
+            if let atom = self as? UnknownMetadataAtom {
+                let name = atom.name
+                return AtomKey(string: self.identifier, name: name)
+            } else {
+                fatalError("Unable to initialize atom key for unknown atom")
+            }
+        } else {
+            return AtomKey(string: self.identifier, name: nil)
+        }
     }
     
     /// Converts an atom to data for writing to file

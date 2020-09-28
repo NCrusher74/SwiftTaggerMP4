@@ -9,9 +9,7 @@ import Foundation
 /// Metadata atom identifiers associated with atoms containing integer content
 ///
 /// "Integer content", for our purposes, also includes boolean values, which are stored as 1 for `true` or 0 for `false`
-public enum IntegerMetadataIdentifier: String {
-    /// The iTunes-store album identifier
-    case albumID = "akID"
+enum IntegerMetadataIdentifier: String {
     /// The country code of the iTunes store
     case appleStoreCountryID = "sfID"
     /// The iTunes-store artist identifier
@@ -28,6 +26,8 @@ public enum IntegerMetadataIdentifier: String {
     case gaplessPlayback = "pgap"
     /// The iTunes-store genre identifier
     case genreID = "geID"
+    /// The iTunes-store account type
+    case iTunesAccountType = "akID"
     /// The total movements in a work
     case movementCount = "\u{00A9}mvc"
     /// The index of a specific movement within a work
@@ -62,7 +62,7 @@ public enum IntegerMetadataIdentifier: String {
 /// - String arrays: Content is stored as strings with components separated by a semi-colon character
 /// - Date values: Content is stored as ISO-8601-compliant strings, if the date can be formatted as such (to ensure proper storage, dates should be formatted using ISO-8601 standards)
 /// - Web urls
-public enum StringMetadataIdentifier: String, CaseIterable {
+enum StringMetadataIdentifier: String, CaseIterable {
     /// Acknowledgments
     case acknowledgment = "\u{00A9}cak"
     /// Album Title
@@ -141,6 +141,8 @@ public enum StringMetadataIdentifier: String, CaseIterable {
     case information = "\u{00A9}inf"
     /// ISRC code
     case isrc = "\u{00A9}isr"
+    /// The iTunes store account
+    case iTunesAccount = "apID"
     /// iTunes podcast keywords
     case keywords = "keyw"
     /// Name of record label

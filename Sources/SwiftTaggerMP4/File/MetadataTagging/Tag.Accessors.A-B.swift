@@ -8,9 +8,9 @@
 import Foundation
 
 extension Tag {
-    public var acknowledgment: String? {
+    var acknowledgment: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.acknowledgment.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.acknowledgment] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -20,19 +20,19 @@ extension Tag {
             if let new = newValue {
                 do {
                 let atom = try StringMetadataAtom(identifier: .acknowledgment, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.acknowledgment.rawValue] = atom
+                    metadataAtoms[.acknowledgment] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.acknowledgment)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.acknowledgment.rawValue] = nil
+                metadataAtoms[.acknowledgment] = nil
             }
         }
     }
     
-    public var album: String? {
+    var album: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.album.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.album] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -42,19 +42,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .album, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.album.rawValue] = atom
+                    metadataAtoms[.album] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.album)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.album.rawValue] = nil
+                metadataAtoms[.album] = nil
             }
         }
     }
 
-    public var albumArtist: String? {
+    var albumArtist: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.albumArtist.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.albumArtist] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -64,19 +64,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .albumArtist, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.albumArtist.rawValue] = atom
+                    metadataAtoms[.albumArtist] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.albumArtist)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.albumArtist.rawValue] = nil
+                metadataAtoms[.albumArtist] = nil
             }
         }
     }
 
-    public var albumArtistSort: String? {
+    var albumArtistSort: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.albumArtistSort.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.albumArtistSort] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -86,19 +86,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .albumArtistSort, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.albumArtistSort.rawValue] = atom
+                    metadataAtoms[.albumArtistSort] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.albumArtistSort)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.albumArtistSort.rawValue] = nil
+                metadataAtoms[.albumArtistSort] = nil
             }
         }
     }
 
-    public var albumSort: String? {
+    var albumSort: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.albumSort.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.albumSort] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -108,19 +108,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .albumSort, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.albumSort.rawValue] = atom
+                    metadataAtoms[.albumSort] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.albumSort)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.albumSort.rawValue] = nil
+                metadataAtoms[.albumSort] = nil
             }
         }
     }
 
-    public var arranger: String? {
+    var arranger: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.arranger.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.arranger] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -130,19 +130,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .arranger, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.arranger.rawValue] = atom
+                    metadataAtoms[.arranger] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.arranger)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.arranger.rawValue] = nil
+                metadataAtoms[.arranger] = nil
             }
         }
     }
     
-    public var arrangerKeywords: [String]? {
+    var arrangerKeywords: [String]? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.arrangerKeywords.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.arrangerKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
             } else {
                 return nil
@@ -152,19 +152,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .arrangerKeywords, stringValue: new.toString)
-                    metadataAtoms[StringMetadataIdentifier.arrangerKeywords.rawValue] = atom
+                    metadataAtoms[.arrangerKeywords] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.arrangerKeywords)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.arrangerKeywords.rawValue] = nil
+                metadataAtoms[.arrangerKeywords] = nil
             }
         }
     }
 
-    public var artDirector: String? {
+    var artDirector: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.artDirector.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.artDirector] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -174,19 +174,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .artDirector, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.artDirector.rawValue] = atom
+                    metadataAtoms[.artDirector] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.artDirector)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.artDirector.rawValue] = nil
+                metadataAtoms[.artDirector] = nil
             }
         }
     }
 
-    public var artist: String? {
+    var artist: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.artist.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.artist] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -196,19 +196,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .artist, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.artist.rawValue] = atom
+                    metadataAtoms[.artist] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.artist)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.artist.rawValue] = nil
+                metadataAtoms[.artist] = nil
             }
         }
     }
 
-    public var artistKeywords: [String]? {
+    var artistKeywords: [String]? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.artistKeywords.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.artistKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
             } else {
                 return nil
@@ -218,19 +218,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .artistKeywords, stringValue: new.toString)
-                    metadataAtoms[StringMetadataIdentifier.artistKeywords.rawValue] = atom
+                    metadataAtoms[.artistKeywords] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.artistKeywords)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.artistKeywords.rawValue] = nil
+                metadataAtoms[.artistKeywords] = nil
             }
         }
     }
 
-    public var artistSort: String? {
+    var artistSort: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.artistSort.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.artistSort] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -240,19 +240,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .artistSort, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.artistSort.rawValue] = atom
+                    metadataAtoms[.artistSort] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.artistSort)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.artistSort.rawValue] = nil
+                metadataAtoms[.artistSort] = nil
             }
         }
     }
     
-    public var artistUrl: String? {
+    var artistUrl: String? {
         get {
-            if let atom = metadataAtoms[StringMetadataIdentifier.artistUrl.rawValue] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.artistUrl] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
                 return nil
@@ -262,41 +262,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try StringMetadataAtom(identifier: .artistUrl, stringValue: new)
-                    metadataAtoms[StringMetadataIdentifier.artistUrl.rawValue] = atom
+                    metadataAtoms[.artistUrl] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.artistUrl)")
                 }
             } else {
-                metadataAtoms[StringMetadataIdentifier.artistUrl.rawValue] = nil
+                metadataAtoms[.artistUrl] = nil
             }
         }
     }
 
-    public var albumID: Int? {
+    var artistID: Int? {
         get {
-            if let atom = metadataAtoms[IntegerMetadataIdentifier.albumID.rawValue] as? IntegerMetadataAtom {
-                return atom.intValue
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                do {
-                    let atom = try IntegerMetadataAtom(identifier: .albumID, intValue: new)
-                    metadataAtoms[IntegerMetadataIdentifier.albumID.rawValue] = atom
-                } catch {
-                    fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.albumID)")
-                }
-            } else {
-                metadataAtoms[IntegerMetadataIdentifier.albumID.rawValue] = nil
-            }
-        }
-    }
-    
-    public var artistID: Int? {
-        get {
-            if let atom = metadataAtoms[IntegerMetadataIdentifier.artistID.rawValue] as? IntegerMetadataAtom {
+            if let atom = metadataAtoms[.artistID] as? IntegerMetadataAtom {
                 return atom.intValue
             } else {
                 return nil
@@ -306,19 +284,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try IntegerMetadataAtom(identifier: .artistID, intValue: new)
-                    metadataAtoms[IntegerMetadataIdentifier.artistID.rawValue] = atom
+                    metadataAtoms[.artistID] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.artistID)")
                 }
             } else {
-                metadataAtoms[IntegerMetadataIdentifier.artistID.rawValue] = nil
+                metadataAtoms[.artistID] = nil
             }
         }
     }
 
-    public var appleStoreCountryID: Int? {
+    var appleStoreCountryID: Int? {
         get {
-            if let atom = metadataAtoms[IntegerMetadataIdentifier.appleStoreCountryID.rawValue] as? IntegerMetadataAtom {
+            if let atom = metadataAtoms[.appleStoreCountryID] as? IntegerMetadataAtom {
                 return atom.intValue
             } else {
                 return nil
@@ -328,19 +306,19 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try IntegerMetadataAtom(identifier: .appleStoreCountryID, intValue: new)
-                    metadataAtoms[IntegerMetadataIdentifier.appleStoreCountryID.rawValue] = atom
+                    metadataAtoms[.appleStoreCountryID] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.appleStoreCountryID)")
                 }
             } else {
-                metadataAtoms[IntegerMetadataIdentifier.appleStoreCountryID.rawValue] = nil
+                metadataAtoms[.appleStoreCountryID] = nil
             }
         }
     }
 
-    public var bpm: Int? {
+    var bpm: Int? {
         get {
-            if let atom = metadataAtoms[IntegerMetadataIdentifier.bpm.rawValue] as? IntegerMetadataAtom {
+            if let atom = metadataAtoms[.bpm] as? IntegerMetadataAtom {
                 return atom.intValue
             } else {
                 return nil
@@ -350,12 +328,12 @@ extension Tag {
             if let new = newValue {
                 do {
                     let atom = try IntegerMetadataAtom(identifier: .bpm, intValue: new)
-                    metadataAtoms[IntegerMetadataIdentifier.bpm.rawValue] = atom
+                    metadataAtoms[.bpm] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.bpm)")
                 }
             } else {
-                metadataAtoms[IntegerMetadataIdentifier.bpm.rawValue] = nil
+                metadataAtoms[.bpm] = nil
             }
         }
     }
