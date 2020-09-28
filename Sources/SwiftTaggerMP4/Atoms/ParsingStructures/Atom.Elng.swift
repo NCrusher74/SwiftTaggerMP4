@@ -41,7 +41,7 @@ class Elng: Atom {
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(locale.rawValue.encodedUtf8WithNullTerminator)
+        payload.append(locale.rawValue.nullTerminatedUtf8)
         
         let size = payload.count + 8
         
@@ -55,7 +55,7 @@ class Elng: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(language.rawValue.encodedUtf8WithNullTerminator)
+    data.append(language.rawValue.nullTerminatedUtf8)
         return data
     }
 }

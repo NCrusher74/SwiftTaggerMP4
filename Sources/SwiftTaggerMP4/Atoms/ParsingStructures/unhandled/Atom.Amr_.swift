@@ -6,7 +6,6 @@
  */
 
 import Foundation
-
 /// A class representing a `amr` atom in an `Mp4File`'s atom structure
 ///
 /// **Not currently implemented**

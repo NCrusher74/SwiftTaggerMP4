@@ -37,7 +37,7 @@ class Hdlr: Atom {
     // we do this here instead of the initializer because we only need to do it if the parent is mdia
     var handlerSubtype: TrackType {
         var type: TrackType = .unknown
-        if let typeString = handlerSubtypeRaw.stringISO88591 {
+        if let typeString = handlerSubtypeRaw.stringISOLatin1 {
             if let trackType = TrackType(rawValue: typeString) {
                 type = trackType
             }
@@ -51,7 +51,7 @@ class Hdlr: Atom {
     // when the parent is meta, the handler subtype becomes the handler type
     var handlerType: HandlerType? {
         var type: HandlerType = .unknown
-        if let typeString = handlerSubtypeRaw.stringISO88591 {
+        if let typeString = handlerSubtypeRaw.stringISOLatin1 {
             if let handlerType = HandlerType(rawValue: typeString) {
                 type = handlerType
             }
