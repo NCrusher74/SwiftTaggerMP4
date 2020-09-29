@@ -5,26 +5,26 @@ import SwiftLanguageAndLocaleCodes
 
 final class SwiftTaggerMP4Tests: XCTestCase {
 
-    func testPrint() throws {
-
-        let path = "/Users/nolainecrusher/Documents/Git/SwiftTagger/Tests/SwiftTaggerTests/TestMedia/mp4-meta.m4a"
-        let url = URL(fileURLWithPath: path)
-        let data = try Data(contentsOf: url)
-//        let data = try Data(contentsOf: sampleBookCVUrl)
-        let range = 000000092504 ..< 000000092529
-        let subdata = data.subdata(in: range)
-        print(subdata.hexadecimal())
-        
-        /*
-         0 0 0 19
-         61 6b 49 44
-         0 0 0 11
-         64 61 74 61
-         0 0 0 15
-         0 0 0 0
-         0
-         */
-    }
+//    func testPrint() throws {
+//
+//        let path = "/Users/nolainecrusher/Documents/Git/SwiftTagger/Tests/SwiftTaggerTests/TestMedia/mp4-meta.m4a"
+//        let url = URL(fileURLWithPath: path)
+//        let data = try Data(contentsOf: url)
+////        let data = try Data(contentsOf: sampleBookCVUrl)
+//        let range = 000000092504 ..< 000000092529
+//        let subdata = data.subdata(in: range)
+//        print(subdata.hexadecimal())
+//        
+//        /*
+//         0 0 0 19
+//         61 6b 49 44
+//         0 0 0 11
+//         64 61 74 61
+//         0 0 0 15
+//         0 0 0 0
+//         0
+//         */
+//    }
     
     @available(OSX 10.13, *)
     func testAddChapter() throws {
@@ -35,7 +35,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 1950, title: "Chapter 03")
         tag.addChapter(startTime: 3800, title: "Chapter 04")
 
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
         
         let knownTitles = ["Chapter 01",
@@ -66,7 +66,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.removeChapter(startTime: 192013)
         tag.removeChapter(startTime: 624020)
 
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4b")
+        let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
         
         let knownTitles = ["01 - \'\'Frost To-Night\'\' - Read by BK",
@@ -102,7 +102,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         var tag = try Tag(mp4File: mp4)
         tag.removeAllChapters()
         
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4b")
+        let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
         let outputMp4 = try Mp4File(location: outputUrl)
         let outputTag = try Tag(mp4File: outputMp4)
@@ -117,7 +117,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     @available(OSX 10.13, *)
     func testChapterOutput() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4b")
+        let outputUrl = tempOutputDirectory
         let sourceTag = try Tag(mp4File: mp4)
         try mp4.write(tag: sourceTag, to: outputUrl)
 
@@ -208,7 +208,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertTrue(tag.metadataAtoms.isEmpty)
         XCTAssertTrue(tag.metadataAtoms.isEmpty)
 //        let outputUrl = try localDirectory(fileName: "test-removeMeta", fileExtension: "m4b")
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
         
         let outputMp4 = try Mp4File(location: outputUrl)
@@ -364,8 +364,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 869018, title: "11 - Read by TP")
         tag.addChapter(startTime: 963007, title: "12 - Read by VB")
         
-        let outputUrl = try localDirectory(fileName: "test", fileExtension: "m4b")
-//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+//        let outputUrl = try localOutputDirectory(<#String#>)
+        let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
                 
         let outputMp4 = try Mp4File(location: outputUrl)
@@ -508,7 +508,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(mp4.language, .english)
         XCTAssertEqual(tag.language, .english)
         tag.language = .englishWorld
-        let outputUrl = try tempDirectory().appendingPathComponent("language-test.m4a")
+        let outputUrl = tempOutputDirectory
 //        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
         try mp4.write(tag: tag, to: outputUrl)
                 
@@ -552,8 +552,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 3300, title: "Chapter 5")
         tag.addChapter(startTime: 4600, title: "Chapter 6")
 
-//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
-        let outputUrl = try localDirectory(fileName: "mp4-meta", fileExtension: "m4a")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory(<#String#>)
         XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
         
         let outputMp4 = try Mp4File(location: outputUrl)
@@ -596,7 +596,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         try tag.setCoverArt(location: sampleCover)
         XCTAssertNotNil(tag.coverArt)
 
-        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+        let outputUrl = tempOutputDirectory
 //        let outputUrl = try localDirectory(fileName: "mp4-covertest", fileExtension: "m4a")
         XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
         

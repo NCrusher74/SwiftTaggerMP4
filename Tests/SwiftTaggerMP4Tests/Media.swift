@@ -10,22 +10,22 @@
 import Foundation
 import SwiftTaggerMP4
 
-let sampleBookCVUrl: URL =
+public let sampleBookCVUrl: URL =
     testMediaDirectory
         .appendingPathComponent("SampleBook")
         .appendingPathExtension("m4b")
 
-let sampleBookSublerUrl: URL =
+public let sampleBookSublerUrl: URL =
     testMediaDirectory
         .appendingPathComponent("mp4_chaptered")
         .appendingPathExtension("m4a")
 
-let sampleNoMeta: URL =
+public let sampleNoMeta: URL =
     testMediaDirectory
         .appendingPathComponent("mp4_nometa")
         .appendingPathExtension("m4a")
 
-let sampleCover: URL =
+public let sampleCover: URL =
     testMediaDirectory
         .appendingPathComponent("samplecover-green")
         .appendingPathExtension("jpg")
@@ -34,28 +34,29 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
 
-@available(OSX 10.13, *)
-func tempDirectory() throws -> URL {
+
+public let tempOutputDirectory: URL = {
     let tempDirectory = FileManager.default.temporaryDirectory
-        .appendingPathComponent("SwiftTaggerTemp",
-                                isDirectory: true)
-    try FileManager.default.createDirectory(
-        at: tempDirectory,
-        withIntermediateDirectories: true)
-    return tempDirectory
-}
+        .appendingPathComponent("SwiftTaggerTemp", isDirectory: true)
+    do {
+        try FileManager.default.createDirectory(
+            at: tempDirectory,
+            withIntermediateDirectories: true)
+        return tempDirectory.appendingPathComponent("test.m4a")
+    } catch {
+        fatalError("Unable to create temporary directory")
+    }
+}()
 
-@available(OSX 10.13, *)
 func emptyDirectory() throws {
-    try FileManager.default.removeItem(at: tempDirectory())
+    try FileManager.default.removeItem(at: tempOutputDirectory)
 }
 
-@available(OSX 10.13, *)
-func localDirectory(fileName: String, fileExtension: String) throws -> URL {
+/// Creates the test file on the desktop in the directory `TestOutput`
+public func localOutputDirectory(_ fileName: String) throws -> URL {
     let home = FileManager.default.homeDirectoryForCurrentUser
     let desktopPath = "Desktop/TestOutput"
-    try FileManager.default.createDirectory(
-        at: home.appendingPathComponent(desktopPath, isDirectory: true),
-        withIntermediateDirectories: true)
-    return home.appendingPathComponent(desktopPath, isDirectory: true).appendingPathComponent(fileName).appendingPathExtension(fileExtension)
+    let directory = home.appendingPathComponent(
+        desktopPath, isDirectory: true)
+    return directory.appendingPathComponent(fileName).appendingPathExtension("m4a")
 }

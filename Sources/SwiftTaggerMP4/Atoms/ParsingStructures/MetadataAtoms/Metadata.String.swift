@@ -38,19 +38,19 @@ class StringMetadataAtom: Atom {
             } else if dataAtom.dataType == .utf16 || dataAtom.dataType == .utf16Sort {
                 self.stringValue = String(data: dataAtom.data, encoding: .utf16) ?? ""
             } else if dataAtom.dataType == .signedInt8 {
-                let int = dataAtom.data.int8BE.toInt
+                let int = dataAtom.data.int8BE.int
                 self.stringValue = String(int)
             } else if dataAtom.dataType == .signedInt16BE {
-                let int = dataAtom.data.int16BE.toInt
+                let int = dataAtom.data.int16BE.int
                 self.stringValue = String(int)
             } else if dataAtom.dataType == .signedInt32BE {
-                let int = dataAtom.data.int32BE.toInt
+                let int = dataAtom.data.int32BE.int
                 self.stringValue = String(int)
             } else if dataAtom.dataType == .signedInt64BE {
-                let int = dataAtom.data.int64BE.toInt
+                let int = dataAtom.data.int64BE.int
                 self.stringValue = String(int)
             } else if dataAtom.dataType == .signedIntBE {
-                let int = dataAtom.data.toIntBE
+                let int = dataAtom.data.intBE
                 self.stringValue = String(int)
             } else {
                 throw MetadataAtomError.UnsupportedMetadataFormat("UnsupportedMetadataAtomError on atom with identifier \(identifier)")

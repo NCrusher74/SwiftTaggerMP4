@@ -28,11 +28,11 @@ class Mdhd: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
         if self.version.int8BE == 0x01 {
-            self.creationTime = data.extractFirst(8).int64BE.toInt
-            self.modificationTime = data.extractFirst(8).int64BE.toInt
+            self.creationTime = data.extractFirst(8).int64BE.int
+            self.modificationTime = data.extractFirst(8).int64BE.int
         } else {
-            self.creationTime = data.extractFirst(4).int32BE.toInt
-            self.modificationTime = data.extractFirst(4).int32BE.toInt
+            self.creationTime = data.extractFirst(4).int32BE.int
+            self.modificationTime = data.extractFirst(4).int32BE.int
         }
         self.timeScale = data.extractToDouble(4)
         if self.version.int8BE == 0x01 {

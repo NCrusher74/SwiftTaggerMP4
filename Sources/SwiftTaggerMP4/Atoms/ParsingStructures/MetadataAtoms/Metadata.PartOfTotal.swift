@@ -37,20 +37,20 @@ class PartAndTotalMetadataAtom: Atom {
                 let partOut = partIn + 2
                 let partRange = partIn ..< partOut
                 let partData = data.subdata(in: partRange)
-                self.part = partData.int16BE.toInt
+                self.part = partData.int16BE.int
                 
                 let totalIn = partOut
                 let totalOut = totalIn + 2
                 let totalRange = totalIn ..< totalOut
                 let totalData = data.subdata(in: totalRange)
-                self.total = totalData.int16BE.toInt
+                self.total = totalData.int16BE.int
             // if the array is only 4 bytes, it likely only contains the part data
             } else if data.count >= 4 && data.count < 6 {
                 let partIn = data.startIndex + 2
                 let partOut = partIn + 2
                 let partRange = partIn ..< partOut
                 let partData = data.subdata(in: partRange)
-                self.part = partData.int16BE.toInt
+                self.part = partData.int16BE.int
                 self.total = nil
             } else {
                 self.part = 0

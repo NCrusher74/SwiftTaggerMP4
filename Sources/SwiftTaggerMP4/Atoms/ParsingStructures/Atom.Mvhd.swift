@@ -63,7 +63,7 @@ class Mvhd: Atom {
         self.selectionTime = data.extractFirst(4).int32BE
         self.selectionDuration = data.extractFirst(4).int32BE
         self.currentTime = data.extractFirst(4).int32BE
-        self.nextTrackID = data.extractFirst(4).int32BE.toInt
+        self.nextTrackID = data.extractFirst(4).int32BE.int
         
         try super.init(identifier: identifier, size: size, payload: payload)
     }
