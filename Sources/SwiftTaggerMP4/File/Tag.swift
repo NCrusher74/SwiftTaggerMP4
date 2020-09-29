@@ -10,13 +10,13 @@ import Cocoa
 import SwiftLanguageAndLocaleCodes
 
 public struct Tag {
-    var metadataAtoms: [AtomKey: Atom]
-    var language: ICULocaleCode
-    var duration: Int
+    public var metadataAtoms: [AtomKey: Atom]
+    public var language: ICULocaleCode
+    public var duration: Int
     var chapterHandler: ChapterHandler
     
     @available(OSX 10.12, *)
-    init(mp4File: Mp4File) throws {
+    public init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
         let data = mp4File.data
         self.chapterHandler = try ChapterHandler(
@@ -80,7 +80,7 @@ extension Tag {
 //        return metadataList
 //    }
 
-    mutating func removeAllMetadata() {
+    public mutating func removeAllMetadata() {
         self.metadataAtoms = [:]
     }
     

@@ -43,12 +43,12 @@ public class Mp4File {
     }
     
     @available(OSX 10.12, *)
-    func tag() throws -> Tag {
+    public func tag() throws -> Tag {
         return try Tag(mp4File: self)
     }
     
     @available(OSX 10.12, *)
-    func write(tag: Tag, to outputLocation: URL) throws {
+    public func write(tag: Tag, to outputLocation: URL) throws {
         let mediaData = try self.getMediaData()
         try setMetadataAtoms(tag: tag)
         setLanguage(tag: tag)
