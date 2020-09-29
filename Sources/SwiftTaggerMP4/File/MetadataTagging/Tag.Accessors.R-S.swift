@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var rating: Rating? {
+    public var rating: Rating? {
         get {
             if let atom = metadataAtoms[.rating] as? IntegerMetadataAtom {
                 return Rating(rawValue: atom.intValue)
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var showWorkAndMovement: Bool? {
+    public var showWorkAndMovement: Bool? {
         get {
             if let atom = metadataAtoms[.showWorkAndMovement] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -61,7 +61,7 @@ extension Tag {
     }
     
     @available(OSX 10.12, *)
-    var recordingDate: Date? {
+    public var recordingDate: Date? {
         get {
             if let atom = metadataAtoms[.recordingDate] as? StringMetadataAtom {
                 
@@ -97,7 +97,7 @@ extension Tag {
     }
 
     @available(OSX 10.12, *)
-    var releaseDate: Date? {
+    public var releaseDate: Date? {
         get {
             if let atom = metadataAtoms[.releaseDate] as? StringMetadataAtom {
                 
@@ -132,7 +132,7 @@ extension Tag {
         }
     }
 
-    var songwriterKeywords: [String]? {
+    public var songwriterKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.songwriterKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -154,7 +154,7 @@ extension Tag {
         }
     }
     
-    var subtitleKeywords: [String]? {
+    public var subtitleKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.subtitleKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -176,7 +176,7 @@ extension Tag {
         }
     }
     
-    var recordCompany: String? {
+    public var recordCompany: String? {
         get {
             if let atom = metadataAtoms[.recordCompany] as? StringMetadataAtom {
                 return atom.stringValue
@@ -198,7 +198,7 @@ extension Tag {
         }
     }
     
-    var recordCompanyUrl: String? {
+    public var recordCompanyUrl: String? {
         get {
             if let atom = metadataAtoms[.recordCompanyUrl] as? StringMetadataAtom {
                 return atom.stringValue
@@ -220,7 +220,7 @@ extension Tag {
         }
     }
     
-    var recordingCopyright: String? {
+    public var recordingCopyright: String? {
         get {
             if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom {
                 return atom.stringValue
@@ -242,7 +242,7 @@ extension Tag {
         }
     }
     
-    var requirements: String? {
+    public var requirements: String? {
         get {
             if let atom = metadataAtoms[.requirements] as? StringMetadataAtom {
                 return atom.stringValue
@@ -264,7 +264,7 @@ extension Tag {
         }
     }
     
-    var sellerID: String? {
+    public var sellerID: String? {
         get {
             if let atom = metadataAtoms[.sellerID] as? StringMetadataAtom {
                 return atom.stringValue
@@ -286,7 +286,7 @@ extension Tag {
         }
     }
     
-    var soundEngineer: String? {
+    public var soundEngineer: String? {
         get {
             if let atom = metadataAtoms[.soundEngineer] as? StringMetadataAtom {
                 return atom.stringValue
@@ -308,7 +308,7 @@ extension Tag {
         }
     }
     
-    var softwareVersion: String? {
+    public var softwareVersion: String? {
         get {
             if let atom = metadataAtoms[.softwareVersion] as? StringMetadataAtom {
                 return atom.stringValue
@@ -330,7 +330,7 @@ extension Tag {
         }
     }
     
-    var soloist: String? {
+    public var soloist: String? {
         get {
             if let atom = metadataAtoms[.soloist] as? StringMetadataAtom {
                 return atom.stringValue
@@ -352,7 +352,7 @@ extension Tag {
         }
     }
     
-    var songDescription: String? {
+    public var songDescription: String? {
         get {
             if let atom = metadataAtoms[.songDescription] as? StringMetadataAtom {
                 return atom.stringValue
@@ -374,7 +374,7 @@ extension Tag {
         }
     }
     
-    var songwriter: String? {
+    public var songwriter: String? {
         get {
             if let atom = metadataAtoms[.songwriter] as? StringMetadataAtom {
                 return atom.stringValue
@@ -396,7 +396,7 @@ extension Tag {
         }
     }
 
-    var sourceCredit: String? {
+    public var sourceCredit: String? {
         get {
             if let atom = metadataAtoms[.sourceCredit] as? StringMetadataAtom {
                 return atom.stringValue
@@ -418,7 +418,7 @@ extension Tag {
         }
     }
     
-    var subtitle: String? {
+    public var subtitle: String? {
         get {
             if let atom = metadataAtoms[.subtitle] as? StringMetadataAtom {
                 return atom.stringValue

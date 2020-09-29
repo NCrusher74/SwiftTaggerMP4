@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 import SwiftLanguageAndLocaleCodes
 
-struct Tag {
+public struct Tag {
     var metadataAtoms: [AtomKey: Atom]
     var language: ICULocaleCode
     var duration: Int
@@ -84,7 +84,7 @@ extension Tag {
         self.metadataAtoms = [:]
     }
     
-    var coverArt: NSImage? {
+    public var coverArt: NSImage? {
         if let atom = metadataAtoms[.coverArt] as? ImageMetadataAtom {
             return atom.image
         } else {
@@ -92,16 +92,16 @@ extension Tag {
         }
     }
     
-    mutating func setCoverArt(location imageLocation: URL) throws {
+    public mutating func setCoverArt(location imageLocation: URL) throws {
         let atom = try ImageMetadataAtom(imageLocation: imageLocation)
         metadataAtoms[.coverArt] = atom
     }
     
-    mutating func removeCoverArt() throws {
+    public mutating func removeCoverArt() throws {
         metadataAtoms[.coverArt] = nil
     }
     
-    subscript(_ description: String?) -> String? {
+    public subscript(_ description: String?) -> String? {
         get {
             if let atom = self.metadataAtoms[.unknown(description ?? "")] as? UnknownMetadataAtom {
                 return atom.stringValue

@@ -9,7 +9,7 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 /// A type representing an audio file stored locally
-class Mp4File {
+public class Mp4File {
     var rootAtoms: [Atom]
     var data: Data
     static var use64BitOffset: Bool = false
@@ -17,7 +17,7 @@ class Mp4File {
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
     @available(OSX 10.12, *)
-    init(location: URL) throws {
+    public init(location: URL) throws {
         let validExtensions = ["mp4", "m4a", "m4b", "aac", "m4r", "m4p", "aax"]
         if validExtensions.contains(
             location.pathExtension.lowercased()) {
@@ -75,7 +75,7 @@ class Mp4File {
     }
     
     /// The array of root atoms, arranged to preserve media offsets
-    var optimizedRoot: [Atom] {
+    private var optimizedRoot: [Atom] {
         var rearrangedAtoms = self.rootAtoms
         rearrangedAtoms.sort(
             by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }

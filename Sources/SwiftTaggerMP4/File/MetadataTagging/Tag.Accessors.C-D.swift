@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var category: String? {
+    public var category: String? {
         get {
             if let atom = metadataAtoms[.category] as? StringMetadataAtom {
                 return atom.stringValue
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var comment: String? {
+    public var comment: String? {
         get {
             if let atom = metadataAtoms[.comment] as? StringMetadataAtom {
                 return atom.stringValue
@@ -51,7 +51,7 @@ extension Tag {
         }
     }
     
-    var compilation: Bool? {
+    public var compilation: Bool? {
         get {
             if let atom = metadataAtoms[.compilation] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -82,7 +82,7 @@ extension Tag {
         }
     }
     
-    var composer: String? {
+    public var composer: String? {
         get {
             if let atom = metadataAtoms[.composer] as? StringMetadataAtom {
                 return atom.stringValue
@@ -104,7 +104,7 @@ extension Tag {
         }
     }
     
-    var composerID: Int? {
+    public var composerID: Int? {
         get {
             if let atom = metadataAtoms[.composerID] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -126,7 +126,7 @@ extension Tag {
         }
     }
     
-    var composerKeywords: [String]? {
+    public var composerKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.composerKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -148,7 +148,7 @@ extension Tag {
         }
     }
 
-    var composerSort: String? {
+    public var composerSort: String? {
         get {
             if let atom = metadataAtoms[.composerSort] as? StringMetadataAtom {
                 return atom.stringValue
@@ -170,7 +170,7 @@ extension Tag {
         }
     }
     
-    var conductor: String? {
+    public var conductor: String? {
         get {
             if let atom = metadataAtoms[.conductor] as? StringMetadataAtom {
                 return atom.stringValue
@@ -192,7 +192,7 @@ extension Tag {
         }
     }
     
-    var conductorID: Int? {
+    public var conductorID: Int? {
         get {
             if let atom = metadataAtoms[.conductorID] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -214,7 +214,7 @@ extension Tag {
         }
     }
     
-    var contentRating: (contentRating: ContentRating, ratingNotes: String?) {
+    public var contentRating: (contentRating: ContentRating, ratingNotes: String?) {
         get {
             if let ratingString = self["iTunEXTC"] {
                 let components: [String] = ratingString.components(separatedBy: "|")
@@ -246,7 +246,7 @@ extension Tag {
         }
     }
     
-    var copyright: String? {
+    public var copyright: String? {
         get {
             if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
                 return atom.stringValue
@@ -268,7 +268,7 @@ extension Tag {
         }
     }
     
-    var copyrightStatement: String? {
+    public var copyrightStatement: String? {
         get {
             if let atom = metadataAtoms[.copyrightStatement] as? StringMetadataAtom {
                 return atom.stringValue
@@ -290,7 +290,7 @@ extension Tag {
         }
     }
     
-    var customGenre: String? {
+    public var customGenre: String? {
         get {
             if let atom = metadataAtoms[.customGenre] as? StringMetadataAtom {
                 return atom.stringValue
@@ -312,7 +312,7 @@ extension Tag {
         }
     }
     
-    var description: String? {
+    public var description: String? {
         get {
             if let atom = metadataAtoms[.description] as? StringMetadataAtom {
                 return atom.stringValue
@@ -334,7 +334,7 @@ extension Tag {
         }
     }
     
-    var director: String? {
+    public var director: String? {
         get {
             if let atom = metadataAtoms[.director] as? StringMetadataAtom {
                 return atom.stringValue
@@ -356,7 +356,7 @@ extension Tag {
         }
     }
     
-    var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             if let atom = metadataAtoms[.discNumber] as? PartAndTotalMetadataAtom {
                 return (atom.part, atom.total)

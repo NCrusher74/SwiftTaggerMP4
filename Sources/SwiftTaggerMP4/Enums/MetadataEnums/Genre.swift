@@ -10,7 +10,7 @@ import SE0270_RangeSet
 /// Genres list recognized by iTunes store
 /// RawValue is the genreID code
 /// predefinedGenres is the list of genres used in genr atom
-enum Genre: Int, CaseIterable {
+public enum Genre: Int, CaseIterable {
     case unknown = 0
     case musicBlues = 2
     case musicComedy = 3
@@ -2651,7 +2651,7 @@ enum Genre: Int, CaseIterable {
     case audiobooksErotica = 50000092
     case audiobooksLightNovels = 50000093
     
-    var predefinedGenres: String {
+    public var predefinedGenre: String {
         switch self {
             case .musicBlues : return "Music|Blues"
             case .musicComedy : return "Music|Comedy"
@@ -5367,16 +5367,16 @@ enum Genre: Int, CaseIterable {
         }
     }
     
-    static let nameMapping: [String: Genre] = {
+    private static let nameMapping: [String: Genre] = {
         var mapping: [String: Genre] = [:]
         for genre in Genre.allCases {
-            let name = genre.predefinedGenres
+            let name = genre.predefinedGenre
             mapping[name] = genre
         }
         return mapping
     }()
 
-    init?(genreName: String) {
+    public init?(genreName: String) {
         self = Genre.nameMapping[genreName] ?? .unknown
     }
 

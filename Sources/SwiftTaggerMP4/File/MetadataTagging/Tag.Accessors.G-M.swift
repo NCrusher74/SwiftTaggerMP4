@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var grouping: String? {
+    public var grouping: String? {
         get {
             if let atom = metadataAtoms[.grouping] as? StringMetadataAtom {
                 return atom.stringValue
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var information: String? {
+    public var information: String? {
         get {
             if let atom = metadataAtoms[.information] as? StringMetadataAtom {
                 return atom.stringValue
@@ -51,7 +51,7 @@ extension Tag {
         }
     }
     
-    var isrc: String? {
+    public var isrc: String? {
         get {
             if let atom = metadataAtoms[.isrc] as? StringMetadataAtom {
                 return atom.stringValue
@@ -73,7 +73,7 @@ extension Tag {
         }
     }
     
-    var iTunesAccount: String? {
+    public var iTunesAccount: String? {
         get {
             if let atom = metadataAtoms[.iTunesAccount] as? StringMetadataAtom {
                 return atom.stringValue
@@ -95,7 +95,7 @@ extension Tag {
         }
     }
     
-    var label: String? {
+    public var label: String? {
         get {
             if let atom = metadataAtoms[.label] as? StringMetadataAtom {
                 return atom.stringValue
@@ -117,7 +117,7 @@ extension Tag {
         }
     }
     
-    var labelUrl: String? {
+    public var labelUrl: String? {
         get {
             if let atom = metadataAtoms[.labelUrl] as? StringMetadataAtom {
                 return atom.stringValue
@@ -139,7 +139,7 @@ extension Tag {
         }
     }
 
-    var linerNotes: String? {
+    public var linerNotes: String? {
         get {
             if let atom = metadataAtoms[.linerNotes] as? StringMetadataAtom {
                 return atom.stringValue
@@ -161,7 +161,7 @@ extension Tag {
         }
     }
     
-    var longDescription: String? {
+    public var longDescription: String? {
         get {
             if let atom = metadataAtoms[.longDescription] as? StringMetadataAtom {
                 return atom.stringValue
@@ -183,7 +183,7 @@ extension Tag {
         }
     }
     
-    var lyricist: String? {
+    public var lyricist: String? {
         get {
             if let atom = metadataAtoms[.lyricist] as? StringMetadataAtom {
                 return atom.stringValue
@@ -205,7 +205,7 @@ extension Tag {
         }
     }
     
-    var lyrics: String? {
+    public var lyrics: String? {
         get {
             if let atom = metadataAtoms[.lyrics] as? StringMetadataAtom {
                 return atom.stringValue
@@ -227,7 +227,7 @@ extension Tag {
         }
     }
     
-    var keywords: [String]? {
+    public var keywords: [String]? {
         get {
             if let atom = metadataAtoms[.keywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -249,7 +249,7 @@ extension Tag {
         }
     }
     
-    var gaplessPlayback: Bool? {
+    public var gaplessPlayback: Bool? {
         get {
             if let atom = metadataAtoms[.gaplessPlayback] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -281,7 +281,7 @@ extension Tag {
     }
     
     /// Records the genre as a numeric code
-    var genreID: Genre? {
+    public var genreID: Genre? {
         get {
             if let atom = metadataAtoms[.genreID] as? IntegerMetadataAtom {
                 return Genre(rawValue: atom.intValue)
@@ -303,7 +303,7 @@ extension Tag {
         }
     }
     
-    var iTunesAccountType: Int? {
+    public var iTunesAccountType: Int? {
         get {
             if let atom = metadataAtoms[.iTunesAccountType] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -325,7 +325,7 @@ extension Tag {
         }
     }
     
-    var movementNumber: Int? {
+    public var movementNumber: Int? {
         get {
             if let atom = metadataAtoms[.movementNumber] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -347,7 +347,7 @@ extension Tag {
         }
     }
     
-    var movementCount: Int? {
+    public var movementCount: Int? {
         get {
             if let atom = metadataAtoms[.movementCount] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -370,7 +370,7 @@ extension Tag {
     }
     
     /// Records the mediaKind aka stik as a numeric code
-    var mediaKind: Stik? {
+    public var mediaKind: Stik? {
         get {
             if let atom = metadataAtoms[.mediaKind] as? IntegerMetadataAtom {
                 return Stik(rawValue: atom.intValue)
@@ -392,7 +392,7 @@ extension Tag {
         }
     }
     
-    var movementName: String? {
+    public var movementName: String? {
         get {
             if let atom = metadataAtoms[.movementName] as? StringMetadataAtom {
                 return atom.stringValue

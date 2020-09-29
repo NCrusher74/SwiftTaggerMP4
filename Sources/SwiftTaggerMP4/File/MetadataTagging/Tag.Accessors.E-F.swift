@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var editDateAndDescription1: String? {
+    public var editDateAndDescription1: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription1] as? StringMetadataAtom {
                 return atom.stringValue
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription2: String? {
+    public var editDateAndDescription2: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription2] as? StringMetadataAtom {
                 return atom.stringValue
@@ -51,7 +51,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription3: String? {
+    public var editDateAndDescription3: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription3] as? StringMetadataAtom {
                 return atom.stringValue
@@ -73,7 +73,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription4: String? {
+    public var editDateAndDescription4: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription4] as? StringMetadataAtom {
                 return atom.stringValue
@@ -95,7 +95,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription5: String? {
+    public var editDateAndDescription5: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription5] as? StringMetadataAtom {
                 return atom.stringValue
@@ -117,7 +117,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription6: String? {
+    public var editDateAndDescription6: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription6] as? StringMetadataAtom {
                 return atom.stringValue
@@ -139,7 +139,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription7: String? {
+    public var editDateAndDescription7: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription7] as? StringMetadataAtom {
                 return atom.stringValue
@@ -161,7 +161,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription8: String? {
+    public var editDateAndDescription8: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription8] as? StringMetadataAtom {
                 return atom.stringValue
@@ -183,7 +183,7 @@ extension Tag {
         }
     }
     
-    var editDateAndDescription9: String? {
+    public var editDateAndDescription9: String? {
         get {
             if let atom = metadataAtoms[.editDateAndDescription9] as? StringMetadataAtom {
                 return atom.stringValue
@@ -205,7 +205,7 @@ extension Tag {
         }
     }
     
-    var encodedBy: String? {
+    public var encodedBy: String? {
         get {
             if let atom = metadataAtoms[.encodedBy] as? StringMetadataAtom {
                 return atom.stringValue
@@ -227,7 +227,7 @@ extension Tag {
         }
     }
     
-    var encodingTool: String? {
+    public var encodingTool: String? {
         get {
             if let atom = metadataAtoms[.encodingTool] as? StringMetadataAtom {
                 return atom.stringValue
@@ -249,7 +249,7 @@ extension Tag {
         }
     }
     
-    var executiveProducer: String? {
+    public var executiveProducer: String? {
         get {
             if let atom = metadataAtoms[.executiveProducer] as? StringMetadataAtom {
                 return atom.stringValue
@@ -271,7 +271,7 @@ extension Tag {
         }
     }
     
-    var format: String? {
+    public var format: String? {
         get {
             if let atom = metadataAtoms[.format] as? StringMetadataAtom {
                 return atom.stringValue

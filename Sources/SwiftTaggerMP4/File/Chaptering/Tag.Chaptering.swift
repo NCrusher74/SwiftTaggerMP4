@@ -12,7 +12,7 @@ extension Tag {
     /// Returns an array of `(startTime, title)` tuples
     /// `startTime`: The chapter's start time, in milliseconds
     /// `title`: The chapter's title
-    func listChapters() -> [(startTime: Int, title: String)] {
+    public func listChapters() -> [(startTime: Int, title: String)] {
         var chaptersArray = [(Int, String)]()
         let chapterHandler = self.chapterHandler
         let chapters = chapterHandler.sortedChapters()
@@ -30,7 +30,7 @@ extension Tag {
     /// - Parameters:
     ///  - startTime: The chapter start in milliseconds
     ///  - title: The chapter title
-    mutating func addChapter(startTime: Int, title: String) {
+    public mutating func addChapter(startTime: Int, title: String) {
         // get the old chapters dictionary
         var chapters = chapterHandler.chapters
         let newChapter = ChapterHandler.Chapter(title: title)
@@ -43,12 +43,12 @@ extension Tag {
     /// Removes the chapter at the specified start time.
     /// - Parameters:
     ///  - startTime: The chapter start in milliseconds
-    mutating func removeChapter(startTime: Int) {
+    public mutating func removeChapter(startTime: Int) {
         self.chapterHandler.chapters[startTime] = nil
     }
     
     /// Removes all chapters.
-    mutating func removeAllChapters() {
+    public mutating func removeAllChapters() {
         self.chapterHandler.chapters = [:]
     }
 }

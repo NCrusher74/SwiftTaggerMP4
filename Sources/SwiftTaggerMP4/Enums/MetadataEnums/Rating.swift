@@ -9,12 +9,12 @@
 import Foundation
 
 /// Ratings used by iTunes store
-enum Rating: Int, CaseIterable {
+public enum Rating: Int, CaseIterable {
     case none = 0
     case clean = 2
     case explicit = 4
 
-    var stringValue: String {
+    public var stringValue: String {
         switch self {
             case .none: return "None"
             case .explicit: return "Explicit"
@@ -22,7 +22,7 @@ enum Rating: Int, CaseIterable {
         }
     }
     
-    static let stringMapping: [String: Rating] = {
+    private static let stringMapping: [String: Rating] = {
         var mapping: [String: Rating] = [:]
         for rating in Rating.allCases {
             let name = rating.stringValue
@@ -31,7 +31,7 @@ enum Rating: Int, CaseIterable {
         return mapping
     }()
     
-    init?(stringValue: String) {
+    public init?(stringValue: String) {
         self = Rating.stringMapping[stringValue] ?? .none
     }
 }

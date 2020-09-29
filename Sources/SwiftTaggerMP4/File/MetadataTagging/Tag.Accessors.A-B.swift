@@ -8,7 +8,7 @@
 import Foundation
 
 extension Tag {
-    var acknowledgment: String? {
+    public var acknowledgment: String? {
         get {
             if let atom = metadataAtoms[.acknowledgment] as? StringMetadataAtom {
                 return atom.stringValue
@@ -30,7 +30,7 @@ extension Tag {
         }
     }
     
-    var album: String? {
+    public var album: String? {
         get {
             if let atom = metadataAtoms[.album] as? StringMetadataAtom {
                 return atom.stringValue
@@ -52,7 +52,7 @@ extension Tag {
         }
     }
 
-    var albumArtist: String? {
+    public var albumArtist: String? {
         get {
             if let atom = metadataAtoms[.albumArtist] as? StringMetadataAtom {
                 return atom.stringValue
@@ -74,7 +74,7 @@ extension Tag {
         }
     }
 
-    var albumArtistSort: String? {
+    public var albumArtistSort: String? {
         get {
             if let atom = metadataAtoms[.albumArtistSort] as? StringMetadataAtom {
                 return atom.stringValue
@@ -96,7 +96,7 @@ extension Tag {
         }
     }
 
-    var albumSort: String? {
+    public var albumSort: String? {
         get {
             if let atom = metadataAtoms[.albumSort] as? StringMetadataAtom {
                 return atom.stringValue
@@ -118,7 +118,7 @@ extension Tag {
         }
     }
 
-    var arranger: String? {
+    public var arranger: String? {
         get {
             if let atom = metadataAtoms[.arranger] as? StringMetadataAtom {
                 return atom.stringValue
@@ -140,7 +140,7 @@ extension Tag {
         }
     }
     
-    var arrangerKeywords: [String]? {
+    public var arrangerKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.arrangerKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -162,7 +162,7 @@ extension Tag {
         }
     }
 
-    var artDirector: String? {
+    public var artDirector: String? {
         get {
             if let atom = metadataAtoms[.artDirector] as? StringMetadataAtom {
                 return atom.stringValue
@@ -184,7 +184,7 @@ extension Tag {
         }
     }
 
-    var artist: String? {
+    public var artist: String? {
         get {
             if let atom = metadataAtoms[.artist] as? StringMetadataAtom {
                 return atom.stringValue
@@ -206,7 +206,7 @@ extension Tag {
         }
     }
 
-    var artistKeywords: [String]? {
+    public var artistKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.artistKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -228,7 +228,7 @@ extension Tag {
         }
     }
 
-    var artistSort: String? {
+    public var artistSort: String? {
         get {
             if let atom = metadataAtoms[.artistSort] as? StringMetadataAtom {
                 return atom.stringValue
@@ -250,7 +250,7 @@ extension Tag {
         }
     }
     
-    var artistUrl: String? {
+    public var artistUrl: String? {
         get {
             if let atom = metadataAtoms[.artistUrl] as? StringMetadataAtom {
                 return atom.stringValue
@@ -272,7 +272,7 @@ extension Tag {
         }
     }
 
-    var artistID: Int? {
+    public var artistID: Int? {
         get {
             if let atom = metadataAtoms[.artistID] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -294,7 +294,7 @@ extension Tag {
         }
     }
 
-    var appleStoreCountryID: Int? {
+    public var appleStoreCountryID: Int? {
         get {
             if let atom = metadataAtoms[.appleStoreCountryID] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -316,7 +316,7 @@ extension Tag {
         }
     }
 
-    var bpm: Int? {
+    public var bpm: Int? {
         get {
             if let atom = metadataAtoms[.bpm] as? IntegerMetadataAtom {
                 return atom.intValue

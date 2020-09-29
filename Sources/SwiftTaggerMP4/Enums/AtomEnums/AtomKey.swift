@@ -6,7 +6,7 @@
 //
 
 import Foundation
-enum AtomKey: Hashable {
+public enum AtomKey: Hashable {
     /// The country code of the iTunes store
     case appleStoreCountryID
     /// The iTunes-store artist identifier

@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var title: String? {
+    public var title: String? {
         get {
             if let atom = metadataAtoms[.title] as? StringMetadataAtom {
                 return atom.stringValue
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var titleKeywords: [String]? {
+    public var titleKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.titleKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -51,7 +51,7 @@ extension Tag {
         }
     }
     
-    var titleSort: String? {
+    public var titleSort: String? {
         get {
             if let atom = metadataAtoms[.titleSort] as? StringMetadataAtom {
                 return atom.stringValue
@@ -73,7 +73,7 @@ extension Tag {
         }
     }
     
-    var thanks: String? {
+    public var thanks: String? {
         get {
             if let atom = metadataAtoms[.thanks] as? StringMetadataAtom {
                 return atom.stringValue
@@ -95,7 +95,7 @@ extension Tag {
         }
     }
     
-    var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             if let atom = metadataAtoms[.trackNumber] as? PartAndTotalMetadataAtom {
                 return (atom.part, atom.total)
@@ -120,7 +120,7 @@ extension Tag {
         }
     }
     
-    var trackSubtitle: String? {
+    public var trackSubtitle: String? {
         get {
             if let atom = metadataAtoms[.trackSubtitle] as? StringMetadataAtom {
                 return atom.stringValue
@@ -142,7 +142,7 @@ extension Tag {
         }
     }
     
-    var tvEpisodeNumber: Int? {
+    public var tvEpisodeNumber: Int? {
         get {
             if let atom = metadataAtoms[.tvEpisodeNumber] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -164,7 +164,7 @@ extension Tag {
         }
     }
     
-    var tvEpisodeTitle: String? {
+    public var tvEpisodeTitle: String? {
         get {
             if let atom = metadataAtoms[.tvEpisodeTitle] as? StringMetadataAtom {
                 return atom.stringValue
@@ -186,7 +186,7 @@ extension Tag {
         }
     }
     
-    var tvNetwork: String? {
+    public var tvNetwork: String? {
         get {
             if let atom = metadataAtoms[.tvNetwork] as? StringMetadataAtom {
                 return atom.stringValue
@@ -208,7 +208,7 @@ extension Tag {
         }
     }
     
-    var tvSeason: Int? {
+    public var tvSeason: Int? {
         get {
             if let atom = metadataAtoms[.tvSeason] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -230,7 +230,7 @@ extension Tag {
         }
     }
     
-    var tvShow: String? {
+    public var tvShow: String? {
         get {
             if let atom = metadataAtoms[.tvShow] as? StringMetadataAtom {
                 return atom.stringValue
@@ -252,7 +252,7 @@ extension Tag {
         }
     }
     
-    var tvShowDescription: String? {
+    public var tvShowDescription: String? {
         get {
             if let atom = metadataAtoms[.tvShowDescription] as? StringMetadataAtom {
                 return atom.stringValue
@@ -274,7 +274,7 @@ extension Tag {
         }
     }
     
-    var tvShowSort: String? {
+    public var tvShowSort: String? {
         get {
             if let atom = metadataAtoms[.tvShowSort] as? StringMetadataAtom {
                 return atom.stringValue
@@ -296,7 +296,7 @@ extension Tag {
         }
     }
     
-    var website: String? {
+    public var website: String? {
         get {
             if let atom = metadataAtoms[.website] as? StringMetadataAtom {
                 return atom.stringValue
@@ -318,7 +318,7 @@ extension Tag {
         }
     }
     
-    var workName: String? {
+    public var workName: String? {
         get {
             if let atom = metadataAtoms[.workName] as? StringMetadataAtom {
                 return atom.stringValue
@@ -340,7 +340,7 @@ extension Tag {
         }
     }
     
-    var writer: String? {
+    public var writer: String? {
         get {
             if let atom = metadataAtoms[.writer] as? StringMetadataAtom {
                 return atom.stringValue
@@ -362,7 +362,7 @@ extension Tag {
         }
     }
     
-    var year: Int? {
+    public var year: Int? {
         get {
             if let atom = metadataAtoms[.year] as? IntegerMetadataAtom {
                 return atom.intValue

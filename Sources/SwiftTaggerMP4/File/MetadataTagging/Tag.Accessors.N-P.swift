@@ -7,7 +7,7 @@
 
 import Foundation
 extension Tag {
-    var narrator: String? {
+    public var narrator: String? {
         get {
             if let atom = metadataAtoms[.narrator] as? StringMetadataAtom {
                 return atom.stringValue
@@ -29,7 +29,7 @@ extension Tag {
         }
     }
     
-    var originalArtist: String? {
+    public var originalArtist: String? {
         get {
             if let atom = metadataAtoms[.originalArtist] as? StringMetadataAtom {
                 return atom.stringValue
@@ -51,7 +51,7 @@ extension Tag {
         }
     }
     
-    var owner: String? {
+    public var owner: String? {
         get {
             if let atom = metadataAtoms[.owner] as? StringMetadataAtom {
                 return atom.stringValue
@@ -73,7 +73,7 @@ extension Tag {
         }
     }
 
-    var performers: [String]? {
+    public var performers: [String]? {
         get {
             if let atom = metadataAtoms[.performers] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -95,7 +95,7 @@ extension Tag {
         }
     }
     
-    var playlistID: Int? {
+    public var playlistID: Int? {
         get {
             if let atom = metadataAtoms[.playlistID] as? IntegerMetadataAtom {
                 return atom.intValue
@@ -117,7 +117,7 @@ extension Tag {
         }
     }
     
-    var podcast: Bool? {
+    public var podcast: Bool? {
         get {
             if let atom = metadataAtoms[.podcast] as? IntegerMetadataAtom {
                 if atom.intValue == 1 {
@@ -148,7 +148,7 @@ extension Tag {
         }
     }
     
-    var podcastID: String? {
+    public var podcastID: String? {
         get {
             if let atom = metadataAtoms[.podcastID] as? StringMetadataAtom {
                 return atom.stringValue
@@ -170,7 +170,7 @@ extension Tag {
         }
     }
 
-    var podcastUrl: String? {
+    public var podcastUrl: String? {
         get {
             if let atom = metadataAtoms[.podcastUrl] as? StringMetadataAtom {
                 return atom.stringValue
@@ -193,7 +193,7 @@ extension Tag {
     }
 
     /// Stores the genre as a string value
-    var predefinedGenre: Genre? {
+    public var predefinedGenre: Genre? {
         get {
             if let atom = metadataAtoms[.predefinedGenre] as? StringMetadataAtom {
                 return Genre(genreName: atom.stringValue)
@@ -204,7 +204,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try StringMetadataAtom(identifier: .predefinedGenre, stringValue: new.predefinedGenres)
+                    let atom = try StringMetadataAtom(identifier: .predefinedGenre, stringValue: new.predefinedGenre)
                     metadataAtoms[.predefinedGenre] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.predefinedGenre)")
@@ -215,7 +215,7 @@ extension Tag {
         }
     }
 
-    var producer: String? {
+    public var producer: String? {
         get {
             if let atom = metadataAtoms[.producer] as? StringMetadataAtom {
                 return atom.stringValue
@@ -237,7 +237,7 @@ extension Tag {
         }
     }
 
-    var producerKeywords: [String]? {
+    public var producerKeywords: [String]? {
         get {
             if let atom = metadataAtoms[.producerKeywords] as? StringMetadataAtom {
                 return atom.stringValue.toArray
@@ -259,7 +259,7 @@ extension Tag {
         }
     }
     
-    var publisher: String? {
+    public var publisher: String? {
         get {
             if let atom = metadataAtoms[.publisher] as? StringMetadataAtom {
                 return atom.stringValue
@@ -282,7 +282,7 @@ extension Tag {
     }
 
     @available(OSX 10.12, *)
-    var purchaseDate: Date? {
+    public var purchaseDate: Date? {
         get {
             if let atom = metadataAtoms[.purchaseDate] as? StringMetadataAtom {
 

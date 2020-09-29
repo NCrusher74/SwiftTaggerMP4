@@ -8,7 +8,7 @@
 import Foundation
 import SwiftConvenienceExtensions
 
-class Atom {
+public class Atom {
     /// The atom's unique four byte identifier
     var identifier: String
     /// The byte count of the whole atom, including header data
@@ -123,6 +123,7 @@ class Atom {
     }
     /// Default version value
     static var version: Data = UInt8(0x00).beData
+
     /// Default flags value
     static var flags: Data {
         return Data(repeating: 0x00, count: 3)
