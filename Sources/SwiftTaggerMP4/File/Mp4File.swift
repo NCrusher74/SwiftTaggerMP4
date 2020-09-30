@@ -98,7 +98,7 @@ public class Mp4File {
             }
         }
         set {
-            if let new = newValue {
+            if let new = newValue, new != .unspecified {
                 let newTracks = self.moov.tracks
                 for track in newTracks {
                     if track.mdia.elng != nil {
