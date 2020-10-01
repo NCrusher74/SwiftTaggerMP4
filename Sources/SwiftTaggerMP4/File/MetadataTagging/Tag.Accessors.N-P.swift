@@ -170,7 +170,7 @@ extension Tag {
         }
     }
 
-    public var podcastUrl: String? {
+    public var podcastFeed: String? {
         get {
             if let atom = metadataAtoms[.podcastUrl] as? StringMetadataAtom {
                 return atom.stringValue
@@ -280,7 +280,7 @@ extension Tag {
             }
         }
     }
-
+    
     @available(OSX 10.12, *)
     public var purchaseDate: Date? {
         get {

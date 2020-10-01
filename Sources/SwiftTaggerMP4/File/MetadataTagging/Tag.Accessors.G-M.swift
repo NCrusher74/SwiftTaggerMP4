@@ -392,7 +392,7 @@ extension Tag {
         }
     }
     
-    public var movementName: String? {
+    public var movement: String? {
         get {
             if let atom = metadataAtoms[.movementName] as? StringMetadataAtom {
                 return atom.stringValue
