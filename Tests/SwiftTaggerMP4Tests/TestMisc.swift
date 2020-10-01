@@ -36,7 +36,7 @@
 //        let date = calendar.date(from: dateComponents)
 //        
 //        tag.removeAllChapters()
-//        XCTAssertTrue(tag.listChapters().isEmpty)
+//        XCTAssertTrue(tag.chapterList.isEmpty)
 //        
 //        tag.acknowledgment = "Acknowledgment"
 //        tag.album = "Album"

@@ -135,12 +135,12 @@ extension Mp4File {
 
     @available(OSX 10.12, *)
     func setChapterTrack(mediaData: Data, tag: Tag) throws {
-        if tag.listChapters().isEmpty {
+        if tag.chapterList.isEmpty {
             self.moov.chapterTrack = nil
             self.moov.udta?.chpl = nil
             self.moov.chapterTrackID = nil
         } else {
-            let chpl = try Chpl(from: tag.listChapters())
+            let chpl = try Chpl(from: tag.chapterList)
             if self.moov.udta != nil {
                 self.moov.udta?.chpl = chpl
             } else {

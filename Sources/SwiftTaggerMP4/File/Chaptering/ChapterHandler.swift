@@ -21,7 +21,7 @@ struct ChapterHandler {
     
     init(moov: Moov, fileData: Data) throws {
         var chapterList = [Int: Chapter]()
-        /// Since the chapterList contained in a chpl atom is virtually identical to our tag.listChapters() output, we will check there first
+        /// Since the chapterList contained in a chpl atom is virtually identical to our tag.chapterList output, we will check there first
         if let chpl = moov.udta?.chpl {
             for item in chpl.chapterTable {
                 let startTime = item.startTime

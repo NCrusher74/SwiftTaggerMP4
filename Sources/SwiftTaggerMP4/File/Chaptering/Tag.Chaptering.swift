@@ -12,7 +12,7 @@ extension Tag {
     /// Returns an array of `(startTime, title)` tuples
     /// `startTime`: The chapter's start time, in milliseconds
     /// `title`: The chapter's title
-    public func listChapters() -> [(startTime: Int, title: String)] {
+    public var chapterList: [(startTime: Int, title: String)] {
         var chaptersArray = [(Int, String)]()
         let chapterHandler = self.chapterHandler
         let chapters = chapterHandler.sortedChapters()
