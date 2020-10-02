@@ -10,7 +10,7 @@ import SwiftConvenienceExtensions
 
 public class Atom {
     /// The atom's unique four byte identifier
-    var identifier: String
+    public var identifier: String
     /// The byte count of the whole atom, including header data
     var size: Int
     /// The atoms sub-atom content
