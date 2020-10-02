@@ -161,7 +161,7 @@ extension Mp4File {
             // we're not adding the chunk offset atom here because we need to have a starting offset to create the chunk offset atom
             // to get the starting offset, we need all the other atoms in place first
             let chapterTrack = try Trak(chapterHandler: tag.chapterHandler,
-                                        language: self.language,
+                                        languages: self.languages,
                                         moov: self.moov,
                                         chapterTrackID: chapterTrackID)
             self.moov.chapterTrack = chapterTrack
@@ -207,10 +207,10 @@ extension Mp4File {
     
     @available(OSX 10.12, *)
     func setLanguage(tag: Tag) {
-        if tag.language != .unspecified {
-            self.language = tag.language
+        if tag.languages != [.unspecified] {
+            self.languages = tag.languages
         } else {
-            self.language = nil
+            self.languages = nil
         }
     }
 }

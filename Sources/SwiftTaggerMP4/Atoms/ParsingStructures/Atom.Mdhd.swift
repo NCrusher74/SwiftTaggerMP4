@@ -52,8 +52,8 @@ class Mdhd: Atom {
     /// Retrieves the `ICULocaleCode` from the `elng` atom (if one exists) and converts it an `ISO-639-2` code
     static func getLanguage(from elng: Elng) -> ISO6392Code {
         var languageFromElng: ISO6392Code = .und
-        let language = elng.language.rawValue
-        let langComponents: [String] = language.components(separatedBy: "_")
+        let language = elng.languages.first?.rawValue
+        let langComponents: [String] = language?.components(separatedBy: "_") ?? ["en"]
         if let langString: String = langComponents.first {
             if let language6392 = ISO6392Code(iso6391Code: langString) {
                 languageFromElng = language6392
@@ -75,7 +75,7 @@ class Mdhd: Atom {
             // if there is, it overrides anything in the language here
             if elng != nil {
                 var languageFromElng: ISO6392Code = .und
-                if let language = elng?.language.rawValue {
+                if let language = elng?.languages.first?.rawValue {
                     let langComponents: [String] = language.components(separatedBy: "_")
                     if let langString: String = langComponents.first {
                         if let language6392 = ISO6392Code(iso6391Code: langString) {
@@ -110,7 +110,7 @@ class Mdhd: Atom {
             
             // if there is, use the first language as our language here
             if elng != nil {
-                if let elngLanguage = elng?.language.rawValue {
+                if let elngLanguage = elng?.languages.first?.rawValue {
                     if let isoLanguage = ISO6392Code(iso6391Code: elngLanguage) {
                         self.languageInt16 = isoLanguage.getInt16Code()
                     } else if let isoLanguage = ISO6392Code(rawValue: elngLanguage) {

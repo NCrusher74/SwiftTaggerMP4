@@ -12,7 +12,7 @@ import SwiftLanguageAndLocaleCodes
 class Elng: Atom {
     private var version: Data
     private var flags: Data
-    var language: ICULocaleCode
+    var languages: [ICULocaleCode]
     
     /// Initialize a `elng` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -20,12 +20,14 @@ class Elng: Atom {
         
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        let languageString = data.extractNullTerminatedString()
-        if let language = ICULocaleCode(rawValue: languageString) {
-            self.language = language
-        } else {
-            self.language = .unspecified
+        var languageArray = [ICULocaleCode]()
+        while !data.isEmpty {
+            let languageString = data.extractNullTerminatedString()
+            if let language = ICULocaleCode(rawValue: languageString) {
+                languageArray.append(language)
+            }
         }
+        self.languages = languageArray
         
         try super.init(identifier: identifier,
                        size: size,
@@ -33,15 +35,17 @@ class Elng: Atom {
     }
     
     /// Initialize a `elng` atom from its content
-    init(locale: ICULocaleCode) throws {
+    init(locales: [ICULocaleCode]) throws {
         self.version = Atom.version
         self.flags = Atom.flags
-        self.language = locale
+        self.languages = locales
         
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(locale.rawValue.nullTerminatedUtf8)
+        for locale in locales {
+            payload.append(locale.rawValue.nullTerminatedUtf8)
+        }
         
         let size = payload.count + 8
         
@@ -51,11 +55,13 @@ class Elng: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-    data.append(language.rawValue.nullTerminatedUtf8)
+        for language in self.languages {
+            data.append(language.rawValue.nullTerminatedUtf8)
+        }
         return data
     }
 }

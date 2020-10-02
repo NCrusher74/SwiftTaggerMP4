@@ -10,9 +10,11 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 /// A type representing an audio file stored locally
 public class Mp4File {
+
     var rootAtoms: [Atom]
     var data: Data
     static var use64BitOffset: Bool = false
+
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
@@ -89,24 +91,24 @@ public class Mp4File {
     }
     
     @available(OSX 10.12, *)
-    var language: ICULocaleCode? {
+    var languages: [ICULocaleCode]? {
         get {
             if let elng = moov.soundTrack.mdia.elng {
-                return ICULocaleCode(rawValue: elng.language.rawValue)
+                return elng.languages
             } else {
                 return nil
             }
         }
         set {
-            if let new = newValue, new != .unspecified {
+            if let new = newValue, !new.isEmpty {
                 let newTracks = self.moov.tracks
                 for track in newTracks {
                     if track.mdia.elng != nil {
-                        track.mdia.elng?.language = new
+                        track.mdia.elng?.languages = new
                         track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
                     } else {
                         do {
-                            let elng = try Elng(locale: new)
+                            let elng = try Elng(locales: new)
                             track.mdia.elng = elng
                             track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
                         } catch {

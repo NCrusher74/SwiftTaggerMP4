@@ -59,20 +59,20 @@ class Mdia: Atom {
     
     @available(OSX 10.12, *)
     convenience init(chapterHandler: ChapterHandler,
-                     language: ICULocaleCode?,
+                     languages: [ICULocaleCode]?,
                      moov: Moov) throws {
         let minf = try Minf(chapterHandler: chapterHandler,
                             moov: moov)
         let hdlr = try Hdlr(trackType: .text)
         let mdhd: Mdhd
-        if let language = language {
-            mdhd = try Mdhd(elng: try Elng(locale: language), moov: moov)
+        if let languages = languages {
+            mdhd = try Mdhd(elng: try Elng(locales: languages), moov: moov)
         } else {
             mdhd = try Mdhd(language: .und, moov: moov)
         }
         try self.init(children: [mdhd, hdlr, minf])
-        if let language = language {
-            self.elng = try Elng(locale: language)
+        if let languages = languages {
+            self.elng = try Elng(locales: languages)
         }
     }
     

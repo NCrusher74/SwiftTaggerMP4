@@ -408,7 +408,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.composerSort,"Composer Sort")
         XCTAssertEqual(output.conductor,"Conductor")
         XCTAssertEqual(output.conductorID,45678)
-        XCTAssertEqual(output.copyright,"2020 Copyright")
+        XCTAssertEqual(output.copyright,"\u{00A9} 2020 Copyright")
         XCTAssertEqual(output.copyrightStatement,"Copyright Statement")
         XCTAssertEqual(output.customGenre,"Genre")
         XCTAssertEqual(output.description,"Description")
@@ -462,7 +462,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.purchaseDate, date)
         XCTAssertEqual(output.rating,.clean)
         XCTAssertEqual(output.recordCompany,"Record Company")
-        XCTAssertEqual(output.recordingCopyright,"Recording Copyright")
+        XCTAssertEqual(output.recordingCopyright,"\u{2117} Recording Copyright")
         XCTAssertEqual(output.recordingDate, date)
         XCTAssertEqual(output.releaseDate, date)
         XCTAssertEqual(output.requirements,"Requirements")
@@ -505,17 +505,17 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     func testLanguage() throws {
         let mp4 = try Mp4File(location: sampleBookSublerUrl)
         var tag = try Tag(mp4File: mp4)
-        XCTAssertEqual(mp4.language, .english)
-        XCTAssertEqual(tag.language, .english)
-        tag.language = .englishWorld
+        XCTAssertEqual(mp4.languages, [.english])
+        XCTAssertEqual(tag.languages, [.english])
+        tag.languages = [.englishWorld]
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
         try mp4.write(tag: tag, to: outputUrl)
                 
         let output = try Mp4File(location: outputUrl)
         let outputTag = try Tag(mp4File: output)
-        XCTAssertEqual(output.language, .englishWorld)
-        XCTAssertEqual(outputTag.language, .englishWorld)
+        XCTAssertEqual(output.languages, [.englishWorld])
+        XCTAssertEqual(outputTag.languages, [.englishWorld])
     }
     
     @available(OSX 10.13, *)
@@ -538,7 +538,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.artistKeywords = ["Artist", "Keywords"]
         tag.artistSort = "Artist Sort"
         tag.compilation = true
-        tag.language = .english
+        tag.languages = [.english]
         tag.duration = 5016
         tag.releaseDate = date
         tag.trackNumber.track = 7
@@ -566,7 +566,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.artistKeywords, tag.artistKeywords)
         XCTAssertEqual(output.artistSort, tag.artistSort)
         XCTAssertEqual(output.compilation, tag.compilation)
-        XCTAssertEqual(output.language, tag.language)
+        XCTAssertEqual(output.languages, tag.languages)
         XCTAssertEqual(output.duration, tag.duration)
         XCTAssertEqual(output.releaseDate, tag.releaseDate)
         XCTAssertEqual(output.trackNumber.track, tag.trackNumber.track)
