@@ -257,7 +257,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try StringMetadataAtom(identifier: .copyright, stringValue: new)
+                    let atom = try StringMetadataAtom(identifier: .copyright, stringValue: "\u{00A9} \(new)")
                     metadataAtoms[.copyright] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.copyright)")

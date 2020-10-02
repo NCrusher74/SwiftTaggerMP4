@@ -231,7 +231,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try StringMetadataAtom(identifier: .recordingCopyright, stringValue: new)
+                    let atom = try StringMetadataAtom(identifier: .recordingCopyright, stringValue: "\u{2117} \(new)")
                     metadataAtoms[.recordingCopyright] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.recordingCopyright)")
