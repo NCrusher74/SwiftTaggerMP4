@@ -7,7 +7,7 @@
 
 import Foundation
 /// Known atom identifiers, excluding track and data reference types and metadata atom identifiers
-enum AtomIdentifier: String, CaseIterable {
+public enum AtomIdentifier: String, CaseIterable {
     /// AC-3 audio
     case ac3 = "ac-3"
     case amr = "amr "
