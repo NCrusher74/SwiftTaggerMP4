@@ -12,9 +12,9 @@ import Foundation
 /// Though the content of these atoms may be presented as integers, dates, or any number of other types, typically it is stored as a string
 public class UnknownMetadataAtom: Atom {
     /// The unrecognized identifier of the atom as a freeform string
-    var name: String
+    public var name: String
     /// The content of the atom
-    var stringValue: String
+    public var stringValue: String
     
     /// Initialize a freeform atom by parsing from file content
     override init(identifier: String,
