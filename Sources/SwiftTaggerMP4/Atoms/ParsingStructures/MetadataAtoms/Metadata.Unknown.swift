@@ -10,7 +10,7 @@ import Foundation
 /// A freeform metadata atom with the identifier `----`
 ///
 /// Though the content of these atoms may be presented as integers, dates, or any number of other types, typically it is stored as a string
-class UnknownMetadataAtom: Atom {
+public class UnknownMetadataAtom: Atom {
     /// The unrecognized identifier of the atom as a freeform string
     var name: String
     /// The content of the atom
