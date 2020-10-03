@@ -216,32 +216,35 @@ extension Tag {
     
     public var contentRating: (contentRating: ContentRating, ratingNotes: String?) {
         get {
-            if let ratingString = self["iTunEXTC"] {
-                let components: [String] = ratingString.components(separatedBy: "|")
-                var rating: ContentRating = .none
-                var notes: String? = nil
+            if let string = self["iTunEXTC"] {
+                let components: [String] = string.components(separatedBy: "|")
                 if components.count == 3 {
-                    if let contentRating = ContentRating(rawValue: ratingString) {
-                        rating = contentRating
+                    if let rating = ContentRating(rawValue: string) {
+                        return (rating, nil)
+                    } else {
+                        return (.none, nil)
                     }
                 } else {
-                    let string = components.dropLast().joined(separator: "|")
-                    if let contentRating = ContentRating(rawValue: string) {
-                        rating = contentRating
+                    let ratingComponentsString = components[0 ..< 3].joined(separator: "|") + "|"
+                    let note = components.last
+                    if let rating = ContentRating(rawValue: ratingComponentsString) {
+                        return (rating, note)
+                    } else {
+                        return (.none, nil)
                     }
-                    notes = components.dropFirst(3).joined()
                 }
-                return (rating, notes)
             } else {
                 return (.none, nil)
             }
         }
         set {
             if newValue != (.none, nil) {
-                let string = newValue.contentRating.rawValue + "\(newValue.ratingNotes ?? "")"
-                self["iTunEXTC"] = string
-            } else {
-                self["iTunEXTC"] = nil
+                let string = newValue.contentRating.rawValue
+                if let note = newValue.ratingNotes {
+                    self["iTunEXTC"] = string + note
+                } else {
+                    self["iTunEXTC"] = string
+                }
             }
         }
     }

@@ -538,6 +538,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.artistKeywords = ["Artist", "Keywords"]
         tag.artistSort = "Artist Sort"
         tag.compilation = true
+        tag.contentRating.contentRating = .au_Movie_G
+        tag.contentRating.ratingNotes = "Notes"
         tag.languages = [.english]
         tag.duration = 5016
         tag.releaseDate = date
@@ -566,6 +568,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.artistKeywords, tag.artistKeywords)
         XCTAssertEqual(output.artistSort, tag.artistSort)
         XCTAssertEqual(output.compilation, tag.compilation)
+        XCTAssertEqual(output.contentRating.contentRating, .au_Movie_G)
+        XCTAssertEqual(output.contentRating.ratingNotes, "Notes")
+        XCTAssertEqual(output["iTunEXTC"], "au-movie|G|100|Notes")
         XCTAssertEqual(output.languages, tag.languages)
         XCTAssertEqual(output.duration, tag.duration)
         XCTAssertEqual(output.releaseDate, tag.releaseDate)
