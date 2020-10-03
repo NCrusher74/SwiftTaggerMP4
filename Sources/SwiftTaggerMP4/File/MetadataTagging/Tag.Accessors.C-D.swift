@@ -238,7 +238,7 @@ extension Tag {
         }
         set {
             if newValue != (.none, nil) {
-                let string = "\(newValue.contentRating.rawValue)|\(newValue.ratingNotes ?? "")"
+                let string = newValue.contentRating.rawValue + "\(newValue.ratingNotes ?? "")"
                 self["iTunEXTC"] = string
             } else {
                 self["iTunEXTC"] = nil
