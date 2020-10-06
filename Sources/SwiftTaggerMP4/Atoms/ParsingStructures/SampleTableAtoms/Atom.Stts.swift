@@ -99,21 +99,21 @@ class Stts: Atom {
             throw StblError.SampleDurationArrayIsEmpty
         }
         var entries = [(sampleCount: Int, sampleDuration: Double)]()
-        var previous = durationArray.first!
-        var count = 0
-        for duration in durationArray {
-            if duration == previous { // for the first entry, this will always be true
-                count += 1
-            } else {
-                // store the number of samples with the previous duration
-                let entry = (count, previous)
-                entries.append(entry)
-                // update previous to current duration
-                previous = duration
-                // reset the count to 1
-                count = 1
+        var previous = 0.0
+            var count = 1
+            for duration in durationArray {
+                if duration == previous {
+                    count += 1
+                } else {
+                    // store the number of samples with the previous duration
+                    let entry = (count, duration)
+                    entries.append(entry)
+                    // update previous to current duration
+                    previous = duration
+                    // reset the count
+                    count = 1
+                }
             }
-        }
         
         self.sampleTable = entries
         self.entryCount = entries.count

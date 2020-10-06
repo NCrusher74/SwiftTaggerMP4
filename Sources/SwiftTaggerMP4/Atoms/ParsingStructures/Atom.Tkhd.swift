@@ -56,17 +56,23 @@ class Tkhd: Atom {
                        payload: payload)
     }
     
-    //    /** Duration - A time value that indicates the duration of this track (in the MOVIES’s time coordinate system (from mvhd atom)). Note that this property is derived from the track’s edits. The value of this field is equal to the sum of the durations of all of the track’s edits. If there is no edit list, then the duration is the sum of the sample durations (from stts atom?), converted into the MOVIE timescale. */
+    //   Duration - A time value that indicates the duration of this track (in the MOVIES’s time coordinate system (from mvhd atom)). Note that this property is derived from the track’s edits. The value of this field is equal to the sum of the durations of all of the track’s edits. If there is no edit list, then the duration is the sum of the sample durations (from stts atom?), converted into the MOVIE timescale.
     var duration: Double {
         if let edts = self.siblings?.first(where: {$0.identifier == "edts"}) as? Edts {
             return edts.elst.duration
+        } else if let moov = self.parent?.parent as? Moov {
+            return Double(moov.soundTrack.mdia.minf.stbl.stts.mediaDuration)
         } else if let mvhd = self.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
             return mvhd.duration
         } else {
-            fatalError("Unable to locate file duration in atom data")
+            if self.version.int8BE == 0x01 {
+                return self.durationRaw.int64BE.double
+            } else {
+                return self.durationRaw.int32BE.double
+            }
         }
     }
-    
+
     /// Initialize a `tkhd` atom for a chapter track
     ///
     /// Specifically for use with chapter tracks. May not work in other contexts.

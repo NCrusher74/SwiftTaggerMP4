@@ -66,11 +66,11 @@ class Trak: Atom {
                      languages: [ICULocaleCode]?,
                      moov: Moov,
                      chapterTrackID: Int) throws {
-        let duration = (moov.soundTrack.mdia.mdhd.duration / moov.soundTrack.mdia.mdhd.timeScale) * 1000
-        let tkhd = try Tkhd(mediaDuration: duration, trackID: chapterTrackID)
         let mdia = try Mdia(chapterHandler: chapterHandler,
                             languages: languages,
                             moov: moov)
+        let duration = mdia.minf.stbl.stts.mediaDuration
+        let tkhd = try Tkhd(mediaDuration: Double(duration), trackID: chapterTrackID)
         try self.init(children: [tkhd, mdia])
     }
     

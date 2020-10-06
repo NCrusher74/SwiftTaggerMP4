@@ -71,6 +71,7 @@ class Mdia: Atom {
             mdhd = try Mdhd(language: .und, moov: moov)
         }
         try self.init(children: [mdhd, hdlr, minf])
+        
         if let languages = languages {
             self.elng = try Elng(locales: languages)
         }

@@ -553,8 +553,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 3165, title: "Chapter 04")
         tag.addChapter(startTime: 3976, title: "Chapter 05")
 
-//        let outputUrl = tempOutputDirectory
-        let outputUrl = try localOutputDirectory("test")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("test")
         XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
         
         let outputMp4 = try Mp4File(location: outputUrl)
@@ -604,5 +604,34 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let output = try Tag(mp4File: try Mp4File(location: outputUrl))
         XCTAssertNotNil(output.coverArt)
+    }
+    
+    func testChapterIssue() throws {
+        let mp4 = try Mp4File(location: sampleNoMeta)
+        var tag = try Tag(mp4File: mp4)
+        
+        tag.addChapter(startTime: 0, title: "Chapter 01")
+        tag.addChapter(startTime: 700, title: "Chapter 02")
+        tag.addChapter(startTime: 1670, title: "Chapter 03")
+        tag.addChapter(startTime: 3165, title: "Chapter 04")
+        tag.addChapter(startTime: 3976, title: "Chapter 05")
+        
+//        let outputUrl = tempOutputDirectory
+        let outputUrl = try localOutputDirectory("test")
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
+        
+        let outputMp4 = try Mp4File(location: outputUrl)
+        let output = try outputMp4.tag()
+        
+        XCTAssertEqual(output.chapterList[0].startTime, 0)
+        XCTAssertEqual(output.chapterList[0].title, "Chapter 01")
+        XCTAssertEqual(output.chapterList[1].startTime, 700)
+        XCTAssertEqual(output.chapterList[1].title, "Chapter 02")
+        XCTAssertEqual(output.chapterList[2].startTime, 1670)
+        XCTAssertEqual(output.chapterList[2].title, "Chapter 03")
+        XCTAssertEqual(output.chapterList[3].startTime, 3165)
+        XCTAssertEqual(output.chapterList[3].title, "Chapter 04")
+        XCTAssertEqual(output.chapterList[4].startTime, 3976)
+        XCTAssertEqual(output.chapterList[4].title, "Chapter 05")
     }
 }

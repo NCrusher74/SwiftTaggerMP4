@@ -52,7 +52,7 @@ class Stbl: Atom {
         }
         
         // required sub-atoms are `stsd`, `stsc`, `stts`, `stsz`.
-        // chunkOffsetAtom is also required, but when using this initializer, we add that after the chapter track being built has been initialized, as we need to count the size of the chapter track in the offsets
+        // chunkOffsetAtom is also required, but when using this initializer, we add that after the chapter track being built has been initialized, as we can't calculate the offsets until after the chapter track has been built.
         guard children.contains(where: {$0.identifier == "stsd"}) else {
             throw StblError.StsdAtomNotFound
         }
@@ -81,9 +81,9 @@ class Stbl: Atom {
         for start in chapterHandler.chapterStarts {
             starts.append(Double(start))
         }
-        let mdhd = moov.soundTrack.mdia.mdhd
+        let mvhd = moov.mvhd
         let stts = try Stts(chapterHandler: chapterHandler,
-                            mediaDuration: mdhd.duration)
+                            mediaDuration: mvhd.duration)
         
         let stsz = try Stsz(titles: chapterHandler.chapterTitles)
         try self.init(children: [stsd, stsc, stts, stsz])
@@ -125,7 +125,7 @@ class Stbl: Atom {
             if let atom = self[.stsc] as? Stsc {
                 return atom
             } else {
-                fatalError("Required child 'stsc' is missing from string metadata atom with identifier '\(self.identifier)'")
+                fatalError("Required child 'stsc' is missing from atom with identifier '\(self.identifier)'")
             }
         }
         set {
@@ -138,7 +138,7 @@ class Stbl: Atom {
             if let atom = self[.stsd] as? Stsd {
                 return atom
             } else {
-                fatalError("Required child 'stsd' is missing from string metadata atom with identifier '\(self.identifier)'")
+                fatalError("Required child 'stsd' is missing from atom with identifier '\(self.identifier)'")
             }
         }
         set {
@@ -151,7 +151,7 @@ class Stbl: Atom {
             if let atom = self[.stsz] as? Stsz {
                 return atom
             } else {
-                fatalError("Required child 'stsz' is missing from string metadata atom with identifier '\(self.identifier)'")
+                fatalError("Required child 'stsz' is missing from atom with identifier '\(self.identifier)'")
             }
         }
         set {
@@ -164,7 +164,7 @@ class Stbl: Atom {
             if let atom = self[.stts] as? Stts {
                 return atom
             } else {
-                fatalError("Required child 'stts' is missing from string metadata atom with identifier '\(self.identifier)'")
+                fatalError("Required child 'stts' is missing from atom with identifier '\(self.identifier)'")
             }
         }
         set {
@@ -177,7 +177,7 @@ class Stbl: Atom {
             if let atom = self[.co64] as? ChunkOffsetAtom ?? self[.stco] as? ChunkOffsetAtom{
                 return atom
             } else {
-                fatalError("Required child 'chunkOffsetAtom' is missing from string metadata atom with identifier '\(self.identifier)'")
+                fatalError("Required child 'chunkOffsetAtom' is missing from atom with identifier '\(self.identifier)'")
             }
         }
         set {
