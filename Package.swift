@@ -12,9 +12,6 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/apple/swift-se0270-range-set",
-            from: "1.0.0"),
-        .package(
             url: "https://github.com/NCrusher74/SwiftLanguageAndLocaleCodes",
             from: "1.0.0"),
         .package(
@@ -25,7 +22,6 @@ let package = Package(
         .target(
             name: "SwiftTaggerMP4",
             dependencies: [
-                .product(name: "SE0270_RangeSet", package: "swift-se0270-range-set"),
                 .product(name: "SwiftLanguageAndLocaleCodes", package: "SwiftLanguageAndLocaleCodes"),
                 .product(name: "SwiftConvenienceExtensions", package: "SwiftConvenienceExtensions"),
             ],
