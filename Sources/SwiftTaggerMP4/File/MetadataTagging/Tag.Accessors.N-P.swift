@@ -196,7 +196,7 @@ extension Tag {
     public var predefinedGenre: Genre? {
         get {
             if let atom = metadataAtoms[.predefinedGenre] as? StringMetadataAtom {
-                return Genre(genreName: atom.stringValue)
+                return Genre(stringValue: atom.stringValue)
             } else {
                 return nil
             }
@@ -204,7 +204,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try StringMetadataAtom(identifier: .predefinedGenre, stringValue: new.predefinedGenre)
+                    let atom = try StringMetadataAtom(identifier: .predefinedGenre, stringValue: new.stringValue)
                     metadataAtoms[.predefinedGenre] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.predefinedGenre)")

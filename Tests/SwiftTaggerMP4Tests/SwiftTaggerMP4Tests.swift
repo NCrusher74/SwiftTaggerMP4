@@ -283,7 +283,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.labelUrl = "www.filmmaker.url"
         tag.format = "Format"
         tag.gaplessPlayback = true
-        tag.genreID = .audiobooks
+        tag.genreID = .audiobooks(.audiobooks)
         tag.grouping = "Grouping"
         tag.information = "Information"
         tag.isrc = "123456789012"
@@ -307,7 +307,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.podcast = true
         tag.podcastID = "Podcast ID"
         tag.podcastFeed = "www.podcast.url"
-        tag.predefinedGenre = .audiobooks
+        tag.predefinedGenre = .audiobooks(.audiobooks)
         tag.producer = "Producer"
         tag.producerKeywords = ["Producer", "Keywords"]
         tag.publisher = "Publisher"
@@ -430,7 +430,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.labelUrl,"www.filmmaker.url")
         XCTAssertEqual(output.format,"Format")
         XCTAssertEqual(output.gaplessPlayback,true)
-        XCTAssertEqual(output.genreID,.audiobooks)
+        XCTAssertEqual(output.genreID?.genreID,Genre.Audiobooks.audiobooks.rawValue)
         XCTAssertEqual(output.grouping,"Grouping")
         XCTAssertEqual(output.information,"Information")
         XCTAssertEqual(output.isrc,"123456789012")
@@ -454,7 +454,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.podcast,true)
         XCTAssertEqual(output.podcastID,"Podcast ID")
         XCTAssertEqual(output.podcastFeed,"www.podcast.url")
-        XCTAssertEqual(output.predefinedGenre,.audiobooks)
+        XCTAssertEqual(output.predefinedGenre?.stringValue,Genre.Audiobooks.audiobooks.stringValue)
         XCTAssertEqual(output.producer,"Producer")
         XCTAssertEqual(output.producerKeywords,["Producer", "Keywords"])
         XCTAssertEqual(output.publisher,"Publisher")

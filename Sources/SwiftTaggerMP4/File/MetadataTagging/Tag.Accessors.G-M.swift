@@ -284,7 +284,7 @@ extension Tag {
     public var genreID: Genre? {
         get {
             if let atom = metadataAtoms[.genreID] as? IntegerMetadataAtom {
-                return Genre(rawValue: atom.intValue)
+                return Genre(genreID: atom.intValue)
             } else {
                 return nil
             }
@@ -292,7 +292,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try IntegerMetadataAtom(identifier: .genreID, intValue: new.rawValue)
+                    let atom = try IntegerMetadataAtom(identifier: .genreID, intValue: new.genreID)
                     metadataAtoms[.genreID] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.genreID)")
