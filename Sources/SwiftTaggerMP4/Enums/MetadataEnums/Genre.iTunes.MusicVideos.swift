@@ -63,7 +63,7 @@ extension Genre {
             cases.append(contentsOf: Tarab.allCases.map({ MusicVideos.tarab($0)}))
             return cases
         }
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .musicVideos: return 31
                 case .podcasts: return 1626
@@ -118,7 +118,7 @@ extension Genre {
             }
         }
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .musicVideos: return "Music Videos"
                 case .podcasts: return "Music Videos|Podcasts"

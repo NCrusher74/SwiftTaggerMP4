@@ -40,7 +40,7 @@ extension Genre {
         case trueCrime
         case government
 
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .podcasts: return 26
                 case .history: return 1487
@@ -70,7 +70,7 @@ extension Genre {
             }
         }
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .podcasts: return "Podcasts"
                 case .history: return "Podcasts|History"

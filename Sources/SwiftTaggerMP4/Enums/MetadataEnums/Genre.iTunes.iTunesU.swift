@@ -10,7 +10,7 @@ extension Genre {
     public enum ITunesU: CaseIterable {
         case iTunesU
         
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .iTunesU: return 40000000
                 case .businessAndEconomics(let subject): return subject.rawValue
@@ -32,7 +32,7 @@ extension Genre {
             }
         }
 
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .iTunesU: return "iTunesU"
                 case .businessAndEconomics(let subject): return subject.stringValue

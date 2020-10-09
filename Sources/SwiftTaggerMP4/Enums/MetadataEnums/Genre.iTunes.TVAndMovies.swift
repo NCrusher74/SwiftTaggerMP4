@@ -22,7 +22,7 @@ extension Genre {
         case teens = 4010
         case latinoTV = 4011
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .tvShows: return "TV Shows"
                 case .comedy: return "TV Shows|Comedy"
@@ -77,7 +77,7 @@ extension Genre {
         case middleEastern = 4433
         case african = 4434
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .movies: return "Movies"
                 case .actionAndAdventure: return "Movies|Action and Adventure"

@@ -23,7 +23,7 @@ extension Genre {
         case germanPop
         case germanFolk
         
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .music: return 34
                 case .jPop: return 27
@@ -77,7 +77,7 @@ extension Genre {
             }
         }
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .music: return "Music"
                 case .jPop: return "Music|JPop"

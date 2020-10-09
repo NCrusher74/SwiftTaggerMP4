@@ -33,6 +33,7 @@ extension Genre {
         case lifestyle
         case healthAndFitness
         case games(Games)
+
         public enum Games: Int, CaseIterable {
             case games = 6014
             case action = 7001
@@ -195,7 +196,7 @@ extension Genre {
         case developerTools
         case graphicsAndDesign
         
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .appStore: return 36
                 case .business: return 6000
@@ -228,7 +229,7 @@ extension Genre {
             }
         }
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .appStore: return "AppStore|"
                 case .business: return "AppStore|Business"
@@ -290,7 +291,7 @@ extension Genre {
             cases.append(contentsOf: Games.allCases.map({ MacAppStore.games($0)}))
             return cases
         }
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .macAppStore: return 39
                 case .business: return 12001
@@ -317,7 +318,7 @@ extension Genre {
             }
         }
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .macAppStore: return "MacAppStore"
                 case .business: return "MacAppStore|Business"

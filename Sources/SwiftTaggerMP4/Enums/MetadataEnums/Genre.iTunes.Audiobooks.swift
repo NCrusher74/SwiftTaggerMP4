@@ -36,7 +36,7 @@ extension Genre {
         case erotica = 50000092
         case lightNovels = 50000093
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .audiobooks: return "Audiobooks"
                 case .news: return "Audiobooks|News"

@@ -76,7 +76,7 @@ extension Genre {
             return cases
         }
 
-        var genreID: Int {
+        public var genreID: Int {
             switch self {
                 case .textbooks: return 40
                 case .artsAndEntertainment(let subject): return subject.rawValue
@@ -114,7 +114,7 @@ extension Genre {
             }
         }
         
-        var stringValue: String {
+        public var stringValue: String {
             switch self {
                 case .textbooks: return "Textbooks"
                 case .artsAndEntertainment(let subject): return subject.stringValue
