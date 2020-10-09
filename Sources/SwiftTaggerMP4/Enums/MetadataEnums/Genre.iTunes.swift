@@ -38,7 +38,7 @@ public enum Genre: CaseIterable {
         return cases
     }
     
-    var genreID: Int {
+    public var genreID: Int {
         switch self {
             case .unknown: return 0
             case .iPodGames: return 35
@@ -57,7 +57,7 @@ public enum Genre: CaseIterable {
         }
     }
     
-    var stringValue: String {
+    public var stringValue: String {
         switch self {
             case .unknown: return "Unknown"
             case .iPodGames: return "iPod Games"
