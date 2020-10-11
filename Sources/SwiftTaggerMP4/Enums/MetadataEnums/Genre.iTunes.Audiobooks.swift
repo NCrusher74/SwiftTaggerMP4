@@ -10,7 +10,7 @@ extension Genre {
     public enum Audiobooks: Int, CaseIterable {
         case audiobooks = 50000024
         case news = 74
-        case programsandPerformances = 75
+        case programsAndPerformances = 75
         case fiction = 50000040
         case artsAndEntertainment = 50000041
         case biographiesAndMemoirs = 50000042
@@ -40,7 +40,7 @@ extension Genre {
             switch self {
                 case .audiobooks: return "Audiobooks"
                 case .news: return "Audiobooks|News"
-                case .programsandPerformances: return "Audiobooks|Programs and Performances"
+                case .programsAndPerformances: return "Audiobooks|Programs and Performances"
                 case .fiction: return "Audiobooks|Fiction"
                 case .artsAndEntertainment: return "Audiobooks|Arts and Entertainment"
                 case .biographiesAndMemoirs: return "Audiobooks|Biographies and Memoirs"

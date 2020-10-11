@@ -201,13 +201,13 @@ extension Genre {
         public enum Comedy: Int, CaseIterable {
             case comedy = 3
             case novelty = 1167
-            case standupComedy = 1171
+            case standUpComedy = 1171
 
             var stringValue: String {
                 switch self {
                     case .comedy: return "Music|Comedy"
                     case .novelty: return "Music|Comedy|Novelty"
-                    case .standupComedy: return "Music|Comedy|Standup Comedy"
+                    case .standUpComedy: return "Music|Comedy|Standup Comedy"
 
                 }
             }
@@ -677,7 +677,7 @@ extension Genre {
             case garage = 1046
             case hardcore = 1047
             case house = 1048
-            case jungleDrumnbass = 1049
+            case jungleDrumAndBass = 1049
             case techno = 1050
             case trance = 1051
             case maghrebDance = 100105
@@ -690,7 +690,7 @@ extension Genre {
                     case .garage: return "Music|Dance|Garage"
                     case .hardcore: return "Music|Dance|Hardcore"
                     case .house: return "Music|Dance|House"
-                    case .jungleDrumnbass: return "Music|Dance|Jungle Drum&Bass"
+                    case .jungleDrumAndBass: return "Music|Dance|Jungle Drum&Bass"
                     case .techno: return "Music|Dance|Techno"
                     case .trance: return "Music|Dance|Trance"
                     case .maghrebDance: return "Music|Dance|Maghreb Dance"

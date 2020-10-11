@@ -10,9 +10,9 @@ extension Genre {
     public enum AppStore: CaseIterable {
         
         public static var allCases: [AppStore] {
-            var cases: [AppStore] = [.appStore, .books, .business, .catalogs, .developerTools, .education, .entertainment, .finance, .foodandDrink, .graphicsAndDesign, .healthAndFitness, .lifestyle, .medical, .music, .music, .navigation, .news, .photoAndVideo, .productivity, .reference, .shopping, .socialNetworking, .sports, .travel, .utilities, .weather]
+            var cases: [AppStore] = [.appStore, .books, .business, .catalogs, .developerTools, .education, .entertainment, .finance, .foodAndDrink, .graphicsAndDesign, .healthAndFitness, .lifestyle, .medical, .music, .music, .navigation, .news, .photoAndVideo, .productivity, .reference, .shopping, .socialNetworking, .sports, .travel, .utilities, .weather]
             cases.append(contentsOf: Games.allCases.map({ AppStore.games($0)}))
-            cases.append(contentsOf: MagazinesAndNewspapers.allCases.map({ AppStore.magazinesAndNewsPaperss($0)}))
+            cases.append(contentsOf: MagazinesAndNewspapers.allCases.map({ AppStore.magazinesAndNewspapers($0)}))
             cases.append(contentsOf: Stickers.allCases.map({ AppStore.stickers($0)}))
             return cases
         }
@@ -84,7 +84,7 @@ extension Genre {
         case education
         case books
         case medical
-        case magazinesAndNewsPaperss(MagazinesAndNewspapers)
+        case magazinesAndNewspapers(MagazinesAndNewspapers)
         public enum MagazinesAndNewspapers: Int, CaseIterable {
             case magazinesAndNewspapers = 6021
             case newsAndPolitics = 13001
@@ -151,7 +151,7 @@ extension Genre {
             }
         }
         case catalogs
-        case foodandDrink
+        case foodAndDrink
         case shopping
         case stickers(Stickers)
         public enum Stickers: Int, CaseIterable {
@@ -219,9 +219,9 @@ extension Genre {
                 case .education: return 6017
                 case .books: return 6018
                 case .medical: return 6020
-                case .magazinesAndNewsPaperss(let subtype): return subtype.rawValue
+                case .magazinesAndNewspapers(let subtype): return subtype.rawValue
                 case .catalogs: return 6022
-                case .foodandDrink: return 6023
+                case .foodAndDrink: return 6023
                 case .shopping: return 6024
                 case .stickers(let subtype): return subtype.rawValue
                 case .developerTools: return 6026
@@ -252,9 +252,9 @@ extension Genre {
                 case .education: return "AppStore|Education"
                 case .books: return "AppStore|Books"
                 case .medical: return "AppStore|Medical"
-                case .magazinesAndNewsPaperss(let subtype): return subtype.stringValue
+                case .magazinesAndNewspapers(let subtype): return subtype.stringValue
                 case .catalogs: return "AppStore|Catalogs"
-                case .foodandDrink: return "AppStore|Food and Drink"
+                case .foodAndDrink: return "AppStore|Food and Drink"
                 case .shopping: return "AppStore|Shopping"
                 case .stickers(let subtype): return subtype.stringValue
                 case .developerTools: return "AppStore|Developer Tools"

@@ -162,18 +162,18 @@ extension Genre {
         }
         case healthAndMedicine(HealthAndMedicine)
         public enum HealthAndMedicine: Int, CaseIterable {
-            case healthandMedicine = 40000026
-            case anatomyandPhysiology = 40000027
+            case healthAndMedicine = 40000026
+            case anatomyAndPhysiology = 40000027
             case behavioralScience = 40000028
             case dentistry = 40000029
-            case dietandNutrition = 40000030
+            case dietAndNutrition = 40000030
             case emergencyMedicine = 40000031
             case genetics = 40000032
             case gerontology = 40000033
-            case healthandExerciseScience = 40000034
+            case healthAndExerciseScience = 40000034
             case immunology = 40000035
             case neuroscience = 40000036
-            case pharmacologyandToxicology = 40000037
+            case pharmacologyAndToxicology = 40000037
             case psychiatry = 40000038
             case globalHealth = 40000039
             case radiology = 40000040
@@ -181,18 +181,18 @@ extension Genre {
 
             var stringValue: String {
                 switch self {
-                    case .healthandMedicine: return "iTunesU|Health and Medicine"
-                    case .anatomyandPhysiology: return "iTunesU|Health and Medicine|Anatomy and Physiology"
+                    case .healthAndMedicine: return "iTunesU|Health and Medicine"
+                    case .anatomyAndPhysiology: return "iTunesU|Health and Medicine|Anatomy and Physiology"
                     case .behavioralScience: return "iTunesU|Health and Medicine|Behavioral Science"
                     case .dentistry: return "iTunesU|Health and Medicine|Dentistry"
-                    case .dietandNutrition: return "iTunesU|Health and Medicine|Diet and Nutrition"
+                    case .dietAndNutrition: return "iTunesU|Health and Medicine|Diet and Nutrition"
                     case .emergencyMedicine: return "iTunesU|Health and Medicine|Emergency Medicine"
                     case .genetics: return "iTunesU|Health and Medicine|Genetics"
                     case .gerontology: return "iTunesU|Health and Medicine|Gerontology"
-                    case .healthandExerciseScience: return "iTunesU|Health and Medicine|Health and Exercise Science"
+                    case .healthAndExerciseScience: return "iTunesU|Health and Medicine|Health and Exercise Science"
                     case .immunology: return "iTunesU|Health and Medicine|Immunology"
                     case .neuroscience: return "iTunesU|Health and Medicine|Neuroscience"
-                    case .pharmacologyandToxicology: return "iTunesU|Health and Medicine|Pharmacology and Toxicology"
+                    case .pharmacologyAndToxicology: return "iTunesU|Health and Medicine|Pharmacology and Toxicology"
                     case .psychiatry: return "iTunesU|Health and Medicine|Psychiatry"
                     case .globalHealth: return "iTunesU|Health and Medicine|Global Health"
                     case .radiology: return "iTunesU|Health and Medicine|Radiology"
@@ -232,7 +232,7 @@ extension Genre {
         }
         case communicationsAndJournalism(CommunicationsAndJournalism)
         public enum CommunicationsAndJournalism: Int, CaseIterable {
-            case communicationsandJournalism = 40000053
+            case communicationsAndJournalism = 40000053
             case broadcasting = 40000122
             case digitalMedia = 40000123
             case journalism = 40000124
@@ -243,7 +243,7 @@ extension Genre {
 
             var stringValue: String {
                 switch self {
-                    case .communicationsandJournalism: return "iTunesU|Communications and Journalism"
+                    case .communicationsAndJournalism: return "iTunesU|Communications and Journalism"
                     case .broadcasting: return "iTunesU|Communications and Journalism|Broadcasting"
                     case .digitalMedia: return "iTunesU|Communications and Journalism|Digital Media"
                     case .journalism: return "iTunesU|Communications and Journalism|Journalism"
@@ -263,8 +263,8 @@ extension Genre {
             case metaphysics = 40000149
             case politicalPhilosophy = 40000150
             case logic = 40000151
-            case philosophyofLanguage = 40000152
-            case philosophyofReligion = 40000153
+            case philosophyOfLanguage = 40000152
+            case philosophyOfReligion = 40000153
 
             var stringValue: String {
                 switch self {
@@ -275,14 +275,14 @@ extension Genre {
                     case .metaphysics: return "iTunesU|Philosophy|Metaphysics"
                     case .politicalPhilosophy: return "iTunesU|Philosophy|Political Philosophy"
                     case .logic: return "iTunesU|Philosophy|Logic"
-                    case .philosophyofLanguage: return "iTunesU|Philosophy|Philosophy of Language"
-                    case .philosophyofReligion: return "iTunesU|Philosophy|Philosophy of Religion"
+                    case .philosophyOfLanguage: return "iTunesU|Philosophy|Philosophy of Language"
+                    case .philosophyOfReligion: return "iTunesU|Philosophy|Philosophy of Religion"
                 }
             }
         }
         case religionAndSpirituality(ReligionAndSpirituality)
         public enum ReligionAndSpirituality: Int, CaseIterable {
-            case religionandSpirituality = 40000055
+            case religionAndSpirituality = 40000055
             case buddhism = 40000156
             case christianity = 40000157
             case comparativeReligion = 40000158
@@ -294,7 +294,7 @@ extension Genre {
 
             var stringValue: String {
                 switch self {
-                    case .religionandSpirituality: return "iTunesU|Religion and Spirituality"
+                    case .religionAndSpirituality: return "iTunesU|Religion and Spirituality"
                     case .buddhism: return "iTunesU|Religion and Spirituality|Buddhism"
                     case .christianity: return "iTunesU|Religion and Spirituality|Christianity"
                     case .comparativeReligion: return "iTunesU|Religion and Spirituality|Comparative Religion"
@@ -374,7 +374,7 @@ extension Genre {
         }
         case writingAndLiterature(WritingAndLiterature)
         public enum WritingAndLiterature: Int, CaseIterable {
-            case writingandLiterature = 40000070
+            case writingAndLiterature = 40000070
             case anthologies = 40000071
             case biography = 40000072
             case classics = 40000073
@@ -385,7 +385,7 @@ extension Genre {
             
             var stringValue: String {
                 switch self {
-                    case .writingandLiterature: return "iTunesU|Writing and Literature"
+                    case .writingAndLiterature: return "iTunesU|Writing and Literature"
                     case .anthologies: return "iTunesU|Writing and Literature|Anthologies"
                     case .biography: return "iTunesU|Writing and Literature|Biography"
                     case .classics: return "iTunesU|Writing and Literature|Classics"
@@ -453,10 +453,10 @@ extension Genre {
             case law = 40000095
             case politicalScience = 40000096
             case publicAdministration = 40000097
-            case lawandPolitics = 40000140
-            case foreignPolicyandInternationalRelations = 40000141
-            case localGovernments = 40000142
-            case nationalGovernments = 40000143
+            case lawAndPolitics = 40000140
+            case foreignPolicyAndInternationalRelations = 40000141
+            case localGovernment = 40000142
+            case nationalGovernment = 40000143
             case worldAffairs = 40000144
             
             var stringValue: String {
@@ -464,10 +464,10 @@ extension Genre {
                     case .law: return "iTunesU|Law and Politics|Law"
                     case .politicalScience: return "iTunesU|Law and Politics|Political Science"
                     case .publicAdministration: return "iTunesU|Law and Politics|Public Administration"
-                    case .lawandPolitics: return "iTunesU|Law and Politics"
-                    case .foreignPolicyandInternationalRelations: return "iTunesU|Law and Politics|Foreign Policy and International Relations"
-                    case .localGovernments: return "iTunesU|Law and Politics|Local Governments"
-                    case .nationalGovernments: return "iTunesU|Law and Politics|National Governments"
+                    case .lawAndPolitics: return "iTunesU|Law and Politics"
+                    case .foreignPolicyAndInternationalRelations: return "iTunesU|Law and Politics|Foreign Policy and International Relations"
+                    case .localGovernment: return "iTunesU|Law and Politics|Local Governments"
+                    case .nationalGovernment: return "iTunesU|Law and Politics|National Governments"
                     case .worldAffairs: return "iTunesU|Law and Politics|World Affairs"
                 }
             }
@@ -498,14 +498,14 @@ extension Genre {
             case asiaPacificStudies = 40000103
             case europeanStudies = 40000104
             case indigenousStudies = 40000105
-            case latinandCaribbeanStudies = 40000106
+            case latinAndCaribbeanStudies = 40000106
             case middleEasternStudies = 40000107
             case womensStudies = 40000108
             case africanStudies = 40000165
             case americanStudies = 40000166
-            case crossculturalStudies = 40000167
-            case immigrationandEmigration = 40000168
-            case raceandEthnicityStudies = 40000169
+            case crossCulturalStudies = 40000167
+            case immigrationAndEmigration = 40000168
+            case raceAndEthnicityStudies = 40000169
             case sexualityStudies = 40000170
 
             var stringValue: String {
@@ -514,38 +514,38 @@ extension Genre {
                     case .asiaPacificStudies: return "iTunesU|Society|Asia Pacific Studies"
                     case .europeanStudies: return "iTunesU|Society|European Studies"
                     case .indigenousStudies: return "iTunesU|Society|Indigenous Studies"
-                    case .latinandCaribbeanStudies: return "iTunesU|Society|Latin and Caribbean Studies"
+                    case .latinAndCaribbeanStudies: return "iTunesU|Society|Latin and Caribbean Studies"
                     case .middleEasternStudies: return "iTunesU|Society|Middle Eastern Studies"
                     case .womensStudies: return "iTunesU|Society|Womens Studies"
                     case .africanStudies: return "iTunesU|Society|African Studies"
                     case .americanStudies: return "iTunesU|Society|American Studies"
-                    case .crossculturalStudies: return "iTunesU|Society|Crosscultural Studies"
-                    case .immigrationandEmigration: return "iTunesU|Society|Immigration and Emigration"
-                    case .raceandEthnicityStudies: return "iTunesU|Society|Race and Ethnicity Studies"
+                    case .crossCulturalStudies: return "iTunesU|Society|Crosscultural Studies"
+                    case .immigrationAndEmigration: return "iTunesU|Society|Immigration and Emigration"
+                    case .raceAndEthnicityStudies: return "iTunesU|Society|Race and Ethnicity Studies"
                     case .sexualityStudies: return "iTunesU|Society|Sexuality Studies"
                 }
             }
         }
         case teachingAndLearning(TeachingAndLearning)
         public enum TeachingAndLearning: Int, CaseIterable {
-            case teachingandLearning = 40000109
-            case curriculumandTeaching = 40000110
+            case teachingAndLearning = 40000109
+            case curriculumAndTeaching = 40000110
             case educationalLeadership = 40000111
-            case familyandChildcare = 40000112
+            case familyAndChildcare = 40000112
             case learningResources = 40000113
-            case psychologyandResearch = 40000114
+            case psychologyAndResearch = 40000114
             case specialEducation = 40000115
             case educationalTechnology = 40000171
             case informationLibraryScience = 40000172
             
             var stringValue: String {
                 switch self {
-                    case .teachingandLearning: return "iTunesU|Teaching and Learning"
-                    case .curriculumandTeaching: return "iTunesU|Teaching and Learning|Curriculum and Teaching"
+                    case .teachingAndLearning: return "iTunesU|Teaching and Learning"
+                    case .curriculumAndTeaching: return "iTunesU|Teaching and Learning|Curriculum and Teaching"
                     case .educationalLeadership: return "iTunesU|Teaching and Learning|Educational Leadership"
-                    case .familyandChildcare: return "iTunesU|Teaching and Learning|Family and Childcare"
+                    case .familyAndChildcare: return "iTunesU|Teaching and Learning|Family and Childcare"
                     case .learningResources: return "iTunesU|Teaching and Learning|Learning Resources"
-                    case .psychologyandResearch: return "iTunesU|Teaching and Learning|Psychology and Research"
+                    case .psychologyAndResearch: return "iTunesU|Teaching and Learning|Psychology and Research"
                     case .specialEducation: return "iTunesU|Teaching and Learning|Special Education"
                     case .educationalTechnology: return "iTunesU|Teaching and Learning|Educational Technology"
                     case .informationLibraryScience: return "iTunesU|Teaching and Learning|Information Library Science"

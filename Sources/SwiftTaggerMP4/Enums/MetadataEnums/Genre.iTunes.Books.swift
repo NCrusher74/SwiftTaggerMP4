@@ -32,9 +32,9 @@ extension Genre {
         case fictionAndLiterature(FictionAndLiterature)
         case mysteriesAndThrillers(MysteryAndThrillers)
         case reference(Reference)
-        case politicalAndCurrentEvents(PoliticalAndCurrentEvents)
+        case politicalAndCurrentEvents(PoliticsAndCurrentEvents)
         case sportsAndOutdoors(SportsAndOutdoors)
-        case communicationsandMedia(CommunicationsAndMedia)
+        case communicationsAndMedia(CommunicationsAndMedia)
         case kids(Kids)
         case youngAdult(YoungAdult)
         case militaryAndWarfare
@@ -62,9 +62,9 @@ extension Genre {
             cases.append(contentsOf: FictionAndLiterature.allCases.map({ Books.fictionAndLiterature($0)}))
             cases.append(contentsOf: MysteryAndThrillers.allCases.map({ Books.mysteriesAndThrillers($0)}))
             cases.append(contentsOf: Reference.allCases.map({ Books.reference($0)}))
-            cases.append(contentsOf: PoliticalAndCurrentEvents.allCases.map({ Books.politicalAndCurrentEvents($0)}))
+            cases.append(contentsOf: PoliticsAndCurrentEvents.allCases.map({ Books.politicalAndCurrentEvents($0)}))
             cases.append(contentsOf: SportsAndOutdoors.allCases.map({ Books.sportsAndOutdoors($0)}))
-            cases.append(contentsOf: CommunicationsAndMedia.allCases.map({ Books.communicationsandMedia($0)}))
+            cases.append(contentsOf: CommunicationsAndMedia.allCases.map({ Books.communicationsAndMedia($0)}))
             cases.append(contentsOf: Kids.allCases.map({ Books.kids($0)}))
             cases.append(contentsOf: YoungAdult.allCases.map({ Books.youngAdult($0)}))
             return cases
@@ -93,7 +93,7 @@ extension Genre {
                 case .mysteriesAndThrillers(let subject): return subject.rawValue
                 case .reference(let subject): return subject.rawValue
                 case .sportsAndOutdoors(let subject): return subject.rawValue
-                case .communicationsandMedia(let subject): return subject.rawValue
+                case .communicationsAndMedia(let subject): return subject.rawValue
                 case .kids(let subject): return subject.rawValue
                 case .youngAdult(let subject): return subject.rawValue
                 case .militaryAndWarfare: return 11228
@@ -131,7 +131,7 @@ extension Genre {
                 case .reference(let subject): return subject.stringValue
                 case .politicalAndCurrentEvents: return "Books|Politics & Current Events"
                 case .sportsAndOutdoors(let subject): return subject.stringValue
-                case .communicationsandMedia(let subject): return subject.stringValue
+                case .communicationsAndMedia(let subject): return subject.stringValue
                 case .kids(let subject): return subject.stringValue
                 case .youngAdult(let subject): return subject.stringValue
                 case .militaryAndWarfare: return "Books|Military & Warfare"
@@ -168,8 +168,8 @@ extension Genre {
             }
         }
         
-        public enum PoliticalAndCurrentEvents: Int, CaseIterable {
-            case politicalAndCurrentEvents = 9034
+        public enum PoliticsAndCurrentEvents: Int, CaseIterable {
+            case politicsAndCurrentEvents = 9034
             case currentEvents = 11260
             case foreignPolicyAndInternationalRelations = 11261
             case localGovernment = 11262
@@ -180,7 +180,7 @@ extension Genre {
             
             var stringValue: String {
                 switch self {
-                    case .politicalAndCurrentEvents: return "Books|Politics & Current Events"
+                    case .politicsAndCurrentEvents: return "Books|Politics & Current Events"
                     case .currentEvents: return "Books|Politics & Current Events|Current Events"
                     case .foreignPolicyAndInternationalRelations: return "Books|Politics & Current Events|Foreign Policy & International Relations"
                     case .localGovernment: return "Books|Politics & Current Events|Local Government"
@@ -345,7 +345,7 @@ extension Genre {
             case canada = 10142
             case caribbean = 10143
             case latinAmerica = 10144
-            case essaysandMemoirs = 10145
+            case essaysAndMemoirs = 10145
             case europe = 10146
             case middleEast = 10147
             case unitedStates = 10148
@@ -359,7 +359,7 @@ extension Genre {
                     case .canada: return "Books|Travel & Adventure|Canada"
                     case .caribbean: return "Books|Travel & Adventure|Caribbean"
                     case .latinAmerica: return "Books|Travel & Adventure|Latin America"
-                    case .essaysandMemoirs: return "Books|Travel & Adventure|Essays & Memoirs"
+                    case .essaysAndMemoirs: return "Books|Travel & Adventure|Essays & Memoirs"
                     case .europe: return "Books|Travel & Adventure|Europe"
                     case .middleEast: return "Books|Travel & Adventure|Middle East"
                     case .unitedStates: return "Books|Travel & Adventure|United States"
@@ -442,7 +442,7 @@ extension Genre {
             case reference = 10131
             case soccer = 10132
             case training = 10133
-            case wterSports = 10134
+            case waterSports = 10134
             case winterSports = 10135
             case boxing = 11054
             case cricket = 11055
@@ -469,7 +469,7 @@ extension Genre {
                     case .reference: return "Books|Sports & Outdoors|Reference"
                     case .soccer: return "Books|Sports & Outdoors|Soccer"
                     case .training: return "Books|Sports & Outdoors|Training"
-                    case .wterSports: return "Books|Sports & Outdoors|Water Sports"
+                    case .waterSports: return "Books|Sports & Outdoors|Water Sports"
                     case .winterSports: return "Books|Sports & Outdoors|Winter Sports"
                     case .boxing: return "Books|Sports & Outdoors|Boxing"
                     case .cricket: return "Books|Sports & Outdoors|Cricket"
@@ -646,7 +646,7 @@ extension Genre {
                 case animals = 11114
                 case classics = 11115
                 case comicsAndGraphicNovels = 11116
-                case FculturePlacesAndPeople = 11117
+                case culturePlacesAndPeople = 11117
                 case familyAndRelationships = 11118
                 case fantasy = 11119
                 case fairyTalesMythsAndFables = 11120
@@ -669,7 +669,7 @@ extension Genre {
                         case .animals: return "Books|Kids|Fiction|Animals"
                         case .classics: return "Books|Kids|Fiction|Classics"
                         case .comicsAndGraphicNovels: return "Books|Kids|Fiction|Comics & Graphic Novels"
-                        case .FculturePlacesAndPeople: return "Books|Kids|Fiction|Culture, Places & People"
+                        case .culturePlacesAndPeople: return "Books|Kids|Fiction|Culture, Places & People"
                         case .familyAndRelationships: return "Books|Kids|Fiction|Family & Relationships"
                         case .fantasy: return "Books|Kids|Fiction|Fantasy"
                         case .fairyTalesMythsAndFables: return "Books|Kids|Fiction|Fairy Tales, Myths & Fables"
@@ -872,7 +872,7 @@ extension Genre {
                 case fantasy = 11185
                 case fairyTalesMythsAndFables = 11186
                 case favoriteCharacters = 11187
-                case Yhistorical = 11188
+                case historical = 11188
                 case holidaysAndCelebrations = 11189
                 case horrorMonstersAndGhosts = 11190
                 case crimeAndMystery = 11191
@@ -897,7 +897,7 @@ extension Genre {
                         case .fantasy: return "Books|Young Adult|Fiction|Fantasy"
                         case .fairyTalesMythsAndFables: return "Books|Young Adult|Fiction|Fairy Tales, Myths & Fables"
                         case .favoriteCharacters: return "Books|Young Adult|Fiction|Favorite Characters"
-                        case .Yhistorical: return "Books|Young Adult|Fiction|Historical"
+                        case .historical: return "Books|Young Adult|Fiction|Historical"
                         case .holidaysAndCelebrations: return "Books|Young Adult|Fiction|Holidays & Celebrations"
                         case .horrorMonstersAndGhosts: return "Books|Young Adult|Fiction|Horror, Monsters & Ghosts"
                         case .crimeAndMystery: return "Books|Young Adult|Fiction|Crime & Mystery"
@@ -920,7 +920,7 @@ extension Genre {
                 case general = 11207
                 case halloween = 11208
                 case hanukkah = 11209
-                case oher = 11210
+                case other = 11210
                 case passover = 11211
                 case patrioticHolidays = 11212
                 case ramadan = 11213
@@ -936,7 +936,7 @@ extension Genre {
                         case .general: return "Books|Young Adult|Holidays & Celebrations|General"
                         case .halloween: return "Books|Young Adult|Holidays & Celebrations|Halloween"
                         case .hanukkah: return "Books|Young Adult|Holidays & Celebrations|Hanukkah"
-                        case .oher: return "Books|Young Adult|Holidays & Celebrations|Other"
+                        case .other: return "Books|Young Adult|Holidays & Celebrations|Other"
                         case .passover: return "Books|Young Adult|Holidays & Celebrations|Passover"
                         case .patrioticHolidays: return "Books|Young Adult|Holidays & Celebrations|Patriotic Holidays"
                         case .ramadan: return "Books|Young Adult|Holidays & Celebrations|Ramadan"
@@ -1208,13 +1208,13 @@ extension Genre {
             case etiquette
             case quotations
             case wordsAndLanguage
-            case witing
+            case writing
             case studyAids
             case manuals
             case foreignLanguages(ForeignLanguages)
 
             public static var allCases: [Reference] {
-                var cases: [Reference] = [.almanacsAndYearbooks, .atlasesAndMaps, .catalogsAndDirectories, .consumerGuides, .dictionariesAndThesauruses, .encyclopedias, .etiquette, .manuals, .quotations, .reference, .studyAids, .witing, .witing, .wordsAndLanguage]
+                var cases: [Reference] = [.almanacsAndYearbooks, .atlasesAndMaps, .catalogsAndDirectories, .consumerGuides, .dictionariesAndThesauruses, .encyclopedias, .etiquette, .manuals, .quotations, .reference, .studyAids, .writing, .writing, .wordsAndLanguage]
                 cases.append(contentsOf: ForeignLanguages.allCases.map({ Reference.foreignLanguages($0)}))
                 return cases
             }
@@ -1231,7 +1231,7 @@ extension Genre {
                     case .etiquette: return 10101
                     case .quotations: return 10102
                     case .wordsAndLanguage: return 10103
-                    case .witing: return 10104
+                    case .writing: return 10104
                     case .studyAids: return 10136
                     case .manuals: return 11085
                     case .foreignLanguages(let subject): return subject.rawValue
@@ -1250,7 +1250,7 @@ extension Genre {
                     case .etiquette: return "Books|Reference|Etiquette"
                     case .quotations: return "Books|Reference|Quotations"
                     case .wordsAndLanguage: return "Books|Reference|Words & Language"
-                    case .witing: return "Books|Reference|Writing"
+                    case .writing: return "Books|Reference|Writing"
                     case .studyAids: return "Books|Reference|Study Aids"
                     case .manuals: return "Books|Reference|Manuals"
                     case .foreignLanguages(let subject): return subject.stringValue

@@ -10,7 +10,7 @@ extension Genre {
     public enum Textbooks {
         case textbooks
         case artsAndEntertainment(ArtsAndEntertainment)
-        case biographiesandMemoirs
+        case biographiesAndMemoirs
         case businessAndPersonalFinance(BusinessAndPersonalFinance)
         case childrenAndTeens(ChildrenAndTeens)
         case comicsAndGraphicNovels(ComicsAndGraphicNovels)
@@ -43,7 +43,7 @@ extension Genre {
         case travelAndAdventure(TravelAndAdventure)
         
         public static var allCases: [Textbooks] {
-            var cases: [Textbooks] = [.biographiesandMemoirs, .humor, .parenting, .textbooks]
+            var cases: [Textbooks] = [.biographiesAndMemoirs, .humor, .parenting, .textbooks]
             cases.append(contentsOf: ArtsAndEntertainment.allCases.map({ Textbooks.artsAndEntertainment($0)}))
             cases.append(contentsOf: BusinessAndPersonalFinance.allCases.map({ Textbooks.businessAndPersonalFinance($0)}))
             cases.append(contentsOf: ChildrenAndTeens.allCases.map({ Textbooks.childrenAndTeens($0)}))
@@ -80,7 +80,7 @@ extension Genre {
             switch self {
                 case .textbooks: return 40
                 case .artsAndEntertainment(let subject): return subject.rawValue
-                case .biographiesandMemoirs: return 15017
+                case .biographiesAndMemoirs: return 15017
                 case .businessAndPersonalFinance(let subject): return subject.rawValue
                 case .childrenAndTeens(let subject): return subject.rawValue
                 case .comicsAndGraphicNovels(let subject): return subject.rawValue
@@ -118,7 +118,7 @@ extension Genre {
             switch self {
                 case .textbooks: return "Textbooks"
                 case .artsAndEntertainment(let subject): return subject.stringValue
-                case .biographiesandMemoirs: return "Textbooks|Biographies & Memoirs"
+                case .biographiesAndMemoirs: return "Textbooks|Biographies & Memoirs"
                 case .businessAndPersonalFinance(let subject): return subject.stringValue
                 case .childrenAndTeens(let subject): return subject.stringValue
                 case .comicsAndGraphicNovels(let subject): return subject.stringValue
@@ -428,14 +428,14 @@ extension Genre {
             case americas(Americas)
             case ancient
             case asia
-            case australiaandOceania
+            case australiaAndOceania
             case europe
             case middleEast
             case military
             case world
             
             public static var allCases: [History] {
-                var cases: [History] = [.africa, .ancient, .asia, .australiaandOceania, .europe, .history, .middleEast, .military, .world]
+                var cases: [History] = [.africa, .ancient, .asia, .australiaAndOceania, .europe, .history, .middleEast, .military, .world]
                 cases.append(contentsOf: Americas.allCases.map({ History.americas($0)}))
                 return cases
             }
@@ -447,7 +447,7 @@ extension Genre {
                     case .americas(let subject): return subject.rawValue
                     case .ancient: return 15101
                     case .asia: return 15102
-                    case .australiaandOceania: return 15103
+                    case .australiaAndOceania: return 15103
                     case .europe: return 15104
                     case .middleEast: return 15105
                     case .military: return 15106
@@ -462,7 +462,7 @@ extension Genre {
                     case .americas(let subject): return subject.stringValue
                     case .ancient: return "Textbooks|History|Ancient"
                     case .asia: return "Textbooks|History|Asia"
-                    case .australiaandOceania: return "Textbooks|History|Australia & Oceania"
+                    case .australiaAndOceania: return "Textbooks|History|Australia & Oceania"
                     case .europe: return "Textbooks|History|Europe"
                     case .middleEast: return "Textbooks|History|Middle East"
                     case .military: return "Textbooks|History|Military"
@@ -730,7 +730,7 @@ extension Genre {
             case etiquette = 15197
             case quotations = 15198
             case studyAids = 15199
-            case wordsandLanguage = 15200
+            case wordsAndLanguage = 15200
             case writing = 15201
             case manuals = 15312
 
@@ -746,7 +746,7 @@ extension Genre {
                     case .etiquette: return "Textbooks|Reference|Etiquette"
                     case .quotations: return "Textbooks|Reference|Quotations"
                     case .studyAids: return "Textbooks|Reference|Study Aids"
-                    case .wordsandLanguage: return "Textbooks|Reference|Words & Language"
+                    case .wordsAndLanguage: return "Textbooks|Reference|Words & Language"
                     case .writing: return "Textbooks|Reference|Writing"
                     case .manuals: return "Textbooks|Reference|Manuals"
                 }
@@ -1049,7 +1049,7 @@ extension Genre {
             case curriculumAndTeaching = 15290
             case educationalLeadership = 15291
             case educationalTechnology = 15292
-            case familyandChildcare = 15293
+            case familyAndChildcare = 15293
             case informationAndLibraryScience = 15294
             case learningResources = 15295
             case psychologyAndResearch = 15296
@@ -1062,7 +1062,7 @@ extension Genre {
                     case .curriculumAndTeaching: return "Textbooks|Teaching & Learning|Curriculum & Teaching"
                     case .educationalLeadership: return "Textbooks|Teaching & Learning|Educational Leadership"
                     case .educationalTechnology: return "Textbooks|Teaching & Learning|Educational Technology"
-                    case .familyandChildcare: return "Textbooks|Teaching & Learning|Family & Childcare"
+                    case .familyAndChildcare: return "Textbooks|Teaching & Learning|Family & Childcare"
                     case .informationAndLibraryScience: return "Textbooks|Teaching & Learning|Information & Library Science"
                     case .learningResources: return "Textbooks|Teaching & Learning|Learning Resources"
                     case .psychologyAndResearch: return "Textbooks|Teaching & Learning|Psychology & Research"
