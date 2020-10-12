@@ -129,7 +129,7 @@ extension Genre {
         public enum SocietyAndCulture: Int, CaseIterable {
             case societyAndCulture = 1324
             case personalJournals = 1302
-            case placesandTravel = 1320
+            case placesAndTravel = 1320
             case philosophy = 1443
             case history = 1462
             case documentary = 1543
@@ -139,7 +139,7 @@ extension Genre {
                 switch self {
                     case .societyAndCulture: return "Podcasts|Society And Culture"
                     case .personalJournals: return "Podcasts|Society And Culture|Personal Journals"
-                    case .placesandTravel: return "Podcasts|Society And Culture|Places And Travel"
+                    case .placesAndTravel: return "Podcasts|Society And Culture|Places And Travel"
                     case .philosophy: return "Podcasts|Society And Culture|Philosophy"
                     case .history: return "Podcasts|Society And Culture|History"
                     case .documentary: return "Podcasts|Society And Culture|Documentary"
@@ -150,7 +150,7 @@ extension Genre {
         
         case religionAndSpirituality(ReligionAndSpirituality)
         public enum ReligionAndSpirituality: Int, CaseIterable {
-            case religionandSpirituality = 1314
+            case religionAndSpirituality = 1314
             case buddhism = 1438
             case christianity = 1439
             case islam = 1440
@@ -162,7 +162,7 @@ extension Genre {
 
             var stringValue: String {
                 switch self {
-                    case .religionandSpirituality: return "Podcasts|Religion And Spirituality"
+                    case .religionAndSpirituality: return "Podcasts|Religion And Spirituality"
                     case .buddhism: return "Podcasts|Religion And Spirituality|Buddhism"
                     case .christianity: return "Podcasts|Religion And Spirituality|Christianity"
                     case .islam: return "Podcasts|Religion And Spirituality|Islam"

@@ -514,7 +514,7 @@ extension Genre {
         case latino(Latino)
         public enum Latino: Int, CaseIterable {
             case latino = 1612
-            case alternativeandRockInSpanish = 1840
+            case alternativeAndRockInSpanish = 1840
             case baladasyBoleros = 1841
             case contemporaryLatin = 1842
             case latinJazz = 1843
@@ -527,7 +527,7 @@ extension Genre {
             var stringValue: String {
                 switch self {
                     case .latino: return "Music Videos|Latino"
-                    case .alternativeandRockInSpanish: return "Music Videos|Latino|Alternativeand Rock in Spanish"
+                    case .alternativeAndRockInSpanish: return "Music Videos|Latino|Alternative and Rock in Spanish"
                     case .baladasyBoleros: return "Music Videos|Latino|Baladasy Boleros"
                     case .contemporaryLatin: return "Music Videos|Latino|Contemporary Latin"
                     case .latinJazz: return "Music Videos|Latino|Latin Jazz"
@@ -885,7 +885,7 @@ extension Genre {
             case jamBands = 1879
             case progRockArtRock = 1880
             case psychedelic = 1881
-            case rockandRoll = 1882
+            case rockAndRoll = 1882
             case rockabilly = 1883
             case rootsRock = 1884
             case singerSongwriter = 1885
@@ -912,7 +912,7 @@ extension Genre {
                     case .jamBands: return "Music Videos|Rock|Jam Bands"
                     case .progRockArtRock: return "Music Videos|Rock|Prog Rock/Art Rock"
                     case .psychedelic: return "Music Videos|Rock|Psychedelic"
-                    case .rockandRoll: return "Music Videos|Rock|Rock & Roll"
+                    case .rockAndRoll: return "Music Videos|Rock|Rock & Roll"
                     case .rockabilly: return "Music Videos|Rock|Rockabilly"
                     case .rootsRock: return "Music Videos|Rock|Roots Rock"
                     case .singerSongwriter: return "Music Videos|Rock|Singer Songwriter"
@@ -926,7 +926,7 @@ extension Genre {
         
         case christianAndGospel(ChristianAndGospel)
         public enum ChristianAndGospel: Int, CaseIterable {
-            case christianandGospel = 1622
+            case christianAndGospel = 1622
             case ccm = 1747
             case christianMetal = 1748
             case christianPop = 1749
@@ -941,7 +941,7 @@ extension Genre {
             
             var stringValue: String {
                 switch self {
-                    case .christianandGospel: return "Music Videos|Christian And Gospel"
+                    case .christianAndGospel: return "Music Videos|Christian And Gospel"
                     case .ccm: return "Music Videos|Christian And Gospel|CCM"
                     case .christianMetal: return "Music Videos|Christian And Gospel|Christian Metal"
                     case .christianPop: return "Music Videos|Christian And Gospel|Christian Pop"

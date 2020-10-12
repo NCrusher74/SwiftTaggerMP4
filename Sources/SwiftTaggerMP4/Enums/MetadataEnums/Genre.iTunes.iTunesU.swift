@@ -105,7 +105,7 @@ extension Genre {
         case engineering(Engineering)
         public enum Engineering: Int, CaseIterable {
             case engineering = 40000009
-            case chemicalandPetroleumEngineering = 40000010
+            case chemicalAndPetroleumEngineering = 40000010
             case civilEngineering = 40000011
             case computerScience = 40000012
             case electricalEngineering = 40000013
@@ -115,7 +115,7 @@ extension Genre {
             var stringValue: String {
                 switch self {
                     case .engineering: return "iTunesU|Engineering"
-                    case .chemicalandPetroleumEngineering: return "iTunesU|Engineering|Chemical and Petroleum Engineering"
+                    case .chemicalAndPetroleumEngineering: return "iTunesU|Engineering|Chemical and Petroleum Engineering"
                     case .civilEngineering: return "iTunesU|Engineering|Civil Engineering"
                     case .computerScience: return "iTunesU|Engineering|Computer Science"
                     case .electricalEngineering: return "iTunesU|Engineering|Electrical Engineering"
@@ -126,7 +126,7 @@ extension Genre {
         }
         case musicArtAndDesign(MusicArtAndDesign)
         public enum MusicArtAndDesign: Int, CaseIterable {
-            case musicArtandDesign = 40000016
+            case musicArtAndDesign = 40000016
             case architecture = 40000017
             case artHistory = 40000019
             case dance = 40000020
@@ -143,7 +143,7 @@ extension Genre {
 
             var stringValue: String {
                 switch self {
-                    case .musicArtandDesign: return "iTunesU|Music Art and Design"
+                    case .musicArtAndDesign: return "iTunesU|Music Art and Design"
                     case .architecture: return "iTunesU|Music Art and Design|Architecture"
                     case .artHistory: return "iTunesU|Music Art and Design|Art History"
                     case .dance: return "iTunesU|Music Art and Design|Dance"

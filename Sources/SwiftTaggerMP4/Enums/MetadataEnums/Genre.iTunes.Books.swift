@@ -140,12 +140,12 @@ extension Genre {
 
         public enum Humor: Int, CaseIterable {
             case humor = 9012
-            case jokesandRiddles = 11246
+            case jokesAndRiddles = 11246
             
             var stringValue: String {
                 switch self {
                     case .humor: return "Books|Humor"
-                    case .jokesandRiddles: return "Books|Humor|Jokes & Riddles"
+                    case .jokesAndRiddles: return "Books|Humor|Jokes & Riddles"
                 }
             }
         }
@@ -1044,7 +1044,7 @@ extension Genre {
         public enum BusinessAndPersonalFinance: Int, CaseIterable {
             case businessAndPersonalFinance = 9009
             case industriesAndProfessions = 10005
-            case marketingandSales = 10006
+            case marketingAndSales = 10006
             case smallBusinessAndEntrepreneurship = 10007
             case personalFinance = 10008
             case reference = 10009
@@ -1061,7 +1061,7 @@ extension Genre {
                 switch self {
                     case .businessAndPersonalFinance: return "Books|Business & Personal Finance"
                     case .industriesAndProfessions: return "Books|Business & Personal Finance|Industries & Professions"
-                    case .marketingandSales: return "Books|Business & Personal Finance|Marketing & Sales"
+                    case .marketingAndSales: return "Books|Business & Personal Finance|Marketing & Sales"
                     case .smallBusinessAndEntrepreneurship: return "Books|Business & Personal Finance|Small Business & Entrepreneurship"
                     case .personalFinance: return "Books|Business & Personal Finance|Personal Finance"
                     case .reference: return "Books|Business & Personal Finance|Reference"

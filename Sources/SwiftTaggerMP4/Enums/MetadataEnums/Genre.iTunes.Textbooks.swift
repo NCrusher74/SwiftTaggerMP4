@@ -165,7 +165,7 @@ extension Genre {
             case interiorDesign = 15009
             case mediaArts = 15010
             case music = 15011
-            case peformingArts = 15012
+            case performingArts = 15012
             case photography = 15013
             case theater = 15014
             case tv = 15015
@@ -185,7 +185,7 @@ extension Genre {
                     case .interiorDesign: return "Textbooks|Arts & Entertainment|Interior Design"
                     case .mediaArts: return "Textbooks|Arts & Entertainment|Media Arts"
                     case .music: return "Textbooks|Arts & Entertainment|Music"
-                    case .peformingArts: return "Textbooks|Arts & Entertainment|Performing Arts"
+                    case .performingArts: return "Textbooks|Arts & Entertainment|Performing Arts"
                     case .photography: return "Textbooks|Arts & Entertainment|Photography"
                     case .theater: return "Textbooks|Arts & Entertainment|Theater"
                     case .tv: return "Textbooks|Arts & Entertainment|TV"
@@ -971,11 +971,11 @@ extension Genre {
                 case asiaPacificStudies = 15259
                 case crossCulturalStudies = 15260
                 case europeanStudies = 15261
-                case immigrationandEmigration = 15262
+                case immigrationAndEmigration = 15262
                 case indigenousStudies = 15263
-                case latinandCaribbeanStudies = 15264
+                case latinAndCaribbeanStudies = 15264
                 case middleEasternStudies = 15265
-                case raceandEthnicityStudies = 15266
+                case raceAndEthnicityStudies = 15266
                 case sexualityStudies = 15267
                 case womensStudies = 15268
 
@@ -987,11 +987,11 @@ extension Genre {
                         case .asiaPacificStudies: return "Textbooks|Social Science|Society|Asia Pacific Studies"
                         case .crossCulturalStudies: return "Textbooks|Social Science|Society|Cross-Cultural Studies"
                         case .europeanStudies: return "Textbooks|Social Science|Society|European Studies"
-                        case .immigrationandEmigration: return "Textbooks|Social Science|Society|Immigration & Emigration"
+                        case .immigrationAndEmigration: return "Textbooks|Social Science|Society|Immigration & Emigration"
                         case .indigenousStudies: return "Textbooks|Social Science|Society|Indigenous Studies"
-                        case .latinandCaribbeanStudies: return "Textbooks|Social Science|Society|Latin & Caribbean Studies"
+                        case .latinAndCaribbeanStudies: return "Textbooks|Social Science|Society|Latin & Caribbean Studies"
                         case .middleEasternStudies: return "Textbooks|Social Science|Society|Middle Eastern Studies"
-                        case .raceandEthnicityStudies: return "Textbooks|Social Science|Society|Race & Ethnicity Studies"
+                        case .raceAndEthnicityStudies: return "Textbooks|Social Science|Society|Race & Ethnicity Studies"
                         case .sexualityStudies: return "Textbooks|Social Science|Society|Sexuality Studies"
                         case .womensStudies: return "Textbooks|Social Science|Society|Women's Studies"
                     }
