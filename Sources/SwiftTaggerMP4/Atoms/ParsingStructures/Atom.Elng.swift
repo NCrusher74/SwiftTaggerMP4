@@ -12,7 +12,7 @@ import SwiftLanguageAndLocaleCodes
 class Elng: Atom {
     private var version: Data
     private var flags: Data
-    var languages: [ICULocaleCode]
+    var languages: [Language]
     
     /// Initialize a `elng` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -20,11 +20,11 @@ class Elng: Atom {
         
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        var languageArray = [ICULocaleCode]()
+        var languageArray = [Language]()
         while !data.isEmpty {
             let languageString = data.extractNullTerminatedString()
-            if let language = ICULocaleCode(rawValue: languageString) {
-                languageArray.append(language)
+            if let locale = ICULocaleCode(rawValue: languageString) {
+                languageArray.append(locale.language)
             }
         }
         self.languages = languageArray
@@ -38,7 +38,12 @@ class Elng: Atom {
     init(locales: [ICULocaleCode]) throws {
         self.version = Atom.version
         self.flags = Atom.flags
-        self.languages = locales
+        var languageArray = [Language]()
+        for locale in locales {
+            let language = locale.language
+            languageArray.append(language)
+        }
+        self.languages = languageArray
         
         var payload = Data()
         payload.append(self.version)
@@ -60,7 +65,7 @@ class Elng: Atom {
         data.append(self.version)
         data.append(self.flags)
         for language in self.languages {
-            data.append(language.rawValue.nullTerminatedUtf8)
+            data.append(language.localeCode.rawValue.nullTerminatedUtf8)
         }
         return data
     }

@@ -12,7 +12,7 @@ public struct Tag {
     public var metadataAtoms: [AtomKey: Atom]
     public var unknownAtoms: [UnknownMetadataAtom]
     
-    public var languages: [ICULocaleCode]
+    public var languages: [Language]
     public var duration: Int
     var chapterHandler: ChapterHandler
     

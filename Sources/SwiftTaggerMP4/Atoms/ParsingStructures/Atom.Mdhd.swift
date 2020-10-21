@@ -50,43 +50,28 @@ class Mdhd: Atom {
     }
     
     /// Retrieves the `ICULocaleCode` from the `elng` atom (if one exists) and converts it an `ISO-639-2` code
-    static func getLanguage(from elng: Elng) -> ISO6392Code {
-        var languageFromElng: ISO6392Code = .und
-        let language = elng.languages.first?.rawValue
-        let langComponents: [String] = language?.components(separatedBy: "_") ?? ["en"]
-        if let langString: String = langComponents.first {
-            if let language6392 = ISO6392Code(iso6391Code: langString) {
-                languageFromElng = language6392
-            } else if let language6392 = ISO6392Code(rawValue: langString) {
-                languageFromElng = language6392
-            }
-        }
-        return languageFromElng
+    static func getLanguage(from elng: Elng) -> Language {
+        return elng.languages.first ?? .unspecified
     }
     
-    var language: ISO6392Code? {
+    var language: Language? {
         get {
             // first see if there's an extended language tag
             var elng: Elng? = nil
             if let siblings = self.siblings {
                 elng = siblings.first(where: {$0.identifier == "elng"}) as? Elng
             }
-
             // if there is, it overrides anything in the language here
             if elng != nil {
-                var languageFromElng: ISO6392Code = .und
-                if let language = elng?.languages.first {
-                    languageFromElng = ISO6392Code(localeCode: language) ?? .und
-                }
-                return languageFromElng
+                return elng?.languages.first
             } else {
                 // see if it's a uInt16 form of the 3-character code
                 if let languageCode = ISO6392Code(fromInt16: languageInt16) {
-                    return languageCode
+                    return languageCode.language
                     // otherwise see if it works with a quicktime code
                 } else if let languageCode = ISO6392Code(
-                    quicktimeCode: Int(languageInt16)) {
-                    return languageCode
+                            quicktimeCode: Int(languageInt16)) {
+                    return languageCode.language
                 } else {
                     return nil
                 }
@@ -101,16 +86,12 @@ class Mdhd: Atom {
             
             // if there is, use the first language as our language here
             if elng != nil {
-                if let elngLanguage = elng?.languages.first?.rawValue {
-                    if let isoLanguage = ISO6392Code(iso6391Code: elngLanguage) {
-                        self.languageInt16 = isoLanguage.getInt16Code()
-                    } else if let isoLanguage = ISO6392Code(rawValue: elngLanguage) {
-                        self.languageInt16 = isoLanguage.getInt16Code()
+                if let elngLanguage = elng?.languages.first {
+                    self.languageInt16 = elngLanguage.iso6392Code.getInt16Code()
+                } else {
+                    if let newValue = newValue {
+                        self.languageInt16 = newValue.iso6392Code.getInt16Code()
                     }
-                }
-            } else {
-                if let newValue = newValue {
-                    self.languageInt16 = newValue.getInt16Code()
                 }
             }
         }
@@ -160,7 +141,7 @@ class Mdhd: Atom {
     /// **NOTE:** for use in a CHAPTER TRAK ONLY
     @available(OSX 10.12, *)
     init(elng: Elng, moov: Moov) throws {
-        let isoCode = Mdhd.getLanguage(from: elng)
+        let language = Mdhd.getLanguage(from: elng)
         
         self.version = Atom.version
         self.flags = Atom.flags
@@ -169,7 +150,7 @@ class Mdhd: Atom {
         
         self.timeScale = 1000
         self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000
-        self.languageInt16 = isoCode.getInt16Code()
+        self.languageInt16 = language.iso6392Code.getInt16Code()
         self.quality = 0
         
         var payload = Data()

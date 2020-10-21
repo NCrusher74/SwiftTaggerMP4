@@ -91,7 +91,7 @@ public class Mp4File {
     }
     
     @available(OSX 10.12, *)
-    var languages: [ICULocaleCode]? {
+    var languages: [Language]? {
         get {
             if let elng = moov.soundTrack.mdia.elng {
                 return elng.languages
@@ -107,8 +107,12 @@ public class Mp4File {
                         track.mdia.elng?.languages = new
                         track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
                     } else {
+                        var locales: [ICULocaleCode] = []
+                        for language in new {
+                            locales.append(language.localeCode)
+                        }
                         do {
-                            let elng = try Elng(locales: new)
+                            let elng = try Elng(locales: locales)
                             track.mdia.elng = elng
                             track.mdia.mdhd.language = Mdhd.getLanguage(from: track.mdia.elng!)
                         } catch {
@@ -119,10 +123,10 @@ public class Mp4File {
                 self.moov.tracks = newTracks
             } else {
                 self.moov.soundTrack.mdia.elng = nil
-                self.moov.soundTrack.mdia.mdhd.language = .und
+                self.moov.soundTrack.mdia.mdhd.language = .unspecified
                 if self.moov.chapterTrack != nil {
                     self.moov.chapterTrack?.mdia.elng = nil
-                    self.moov.chapterTrack?.mdia.mdhd.language = .und
+                    self.moov.chapterTrack?.mdia.mdhd.language = .unspecified
                 }
             }
         }

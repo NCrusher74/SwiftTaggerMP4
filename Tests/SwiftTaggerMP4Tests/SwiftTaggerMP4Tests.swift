@@ -509,15 +509,15 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         var tag = try Tag(mp4File: mp4)
         XCTAssertEqual(mp4.languages, [.english])
         XCTAssertEqual(tag.languages, [.english])
-        tag.languages = [.englishWorld]
+        tag.languages = [.unspecified]
         let outputUrl = tempOutputDirectory
-//        let outputUrl = try tempDirectory().appendingPathComponent("test.m4a")
+
         try mp4.write(tag: tag, to: outputUrl)
                 
         let output = try Mp4File(location: outputUrl)
         let outputTag = try Tag(mp4File: output)
-        XCTAssertEqual(output.languages, [.englishWorld])
-        XCTAssertEqual(outputTag.languages, [.englishWorld])
+        XCTAssertNil(output.languages)
+        XCTAssertEqual(outputTag.languages, [.unspecified])
     }
     
     @available(OSX 10.13, *)

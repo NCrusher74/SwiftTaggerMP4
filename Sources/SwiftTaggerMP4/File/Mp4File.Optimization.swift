@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftLanguageAndLocaleCodes
 
 extension Mp4File {
     func chunkSizes(stbl: Stbl) throws -> [Int] {
@@ -160,8 +161,12 @@ extension Mp4File {
             // this is a chaptertrack without a chunk offset atom yet
             // we're not adding the chunk offset atom here because we need to have a starting offset to create the chunk offset atom
             // to get the starting offset, we need all the other atoms in place first
+            var locales: [ICULocaleCode] = []
+            for language in self.languages ?? [] {
+                locales.append(language.localeCode)
+            }
             let chapterTrack = try Trak(chapterHandler: tag.chapterHandler,
-                                        languages: self.languages,
+                                        languages: locales,
                                         moov: self.moov,
                                         chapterTrackID: chapterTrackID)
             self.moov.chapterTrack = chapterTrack
