@@ -75,17 +75,8 @@ class Mdhd: Atom {
             // if there is, it overrides anything in the language here
             if elng != nil {
                 var languageFromElng: ISO6392Code = .und
-                if let language = elng?.languages.first?.rawValue {
-                    let langComponents: [String] = language.components(separatedBy: "_")
-                    if let langString: String = langComponents.first {
-                        if let language6392 = ISO6392Code(iso6391Code: langString) {
-                            languageFromElng = language6392
-                        } else if let language6392 = ISO6392Code(rawValue: langString) {
-                            languageFromElng = language6392
-                        } else {
-                            languageFromElng = .und
-                        }
-                    }
+                if let language = elng?.languages.first {
+                    languageFromElng = ISO6392Code(localeCode: language) ?? .und
                 }
                 return languageFromElng
             } else {
