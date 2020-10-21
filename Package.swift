@@ -17,6 +17,9 @@ let package = Package(
         .package(
             url: "https://github.com/NCrusher74/SwiftConvenienceExtensions",
             from: "1.0.0"),
+        .package(
+            url: "https://github.com/NCrusher74/iTunesGenreID",
+            from: "1.0.0")
     ],
     targets: [
         .target(
@@ -24,6 +27,7 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftLanguageAndLocaleCodes", package: "SwiftLanguageAndLocaleCodes"),
                 .product(name: "SwiftConvenienceExtensions", package: "SwiftConvenienceExtensions"),
+                .product(name: "iTunesGenreID", package: "iTunesGenreID"),
             ],
             path: "Sources"),
         .testTarget(

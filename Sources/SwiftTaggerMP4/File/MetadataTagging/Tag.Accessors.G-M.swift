@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import iTunesGenreID
+
 extension Tag {
     public var grouping: String? {
         get {
@@ -284,7 +286,7 @@ extension Tag {
     public var genreID: Genre? {
         get {
             if let atom = metadataAtoms[.genreID] as? IntegerMetadataAtom {
-                return Genre(genreID: atom.intValue)
+                return Genre(identifier: atom.intValue)
             } else {
                 return nil
             }
@@ -292,7 +294,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try IntegerMetadataAtom(identifier: .genreID, intValue: new.genreID)
+                    let atom = try IntegerMetadataAtom(identifier: .genreID, intValue: new.identifier)
                     metadataAtoms[.genreID] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(IntegerMetadataIdentifier.genreID)")

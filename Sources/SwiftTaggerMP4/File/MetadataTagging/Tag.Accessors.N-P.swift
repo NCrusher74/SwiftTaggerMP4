@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import iTunesGenreID
+
 extension Tag {
     public var narrator: String? {
         get {

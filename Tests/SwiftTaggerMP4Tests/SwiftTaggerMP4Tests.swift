@@ -1,6 +1,8 @@
 import XCTest
 import Cocoa
 import SwiftLanguageAndLocaleCodes
+import iTunesGenreID
+
 @testable import SwiftTaggerMP4
 
 final class SwiftTaggerMP4Tests: XCTestCase {
@@ -430,7 +432,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.labelUrl,"www.filmmaker.url")
         XCTAssertEqual(output.format,"Format")
         XCTAssertEqual(output.gaplessPlayback,true)
-        XCTAssertEqual(output.genreID?.genreID,Genre.Audiobooks.audiobooks.rawValue)
+        XCTAssertEqual(output.genreID?.identifier,Genre.audiobooks(.audiobooks).identifier)
         XCTAssertEqual(output.grouping,"Grouping")
         XCTAssertEqual(output.information,"Information")
         XCTAssertEqual(output.isrc,"123456789012")
@@ -454,7 +456,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.podcast,true)
         XCTAssertEqual(output.podcastID,"Podcast ID")
         XCTAssertEqual(output.podcastFeed,"www.podcast.url")
-        XCTAssertEqual(output.predefinedGenre?.stringValue,Genre.Audiobooks.audiobooks.stringValue)
+        XCTAssertEqual(output.predefinedGenre?.stringValue,Genre.audiobooks(.audiobooks).stringValue)
         XCTAssertEqual(output.producer,"Producer")
         XCTAssertEqual(output.producerKeywords,["Producer", "Keywords"])
         XCTAssertEqual(output.publisher,"Publisher")
