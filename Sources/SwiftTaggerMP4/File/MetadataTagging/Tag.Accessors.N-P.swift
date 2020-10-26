@@ -293,6 +293,8 @@ extension Tag {
                 } else {
                     return nil
                 }
+            } else {
+                return nil
             }
         }
         set {
