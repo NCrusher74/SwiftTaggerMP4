@@ -64,18 +64,12 @@ extension Tag {
     public var recordingDate: Date? {
         get {
             if let atom = metadataAtoms[.recordingDate] as? StringMetadataAtom {
-                
-                let formatter = ISO8601DateFormatter()
-                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = timeZone
-                if let date = formatter.date(from: atom.stringValue) {
+                let string = atom.stringValue
+                if let date = string.attemptDateFromString() {
                     return date
                 } else {
                     return nil
                 }
-            } else {
-                return nil
             }
         }
         set {
@@ -100,18 +94,12 @@ extension Tag {
     public var releaseDate: Date? {
         get {
             if let atom = metadataAtoms[.releaseDate] as? StringMetadataAtom {
-                
-                let formatter = ISO8601DateFormatter()
-                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = timeZone
-                if let date = formatter.date(from: atom.stringValue) {
+                let string = atom.stringValue
+                if let date = string.attemptDateFromString() {
                     return date
                 } else {
                     return nil
                 }
-            } else {
-                return nil
             }
         }
         set {

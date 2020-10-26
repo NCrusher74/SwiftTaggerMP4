@@ -287,18 +287,12 @@ extension Tag {
     public var purchaseDate: Date? {
         get {
             if let atom = metadataAtoms[.purchaseDate] as? StringMetadataAtom {
-
-                let formatter = ISO8601DateFormatter()
-                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = timeZone
-                if let date = formatter.date(from: atom.stringValue) {
+                let string = atom.stringValue
+                if let date = string.attemptDateFromString() {
                     return date
                 } else {
                     return nil
                 }
-            } else {
-                return nil
             }
         }
         set {
