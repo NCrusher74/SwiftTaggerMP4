@@ -75,7 +75,6 @@ extension String {
         } else {
             for format in dateFormatters {
                 if let date = format.date(from: self) {
-                    print("OUTPUT DATE: \(date)")
                     return date
                 } else {
                     return nil
