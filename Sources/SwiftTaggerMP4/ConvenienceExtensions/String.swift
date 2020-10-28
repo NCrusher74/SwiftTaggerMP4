@@ -7,12 +7,61 @@
 
 import Foundation
 extension String {
+    
+    private func attemptAAXDate() -> Date? {
+        let calendar = Calendar(identifier: .iso8601)
+        let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = calendar
+        dateComponents.timeZone = timeZone
+        
+        let stringComponents: [String] = self.components(separatedBy: "-")
+        
+        guard stringComponents.count == 3 && ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"].contains(stringComponents[1]) else {
+            return nil
+        }
+        
+        if let dayInt = Int(stringComponents[0]) {
+            dateComponents.day = dayInt
+        } else {
+            dateComponents.day = nil
+        }
+        
+        let monthAbbreviated = stringComponents[1]
+        switch monthAbbreviated {
+            case "JAN": dateComponents.month = 01
+            case "FEB": dateComponents.month = 02
+            case "MAR": dateComponents.month = 03
+            case "APR": dateComponents.month = 04
+            case "MAY": dateComponents.month = 05
+            case "JUN": dateComponents.month = 06
+            case "JUL": dateComponents.month = 07
+            case "AUG": dateComponents.month = 08
+            case "SEP": dateComponents.month = 09
+            case "OCT": dateComponents.month = 10
+            case "NOV": dateComponents.month = 11
+            case "DEC": dateComponents.month = 12
+            default: dateComponents.month = nil
+        }
+        
+        if let yearInt = Int(stringComponents[2]) {
+            dateComponents.year = yearInt
+        }
+        
+        if let date = calendar.date(from: dateComponents) {
+            return date
+        } else {
+            return nil
+        }
+    }
+    
     @available(OSX 10.12, *)
-    func attemptDateFromString() -> Date? {
+    private func attemptOtherDate() -> Date? {
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime]
         isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        print("SOURCE STRING: \(self)")
+
         let formats: [String] = ["d MMM yyyy HH:mm:ss", "yyyy-MM-ddTHH:mm", "yyyy-MM-ddTHH:mm:ssZ", "MM-dd-yyyy HH:mm","yyyy-MM-ddTHH", "MMM d, yyyy", "d MMM yyyy", "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "dd.MM.yy", "dd.MM.yyyy", "dd-MM-yy", "dd-MM-yyyy", "dd-MMM-yyyy", "dd-MMM-yy", "MM-dd-yyyy", "MMMM yyyy", "yyyy-MM", "yyyy"]
         let dateFormatters: [DateFormatter] = formats.map { format in
             let formatter = DateFormatter()
@@ -32,6 +81,17 @@ extension String {
                     return nil
                 }
             }; return nil
+        }
+    }
+    
+    @available(OSX 10.12, *)
+    func attemptDateFromString() -> Date? {
+        if let date = attemptAAXDate() {
+            return date
+        } else if let date = attemptOtherDate() {
+            return date
+        } else {
+            return nil
         }
     }
 }

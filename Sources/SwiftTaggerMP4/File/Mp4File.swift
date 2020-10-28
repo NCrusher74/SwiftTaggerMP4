@@ -10,7 +10,7 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 /// A type representing an audio file stored locally
 public class Mp4File {
-
+    
     var rootAtoms: [Atom]
     var data: Data
     static var use64BitOffset: Bool = false
@@ -26,7 +26,6 @@ public class Mp4File {
         } else {
             throw Mp4FileError.InvalidFileFormat
         }
-        
         self.data = try Data(contentsOf: location)
         var fileData = self.data
         var atoms = [Atom]()
