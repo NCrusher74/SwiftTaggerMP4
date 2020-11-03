@@ -47,7 +47,7 @@ class DataAtom: Atom {
     }
     
     /// Initialize a `data` atom from an image file stored locally as a sub-atom for a metadata atom with image content
-    @available(OSX 10.12, *)
+    #if os(macOS)
     init(imageLocation: URL) throws {
         if imageLocation.pathExtension == "jpg" ||
             imageLocation.pathExtension == "jpeg" {
@@ -74,7 +74,7 @@ class DataAtom: Atom {
     }
     
     /// Initialize a `data` atom from an image file stored locally as a sub-atom for a metadata atom with image content
-    @available(iOS 10.10, *)
+    #elseif os(iOS)
     init(imagePath: String) throws {
         let url = URL(fileURLWithPath: imagePath)
         if url.pathExtension == "jpg" ||
@@ -100,6 +100,7 @@ class DataAtom: Atom {
                        size: size,
                        payload: payload)
     }
+    #endif
     
     /// Initialize a `data` atom as a sub-atom for a metadata atom with string content
     init(stringValue: String) throws {

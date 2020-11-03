@@ -61,7 +61,7 @@ class ImageMetadataAtom: Atom {
     }
     
     /// Initialize a `covr` atom from an image file stored locally
-    @available(OSX 10.12, *)
+    #if os(macOS)
     init(imageLocation: URL) throws {
         if let image = NativeImage(contentsOf: imageLocation) {
             self.image = image
@@ -80,7 +80,7 @@ class ImageMetadataAtom: Atom {
     }
     
     /// Initialize a `covr` atom from the file name (for iOS use)
-    @available(iOS 10.10, *)
+    #elseif os(iOS)
     init(imagePath: String) throws {
         if let image = NativeImage(contentsOfFile: imagePath) {
             self.image = image
@@ -97,6 +97,7 @@ class ImageMetadataAtom: Atom {
                        size: size,
                        children: [dataAtom])
     }
+    #endif
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
