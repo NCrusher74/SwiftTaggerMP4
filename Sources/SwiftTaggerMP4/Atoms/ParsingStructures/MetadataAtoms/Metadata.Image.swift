@@ -6,11 +6,11 @@
  */
 
 import Foundation
-import Cocoa
+import SwiftConvenienceExtensions
 
 /// A metadata atom that stores an image for use as cover art
 class ImageMetadataAtom: Atom {
-    var image: NSImage
+    var image: NativeImage
     
     /// Initialize a `covr` atom by parsing from file content
     override init(identifier: String,
@@ -29,10 +29,10 @@ class ImageMetadataAtom: Atom {
             let data = dataAtom.data
             if dataAtom.dataType == .jpeg ||
                 dataAtom.dataType == .png {
-                if let image = NSImage(data: data) {
+                if let image = NativeImage(data: data) {
                     self.image = image
                 } else {
-                    throw MetadataAtomError.UnableToInitializeMetadataAtom("Image cannot be converted to NSImage")
+                    throw MetadataAtomError.UnableToInitializeMetadataAtom("Image data cannot be converted to image")
                 }
             } else if dataAtom.dataType == .reserved ||
                 dataAtom.dataType == .undefined {
@@ -43,10 +43,10 @@ class ImageMetadataAtom: Atom {
                     firstFourBytes == Data(pngMagicNumber) else {
                     throw MetadataAtomError.UnsupportedImageFormat
                 }
-                if let image = NSImage(data: data) {
+                if let image = NativeImage(data: data) {
                     self.image = image
                 } else {
-                    throw MetadataAtomError.UnableToInitializeMetadataAtom("Image cannot be converted to NSImage")
+                    throw MetadataAtomError.UnableToInitializeMetadataAtom("Image data cannot be converted to image")
                 }
             } else {
                 throw MetadataAtomError.UnsupportedImageFormat
@@ -62,7 +62,7 @@ class ImageMetadataAtom: Atom {
     
     /// Initialize a `covr` atom from an image file stored locally
     init(imageLocation: URL) throws {
-        if let image = NSImage(contentsOf: imageLocation) {
+        if let image = NativeImage(contentsOf: imageLocation) {
             self.image = image
         } else {
             throw MetadataAtomError.UnableToSetCoverImage

@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import Cocoa
+import SwiftConvenienceExtensions
 
 extension Tag {
     public mutating func removeAllMetadata() {
         self.metadataAtoms = [:]
     }
     
-    public var coverArt: NSImage? {
+    public var coverArt: NativeImage? {
         if let atom = metadataAtoms[.coverArt] as? ImageMetadataAtom {
             return atom.image
         } else {
