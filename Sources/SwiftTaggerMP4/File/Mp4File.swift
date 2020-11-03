@@ -18,7 +18,7 @@ public class Mp4File {
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public init(location: URL) throws {
         let validExtensions = ["mp4", "m4a", "m4b", "aac", "m4r", "m4p", "aax"]
         if validExtensions.contains(
@@ -43,12 +43,12 @@ public class Mp4File {
         }
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public func tag() throws -> Tag {
         return try Tag(mp4File: self)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public func write(tag: Tag, to outputLocation: URL) throws {
         let mediaData = try self.getMediaData()
         try setMetadataAtoms(tag: tag)
@@ -89,7 +89,7 @@ public class Mp4File {
         return moov.mvhd.duration
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     var languages: [Language]? {
         get {
             if let elng = moov.soundTrack.mdia.elng {

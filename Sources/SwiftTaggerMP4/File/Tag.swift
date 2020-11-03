@@ -16,7 +16,7 @@ public struct Tag {
     public var duration: Int
     var chapterHandler: ChapterHandler
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
         let data = mp4File.data

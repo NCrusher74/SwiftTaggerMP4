@@ -134,7 +134,7 @@ extension Mp4File {
         }
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func setChapterTrack(mediaData: Data, tag: Tag) throws {
         if tag.chapterList.isEmpty {
             self.moov.chapterTrack = nil
@@ -210,7 +210,7 @@ extension Mp4File {
         self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = try calculateNewMediaOffsets()
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func setLanguage(tag: Tag) {
         if tag.languages != [.unspecified] {
             self.languages = tag.languages

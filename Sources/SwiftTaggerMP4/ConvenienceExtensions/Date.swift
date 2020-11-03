@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(OSX 10.12, *)
+@available(OSX 10.12, iOS 10.0, *)
 extension Date {
     /// The `mp4Epoch` is January 1, 1904.
     private static let mp4Epoch: Date = {

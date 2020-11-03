@@ -283,7 +283,7 @@ extension Tag {
         }
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public var purchaseDate: Date? {
         get {
             if let atom = metadataAtoms[.purchaseDate] as? StringMetadataAtom {

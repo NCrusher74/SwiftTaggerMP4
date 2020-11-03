@@ -151,7 +151,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(chplStarts, knownStarts)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testChapterParsing() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         let tag = try Tag(mp4File: mp4)
@@ -173,7 +173,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testBasicFileParsing() throws {
         let source = try Mp4File(location: sampleBookCVUrl)
         XCTAssertTrue(!source.rootAtoms.isEmpty)
