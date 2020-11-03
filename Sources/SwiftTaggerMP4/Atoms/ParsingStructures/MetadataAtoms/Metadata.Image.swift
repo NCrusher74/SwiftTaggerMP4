@@ -61,6 +61,7 @@ class ImageMetadataAtom: Atom {
     }
     
     /// Initialize a `covr` atom from an image file stored locally
+    @available(OSX 10.12, *)
     init(imageLocation: URL) throws {
         if let image = NativeImage(contentsOf: imageLocation) {
             self.image = image
@@ -69,6 +70,25 @@ class ImageMetadataAtom: Atom {
         }
         
         let dataAtom = try DataAtom(imageLocation: imageLocation)
+        
+        let payload = dataAtom.encode
+        let size = payload.count + 8
+        
+        try super.init(identifier: "covr",
+                       size: size,
+                       children: [dataAtom])
+    }
+    
+    /// Initialize a `covr` atom from the file name (for iOS use)
+    @available(iOS 10.10, *)
+    init(imagePath: String) throws {
+        if let image = NativeImage(contentsOfFile: imagePath) {
+            self.image = image
+        } else {
+            throw MetadataAtomError.UnableToSetCoverImage
+        }
+
+        let dataAtom = try DataAtom(imagePath: imagePath)
         
         let payload = dataAtom.encode
         let size = payload.count + 8

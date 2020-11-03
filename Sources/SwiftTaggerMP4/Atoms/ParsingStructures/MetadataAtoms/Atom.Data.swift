@@ -47,6 +47,7 @@ class DataAtom: Atom {
     }
     
     /// Initialize a `data` atom from an image file stored locally as a sub-atom for a metadata atom with image content
+    @available(OSX 10.12, *)
     init(imageLocation: URL) throws {
         if imageLocation.pathExtension == "jpg" ||
             imageLocation.pathExtension == "jpeg" {
@@ -59,6 +60,34 @@ class DataAtom: Atom {
         
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = try Data(contentsOf: imageLocation)
+        
+        var payload = Data()
+        let typeInt = self.dataType.rawValue
+        payload.append(typeInt.int32.beData)
+        payload.append(self.locale)
+        payload.append(self.data)
+        let size = payload.count + 8
+        
+        try super.init(identifier: "data",
+                       size: size,
+                       payload: payload)
+    }
+    
+    /// Initialize a `data` atom from an image file stored locally as a sub-atom for a metadata atom with image content
+    @available(iOS 10.10, *)
+    init(imagePath: String) throws {
+        let url = URL(fileURLWithPath: imagePath)
+        if url.pathExtension == "jpg" ||
+            url.pathExtension == "jpeg" {
+            self.dataType = .jpeg
+        } else if url.pathExtension == "png" {
+            self.dataType = .png
+        } else {
+            throw MetadataAtomError.UnsupportedImageFormat
+        }
+        
+        self.locale = Data(repeating: 0x00, count: 4)
+        self.data = try Data(contentsOf: url)
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
