@@ -1,5 +1,8 @@
 # SwiftTaggerMP4
 
+### If you find this library helpful, please consider [donating](https://paypal.me/NCrusher74)
+
+
 SwiftTaggerMp4 is a Swift library for reading and writing metadata and chapter tags in MP4 audio files. 
 
 **Usage**
