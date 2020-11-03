@@ -61,14 +61,20 @@ class ImageMetadataAtom: Atom {
     }
     
     /// Initialize a `covr` atom from an image file stored locally
-    #if os(macOS)
     init(imageLocation: URL) throws {
+        #if os(iOS)
+        if let image = NativeImage(contentsOfFile: imageLocation.path) {
+            self.image = image
+        } else {
+            throw MetadataAtomError.UnableToSetCoverImage
+        }
+        #elseif os(macOS)
         if let image = NativeImage(contentsOf: imageLocation) {
             self.image = image
         } else {
             throw MetadataAtomError.UnableToSetCoverImage
         }
-        
+        #endif
         let dataAtom = try DataAtom(imageLocation: imageLocation)
         
         let payload = dataAtom.encode
@@ -77,27 +83,7 @@ class ImageMetadataAtom: Atom {
         try super.init(identifier: "covr",
                        size: size,
                        children: [dataAtom])
-    }
-    
-    /// Initialize a `covr` atom from the file name (for iOS use)
-    #elseif os(iOS)
-    init(imagePath: String) throws {
-        if let image = NativeImage(contentsOfFile: imagePath) {
-            self.image = image
-        } else {
-            throw MetadataAtomError.UnableToSetCoverImage
-        }
-
-        let dataAtom = try DataAtom(imagePath: imagePath)
-        
-        let payload = dataAtom.encode
-        let size = payload.count + 8
-        
-        try super.init(identifier: "covr",
-                       size: size,
-                       children: [dataAtom])
-    }
-    #endif
+    }    
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {

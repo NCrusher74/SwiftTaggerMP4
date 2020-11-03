@@ -21,18 +21,10 @@ extension Tag {
         }
     }
     
-    #if os(macOS)
     public mutating func setCoverArt(location imageLocation: URL) throws {
         let atom = try ImageMetadataAtom(imageLocation: imageLocation)
         metadataAtoms[.coverArt] = atom
     }
-
-    #elseif os(iOS)
-    public mutating func setCoverArt(path imagePath: String) throws {
-        let atom = try ImageMetadataAtom(imagePath: imagePath)
-        metadataAtoms[.coverArt] = atom
-    }
-    #endif
     
     public mutating func removeCoverArt() throws {
         metadataAtoms[.coverArt] = nil
