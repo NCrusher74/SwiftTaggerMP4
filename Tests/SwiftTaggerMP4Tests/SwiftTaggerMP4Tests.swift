@@ -1,5 +1,4 @@
 import XCTest
-import Cocoa
 import SwiftLanguageAndLocaleCodes
 import iTunesGenreID
 

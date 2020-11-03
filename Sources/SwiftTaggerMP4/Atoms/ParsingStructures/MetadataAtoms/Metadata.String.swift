@@ -6,7 +6,6 @@
  */
 
 import Foundation
-import Cocoa
 
 /// A class representing the metadata atoms in an `Mp4File`'s atom structure
 class StringMetadataAtom: Atom {

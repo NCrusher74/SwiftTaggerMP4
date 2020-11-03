@@ -6,7 +6,6 @@
  */
 
 import Foundation
-import Cocoa
 
 /// A class representing a `data` atom in an `Mp4File`'s atom structure
 ///
