@@ -247,7 +247,7 @@ extension Tag {
                     self.copyright = components.first
                 }
                 if let last = components.last {
-                    return "\u{21117}\(last)"
+                    return "\u{2117}\(last)"
                 } else {
                     return nil
                 }
