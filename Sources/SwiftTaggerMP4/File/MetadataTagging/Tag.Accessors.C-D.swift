@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftConvenienceExtensions
 extension Tag {
     public var category: String? {
         get {
@@ -359,21 +360,21 @@ extension Tag {
         }
     }
     
-    public var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: IntIndex {
         get {
             if let atom = metadataAtoms[.discNumber] as? PartAndTotalMetadataAtom {
-                return (atom.part, atom.total)
+                return IntIndex(index: atom.part, total: atom.total)
             } else {
-                return (0, nil)
+                return IntIndex(index: 0, total: nil)
             }
         }
         set {
-            if newValue != (0, nil) {
+            if newValue != IntIndex(index: 0, total: nil) {
                 do {
                     let atom = try PartAndTotalMetadataAtom(
                         identifier: "disk",
-                        part: newValue.disc,
-                        total: newValue.totalDiscs)
+                        part: newValue.index,
+                        total: newValue.total)
                     metadataAtoms[.discNumber] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier 'disk'")

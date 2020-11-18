@@ -202,7 +202,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.title, "FrostTonight_librivox")
         XCTAssertEqual(tag.artist, "Edith M. Thomas")
         XCTAssertEqual(tag.customGenre, "Audiobook")
-        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.trackNumber.index, 1)
         XCTAssertEqual(tag.encodingTool, "Chapter and Verse V 1.5")
         XCTAssertEqual(tag.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
         tag.removeAllMetadata()
@@ -226,7 +226,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.title, "FrostTonight_librivox")
         XCTAssertEqual(tag.artist, "Edith M. Thomas")
         XCTAssertEqual(tag.customGenre, "Audiobook")
-        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.trackNumber.index, 1)
         XCTAssertEqual(tag.encodingTool, "Chapter and Verse V 1.5")
         XCTAssertEqual(tag.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
         tag.removeAllMetadata()
@@ -267,8 +267,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.customGenre = "Genre"
         tag.description = "Description"
         tag.director = "Director"
-        tag.discNumber.disc = 1
-        tag.discNumber.totalDiscs = 2
+        tag.discNumber.index = 1
+        tag.discNumber.total = 2
         tag.editDateAndDescription1 = "Edit Date and Description 1"
         tag.editDateAndDescription2 = "Edit Date and Description 2"
         tag.editDateAndDescription3 = "Edit Date and Description 3"
@@ -335,8 +335,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.title = "Title"
         tag.titleKeywords = ["Title", "Keywords"]
         tag.titleSort = "Title Sort"
-        tag.trackNumber.track = 5
-        tag.trackNumber.totalTracks = 6
+        tag.trackNumber.index = 5
+        tag.trackNumber.total = 6
         tag.trackSubtitle = "Track Subtitle"
         tag.tvEpisodeNumber = 7
         tag.tvSeason = 8
@@ -414,8 +414,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.customGenre,"Genre")
         XCTAssertEqual(output.description,"Description")
         XCTAssertEqual(output.director,"Director")
-        XCTAssertEqual(output.discNumber.disc,1)
-        XCTAssertEqual(output.discNumber.totalDiscs,2)
+        XCTAssertEqual(output.discNumber.index,1)
+        XCTAssertEqual(output.discNumber.total,2)
         XCTAssertEqual(output.editDateAndDescription1,"Edit Date and Description 1")
         XCTAssertEqual(output.editDateAndDescription2,"Edit Date and Description 2")
         XCTAssertEqual(output.editDateAndDescription3,"Edit Date and Description 3")
@@ -482,8 +482,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.title,"Title")
         XCTAssertEqual(output.titleKeywords,["Title", "Keywords"])
         XCTAssertEqual(output.titleSort,"Title Sort")
-        XCTAssertEqual(output.trackNumber.track,5)
-        XCTAssertEqual(output.trackNumber.totalTracks,6)
+        XCTAssertEqual(output.trackNumber.index,5)
+        XCTAssertEqual(output.trackNumber.total,6)
         XCTAssertEqual(output.trackSubtitle,"Track Subtitle")
         XCTAssertEqual(output.tvEpisodeNumber,7)
         XCTAssertEqual(output.tvSeason,8)
@@ -544,8 +544,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.languages = [.english]
         tag.duration = 5016
         tag.releaseDate = date
-        tag.trackNumber.track = 7
-        tag.trackNumber.totalTracks = 8
+        tag.trackNumber.index = 7
+        tag.trackNumber.total = 8
         tag.year = 1992
 
         tag.addChapter(startTime: 0, title: "Chapter 01")
@@ -574,9 +574,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.languages, tag.languages)
         XCTAssertEqual(output.duration, tag.duration)
         XCTAssertEqual(output.releaseDate, tag.releaseDate)
-        XCTAssertEqual(output.trackNumber.track, tag.trackNumber.track)
-        XCTAssertEqual(output.trackNumber.track, tag.trackNumber.track)
-        XCTAssertEqual(output.trackNumber.totalTracks, tag.trackNumber.totalTracks)
+        XCTAssertEqual(output.discNumber.index, tag.discNumber.index)
+        XCTAssertEqual(output.trackNumber.index, tag.trackNumber.index)
+        XCTAssertEqual(output.trackNumber.total, tag.trackNumber.total)
         XCTAssertEqual(output.chapterList[0].startTime, 0)
         XCTAssertEqual(output.chapterList[0].title, "Chapter 01")
         XCTAssertEqual(output.chapterList[1].startTime, 700)
