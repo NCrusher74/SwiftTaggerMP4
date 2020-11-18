@@ -9,7 +9,7 @@
 import Foundation
 
 /// Media kind used by iTunes
-public enum Stik: Int, CaseIterable {
+public enum Stik: Int, CaseIterable, Codable {
     public init?(stringValue: String) {
         self = Stik.stringMapping[stringValue] ?? .undefined
     }
