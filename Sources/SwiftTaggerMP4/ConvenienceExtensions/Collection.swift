@@ -5,7 +5,7 @@
   Created by Nolaine Crusher on 8/30/20.
 */
 
-import Foundation
+//import Foundation
 extension Collection where Element: Equatable {
     /// Compares the elements in a collection to determine if they are identical
     func allAreEqual() -> Bool {

@@ -12,16 +12,9 @@ extension Tag {
     /// Returns an array of `(startTime, title)` tuples
     /// `startTime`: The chapter's start time, in milliseconds
     /// `title`: The chapter's title
-    public var chapterList: [(startTime: Int, title: String)] {
-        var chaptersArray = [(Int, String)]()
+    public var chapterList: [Chapter] {
         let chapterHandler = self.chapterHandler
-        let chapters = chapterHandler.sortedChapters()
-        for chapter in chapters {
-            let startTime = chapter.startTime
-            let title = chapter.chapter.title
-            chaptersArray.append((startTime, title))
-        }
-        return chaptersArray
+        return chapterHandler.toc.chapters
     }
     
     /// Adds a chapter at the specified start time (in milliseconds) with the specified title.
@@ -31,24 +24,18 @@ extension Tag {
     ///  - startTime: The chapter start in milliseconds
     ///  - title: The chapter title
     public mutating func addChapter(startTime: Int, title: String) {
-        // get the old chapters dictionary
-        var chapters = chapterHandler.chapters
-        let newChapter = ChapterHandler.Chapter(title: title)
-        // add the new chapter
-        chapters[startTime] = newChapter
-        // initialize a new converter with the new dictionary
-        self.chapterHandler.chapters = chapters
+        chapterHandler.toc.addChapter(startTime: startTime, title: title)
     }
     
     /// Removes the chapter at the specified start time.
     /// - Parameters:
     ///  - startTime: The chapter start in milliseconds
     public mutating func removeChapter(startTime: Int) {
-        self.chapterHandler.chapters[startTime] = nil
+        self.chapterHandler.toc.removeChapter(startTime: startTime)
     }
     
     /// Removes all chapters.
     public mutating func removeAllChapters() {
-        self.chapterHandler.chapters = [:]
+        self.chapterHandler.toc.removeAllChapters()
     }
 }

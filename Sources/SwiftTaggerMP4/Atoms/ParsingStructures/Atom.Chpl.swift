@@ -6,14 +6,14 @@
 */
 
 import Foundation
-
+import SwiftConvenienceExtensions
 /// A class representing a `chpl` atom in an `Mp4File`'s atom structure
 class Chpl: Atom {
     private var version: Data
     private var flags: Data
     private var reserved: Data
     var chapterCount: Int
-    var chapterTable: [(startTime: Int, title: String)]
+    var chapterTable: [Chapter]
     
     /// Initialize a `chpl` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -24,15 +24,15 @@ class Chpl: Atom {
         self.reserved = data.extractFirst(1)
         self.chapterCount = data.extractToInt(4)
         
-        var chapterArray: [(startTime: Int, title: String)] = []
+        var chapters: [Chapter] = []
         while !data.isEmpty {
             let chapterStartTime = data.extractToInt(8)
             let titleSize = data.extractToInt(1)
             let title = data.extractFirst(titleSize).stringUtf8 ?? "Untitled Chapter"
-            let chapter = (chapterStartTime, title)
-            chapterArray.append(chapter)
+            let chapter = Chapter(startTime: chapterStartTime, title: title)
+            chapters.append(chapter)
         }
-        self.chapterTable = chapterArray
+        self.chapterTable = chapters
         
         try super.init(identifier: identifier,
                        size: size,
@@ -40,7 +40,7 @@ class Chpl: Atom {
     }
     
     /// Initialize a `chpl` atom for building a chapter track
-    init(from chapterList: [(startTime: Int, title: String)]) throws {
+    init(from chapterList: [Chapter]) throws {
         self.version = UInt8(0x01).beData
         self.flags = Atom.flags
         self.reserved = Data([0x00])

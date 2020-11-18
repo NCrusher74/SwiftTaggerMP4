@@ -6,27 +6,23 @@
 //
 
 import Foundation
-
+import SwiftConvenienceExtensions
 /// A type that collates chapter data contained in the sample table atoms of a chapter track and converts it to a usable dictionary of chapter information
+public typealias TOC = TableOfContents
+public typealias Chapter = TableOfContents.Chapter
 struct ChapterHandler {
-    struct Chapter {
-        var title: String
-    }
-    var chapters: [Int: Chapter]
-    /// The array of chapter titles
-    /// Sorts chapters into chronological order by `startTime` and returns an array of `(startTime: Chapter)` tuples
-    func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
-        return chapters.keys.sorted().map { ($0, chapters[$0]!) }
-    }
+
+    var toc: TableOfContents
     
     init(moov: Moov, fileData: Data) throws {
-        var chapterList = [Int: Chapter]()
+        var chapterList = [Chapter]()
         /// Since the chapterList contained in a chpl atom is virtually identical to our tag.chapterList output, we will check there first
         if let chpl = moov.udta?.chpl {
             for item in chpl.chapterTable {
                 let startTime = item.startTime
-                let chapter = Chapter(title: item.title)
-                chapterList[startTime] = chapter
+                let title = item.title
+                let chapter = Chapter(startTime: startTime, title: title)
+                chapterList.append(chapter)
             }
         } else {
             /// otherwise we will piece together the chapter information from the chapter track
@@ -45,7 +41,7 @@ struct ChapterHandler {
                     initialStart: initialStart)
                 
                 if startTimes.isEmpty {
-                    chapterList = [:]
+                    chapterList = []
                 } else {
                     let offsets = stbl.chunkOffsetAtom.chunkOffsetTable
                     var sizes = [Int]()
@@ -74,23 +70,24 @@ struct ChapterHandler {
                     
                     for (index, startTime) in startTimes.enumerated() {
                         let title = titles[index]
-                        let chapter = Chapter(title: title)
-                        chapterList[startTime] = chapter
+                        let chapter = Chapter(startTime: startTime, title: title)
+                        chapterList.append(chapter)
                     }
                 }
             }
         }
-        self.chapters = chapterList
+        let toc = TOC(chapterList)
+        self.toc = toc
     }
     
     var chapterTitles: [String] {
-        if sortedChapters().isEmpty {
+        if toc.chapters.isEmpty {
             return []
         } else {
             var titles = [String]()
-            let chapters = sortedChapters()
+            let chapters = toc.chapters
             for chapter in chapters {
-                let title = chapter.chapter.title
+                let title = chapter.title
                 titles.append(title)
             }
             return titles
@@ -99,11 +96,11 @@ struct ChapterHandler {
     
     /// The array of chapter start times (times are in milliseconds)
     var chapterStarts: [Int] {
-        if sortedChapters().isEmpty {
+        if toc.chapters.isEmpty {
             return []
         } else {
             var starts = [Int]()
-            let chapters = sortedChapters()
+            let chapters = toc.chapters
             for chapter in chapters {
                 let start = chapter.startTime
                 starts.append(start)
