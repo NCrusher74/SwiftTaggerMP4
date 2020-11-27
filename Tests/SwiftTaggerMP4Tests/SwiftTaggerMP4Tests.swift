@@ -370,7 +370,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         try mp4.write(tag: tag, to: outputUrl)
                 
         let outputMp4 = try Mp4File(location: outputUrl)
-        var output = try Tag(mp4File: outputMp4)
+        let output = try Tag(mp4File: outputMp4)
 
         let knownTitles = ["01 - Read by BK",
                            "02 - Read by CS",

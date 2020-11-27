@@ -235,25 +235,18 @@ extension Tag {
      
      */
     public var recordingCopyright: String? {
-        mutating get {
-            if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom {
+        get {
+            if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom, atom.stringValue.hasPrefix("\u{2117}") {
                 return atom.stringValue
-            } else if let copyright = self.copyright, copyright.contains("(P)") {
-                let components = copyright.components(separatedBy: "(P)")
-                if let first = components.first, first.contains("\u{00A9}") {
-                    let stripped = first.components(separatedBy: "\u{00A9}")
-                    self.copyright = stripped.last
-                } else {
-                    self.copyright = components.first
-                }
+            } else if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom {
+                return "\u{2117}\(atom.stringValue)"
+            } else if let atom = metadataAtoms[.copyright] as? StringMetadataAtom, atom.stringValue.contains(" (P)") {
+                let components = atom.stringValue.components(separatedBy: " (P)")
                 if let last = components.last {
                     return "\u{2117}\(last)"
-                } else {
-                    return nil
                 }
-            } else {
-                return nil
             }
+            return nil
         }
         set {
             if let new = newValue {

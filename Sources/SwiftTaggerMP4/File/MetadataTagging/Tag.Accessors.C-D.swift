@@ -252,8 +252,10 @@ extension Tag {
     
     public var copyright: String? {
         get {
-            if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
+            if let atom = metadataAtoms[.copyright] as? StringMetadataAtom, atom.stringValue.hasPrefix("\u{00A9}") {
                 return atom.stringValue
+            } else if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
+                return "\u{00A9}\(atom.stringValue)"
             } else {
                 return nil
             }
