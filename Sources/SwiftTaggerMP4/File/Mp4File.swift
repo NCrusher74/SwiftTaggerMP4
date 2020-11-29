@@ -60,7 +60,7 @@ public class Mp4File {
         for atom in self.optimizedRoot {
             outputData.append(atom.encode)
         }
-        try outputData.write(to: outputLocation)
+        try outputData.write(to: outputLocation, options: .atomic)
     }
     
     /// Sorts atoms into order to preserve media offsets
