@@ -4,6 +4,7 @@ import iTunesGenreID
 
 @testable import SwiftTaggerMP4
 
+@available(OSX 11.0, *)
 final class SwiftTaggerMP4Tests: XCTestCase {
 
 //    func testPrint() throws {
@@ -27,7 +28,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 //         */
 //    }
     
-    @available(OSX 10.13, *)
     func testAddChapter() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)
@@ -60,7 +60,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(chplStarts, knownStarts)
     }
     
-    @available(OSX 10.13, *)
     func testRemoveSingleChapter() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
@@ -97,7 +96,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(chplStarts, knownStarts)
     }
 
-    @available(OSX 10.13, *)
     func testRemoveAllChapters() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
@@ -115,7 +113,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNil(outputMp4.moov.soundTrack.tref)
     }
     
-    @available(OSX 10.13, *)
     func testChapterOutput() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         let outputUrl = tempOutputDirectory
@@ -151,7 +148,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(chplStarts, knownStarts)
     }
 
-    @available(OSX 10.12, iOS 10.0, *)
     func testChapterParsing() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         let tag = try Tag(mp4File: mp4)
@@ -173,7 +169,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.chapterHandler.chapterTitles, knownTitles)
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
     func testBasicFileParsing() throws {
         let source = try Mp4File(location: sampleBookCVUrl)
         XCTAssertTrue(!source.rootAtoms.isEmpty)
@@ -193,7 +188,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(source.moov.chapterTrack?.mdia.mdhd.duration, 46541824.0)
         XCTAssertEqual(source.moov.chapterTrack?.tkhd.duration, 46541824.0)
     }
-    @available(OSX 10.13, *)
+    
     func testRemoveMetadata() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
@@ -218,7 +213,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertTrue(output.metadataAtoms.isEmpty)
     }
     
-    @available(OSX 10.13, *)
     func testTag() throws {
         let mp4 = try Mp4File(location: sampleBookCVUrl)
         var tag = try Tag(mp4File: mp4)
@@ -502,7 +496,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output["Unknown"], "unknown")
     }
     
-    @available(OSX 10.13, *)
     func testLanguage() throws {
         let mp4 = try Mp4File(location: sampleBookSublerUrl)
         var tag = try Tag(mp4File: mp4)
@@ -519,7 +512,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(outputTag.languages, [.unspecified])
     }
     
-    @available(OSX 10.13, *)
     func testMetadataOnBlankFile() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)
@@ -589,7 +581,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.chapterList[4].title, "Chapter 05")
     }
     
-    @available(OSX 10.13, *)
     func testCoverArt() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)

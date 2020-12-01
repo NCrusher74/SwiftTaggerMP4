@@ -8,6 +8,7 @@
 import Foundation
 import iTunesGenreID
 
+@available(OSX 11.0, *)
 extension Tag {
     public var grouping: String? {
         get {

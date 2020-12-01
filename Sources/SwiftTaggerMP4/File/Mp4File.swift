@@ -8,24 +8,37 @@
 
 import Foundation
 import SwiftLanguageAndLocaleCodes
+import UniformTypeIdentifiers
+
 /// A type representing an audio file stored locally
+@available(OSX 11.0, *)
 public class Mp4File {
     
     var rootAtoms: [Atom]
     var data: Data
+    var fileType: UTType
     static var use64BitOffset: Bool = false
 
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
-    @available(OSX 10.12, iOS 10.0, *)
     public init(location: URL) throws {
-        let validExtensions = ["mp4", "m4a", "m4b", "aac", "m4r", "m4p", "aax"]
-        if validExtensions.contains(
-            location.pathExtension.lowercased()) {
+        var validTypes: [UTType] = [.appleProtectedMPEG4Audio, .appleProtectedMPEG4Video, .mpeg4Audio, .mpeg4Movie]
+        validTypes.append(contentsOf: [
+                            UTType(importedAs: "com.apple.m4a-audio"),
+                            UTType(importedAs: "com.apple.protected-mpeg-4-audio-b"),
+                            UTType(importedAs: "com.audible.aax-audiobook")
+        ])
+        
+        if let type = UTType(filenameExtension: location.pathExtension) {
+            guard validTypes.contains(type) else {
+                throw Mp4FileError.InvalidFileFormat
+            }
+            self.fileType = type
         } else {
             throw Mp4FileError.InvalidFileFormat
         }
+        
         self.data = try Data(contentsOf: location)
         var fileData = self.data
         var atoms = [Atom]()
@@ -43,12 +56,10 @@ public class Mp4File {
         }
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
     public func tag() throws -> Tag {
         return try Tag(mp4File: self)
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
     public func write(tag: Tag, to outputLocation: URL) throws {
         let mediaData = try self.getMediaData()
         try setMetadataAtoms(tag: tag)
@@ -89,7 +100,6 @@ public class Mp4File {
         return moov.mvhd.duration
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
     var languages: [Language]? {
         get {
             if let elng = moov.soundTrack.mdia.elng {

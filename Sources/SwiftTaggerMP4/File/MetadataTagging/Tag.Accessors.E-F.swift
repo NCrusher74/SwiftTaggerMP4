@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@available(OSX 11.0, *)
 extension Tag {
     public var editDateAndDescription1: String? {
         get {

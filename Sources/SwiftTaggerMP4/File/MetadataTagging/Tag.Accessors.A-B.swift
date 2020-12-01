@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(OSX 11.0, *)
 extension Tag {
     public var acknowledgment: String? {
         get {

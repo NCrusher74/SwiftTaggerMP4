@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(OSX 11.0, *)
 extension Tag {
         /// List the files of the mp4 file
     /// Returns an array of `(startTime, title)` tuples

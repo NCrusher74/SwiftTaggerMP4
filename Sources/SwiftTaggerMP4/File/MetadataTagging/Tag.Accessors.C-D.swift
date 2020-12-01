@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftConvenienceExtensions
+@available(OSX 11.0, *)
 extension Tag {
     public var category: String? {
         get {

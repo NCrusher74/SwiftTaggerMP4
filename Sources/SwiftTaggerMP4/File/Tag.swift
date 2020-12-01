@@ -8,6 +8,7 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 
+@available(OSX 11.0, *)
 public struct Tag {
     public var metadataAtoms: [AtomKey: Atom]
     public var unknownAtoms: [UnknownMetadataAtom]
@@ -16,7 +17,6 @@ public struct Tag {
     public var duration: Int
     var chapterHandler: ChapterHandler
     
-    @available(OSX 10.12, iOS 10.0, *)
     public init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
         let data = mp4File.data
