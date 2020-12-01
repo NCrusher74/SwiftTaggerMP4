@@ -16,7 +16,7 @@ public class Mp4File {
     
     var rootAtoms: [Atom]
     var data: Data
-    var fileType: UTType
+    public var fileType: UTType
     static var use64BitOffset: Bool = false
 
     /// Initialize an Mp4File from a local file
