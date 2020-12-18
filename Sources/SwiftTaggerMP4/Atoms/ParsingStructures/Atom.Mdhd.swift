@@ -100,7 +100,7 @@ class Mdhd: Atom {
     /// Initialize a `mdhd` atom from a duration and language.
     ///
     /// **NOTE:** for use in a CHAPTER TRAK ONLY
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0,  iOS 14.0, *)
     init(language: ISO6392Code, moov: Moov) throws {
         
         self.version = Atom.version
@@ -139,7 +139,7 @@ class Mdhd: Atom {
     /// **CHAPTER TRACK ONLY** Initialize a `mdhd` atom from a duration and `elng` atom
     ///
     /// **NOTE:** for use in a CHAPTER TRAK ONLY
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0,  iOS 14.0, *)
     init(elng: Elng, moov: Moov) throws {
         let language = Mdhd.getLanguage(from: elng)
         

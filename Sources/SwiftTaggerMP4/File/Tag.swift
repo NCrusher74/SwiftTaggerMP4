@@ -8,7 +8,7 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 
-@available(OSX 11.0, *)
+@available(OSX 11.0,  iOS 14.0, *)
 public struct Tag {
     public var metadataAtoms: [AtomKey: Atom]
     public var unknownAtoms: [UnknownMetadataAtom]

@@ -11,7 +11,7 @@ import SwiftLanguageAndLocaleCodes
 import UniformTypeIdentifiers
 
 /// A type representing an audio file stored locally
-@available(OSX 11.0, *)
+@available(OSX 11.0,  iOS 14.0, *)
 public class Mp4File {
     
     var rootAtoms: [Atom]

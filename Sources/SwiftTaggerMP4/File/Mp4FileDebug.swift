@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(OSX 11.0, *)
+@available(OSX 11.0,  iOS 14.0, *)
 extension Mp4File {
     // MARK: - Debug Description
     // gives a visual representation of the nesting of the actual atoms

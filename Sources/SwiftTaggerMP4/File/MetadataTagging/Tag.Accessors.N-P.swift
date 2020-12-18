@@ -8,7 +8,7 @@
 import Foundation
 import iTunesGenreID
 
-@available(OSX 11.0, *)
+@available(OSX 11.0,  iOS 14.0, *)
 extension Tag {
     public var narrator: String? {
         get {

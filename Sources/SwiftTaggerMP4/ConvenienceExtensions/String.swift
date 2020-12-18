@@ -56,7 +56,7 @@ extension String {
         }
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0,  iOS 14.0, *)
     private func attemptOtherDate() -> Date? {
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime]
@@ -83,7 +83,7 @@ extension String {
         }
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0,  iOS 14.0, *)
     func attemptDateFromString() -> Date? {
         if let date = attemptAAXDate() {
             return date

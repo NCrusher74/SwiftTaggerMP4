@@ -61,7 +61,7 @@ class Trak: Atom {
                        children: children)
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0,  iOS 14.0, *)
     convenience init(chapterHandler: ChapterHandler,
                      languages: [ICULocaleCode]?,
                      moov: Moov,

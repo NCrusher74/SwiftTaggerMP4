@@ -76,7 +76,7 @@ class Tkhd: Atom {
     /// Initialize a `tkhd` atom for a chapter track
     ///
     /// Specifically for use with chapter tracks. May not work in other contexts.
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0,  iOS 14.0, *)
     init(mediaDuration: Double, trackID: Int) throws {
         self.version = Atom.version
         self.flags = Atom.flags
