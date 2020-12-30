@@ -7,7 +7,21 @@
 
 import Foundation
 /// A list of internation ratings as recognized by the iTunes store. These may be optionally appended with a string containing notes about the rating.
-public enum ContentRating {
+public enum ContentRating: Codable {
+    public init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        if let string = try? container.decode(String.self) {
+            self.init(rawValue: string)
+        } else {
+            self = .none("")
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        try container.encode(rawValue)
+    }
+    
     case none(String)
     /// United States - MPAA Movie rating: Not Rated
     case us_Movie_NR(String)
