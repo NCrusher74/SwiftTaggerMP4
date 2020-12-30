@@ -344,7 +344,7 @@ public enum ContentRating {
     /// India- Television rating S
     case in_tv_S(String)
     
-    var rawValue: String {
+    public var rawValue: String {
         switch self {
             case .none(let note): return note
             case .us_Movie_NR(let note): return "mpaa|NR|000|" + note
@@ -517,7 +517,7 @@ public enum ContentRating {
         }
     }
     
-    init(rawValue: String) {
+    public init(rawValue: String) {
         let components = rawValue.components(separatedBy: "|")
         if components.count != 3 || components.count != 4 {
             self = .none(rawValue)
