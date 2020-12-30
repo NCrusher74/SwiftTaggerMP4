@@ -531,8 +531,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.artistKeywords = ["Artist", "Keywords"]
         tag.artistSort = "Artist Sort"
         tag.compilation = true
-        tag.contentRating.contentRating = .au_Movie_G
-        tag.contentRating.ratingNotes = "Notes"
+        tag.contentRating = .au_Movie_G("Notes")
         tag.languages = [.english]
         tag.duration = 5016
         tag.releaseDate = date
@@ -560,8 +559,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.artistKeywords, tag.artistKeywords)
         XCTAssertEqual(output.artistSort, tag.artistSort)
         XCTAssertEqual(output.compilation, tag.compilation)
-        XCTAssertEqual(output.contentRating.contentRating, .au_Movie_G)
-        XCTAssertEqual(output.contentRating.ratingNotes, "Notes")
+        XCTAssertEqual(output.contentRating?.rawValue, "au-movie|G|100|Notes")
         XCTAssertEqual(output["iTunEXTC"], "au-movie|G|100|Notes")
         XCTAssertEqual(output.languages, tag.languages)
         XCTAssertEqual(output.duration, tag.duration)
@@ -596,34 +594,5 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let output = try Tag(mp4File: try Mp4File(location: outputUrl))
         XCTAssertNotNil(output.coverArt)
-    }
-    
-    func testChapterIssue() throws {
-        let mp4 = try Mp4File(location: sampleNoMeta)
-        var tag = try Tag(mp4File: mp4)
-        
-        tag.addChapter(startTime: 0, title: "Chapter 01")
-        tag.addChapter(startTime: 700, title: "Chapter 02")
-        tag.addChapter(startTime: 1670, title: "Chapter 03")
-        tag.addChapter(startTime: 3165, title: "Chapter 04")
-        tag.addChapter(startTime: 3976, title: "Chapter 05")
-        
-//        let outputUrl = tempOutputDirectory
-        let outputUrl = try localOutputDirectory("test")
-        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputUrl))
-        
-        let outputMp4 = try Mp4File(location: outputUrl)
-        let output = try outputMp4.tag()
-        
-        XCTAssertEqual(output.chapterList[0].startTime, 0)
-        XCTAssertEqual(output.chapterList[0].title, "Chapter 01")
-        XCTAssertEqual(output.chapterList[1].startTime, 700)
-        XCTAssertEqual(output.chapterList[1].title, "Chapter 02")
-        XCTAssertEqual(output.chapterList[2].startTime, 1670)
-        XCTAssertEqual(output.chapterList[2].title, "Chapter 03")
-        XCTAssertEqual(output.chapterList[3].startTime, 3165)
-        XCTAssertEqual(output.chapterList[3].title, "Chapter 04")
-        XCTAssertEqual(output.chapterList[4].startTime, 3976)
-        XCTAssertEqual(output.chapterList[4].title, "Chapter 05")
     }
 }

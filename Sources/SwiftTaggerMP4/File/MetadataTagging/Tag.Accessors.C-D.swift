@@ -216,37 +216,19 @@ extension Tag {
         }
     }
     
-    public var contentRating: (contentRating: ContentRating, ratingNotes: String?) {
+    public var contentRating: ContentRating? {
         get {
             if let string = self["iTunEXTC"] {
-                let components: [String] = string.components(separatedBy: "|")
-                if components.count == 3 {
-                    if let rating = ContentRating(rawValue: string) {
-                        return (rating, nil)
-                    } else {
-                        return (.none, nil)
-                    }
-                } else {
-                    let ratingComponentsString = components[0 ..< 3].joined(separator: "|") + "|"
-                    let note = components.last
-                    if let rating = ContentRating(rawValue: ratingComponentsString) {
-                        return (rating, note)
-                    } else {
-                        return (.none, nil)
-                    }
-                }
+                return ContentRating(rawValue: string)
             } else {
-                return (.none, nil)
+                return nil
             }
         }
         set {
-            if newValue != (.none, nil) {
-                let string = newValue.contentRating.rawValue
-                if let note = newValue.ratingNotes {
-                    self["iTunEXTC"] = string + note
-                } else {
-                    self["iTunEXTC"] = string
-                }
+            if let new = newValue {
+                self["iTunEXTC"] = new.rawValue
+            } else {
+                self["iTunEXTC"] = nil
             }
         }
     }
