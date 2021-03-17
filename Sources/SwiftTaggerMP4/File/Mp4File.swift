@@ -8,34 +8,21 @@
 
 import Foundation
 import SwiftLanguageAndLocaleCodes
-import UniformTypeIdentifiers
 
 /// A type representing an audio file stored locally
-@available(OSX 11.0,  iOS 14.0, *)
 public class Mp4File {
     
     var rootAtoms: [Atom]
     var data: Data
-    public var fileType: UTType
     static var use64BitOffset: Bool = false
-
+    
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
     public init(location: URL) throws {
-        var validTypes: [UTType] = [.appleProtectedMPEG4Audio, .appleProtectedMPEG4Video, .mpeg4Audio, .mpeg4Movie]
-        validTypes.append(contentsOf: [
-                            UTType(importedAs: "com.apple.m4a-audio"),
-                            UTType(importedAs: "com.apple.protected-mpeg-4-audio-b"),
-                            UTType(importedAs: "com.audible.aax-audiobook")
-        ])
+        let validExtensions: [String] = ["aax", "aac", "mp4", "m4a", "m4b"]
         
-        if let type = UTType(filenameExtension: location.pathExtension) {
-            guard validTypes.contains(type) else {
-                throw Mp4FileError.InvalidFileFormat
-            }
-            self.fileType = type
-        } else {
+        guard validExtensions.contains(location.pathExtension.lowercased()) else {
             throw Mp4FileError.InvalidFileFormat
         }
         
@@ -171,7 +158,7 @@ public class Mp4File {
             rootAtoms = newRoot
         }
     }
-
+    
 }
 
 enum Mp4FileError: Error {

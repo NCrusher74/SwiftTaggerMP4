@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@available(OSX 11.0,  iOS 14.0, *)
+
 extension Tag {
     public var rating: Rating? {
         get {
@@ -61,6 +61,7 @@ extension Tag {
         }
     }
     
+    @available(OSX 10.12, iOS 12.0, *)
     public var recordingDate: Date? {
         get {
             if let atom = metadataAtoms[.recordingDate] as? StringMetadataAtom {
@@ -92,6 +93,7 @@ extension Tag {
         }
     }
 
+    @available(OSX 10.12, iOS 12.0, *)
     public var releaseDate: Date? {
         get {
             if let atom = metadataAtoms[.releaseDate] as? StringMetadataAtom {

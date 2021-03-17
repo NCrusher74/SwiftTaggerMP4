@@ -8,7 +8,7 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 
-@available(OSX 11.0,  iOS 14.0, *)
+
 extension Mp4File {
     func chunkSizes(stbl: Stbl) throws -> [Int] {
         let sampleToChunkTable = stbl.stsc.sampleToChunkTable

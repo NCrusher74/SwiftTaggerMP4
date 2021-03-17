@@ -57,7 +57,7 @@ class Mdia: Atom {
                        children: children)
     }
     
-    @available(OSX 11.0,  iOS 14.0, *)
+    
     convenience init(chapterHandler: ChapterHandler,
                      languages: [ICULocaleCode]?,
                      moov: Moov) throws {
@@ -149,7 +149,7 @@ extension Mdia {
     }
 
     /// Gets and sets an `elng` atom
-    @available(OSX 11.0,  iOS 14.0, *)
+    
     var elng: Elng? {
         get {
             return children.first(where: { $0.identifier == "elng"}) as? Elng

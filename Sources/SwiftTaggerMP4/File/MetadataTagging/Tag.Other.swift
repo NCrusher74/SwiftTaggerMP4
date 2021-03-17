@@ -8,7 +8,7 @@
 import Foundation
 import SwiftConvenienceExtensions
 
-@available(OSX 11.0,  iOS 14.0, *)
+
 extension Tag {
     public mutating func removeAllMetadata() {
         self.metadataAtoms = [:]

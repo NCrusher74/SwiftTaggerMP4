@@ -8,7 +8,7 @@
 import Foundation
 import iTunesGenreID
 
-@available(OSX 11.0,  iOS 14.0, *)
+
 extension Tag {
     public var narrator: String? {
         get {
@@ -284,6 +284,7 @@ extension Tag {
         }
     }
     
+    @available(OSX 10.12, iOS 12.0, *)
     public var purchaseDate: Date? {
         get {
             if let atom = metadataAtoms[.purchaseDate] as? StringMetadataAtom {
