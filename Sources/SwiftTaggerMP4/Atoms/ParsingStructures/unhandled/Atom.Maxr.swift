@@ -12,13 +12,13 @@ import Foundation
 /// **Not currently implemented**
 class Maxr: Atom {
     
-    var granularity: Int32
-    var bytes: Int32
+    var granularity: UInt32
+    var bytes: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.granularity = data.extractFirst(4).int32BE
-        self.bytes = data.extractFirst(4).int32BE
+        self.granularity = data.extractFirst(4).uInt32BE
+        self.bytes = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

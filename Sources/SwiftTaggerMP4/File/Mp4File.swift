@@ -48,17 +48,25 @@ public class Mp4File {
     }
     
     public func write(tag: Tag, to outputLocation: URL) throws {
+        print("get media data begins: \(Date())")
         let mediaData = try self.getMediaData()
+        print("set metadata atoms begins: \(Date())")
         try setMetadataAtoms(tag: tag)
+        print("set language begins: \(Date())")
         setLanguage(tag: tag)
+        print("set chapter track begins: \(Date())")
         try setChapterTrack(mediaData: mediaData, tag: tag)
+        print("set mdat begins: \(Date())")
         try setMdat(mediaData: mediaData, tag: tag)
         
+        print("output data accumulation begins: \(Date())")
         var outputData = Data()
         for atom in self.optimizedRoot {
             outputData.append(atom.encode)
         }
+        print("writing begins: \(Date())")
         try outputData.write(to: outputLocation, options: .atomic)
+        print("writing ends: \(Date())")
     }
     
     /// Sorts atoms into order to preserve media offsets

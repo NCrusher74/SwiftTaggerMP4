@@ -10,45 +10,45 @@ import Foundation
 /// A class representing a `text` atom in an `Mp4File`'s atom structure
 class Text: Atom {
     
-    var dataReferenceIndex: Int16
-    var displayFlags: Int32
-    var textJustification: Int32
-    var bgColorRed: Int16
-    var bgColorGreen: Int16
-    var bgColorBlue: Int16
-    var defineTextBoxTop: Int16
-    var defineTextBoxLeft: Int16
-    var defineTextBoxBottom: Int16
-    var defineTextBoxRight: Int16
-    var fontID: Int16
-    var fontFace: Int16
-    var fontColorRed: Int16
-    var fontColorGreen: Int16
-    var fontColorBlue: Int16
+    var dataReferenceIndex: UInt16
+    var displayFlags: UInt32
+    var textJustification: UInt32
+    var bgColorRed: UInt16
+    var bgColorGreen: UInt16
+    var bgColorBlue: UInt16
+    var defineTextBoxTop: UInt16
+    var defineTextBoxLeft: UInt16
+    var defineTextBoxBottom: UInt16
+    var defineTextBoxRight: UInt16
+    var fontID: UInt16
+    var fontFace: UInt16
+    var fontColorRed: UInt16
+    var fontColorGreen: UInt16
+    var fontColorBlue: UInt16
     
     /// Initialize a `text` atom for parsing from the root structure
     /// *For chaptering purposes, this atom is the child atom of the `stsd` atom for a chapter track*
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         _ = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirst(2).int16BE
-        self.displayFlags = data.extractFirst(4).int32BE
-        self.textJustification = data.extractFirst(4).int32BE
-        self.bgColorRed = data.extractFirst(2).int16BE
-        self.bgColorGreen = data.extractFirst(2).int16BE
-        self.bgColorBlue = data.extractFirst(2).int16BE
-        self.defineTextBoxTop = data.extractFirst(2).int16BE
-        self.defineTextBoxLeft = data.extractFirst(2).int16BE
-        self.defineTextBoxBottom = data.extractFirst(2).int16BE
-        self.defineTextBoxRight = data.extractFirst(2).int16BE
+        self.dataReferenceIndex = data.extractFirst(2).uInt16BE
+        self.displayFlags = data.extractFirst(4).uInt32BE
+        self.textJustification = data.extractFirst(4).uInt32BE
+        self.bgColorRed = data.extractFirst(2).uInt16BE
+        self.bgColorGreen = data.extractFirst(2).uInt16BE
+        self.bgColorBlue = data.extractFirst(2).uInt16BE
+        self.defineTextBoxTop = data.extractFirst(2).uInt16BE
+        self.defineTextBoxLeft = data.extractFirst(2).uInt16BE
+        self.defineTextBoxBottom = data.extractFirst(2).uInt16BE
+        self.defineTextBoxRight = data.extractFirst(2).uInt16BE
         _ = data.extractFirst(8)
-        self.fontID = data.extractFirst(2).int16BE
-        self.fontFace = data.extractFirst(2).int16BE
+        self.fontID = data.extractFirst(2).uInt16BE
+        self.fontFace = data.extractFirst(2).uInt16BE
         _ = data.extractFirst(1)
         _ = data.extractFirst(2)
-        self.fontColorRed = data.extractFirst(2).int16BE
-        self.fontColorGreen = data.extractFirst(2).int16BE
-        self.fontColorBlue = data.extractFirst(2).int16BE
+        self.fontColorRed = data.extractFirst(2).uInt16BE
+        self.fontColorGreen = data.extractFirst(2).uInt16BE
+        self.fontColorBlue = data.extractFirst(2).uInt16BE
         
         try super.init(identifier: identifier,
                        size: size,

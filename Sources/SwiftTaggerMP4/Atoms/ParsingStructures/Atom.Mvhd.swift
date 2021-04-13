@@ -18,15 +18,15 @@ class Mvhd: Atom {
     var timeScale: Double
     /// the duration in milliseconds
     var duration: Double
-    var preferredRate: Int32
-    var preferredVolume: Int16
+    var preferredRate: UInt32
+    var preferredVolume: UInt16
     private var matrixStructure: Data
-    var previewTime: Int32
-    var previewDuration: Int32
-    var posterTime: Int32
-    var selectionTime: Int32
-    var selectionDuration: Int32
-    var currentTime: Int32
+    var previewTime: UInt32
+    var previewDuration: UInt32
+    var posterTime: UInt32
+    var selectionTime: UInt32
+    var selectionDuration: UInt32
+    var currentTime: UInt32
     var nextTrackID: Int
     
     /// Initialize a `mvhd` atom for parsing from the root structure
@@ -36,7 +36,7 @@ class Mvhd: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
 
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             self.creationTime = data.extractToInt(8)
             self.modificationTime = data.extractToInt(8)
         } else {
@@ -45,25 +45,25 @@ class Mvhd: Atom {
         }
         
         self.timeScale = data.extractToDouble(4)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             self.duration = data.extractToDouble(8)
         } else {
             self.duration = data.extractToDouble(4)
         }
         
-        self.preferredRate = data.extractFirst(4).int32BE
-        self.preferredVolume = data.extractFirst(2).int16BE
+        self.preferredRate = data.extractFirst(4).uInt32BE
+        self.preferredVolume = data.extractFirst(2).uInt16BE
         // reserved
         _ = data.extractFirst(10)
         // we're not touching this
         self.matrixStructure = data.extractFirst(36)
-        self.previewTime = data.extractFirst(4).int32BE
-        self.previewDuration = data.extractFirst(4).int32BE
-        self.posterTime = data.extractFirst(4).int32BE
-        self.selectionTime = data.extractFirst(4).int32BE
-        self.selectionDuration = data.extractFirst(4).int32BE
-        self.currentTime = data.extractFirst(4).int32BE
-        self.nextTrackID = data.extractFirst(4).int32BE.int
+        self.previewTime = data.extractFirst(4).uInt32BE
+        self.previewDuration = data.extractFirst(4).uInt32BE
+        self.posterTime = data.extractFirst(4).uInt32BE
+        self.selectionTime = data.extractFirst(4).uInt32BE
+        self.selectionDuration = data.extractFirst(4).uInt32BE
+        self.currentTime = data.extractFirst(4).uInt32BE
+        self.nextTrackID = data.extractFirst(4).uInt32BE.int
         
         try super.init(identifier: identifier, size: size, payload: payload)
     }
@@ -78,7 +78,7 @@ class Mvhd: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             data.append(self.creationTime.int64.beData)
             data.append(self.modificationTime.int64.beData)
         } else {
@@ -86,7 +86,7 @@ class Mvhd: Atom {
             data.append(self.modificationTime.int32.beData)
         }
         data.append(self.timeScale.int32.beData)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             data.append(self.duration.int64.beData)
         } else {
             data.append(self.duration.int32.beData)

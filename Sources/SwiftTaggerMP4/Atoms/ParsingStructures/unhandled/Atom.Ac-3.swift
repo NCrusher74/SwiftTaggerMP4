@@ -12,10 +12,10 @@ import Foundation
 /// **Not currently implemented**
 class Ac3: Atom {
     
-    var dataReferenceIndex: Int16
-    var channelCount: Int16
-    var sampleSize: Int16
-    var samplingRate: Int16
+    var dataReferenceIndex: UInt16
+    var channelCount: UInt16
+    var sampleSize: UInt16
+    var samplingRate: UInt16
     var dac3: Dac3
     
     override init(identifier: String,
@@ -25,14 +25,14 @@ class Ac3: Atom {
         var data = payload
         // required, 6 bytes of reserved data
         _ = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirst(2).int16BE
+        self.dataReferenceIndex = data.extractFirst(2).uInt16BE
         // required, 2 bytes of reserved data
         _ = data.extractFirst(2)
-        self.channelCount = data.extractFirst(2).int16BE
-        self.sampleSize = data.extractFirst(2).int16BE
+        self.channelCount = data.extractFirst(2).uInt16BE
+        self.sampleSize = data.extractFirst(2).uInt16BE
         // required, 4 bytes of reserved data
         _ = data.extractFirst(4)
-        self.samplingRate = data.extractFirst(2).int16BE
+        self.samplingRate = data.extractFirst(2).uInt16BE
         // required, 2 bytes of reserved data
         _ = data.extractFirst(2)
         

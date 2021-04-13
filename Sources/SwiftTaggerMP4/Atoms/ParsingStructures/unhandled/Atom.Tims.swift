@@ -12,11 +12,11 @@ import Foundation
 /// **Not currently implemented**
 class Tims: Atom {
     
-    var timeScale: Int32
+    var timeScale: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.timeScale = data.extractFirst(4).int32BE
+        self.timeScale = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

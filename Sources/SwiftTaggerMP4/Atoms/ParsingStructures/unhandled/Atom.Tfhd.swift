@@ -15,11 +15,11 @@ class Tfhd: Atom {
     var version: Data
     var flags: Data
     var trackID: Int
-    var baseDataOffset: Int64?
-    var sampleDescriptionIndex: Int32?
-    var defaultSampleDuration: Int32?
-    var defaultSampleSize: Int32?
-    var defaultSampleFlags: Int32?
+    var baseDataOffset: UInt64?
+    var sampleDescriptionIndex: UInt32?
+    var defaultSampleDuration: UInt32?
+    var defaultSampleSize: UInt32?
+    var defaultSampleFlags: UInt32?
     
     override init(identifier: String,
                   size: Int,
@@ -32,19 +32,19 @@ class Tfhd: Atom {
         let flagsArray = [UInt8](flags)
         if let lastFlag = flagsArray.last {
             if lastFlag & 0b0000_0001 == lastFlag {
-                self.baseDataOffset = data.extractFirst(8).int64BE
+                self.baseDataOffset = data.extractFirst(8).uInt64BE
             }
             if lastFlag & 0b0000_0010 == lastFlag {
-                self.sampleDescriptionIndex = data.extractFirst(4).int32BE
+                self.sampleDescriptionIndex = data.extractFirst(4).uInt32BE
             }
             if lastFlag & 0b0000_1000 == lastFlag {
-                self.defaultSampleDuration = data.extractFirst(4).int32BE
+                self.defaultSampleDuration = data.extractFirst(4).uInt32BE
             }
             if lastFlag & 0b0001_0000 == lastFlag {
-                self.defaultSampleSize = data.extractFirst(4).int32BE
+                self.defaultSampleSize = data.extractFirst(4).uInt32BE
             }
             if lastFlag & 0b0010_0000 == lastFlag {
-                self.defaultSampleFlags = data.extractFirst(4).int32BE
+                self.defaultSampleFlags = data.extractFirst(4).uInt32BE
             }
         }
         

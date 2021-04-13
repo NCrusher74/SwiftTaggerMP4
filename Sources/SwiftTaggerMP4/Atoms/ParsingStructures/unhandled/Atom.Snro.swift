@@ -12,11 +12,11 @@ import Foundation
 /// **Not currently implemented**
 class Snro: Atom {
 
-    var offsetValue: Int32
+    var offsetValue: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.offsetValue = data.extractFirst(4).int32BE
+        self.offsetValue = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

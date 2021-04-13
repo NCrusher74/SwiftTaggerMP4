@@ -13,11 +13,11 @@ import Foundation
 class Dmax: Atom {
     
     /// Max packet duration in milliseconds
-    var duration: Int32
+    var duration: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.duration = data.extractFirst(4).int32BE
+        self.duration = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

@@ -13,11 +13,11 @@ import Foundation
 class Trpy: Atom {
 
     /// bytes sent including RTP headers
-    var bytes: Int64
+    var bytes: UInt64
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.bytes = data.extractFirst(8).int64BE
+        self.bytes = data.extractFirst(8).uInt64BE
         
         try super.init(identifier: identifier,
                    size: size,

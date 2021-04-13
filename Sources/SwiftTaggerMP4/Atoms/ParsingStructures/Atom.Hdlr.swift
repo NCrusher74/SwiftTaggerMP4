@@ -148,7 +148,6 @@ class Hdlr: Atom {
             data.append(Atom.addReserveData(12)) // manf, flags, mask
             data.append(self.componentName) // null terminated string
         }
-        print(data.count)
         return data
     }
 }

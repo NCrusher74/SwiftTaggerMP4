@@ -14,7 +14,7 @@ class Ctts: Atom {
     
     private var version: Data
     private var flags: Data
-    var entryCount: Int32
+    var entryCount: UInt32
     var sampleTable: [(sampleCount: Int, sampleOffset: Int)]
 
     override init(identifier: String, size: Int, payload: Data) throws {
@@ -22,7 +22,7 @@ class Ctts: Atom {
         var data = payload
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        self.entryCount = data.extractFirst(4).int32BE
+        self.entryCount = data.extractFirst(4).uInt32BE
         
         var sampleTableArray = [(sampleCount: Int, sampleOffset: Int)]()
         while !data.isEmpty {

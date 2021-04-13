@@ -14,22 +14,22 @@ class Trex: Atom {
 
     private var version: Data
     private var flags: Data
-    var trackID: Int32
-    var defaultSampleDescriptionIndex: Int32
-    var defaultSampleDuration: Int32
-    var defaultSampleSize: Int32
-    var defaultSampleFlags: Int32
+    var trackID: UInt32
+    var defaultSampleDescriptionIndex: UInt32
+    var defaultSampleDuration: UInt32
+    var defaultSampleSize: UInt32
+    var defaultSampleFlags: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        self.trackID = data.extractFirst(4).int32BE
-        self.defaultSampleDescriptionIndex = data.extractFirst(4).int32BE
-        self.defaultSampleDuration = data.extractFirst(4).int32BE
-        self.defaultSampleSize = data.extractFirst(4).int32BE
-        self.defaultSampleFlags = data.extractFirst(4).int32BE
+        self.trackID = data.extractFirst(4).uInt32BE
+        self.defaultSampleDescriptionIndex = data.extractFirst(4).uInt32BE
+        self.defaultSampleDuration = data.extractFirst(4).uInt32BE
+        self.defaultSampleSize = data.extractFirst(4).uInt32BE
+        self.defaultSampleFlags = data.extractFirst(4).uInt32BE
         try super.init(identifier: identifier,
                    size: size,
                    payload: payload)

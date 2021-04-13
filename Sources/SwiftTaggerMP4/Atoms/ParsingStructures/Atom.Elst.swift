@@ -38,11 +38,11 @@ class Elst: Atom {
         while !data.isEmpty {
             var segmentDuration: Double = 0
             var mediaTime: Double = 0
-            if self.version.int8BE == 0x01 {
-                segmentDuration = data.extractFirst(8).int64BE.double
+            if self.version.uInt8BE == 0x01 {
+                segmentDuration = data.extractFirst(8).uInt64BE.double
                 mediaTime = data.extractToDouble(8)
             } else {
-                segmentDuration = data.extractFirst(4).int32BE.double
+                segmentDuration = data.extractFirst(4).uInt32BE.double
                 mediaTime = data.extractToDouble(4)
             }
             let mediaRate = data.extractToDouble(2)
@@ -58,7 +58,7 @@ class Elst: Atom {
    override var contentData: Data {
         var data = Data()
         data.append(self.version)
-        let versionInt = self.version.int8BE.int
+        let versionInt = self.version.uInt8BE.int
         data.append(self.flags)
         data.append(self.entryCount.int32.beData)
         for entry in editListTable {

@@ -16,19 +16,19 @@ class Tkhd: Atom {
     var modificationTime: Int
     var trackID: Int
     private var durationRaw: Data
-    var layer: Int16
-    var alternateGroup: Int16
-    var volume: Int16
+    var layer: UInt16
+    var alternateGroup: UInt16
+    var volume: UInt16
     private var matrixStructure: Data
-    var trackWidth: Int32
-    var trackHeight: Int32
+    var trackWidth: UInt32
+    var trackHeight: UInt32
     
     /// Initialize a `tkhd` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             self.creationTime = data.extractToInt(8)
             self.modificationTime = data.extractToInt(8)
         } else {
@@ -37,19 +37,19 @@ class Tkhd: Atom {
         }
         self.trackID = data.extractToInt(4)
         _ = data.extractFirst(4)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             self.durationRaw = data.extractFirst(8)
         } else {
             self.durationRaw = data.extractFirst(4)
         }
         _ = data.extractFirst(8)
-        self.layer = data.extractFirst(2).int16BE
-        self.alternateGroup = data.extractFirst(2).int16BE
-        self.volume = data.extractFirst(2).int16BE
+        self.layer = data.extractFirst(2).uInt16BE
+        self.alternateGroup = data.extractFirst(2).uInt16BE
+        self.volume = data.extractFirst(2).uInt16BE
         _ = data.extractFirst(2)
         self.matrixStructure = data.extractFirst(36)
-        self.trackWidth = data.extractFirst(4).int32BE
-        self.trackHeight = data.extractFirst(4).int32BE
+        self.trackWidth = data.extractFirst(4).uInt32BE
+        self.trackHeight = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                        size: size,
@@ -65,10 +65,10 @@ class Tkhd: Atom {
         } else if let mvhd = self.parent?.siblings?.first(where: {$0.identifier == "mvhd"}) as? Mvhd {
             return mvhd.duration
         } else {
-            if self.version.int8BE == 0x01 {
-                return self.durationRaw.int64BE.double
+            if self.version.uInt8BE == 0x01 {
+                return self.durationRaw.uInt64BE.double
             } else {
-                return self.durationRaw.int32BE.double
+                return self.durationRaw.uInt32BE.double
             }
         }
     }
@@ -84,7 +84,7 @@ class Tkhd: Atom {
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
         self.trackID = trackID
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             self.durationRaw = mediaDuration.int64.beData
         } else {
             self.durationRaw = mediaDuration.int32.beData
@@ -99,7 +99,7 @@ class Tkhd: Atom {
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             payload.append(self.creationTime.int64.beData)
             payload.append(self.modificationTime.int64.beData)
         } else {
@@ -118,7 +118,7 @@ class Tkhd: Atom {
         payload.append(self.trackWidth.beData)
         payload.append(self.trackHeight.beData)
         
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             try super.init(identifier: "tkhd",
                            size: payload.count + 16,
                            payload: payload)
@@ -134,7 +134,7 @@ class Tkhd: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             data.append(self.creationTime.int64.beData)
             data.append(self.modificationTime.int64.beData)
         } else {
@@ -143,7 +143,7 @@ class Tkhd: Atom {
         }
         data.append(self.trackID.int32.beData)
         data.append(Atom.addReserveData(4))
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             data.append(self.duration.int64.beData)
         } else {
             data.append(self.duration.int32.beData)

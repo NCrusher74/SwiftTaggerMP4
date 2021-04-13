@@ -18,7 +18,7 @@ class Mdhd: Atom {
     var timeScale: Double
     /// The duration of the media contained in the track
     var duration: Double
-    private var languageInt16: Int16
+    private var languageUInt16: UInt16
     var quality: Int
     
     /// Initialize a `mdhd` atom for parsing from the root structure
@@ -27,21 +27,21 @@ class Mdhd: Atom {
         
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        if self.version.int8BE == 0x01 {
-            self.creationTime = data.extractFirst(8).int64BE.int
-            self.modificationTime = data.extractFirst(8).int64BE.int
+        if self.version.uInt8BE == 0x01 {
+            self.creationTime = data.extractFirst(8).uInt64BE.int
+            self.modificationTime = data.extractFirst(8).uInt64BE.int
         } else {
-            self.creationTime = data.extractFirst(4).int32BE.int
-            self.modificationTime = data.extractFirst(4).int32BE.int
+            self.creationTime = data.extractFirst(4).uInt32BE.int
+            self.modificationTime = data.extractFirst(4).uInt32BE.int
         }
         self.timeScale = data.extractToDouble(4)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             self.duration = data.extractToDouble(8)
         } else {
             self.duration = data.extractToDouble(4)
         }
         
-        self.languageInt16 = data.extractFirst(2).int16BE
+        self.languageUInt16 = data.extractFirst(2).uInt16BE
         self.quality = data.extractToInt(2)
         
         try super.init(identifier: identifier,
@@ -66,11 +66,11 @@ class Mdhd: Atom {
                 return elng?.languages.first
             } else {
                 // see if it's a uInt16 form of the 3-character code
-                if let languageCode = ISO6392Code(fromInt16: languageInt16) {
+                if let languageCode = ISO6392Code(fromInt16: languageUInt16) {
                     return languageCode.language
                     // otherwise see if it works with a quicktime code
                 } else if let languageCode = ISO6392Code(
-                            quicktimeCode: Int(languageInt16)) {
+                            quicktimeCode: Int(languageUInt16)) {
                     return languageCode.language
                 } else {
                     return nil
@@ -87,10 +87,10 @@ class Mdhd: Atom {
             // if there is, use the first language as our language here
             if elng != nil {
                 if let elngLanguage = elng?.languages.first {
-                    self.languageInt16 = elngLanguage.iso6392Code.getInt16Code()
+                    self.languageUInt16 = elngLanguage.iso6392Code.getUInt16Code()
                 } else {
                     if let newValue = newValue {
-                        self.languageInt16 = newValue.iso6392Code.getInt16Code()
+                        self.languageUInt16 = newValue.iso6392Code.getUInt16Code()
                     }
                 }
             }
@@ -109,13 +109,13 @@ class Mdhd: Atom {
         self.modificationTime = Date().dateIntervalSince1904
         self.timeScale = 1000
         self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000
-        self.languageInt16 = language.getInt16Code()
+        self.languageUInt16 = language.getUInt16Code()
         self.quality = 0
         
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             payload.append(self.creationTime.int64.beData)
             payload.append(self.modificationTime.int64.beData)
         } else {
@@ -123,12 +123,12 @@ class Mdhd: Atom {
             payload.append(self.modificationTime.int32.beData)
         }
         payload.append(self.timeScale.int32.beData)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             payload.append(self.duration.int64.beData)
         } else {
             payload.append(self.duration.int32.beData)
         }
-        payload.append(self.languageInt16.beData)
+        payload.append(self.languageUInt16.beData)
         payload.append(self.quality.int16.beData)
 
         try super.init(identifier: "mdhd",
@@ -150,13 +150,13 @@ class Mdhd: Atom {
         
         self.timeScale = 1000
         self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000
-        self.languageInt16 = language.iso6392Code.getInt16Code()
+        self.languageUInt16 = language.iso6392Code.getUInt16Code()
         self.quality = 0
         
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             payload.append(self.creationTime.int64.beData)
             payload.append(self.modificationTime.int64.beData)
         } else {
@@ -164,12 +164,12 @@ class Mdhd: Atom {
             payload.append(self.modificationTime.int32.beData)
         }
         payload.append(self.timeScale.int32.beData)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             payload.append(self.duration.int64.beData)
         } else {
             payload.append(self.duration.int32.beData)
         }
-        payload.append(self.languageInt16.beData)
+        payload.append(self.languageUInt16.beData)
         payload.append(self.quality.int16.beData)
 
         try super.init(identifier: "mdhd",
@@ -182,7 +182,7 @@ class Mdhd: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             data.append(self.creationTime.int64.beData)
             data.append(self.modificationTime.int64.beData)
         } else {
@@ -190,12 +190,12 @@ class Mdhd: Atom {
             data.append(self.modificationTime.int32.beData)
         }
         data.append(self.timeScale.int32.beData)
-        if self.version.int8BE == 0x01 {
+        if self.version.uInt8BE == 0x01 {
             data.append(self.duration.int64.beData)
         } else {
             data.append(self.duration.int32.beData)
         }
-        data.append(self.languageInt16.beData)
+        data.append(self.languageUInt16.beData)
         data.append(self.quality.int16.beData)
         return data
     }

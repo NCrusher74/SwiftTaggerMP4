@@ -12,13 +12,13 @@ import Foundation
 /// **Not currently implemented**
 class Bitr: Atom {
     
-    var averageBitrate: Int32
-    var maxBitrate: Int32
+    var averageBitrate: UInt32
+    var maxBitrate: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.averageBitrate = data.extractFirst(4).int32BE
-        self.maxBitrate = data.extractFirst(4).int32BE
+        self.averageBitrate = data.extractFirst(4).uInt32BE
+        self.maxBitrate = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

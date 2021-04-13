@@ -12,13 +12,13 @@ import Foundation
 /// **Not currently implemented**
 class Payt: Atom {
 
-    var payloadNumber: Int32
+    var payloadNumber: UInt32
     var rtpMap: String?
     
     override init(identifier: String, size: Int, payload: Data) throws {
         
         var data = payload
-        self.payloadNumber = data.extractFirst(4).int32BE
+        self.payloadNumber = data.extractFirst(4).uInt32BE
         self.rtpMap = data.stringUtf8
 
         try super.init(identifier: identifier,

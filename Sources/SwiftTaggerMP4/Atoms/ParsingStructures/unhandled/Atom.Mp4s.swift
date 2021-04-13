@@ -12,13 +12,13 @@ import Foundation
 /// **Not currently implemented**
 class Mp4s: Atom {
 
-    var dataReferenceIndex: Int16
+    var dataReferenceIndex: UInt16
     var esds: PassThrough
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         _ = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirst(2).int16BE
+        self.dataReferenceIndex = data.extractFirst(2).uInt16BE
         
         var children = [Atom]()
         while !data.isEmpty {

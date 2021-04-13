@@ -13,9 +13,9 @@ import Foundation
 class Ohdr: Atom {
     var version: Data
     var flags: Data
-    var encryptionMethod: Int8
-    var encryptionPadding: Int8
-    var plainTextLength: Int64
+    var encryptionMethod: UInt8
+    var encryptionPadding: UInt8
+    var plainTextLength: UInt64
     var contentIDLength: Int
     var rightsIssuerUrlLength: Int
     var textualHeadersLength: Int
@@ -29,9 +29,9 @@ class Ohdr: Atom {
         var data = payload
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        self.encryptionMethod = data.extractFirst(1).int8BE
-        self.encryptionPadding = data.extractFirst(1).int8BE
-        self.plainTextLength = data.extractFirst(8).int64BE
+        self.encryptionMethod = data.extractFirst(1).uInt8BE
+        self.encryptionPadding = data.extractFirst(1).uInt8BE
+        self.plainTextLength = data.extractFirst(8).uInt64BE
         self.contentIDLength = data.extractToInt(2)
         self.rightsIssuerUrlLength = data.extractToInt(2)
         self.textualHeadersLength = data.extractToInt(2)

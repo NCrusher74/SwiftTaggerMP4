@@ -14,13 +14,13 @@ class Mfhd: Atom {
 
     private var version: Data
     private var flags: Data
-    var sequenceNumber: Int32
+    var sequenceNumber: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        self.sequenceNumber = data.extractFirst(4).int32BE
+        self.sequenceNumber = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

@@ -12,35 +12,35 @@ import Foundation
 /// **Not currently implemented**
 class SoundAtom: Atom {
     
-    var dataReferenceIndex: Int16
+    var dataReferenceIndex: UInt16
     var soundVersion: Int
-    var channels: Int16
-    var compressionID: Int16
-    var packetSize: Int16
-    var timeScale: Int32
-    var samplesPerPacket: Int32?
-    var bytesPerPacket: Int32?
-    var bytesPerFrame: Int32?
-    var bytesPerSample: Int32?
+    var channels: UInt16
+    var compressionID: UInt16
+    var packetSize: UInt16
+    var timeScale: UInt32
+    var samplesPerPacket: UInt32?
+    var bytesPerPacket: UInt32?
+    var bytesPerFrame: UInt32?
+    var bytesPerSample: UInt32?
     
     var esds: PassThrough?
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         _ = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirst(2).int16BE
+        self.dataReferenceIndex = data.extractFirst(2).uInt16BE
         self.soundVersion = data.extractToInt(2)
         _ = data.extractFirst(6)
-        self.channels = data.extractFirst(2).int16BE
-        self.compressionID = data.extractFirst(2).int16BE
-        self.packetSize = data.extractFirst(2).int16BE
-        self.timeScale = data.extractFirst(4).int32BE
+        self.channels = data.extractFirst(2).uInt16BE
+        self.compressionID = data.extractFirst(2).uInt16BE
+        self.packetSize = data.extractFirst(2).uInt16BE
+        self.timeScale = data.extractFirst(4).uInt32BE
         
         if soundVersion > 0 {
-            self.samplesPerPacket = data.extractFirst(4).int32BE
-            self.bytesPerPacket = data.extractFirst(4).int32BE
-            self.bytesPerFrame = data.extractFirst(4).int32BE
-            self.bytesPerSample = data.extractFirst(4).int32BE
+            self.samplesPerPacket = data.extractFirst(4).uInt32BE
+            self.bytesPerPacket = data.extractFirst(4).uInt32BE
+            self.bytesPerFrame = data.extractFirst(4).uInt32BE
+            self.bytesPerSample = data.extractFirst(4).uInt32BE
         }
         if soundVersion == 2 {
             _ = data.extractFirst(20)

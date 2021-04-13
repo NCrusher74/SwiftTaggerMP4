@@ -14,21 +14,21 @@ class Hmhd: Atom {
     
     private var version: Data
     private var flags: Data
-    var maxPduSize: Int16
-    var averagePduSize: Int16
-    var maxBitrate: Int32
-    var averageBitrate: Int32
-    var slidingAverageBitrate: Int32
+    var maxPduSize: UInt16
+    var averagePduSize: UInt16
+    var maxBitrate: UInt32
+    var averageBitrate: UInt32
+    var slidingAverageBitrate: UInt32
 
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-        self.maxPduSize = data.extractFirst(2).int16BE
-        self.averagePduSize  = data.extractFirst(2).int16BE
-        self.maxBitrate = data.extractFirst(4).int32BE
-        self.averageBitrate = data.extractFirst(4).int32BE
-        self.slidingAverageBitrate = data.extractFirst(4).int32BE
+        self.maxPduSize = data.extractFirst(2).uInt16BE
+        self.averagePduSize  = data.extractFirst(2).uInt16BE
+        self.maxBitrate = data.extractFirst(4).uInt32BE
+        self.averageBitrate = data.extractFirst(4).uInt32BE
+        self.slidingAverageBitrate = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

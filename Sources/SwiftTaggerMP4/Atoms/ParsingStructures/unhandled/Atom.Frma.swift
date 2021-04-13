@@ -12,11 +12,11 @@ import Foundation
 /// **Not currently implemented**
 class Frma: Atom {
     
-    var dataFormat: Int32
+    var dataFormat: UInt32
 
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.dataFormat = data.extractFirst(4).int32BE
+        self.dataFormat = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

@@ -12,19 +12,19 @@ import Foundation
 /// **Not currently implemented**
 class Gmin: Atom {
 
-    var graphicsMode: Int16
-    var opColorRed: Int16
-    var opColorGreen: Int16
-    var opColorBlue: Int16
-    var balance: Int16
+    var graphicsMode: UInt16
+    var opColorRed: UInt16
+    var opColorGreen: UInt16
+    var opColorBlue: UInt16
+    var balance: UInt16
 
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.graphicsMode = data.extractFirst(2).int16BE
-        self.opColorRed = data.extractFirst(2).int16BE
-        self.opColorGreen = data.extractFirst(2).int16BE
-        self.opColorBlue = data.extractFirst(2).int16BE
-        self.balance = data.extractFirst(2).int16BE
+        self.graphicsMode = data.extractFirst(2).uInt16BE
+        self.opColorRed = data.extractFirst(2).uInt16BE
+        self.opColorGreen = data.extractFirst(2).uInt16BE
+        self.opColorBlue = data.extractFirst(2).uInt16BE
+        self.balance = data.extractFirst(2).uInt16BE
         _ = data.extractFirst(2)
 
         try super.init(identifier: identifier,

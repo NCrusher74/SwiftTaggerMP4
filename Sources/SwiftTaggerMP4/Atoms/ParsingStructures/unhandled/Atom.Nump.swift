@@ -13,11 +13,11 @@ import Foundation
 class Nump: Atom {
 
     /// Packets sent
-    var packets: Int64
+    var packets: UInt64
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.packets = data.extractFirst(8).int64BE
+        self.packets = data.extractFirst(8).uInt64BE
         
         try super.init(identifier: identifier,
                    size: size,

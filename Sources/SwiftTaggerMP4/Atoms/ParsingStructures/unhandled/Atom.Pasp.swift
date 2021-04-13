@@ -12,13 +12,13 @@ import Foundation
 /// **Not currently implemented**
 class Pasp: Atom {
 
-    var hSpacing: Int32
-    var vSpacing: Int32
+    var hSpacing: UInt32
+    var vSpacing: UInt32
     
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
-        self.hSpacing = data.extractFirst(4).int32BE
-        self.vSpacing = data.extractFirst(4).int32BE
+        self.hSpacing = data.extractFirst(4).uInt32BE
+        self.vSpacing = data.extractFirst(4).uInt32BE
         
         try super.init(identifier: identifier,
                    size: size,

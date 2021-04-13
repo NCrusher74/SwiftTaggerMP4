@@ -13,10 +13,10 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/NCrusher74/SwiftLanguageAndLocaleCodes",
-            from: "1.0.0"),
+            from: "2.0.0"),
         .package(
             url: "https://github.com/NCrusher74/SwiftConvenienceExtensions",
-            from: "1.0.0"),
+            from: "2.0.0"),
         .package(
             url: "https://github.com/NCrusher74/iTunesGenreID",
             from: "1.0.0")

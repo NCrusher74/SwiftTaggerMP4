@@ -11,18 +11,18 @@ import Foundation
 /// **Not currently implemented**
 class Amr: Atom {
     
-    var dataReferenceIndex: Int16
-    var timeScale: Int16
+    var dataReferenceIndex: UInt16
+    var timeScale: UInt16
     var damr: Damr
     
     override init(identifier: String, size: Int, payload: Data, children: [Atom]) throws {
         var data = payload
         // required, 6 bytes reserved
         _ = data.extractFirst(6)
-        self.dataReferenceIndex = data.extractFirst(2).int16BE
+        self.dataReferenceIndex = data.extractFirst(2).uInt16BE
         // required, 16 bytes reserved
         _ = data.extractFirst(16)
-        self.timeScale = data.extractFirst(2).int16BE
+        self.timeScale = data.extractFirst(2).uInt16BE
         // required, 4 bytes reserved
         var children = [Atom]()
         while !data.isEmpty {

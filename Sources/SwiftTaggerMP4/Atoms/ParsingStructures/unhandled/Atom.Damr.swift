@@ -12,21 +12,21 @@ import Foundation
 /// **Not currently implemented**
 class Damr: Atom {
     
-    var vendor: Int32
-    var decoderVersion: Int8
-    var modeSet: Int16
-    var modeChangePeriod: Int8
-    var framesPerSample: Int8
+    var vendor: UInt32
+    var decoderVersion: UInt8
+    var modeSet: UInt16
+    var modeChangePeriod: UInt8
+    var framesPerSample: UInt8
     
     override init(identifier: String,
                   size: Int,
                   payload: Data) throws {
         var data = payload
-        self.vendor = data.extractFirst(4).int32BE
-        self.decoderVersion = data.extractFirst(1).int8BE
-        self.modeSet = data.extractFirst(2).int16BE
-        self.modeChangePeriod = data.extractFirst(1).int8BE
-        self.framesPerSample = data.extractFirst(1).int8BE
+        self.vendor = data.extractFirst(4).uInt32BE
+        self.decoderVersion = data.extractFirst(1).uInt8BE
+        self.modeSet = data.extractFirst(2).uInt16BE
+        self.modeChangePeriod = data.extractFirst(1).uInt8BE
+        self.framesPerSample = data.extractFirst(1).uInt8BE
         
         try super.init(identifier: identifier,
                        size: size,

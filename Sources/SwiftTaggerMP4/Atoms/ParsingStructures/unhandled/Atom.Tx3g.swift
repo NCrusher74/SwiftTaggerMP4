@@ -12,27 +12,27 @@ import Foundation
 /// **Not currently implemented**
 class Tx3g: Atom {
 
-    var dataReferenceIndex: Int16
-    var displayFlags: Int32
-    var horizontalJustification: Int8
-    var verticalJustification: Int8
-    var bgColorRed: Int8
-    var bgColorGreen: Int8
-    var bgColorBlue: Int8
-    var bgColorAlpha: Int8
-    var defineTextBoxTop: Int16
-    var defineTextBoxLeft: Int16
-    var defineTextBoxBottom: Int16
-    var defineTextBoxRight: Int16
-    var startCharacter: Int16
-    var endCharacter: Int16
-    var fontID: Int16
-    var fontFace: Int8
-    var fontSize: Int8
-    var fontColorRed: Int8
-    var fontColorGreen: Int8
-    var fontColorBlue: Int8
-    var fontColorAlpha: Int8
+    var dataReferenceIndex: UInt16
+    var displayFlags: UInt32
+    var horizontalJustification: UInt8
+    var verticalJustification: UInt8
+    var bgColorRed: UInt8
+    var bgColorGreen: UInt8
+    var bgColorBlue: UInt8
+    var bgColorAlpha: UInt8
+    var defineTextBoxTop: UInt16
+    var defineTextBoxLeft: UInt16
+    var defineTextBoxBottom: UInt16
+    var defineTextBoxRight: UInt16
+    var startCharacter: UInt16
+    var endCharacter: UInt16
+    var fontID: UInt16
+    var fontFace: UInt8
+    var fontSize: UInt8
+    var fontColorRed: UInt8
+    var fontColorGreen: UInt8
+    var fontColorBlue: UInt8
+    var fontColorAlpha: UInt8
 
     override init(identifier: String, size: Int, payload: Data) throws {
         
@@ -41,27 +41,27 @@ class Tx3g: Atom {
         _ = data.extractFirst(4)
         // reserved
         _ = data.extractFirst(2)
-        self.dataReferenceIndex = data.extractFirst(2).int16BE
-        self.displayFlags = data.extractFirst(4).int32BE
-        self.horizontalJustification = data.extractFirst(1).int8BE
-        self.verticalJustification = data.extractFirst(1).int8BE
-        self.bgColorRed = data.extractFirst(1).int8BE
-        self.bgColorGreen = data.extractFirst(1).int8BE
-        self.bgColorBlue = data.extractFirst(1).int8BE
-        self.bgColorAlpha = data.extractFirst(1).int8BE
-        self.defineTextBoxTop = data.extractFirst(2).int16BE
-        self.defineTextBoxLeft = data.extractFirst(2).int16BE
-        self.defineTextBoxBottom = data.extractFirst(2).int16BE
-        self.defineTextBoxRight = data.extractFirst(2).int16BE
-        self.startCharacter = data.extractFirst(2).int16BE
-        self.endCharacter = data.extractFirst(2).int16BE
-        self.fontID = data.extractFirst(2).int16BE
-        self.fontFace = data.extractFirst(1).int8BE
-        self.fontSize = data.extractFirst(1).int8BE
-        self.fontColorRed = data.extractFirst(1).int8BE
-        self.fontColorGreen = data.extractFirst(1).int8BE
-        self.fontColorBlue = data.extractFirst(1).int8BE
-        self.fontColorAlpha = data.extractFirst(1).int8BE
+        self.dataReferenceIndex = data.extractFirst(2).uInt16BE
+        self.displayFlags = data.extractFirst(4).uInt32BE
+        self.horizontalJustification = data.extractFirst(1).uInt8BE
+        self.verticalJustification = data.extractFirst(1).uInt8BE
+        self.bgColorRed = data.extractFirst(1).uInt8BE
+        self.bgColorGreen = data.extractFirst(1).uInt8BE
+        self.bgColorBlue = data.extractFirst(1).uInt8BE
+        self.bgColorAlpha = data.extractFirst(1).uInt8BE
+        self.defineTextBoxTop = data.extractFirst(2).uInt16BE
+        self.defineTextBoxLeft = data.extractFirst(2).uInt16BE
+        self.defineTextBoxBottom = data.extractFirst(2).uInt16BE
+        self.defineTextBoxRight = data.extractFirst(2).uInt16BE
+        self.startCharacter = data.extractFirst(2).uInt16BE
+        self.endCharacter = data.extractFirst(2).uInt16BE
+        self.fontID = data.extractFirst(2).uInt16BE
+        self.fontFace = data.extractFirst(1).uInt8BE
+        self.fontSize = data.extractFirst(1).uInt8BE
+        self.fontColorRed = data.extractFirst(1).uInt8BE
+        self.fontColorGreen = data.extractFirst(1).uInt8BE
+        self.fontColorBlue = data.extractFirst(1).uInt8BE
+        self.fontColorAlpha = data.extractFirst(1).uInt8BE
 
         var children = [Atom]()
         while !data.isEmpty {
