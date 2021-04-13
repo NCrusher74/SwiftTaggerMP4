@@ -17,14 +17,14 @@ struct ChapterHandler {
     init(moov: Moov, fileData: Data) throws {
         var chapterList = [Chapter]()
         /// Since the chapterList contained in a chpl atom is virtually identical to our tag.chapterList output, we will check there first
-        if let chpl = moov.udta?.chpl {
-            for item in chpl.chapterTable {
-                let startTime = item.startTime
-                let title = item.title
-                let chapter = Chapter(startTime: startTime, title: title)
-                chapterList.append(chapter)
-            }
-        } else {
+//        if let chpl = moov.udta?.chpl {
+//            for item in chpl.chapterTable {
+//                let startTime = item.startTime
+//                let title = item.title
+//                let chapter = Chapter(startTime: startTime, title: title)
+//                chapterList.append(chapter)
+//            }
+//        } else {
             /// otherwise we will piece together the chapter information from the chapter track
             if let chapterTrack = moov.chapterTrack {
                 let stbl = chapterTrack.mdia.minf.stbl
@@ -74,7 +74,7 @@ struct ChapterHandler {
                         chapterList.append(chapter)
                     }
                 }
-            }
+//            }
         }
         let toc = TOC(chapterList)
         self.toc = toc

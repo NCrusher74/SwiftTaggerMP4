@@ -14,7 +14,7 @@ enum HandlerType: String {
     case dhlr
     /// Encountered when parsing Quicktime-compliant metadata
     case mdta
-    /// Encountered when parsing MP4v2 metadata
+    /// Encountered when parsing MP4v2 & Audible metadata
     case mdir
     case unknown
 }
