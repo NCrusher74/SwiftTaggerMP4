@@ -75,7 +75,9 @@ public class Mp4File {
     
     /// The array of root atoms, arranged to preserve media offsets
     private var optimizedRoot: [Atom] {
-        var rearrangedAtoms = self.rootAtoms
+        var rearrangedAtoms = self.rootAtoms.filter({$0.identifier != "free" &&
+                                                        $0.identifier != "skip" &&
+                                                        $0.identifier != "wide"})
         rearrangedAtoms.sort(
             by: { sortingGroup(forIdentifier: $0.identifier) < sortingGroup(forIdentifier: $1.identifier) }
         )
