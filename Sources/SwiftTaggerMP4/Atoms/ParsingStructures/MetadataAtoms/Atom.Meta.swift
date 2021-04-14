@@ -64,7 +64,10 @@ class Meta: Atom {
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let reserve = size - 8
+        
         var data = Data()
+        data.reserveCapacity(reserve)
         data.append(self.version)
         data.append(self.flags)
         

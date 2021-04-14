@@ -38,7 +38,10 @@ class DataAtom: Atom {
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         let typeInt = self.dataType.rawValue
         data.append(typeInt.uInt32.beData)
         data.append(locale)
@@ -60,12 +63,16 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = try Data(contentsOf: imageLocation)
         
-        var payload = Data()
+        let reserve = 8 + data.count
         let typeInt = self.dataType.rawValue
+
+        var payload = Data()
+        payload.reserveCapacity(reserve)
+
         payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
-        let size = payload.count + 8
+        let size = reserve + 8
         
         try super.init(identifier: "data",
                        size: size,
@@ -78,12 +85,16 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = stringValue.encodedUtf8
         
-        var payload = Data()
         let typeInt = self.dataType.rawValue
+        let reserve = 8 + data.count
+
+        var payload = Data()
+        payload.reserveCapacity(reserve)
+
         payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
-        let size = payload.count + 8
+        let size = reserve + 8
         
         try super.init(identifier: "data",
                        size: size,
@@ -109,13 +120,17 @@ class DataAtom: Atom {
             default:
                 self.data = intValue.uInt32.beData
         }
+        let typeInt = self.dataType.rawValue
+        let reserve = 8 + data.count
         
         var payload = Data()
-        let typeInt = self.dataType.rawValue
+        payload.reserveCapacity(reserve)
+
         payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
-        let size = payload.count + 8
+
+        let size = reserve + 8
         
         try super.init(identifier: "data",
                        size: size,
@@ -128,8 +143,12 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = data
         
-        var payload = Data()
         let typeInt = self.dataType.rawValue
+        let reserve = 8 + data.count
+        
+        var payload = Data()
+        payload.reserveCapacity(reserve)
+
         payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)

@@ -93,13 +93,14 @@ class IntegerMetadataAtom: Atom {
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
-        for child in children {
-            data.append(child.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: children.flatMap({$0.encode}))
+        
         return data
     }
-    
+
     var data: DataAtom {
         get {
             if let atom = self[.data] as? DataAtom {

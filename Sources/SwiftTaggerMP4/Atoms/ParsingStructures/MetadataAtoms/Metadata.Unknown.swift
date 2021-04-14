@@ -71,12 +71,15 @@ public class UnknownMetadataAtom: Atom {
         let dataAtom = try DataAtom(stringValue: stringValue)
         self.stringValue = stringValue
         
+        let reserve = mean.size + nameAtom.size + dataAtom.size
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(mean.encode)
         payload.append(nameAtom.encode)
         payload.append(dataAtom.encode)
         
-        let size = payload.count + 8
+        let size = reserve + 8
         try super.init(identifier: "----",
                        size: size,
                        children: [mean, nameAtom, dataAtom])
@@ -103,14 +106,15 @@ public class UnknownMetadataAtom: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = sortedAtoms.map({$0.size}).sum()
         var data = Data()
-        for atom in self.sortedAtoms {
-            data.append(atom.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: sortedAtoms.flatMap({$0.encode}))
+        
         return data
     }
-    
+
     var mean: Mean {
         get {
             if let atom = self[.mean] as? Mean {

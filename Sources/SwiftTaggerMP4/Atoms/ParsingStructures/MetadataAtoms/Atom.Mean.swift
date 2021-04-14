@@ -32,13 +32,17 @@ class Mean: Atom {
         self.version = Atom.version
         self.flags = Atom.flags
         self.stringValue = "com.apple.iTunes"
-        
+        let utf8 = stringValue.utf8
+
+        let reserve = 4 + utf8.count
         var payload = Data()
+        payload.reserveCapacity(reserve)
+
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(Data(self.stringValue.utf8))
+        payload.append(contentsOf: utf8)
         
-        let size = payload.count + 8
+        let size = reserve + 8
         try super.init(identifier: "mean",
                        size: size,
                        payload: payload)
@@ -46,7 +50,10 @@ class Mean: Atom {
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         data.append(self.version)
         data.append(self.flags)
         data.append(Data(self.stringValue.utf8))

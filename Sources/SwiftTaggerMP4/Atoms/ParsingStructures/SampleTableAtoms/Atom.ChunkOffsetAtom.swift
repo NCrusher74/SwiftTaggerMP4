@@ -1,9 +1,9 @@
 /*
-  Co64.swift
-
-
-  Created by Nolaine Crusher on 7/4/20.
-*/
+ Co64.swift
+ 
+ 
+ Created by Nolaine Crusher on 7/4/20.
+ */
 
 import Foundation
 
@@ -15,10 +15,10 @@ import Foundation
 /// When used for chaptering purposes, a chunk may be a single chapter title, or it may be the entire list of chapter titles. SwiftTaggerMP4 uses the first approach, and though it will handle parsing files where the chapter titles are presented as a single chunk, it will output chapter title data as one chunk per chapter title.
 class ChunkOffsetAtom: Atom {
     
-    private var version: Data
-    private var flags: Data
+    private var version: Data // + 1
+    private var flags: Data // + 3
     /// The number of entries in the chunk offset table
-    var entryCount: Int
+    var entryCount: Int // + 4
     /// The array of offsets in the *file data as a whole*, irrespective of atom structure.
     var chunkOffsetTable: [Int]
     
@@ -46,7 +46,7 @@ class ChunkOffsetAtom: Atom {
                        size: size,
                        payload: payload)
     }
-
+    
     /// **CHAPTER TRACK ONLY** Initialize a `chunkOffsetAtom` with chapter track data
     init(use64BitOffset: Bool,
          chapterHandler: ChapterHandler,
@@ -59,7 +59,17 @@ class ChunkOffsetAtom: Atom {
         self.entryCount = offsetArray.count
         self.chunkOffsetTable = offsetArray
         
+        
+        // 1 version + 3 flags + 4 entry count = 8
+        var reserve = 8
+        if use64BitOffset {
+            reserve += chunkOffsetTable.count * 8
+        } else {
+            reserve += chunkOffsetTable.count * 4
+        }
+        
         var payload = Data()
+        payload.reserveCapacity(reserve)
         payload.append(self.version)
         payload.append(self.flags)
         
@@ -71,8 +81,8 @@ class ChunkOffsetAtom: Atom {
                 payload.append(offset.uInt32.beData)
             }
         }
-        let size = payload.count + 8
         
+        let size = reserve + 8
         if use64BitOffset {
             try super.init(identifier: "co64",
                            size: size,
@@ -84,9 +94,13 @@ class ChunkOffsetAtom: Atom {
         }
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
+        
         var data = Data()
+        data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
         data.append(self.entryCount.uInt32.beData)

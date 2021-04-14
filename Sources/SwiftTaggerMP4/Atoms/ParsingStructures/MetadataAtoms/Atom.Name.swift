@@ -31,15 +31,17 @@ class Name: Atom {
         self.version = Atom.version
         self.flags = Atom.flags
         self.stringValue = atomName
+        let utf8 = atomName.utf8
         
-        let nameData = Data(atomName.utf8)
-        
+        let reserve = 4 + utf8.count
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(nameData)
+        payload.append(contentsOf: utf8)
         
-        let size = payload.count + 8
+        let size = reserve + 8
         try super.init(identifier: "name",
                        size: size,
                        payload: payload)

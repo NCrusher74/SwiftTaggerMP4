@@ -11,7 +11,7 @@ import Foundation
 ///
 /// The `ilst` atom is a sub-atom of `moov.udta.meta`
 class Ilst: Atom {
-
+    
     /// Initialize a `ilst` atom for parsing from the root structure
     override init(identifier: String, size: Int, payload: Data) throws {
         var data = payload
@@ -29,7 +29,10 @@ class Ilst: Atom {
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         for child in self.children {
             data.append(child.encode)
         }
