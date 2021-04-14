@@ -68,12 +68,6 @@ public class Mp4File {
         for atom in self.optimizedRoot {
             outputData.append(atom.encode)
         }
-        if #available(OSX 10.15, *) {
-            print("output time: \(Date().distance(to: outputStart))")
-        } else {
-            // Fallback on earlier versions
-        }
-
         try outputData.write(to: outputLocation, options: .atomic)
     }
     

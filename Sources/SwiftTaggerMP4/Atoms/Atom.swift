@@ -130,9 +130,6 @@ public class Atom {
         
         data.append(self.contentData)
         
-        if self.size != data.count {
-            print("\(identifier): \(self.size) - \(data.count) = \(self.size - data.count)")
-        }
         return data
     }
     /// Default version value
