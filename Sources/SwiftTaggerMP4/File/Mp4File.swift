@@ -48,27 +48,28 @@ public class Mp4File {
     }
     
     public func write(tag: Tag, to outputLocation: URL) throws {
-        let mediaDataStart = Date()
-        let mediaData = try self.getMediaData()
-        let mediaDataEnd = Date()
-        print("media data time: \(mediaDataEnd) - \(mediaDataStart)")
-        
         try setMetadataAtoms(tag: tag)
         setLanguage(tag: tag)
-        try setChapterTrack(mediaData: mediaData, tag: tag)
+        try setChapterTrack(tag: tag)
 
         let mdatStart = Date()
-        try setMdat(mediaData: mediaData, tag: tag)
-        let mdatEnd = Date()
-        print("mdat time: \(mdatEnd) - \(mdatStart)")
+        try setMdat(tag: tag)
+        if #available(OSX 10.15, *) {
+            print("mdat time: \(Date().distance(to: mdatStart))")
+        } else {
+            // Fallback on earlier versions
+        }
 
         let outputStart = Date()
         var outputData = Data()
         for atom in self.optimizedRoot {
             outputData.append(atom.encode)
         }
-        let outputEnd = Date()
-        print("output time: \(outputEnd) - \(outputStart)")
+        if #available(OSX 10.15, *) {
+            print("output time: \(Date().distance(to: outputStart))")
+        } else {
+            // Fallback on earlier versions
+        }
 
         try outputData.write(to: outputLocation, options: .atomic)
     }

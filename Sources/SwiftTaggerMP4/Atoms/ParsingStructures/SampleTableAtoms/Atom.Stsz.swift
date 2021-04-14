@@ -73,7 +73,7 @@ class Stsz: Atom {
         }
         self.entryCount = sizes.count
         
-        let size = 20 + (sizes.count * 4)
+        let size = 20 + (sampleSizeTable.count * 4)
         
         try super.init(identifier: "stsz",
                        size: size)

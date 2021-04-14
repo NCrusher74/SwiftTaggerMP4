@@ -129,6 +129,10 @@ public class Atom {
         }
         
         data.append(self.contentData)
+        
+        if size != data.count {
+            print(identifier)
+        }
         return data
     }
     /// Default version value
