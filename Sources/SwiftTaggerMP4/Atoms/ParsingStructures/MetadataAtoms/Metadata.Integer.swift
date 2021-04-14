@@ -83,8 +83,7 @@ class IntegerMetadataAtom: Atom {
             identifier: identifier.rawValue,
             intValue: intValue)
         
-        let payload = dataAtom.encode
-        let size = payload.count + 8
+        let size = dataAtom.size + 8
         
         try super.init(identifier: identifier.rawValue,
                        size: size,

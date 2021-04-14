@@ -44,10 +44,7 @@ class Meta: Atom {
     init(children: [Atom]) throws {
         self.version = Atom.version
         self.flags = Atom.flags
-        var size: Int = 8
-        for child in children {
-            size += child.size
-        }
+        let size: Int = 12 + children.map({$0.size}).sum()
 
         // hdlr and ilst are required subatoms
         guard children.contains(where: {$0.identifier == "hdlr"}) else {
@@ -65,15 +62,13 @@ class Meta: Atom {
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
         let reserve = size - 8
-        
         var data = Data()
         data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
-        
-        for child in self.children {
-            data.append(child.encode)
-        }
+        data.append(contentsOf: children.flatMap({$0.encode}))
+
         return data
     }
 

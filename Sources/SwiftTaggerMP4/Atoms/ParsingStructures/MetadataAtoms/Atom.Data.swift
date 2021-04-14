@@ -63,20 +63,9 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = try Data(contentsOf: imageLocation)
         
-        let reserve = 8 + data.count
-        let typeInt = self.dataType.rawValue
-
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-
-        payload.append(typeInt.uInt32.beData)
-        payload.append(self.locale)
-        payload.append(self.data)
-        let size = reserve + 8
+        let size = data.count + 16
         
-        try super.init(identifier: "data",
-                       size: size,
-                       payload: payload)
+        try super.init(identifier: "data", size: size)
     }
     
     /// Initialize a `data` atom as a sub-atom for a metadata atom with string content
@@ -85,20 +74,10 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = stringValue.encodedUtf8
         
-        let typeInt = self.dataType.rawValue
-        let reserve = 8 + data.count
-
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-
-        payload.append(typeInt.uInt32.beData)
-        payload.append(self.locale)
-        payload.append(self.data)
-        let size = reserve + 8
+        let size = 16 + data.count
         
         try super.init(identifier: "data",
-                       size: size,
-                       payload: payload)
+                       size: size)
     }
     
     /// Initialize a `data` atom as a sub-atom for a metadata atom with integer content
@@ -120,21 +99,11 @@ class DataAtom: Atom {
             default:
                 self.data = intValue.uInt32.beData
         }
-        let typeInt = self.dataType.rawValue
-        let reserve = 8 + data.count
-        
-        var payload = Data()
-        payload.reserveCapacity(reserve)
 
-        payload.append(typeInt.uInt32.beData)
-        payload.append(self.locale)
-        payload.append(self.data)
-
-        let size = reserve + 8
+        let size = data.count + 16
         
         try super.init(identifier: "data",
-                       size: size,
-                       payload: payload)
+                       size: size)
     }
     
     /// initialize a data atom for use with a metadata atom containing an unspecified content type
@@ -143,19 +112,9 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         self.data = data
         
-        let typeInt = self.dataType.rawValue
-        let reserve = 8 + data.count
-        
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-
-        payload.append(typeInt.uInt32.beData)
-        payload.append(self.locale)
-        payload.append(self.data)
-        let size = payload.count + 8
+        let size = data.count + 16
         
         try super.init(identifier: "data",
-                       size: size,
-                       payload: payload)
+                       size: size)
     }
 }

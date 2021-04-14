@@ -70,16 +70,8 @@ public class UnknownMetadataAtom: Atom {
         self.name = name
         let dataAtom = try DataAtom(stringValue: stringValue)
         self.stringValue = stringValue
-        
-        let reserve = mean.size + nameAtom.size + dataAtom.size
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        
-        payload.append(mean.encode)
-        payload.append(nameAtom.encode)
-        payload.append(dataAtom.encode)
-        
-        let size = reserve + 8
+                
+        let size = mean.size + nameAtom.size + dataAtom.size + 8
         try super.init(identifier: "----",
                        size: size,
                        children: [mean, nameAtom, dataAtom])

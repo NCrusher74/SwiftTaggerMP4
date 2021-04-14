@@ -1,9 +1,9 @@
 /*
-  Chpl.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Chpl.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 import SwiftConvenienceExtensions
@@ -20,7 +20,7 @@ class Chpl: Atom {
         var data = payload
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
-
+        
         self.reserved = data.extractFirst(1)
         self.chapterCount = data.extractToInt(4)
         
@@ -47,24 +47,31 @@ class Chpl: Atom {
         self.chapterCount = chapterList.count
         self.chapterTable = chapterList
         
+        var reserve = 9
+        reserve += chapterList.count * 8 // each start time uInt64
+        reserve += chapterList.map({$0.title.utf8.count + 1}).sum()
+        
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(self.version)
         payload.append(self.flags)
         payload.append(self.reserved)
         payload.append(self.chapterCount.uInt32.beData)
-        for entry in chapterList {
-            payload.append(entry.startTime.uInt64.beData)
-            payload.append(entry.title.count.uInt8.beData)
-            payload.append(entry.title.encodedUtf8)
-        }
+        payload.append(contentsOf: chapterList.flatMap({$0.startTime.uInt64.beData
+                                                        + ($0.title.utf8.count).uInt8.beData
+                                                        + $0.title.encodedUtf8}))
         
-        let size = payload.count + 8
+        let size = reserve + 8
         try super.init(identifier: "chpl", size: size, payload: payload)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         data.append(self.version)
         data.append(self.flags)
         data.append(self.reserved)

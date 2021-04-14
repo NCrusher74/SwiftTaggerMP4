@@ -31,28 +31,20 @@ class Name: Atom {
         self.version = Atom.version
         self.flags = Atom.flags
         self.stringValue = atomName
-        let utf8 = atomName.utf8
         
-        let reserve = 4 + utf8.count
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(contentsOf: utf8)
-        
-        let size = reserve + 8
+        let size = stringValue.utf8.count + 12
         try super.init(identifier: "name",
-                       size: size,
-                       payload: payload)
+                       size: size)
     }
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let nameData = Data(self.stringValue.utf8)
+
         var data = Data()
+        data.reserveCapacity(nameData.count + 4)
         data.append(self.version)
         data.append(self.flags)
-        let nameData = Data(self.stringValue.utf8)
         data.append(nameData)
         return data
     }

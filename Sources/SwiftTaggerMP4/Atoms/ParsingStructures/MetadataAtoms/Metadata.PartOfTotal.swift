@@ -78,9 +78,7 @@ class PartAndTotalMetadataAtom: Atom {
             data.append(Data(repeating: 0x00, count: 2))
         }
         let dataAtom = try DataAtom(data: data)
-        
-        let payload = dataAtom.encode
-        let size = payload.count + 8
+        let size = dataAtom.size + 8
         
         try super.init(identifier: identifier,
                        size: size,

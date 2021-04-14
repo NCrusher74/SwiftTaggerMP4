@@ -52,7 +52,17 @@ public class Atom {
         self.size = size
         self._children = []
     }
-    
+
+    /// Initialize an atom with properties but without children
+    /// - Parameters:
+    ///   - identifier: the four character code of the atom
+    ///   - size: the byte-count of the atom
+    init(identifier: String, size: Int) throws {
+        self.identifier = identifier
+        self.size = size
+        self._children = []
+    }
+
     /// Initialize an atom with children
     /// - Parameters:
     ///   - identifier: the four character code of the atom

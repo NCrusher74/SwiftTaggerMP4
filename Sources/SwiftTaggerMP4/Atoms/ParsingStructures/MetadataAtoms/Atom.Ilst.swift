@@ -29,16 +29,14 @@ class Ilst: Atom {
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
-        let reserve = size - 8
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
         data.reserveCapacity(reserve)
-
-        for child in self.children {
-            data.append(child.encode)
-        }
+        data.append(contentsOf: children.flatMap({$0.encode}))
+        
         return data
     }
-    
+
     /// Initialize a `meta` atom for building a metadata list
     init(children: [Atom]) throws {
         var size: Int = 8

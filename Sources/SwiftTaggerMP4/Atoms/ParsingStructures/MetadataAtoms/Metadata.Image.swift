@@ -76,10 +76,8 @@ class ImageMetadataAtom: Atom {
         }
         #endif
         
-        let dataAtom = try DataAtom(imageLocation: imageLocation)
-        
-        let payload = dataAtom.encode
-        let size = payload.count + 8
+        let dataAtom = try DataAtom(imageLocation: imageLocation)        
+        let size = dataAtom.size + 8
         
         try super.init(identifier: "covr",
                        size: size,
