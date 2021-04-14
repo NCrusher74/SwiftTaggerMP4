@@ -55,8 +55,11 @@ class Elst: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         data.append(self.version)
         let versionInt = self.version.uInt8BE.int
         data.append(self.flags)

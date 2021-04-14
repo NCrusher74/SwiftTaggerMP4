@@ -61,18 +61,8 @@ class Hdlr: Atom {
         let compName = "SubtitleHandler"
         self.componentName = compName.nullTerminatedISOLatin1
         
-        var payload = Data()
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(self.handlerTypeRaw)
-        payload.append(self.handlerSubtypeRaw)
-        payload.append(Atom.addReserveData(12))
-        payload.append(self.componentName)
-        let size = payload.count + 8
-        
         try super.init(identifier: "hdlr",
-                       size: size,
-                       payload: payload)
+                       size: 48)
     }
     
     /// Initializes a `hdlr` atom with a `meta` parent.
@@ -83,23 +73,14 @@ class Hdlr: Atom {
         self.flags = Atom.flags
         self.handlerTypeRaw = Data(repeating: 0x00, count: 4)
         let subHandler = HandlerType.mdir
-        let subHandlerString = subHandler.rawValue
-        self.handlerSubtypeRaw = subHandlerString.encodedISOLatin1
+        self.handlerSubtypeRaw = subHandler.rawValue.encodedISOLatin1
         let compName = "appl"
         self.componentName = compName.encodedISOLatin1
-        
-        var payload = Data()
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(self.handlerTypeRaw)
-        payload.append(self.handlerSubtypeRaw)
-        payload.append(Atom.addReserveData(9))
-        payload.append(self.componentName)
-        let size = payload.count + 8
+        // + 8 reserved
+        // + 1 null terminator
         
         try super.init(identifier: "hdlr",
-                       size: size,
-                       payload: payload)
+                       size: 33)
     }
     /*
      This is how Audible handler atoms look
@@ -132,7 +113,10 @@ class Hdlr: Atom {
 
    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         if self.parent?.identifier == "meta" {
             data.append(self.version)
             data.append(self.flags)

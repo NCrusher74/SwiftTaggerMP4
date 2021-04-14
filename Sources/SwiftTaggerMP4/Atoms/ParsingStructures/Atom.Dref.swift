@@ -1,9 +1,9 @@
 /*
-  Dref.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Dref.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
@@ -43,27 +43,23 @@ class Dref: Atom {
         // these default values will build a "url " atom identical to what I have found in other files with chapter tracks
         let childPayload = Data(repeating: 0x00, count: 3) + Data(repeating: 0x01, count: 1)
         let child = try DrefSubatom(identifier: "url ", size: 12, payload: childPayload)
-        let childData = child.encode
         
-        var payload = Data()
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(entryCount.uInt32.beData)
-        payload.append(childData)
-        let size = payload.count + 8
+        let size = 16 + child.size
         
         try super.init(identifier: "dref", size: size, children: [child])
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+
         data.append(self.version)
         data.append(self.flags)
         data.append(self.entryCount.uInt32.beData)
-        for child in self.children {
-            data.append(child.encode)
-        }
+        data.append(contentsOf: children.flatMap({$0.encode}))
+
         return data
     }
 }

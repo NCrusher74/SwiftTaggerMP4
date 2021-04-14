@@ -1,9 +1,9 @@
 /*
-  Edts.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Edts.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
@@ -29,12 +29,13 @@ class Edts: Atom {
                        children: children)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
-        for child in children {
-            data.append(child.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: children.flatMap({$0.encode}))
+        
         return data
     }
     

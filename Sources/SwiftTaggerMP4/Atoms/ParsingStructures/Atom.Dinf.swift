@@ -1,9 +1,9 @@
 /*
-  Dinf.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Dinf.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
@@ -35,19 +35,14 @@ class Dinf: Atom {
         try super.init(identifier: "dinf",
                        size: size,
                        children: [dref])
-        
-        var childIDs = [String]()
-        for child in children {
-            childIDs.append(child.identifier)
-        }
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
-        for child in children {
-            data.append(child.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: children.flatMap({$0.encode}))
         return data
     }
     
@@ -63,7 +58,7 @@ class Dinf: Atom {
             self[.dref] = newValue
         }
     }
-
+    
     private enum DinfError: Error {
         /// Error thrown when a required atom is missing
         case DrefAtomNotFound

@@ -25,7 +25,10 @@ class Mdat: Atom {
     
     /// create an `mdat` atom with the media data up front and the chapter title data at the end
     init(mediaData: Data, titleArray: [String]) throws {
+        let reserve = mediaData.count + titleArray.map({$0.utf8.count + 2}).sum()
         var payload = Data()
+        payload.reserveCapacity(reserve)
+
         payload.append(mediaData)
         for title in titleArray {
             payload.append(title.count.uInt16.beData)
@@ -33,7 +36,7 @@ class Mdat: Atom {
         }
         self.payload = payload
         
-        let size = payload.count + 8
+        let size = reserve + 8
         try super.init(identifier: "mdat", size: size, payload: payload)
     }
 }
