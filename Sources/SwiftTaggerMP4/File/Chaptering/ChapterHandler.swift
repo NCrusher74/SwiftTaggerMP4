@@ -11,70 +11,59 @@ import SwiftConvenienceExtensions
 public typealias TOC = TableOfContents
 public typealias Chapter = TableOfContents.Chapter
 struct ChapterHandler {
-
+    
     var toc: TableOfContents
     
     init(moov: Moov, fileData: Data) throws {
         var chapterList = [Chapter]()
-        /// Since the chapterList contained in a chpl atom is virtually identical to our tag.chapterList output, we will check there first
-//        if let chpl = moov.udta?.chpl {
-//            for item in chpl.chapterTable {
-//                let startTime = item.startTime
-//                let title = item.title
-//                let chapter = Chapter(startTime: startTime, title: title)
-//                chapterList.append(chapter)
-//            }
-//        } else {
-            /// otherwise we will piece together the chapter information from the chapter track
-            if let chapterTrack = moov.chapterTrack {
-                let stbl = chapterTrack.mdia.minf.stbl
-                let stts = stbl.stts
-                let initialStart: Int
-                let timeScale = chapterTrack.mdia.mdhd.timeScale
-                if let elst = moov.soundTrack.edts?.elst {
-                    initialStart = Int((elst.firstStart / timeScale) * 1000)
+        if let chapterTrack = moov.chapterTrack {
+            let stbl = chapterTrack.mdia.minf.stbl
+            let stts = stbl.stts
+            let initialStart: Int
+            let timeScale = chapterTrack.mdia.mdhd.timeScale
+            if let elst = moov.soundTrack.edts?.elst {
+                initialStart = Int((elst.firstStart / timeScale) * 1000)
+            } else {
+                initialStart = 0
+            }
+            let startTimes = stts.getStartTimesFromDurations(
+                timeScale: timeScale,
+                initialStart: initialStart)
+            
+            if startTimes.isEmpty {
+                chapterList = []
+            } else {
+                let offsets = stbl.chunkOffsetAtom.chunkOffsetTable
+                var sizes = [Int]()
+                if stbl.stsz.sampleSize == 0 {
+                    sizes = stbl.stsz.sampleSizeTable
                 } else {
-                    initialStart = 0
+                    var count = stbl.stsz.entryCount
+                    while count > 0 {
+                        sizes.append(stbl.stsz.sampleSize)
+                        count -= 1
+                    }
                 }
-                let startTimes = stts.getStartTimesFromDurations(
-                    timeScale: timeScale,
-                    initialStart: initialStart)
                 
-                if startTimes.isEmpty {
-                    chapterList = []
-                } else {
-                    let offsets = stbl.chunkOffsetAtom.chunkOffsetTable
-                    var sizes = [Int]()
-                    if stbl.stsz.sampleSize == 0 {
-                        sizes = stbl.stsz.sampleSizeTable
-                    } else {
-                        var count = stbl.stsz.entryCount
-                        while count > 0 {
-                            sizes.append(stbl.stsz.sampleSize)
-                            count -= 1
-                        }
-                    }
-
-                    var titles = stbl.getChapterTitlesFromOffsetsAndSizes(
-                        offsets: offsets,
-                        sizes: sizes,
-                        data: fileData)
-                    
-                    if startTimes.count > titles.count {
-                        var difference = startTimes.count - titles.count
-                        while difference > 0 {
-                            titles.append("Untitled Chapter")
-                            difference -= 1
-                        }
-                    }
-                    
-                    for (index, startTime) in startTimes.enumerated() {
-                        let title = titles[index]
-                        let chapter = Chapter(startTime: startTime, title: title)
-                        chapterList.append(chapter)
+                var titles = stbl.getChapterTitlesFromOffsetsAndSizes(
+                    offsets: offsets,
+                    sizes: sizes,
+                    data: fileData)
+                
+                if startTimes.count > titles.count {
+                    var difference = startTimes.count - titles.count
+                    while difference > 0 {
+                        titles.append("Untitled Chapter")
+                        difference -= 1
                     }
                 }
-//            }
+                
+                for (index, startTime) in startTimes.enumerated() {
+                    let title = titles[index]
+                    let chapter = Chapter(startTime: startTime, title: title)
+                    chapterList.append(chapter)
+                }
+            }
         }
         let toc = TOC(chapterList)
         self.toc = toc
@@ -108,7 +97,7 @@ struct ChapterHandler {
             return starts
         }
     }
-            
+    
     /// Calculate the offsets for chapter title data
     func calculateTitleOffsets(
         startingOffset: Int,
@@ -122,7 +111,7 @@ struct ChapterHandler {
         }
         return offsets
     }
-
+    
     /// Calculate the durations of chapter samples given the duration of the media and the array of start times
     func calculateDurationsFromStartTimes(mediaDuration: Double) -> [Double] {
         var chapterDurations = [Double]()

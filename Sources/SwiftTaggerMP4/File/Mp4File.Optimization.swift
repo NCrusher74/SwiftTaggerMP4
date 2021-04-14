@@ -159,7 +159,7 @@ extension Mp4File {
                 let udta = try Udta(children: [chpl])
                 self.moov.udta = udta
             }
-            
+            recalculateSizes()
             var chapterTrackID: Int
             if let trackID = self.moov.chapterTrackID {
                 chapterTrackID = trackID
@@ -181,7 +181,7 @@ extension Mp4File {
                                         moov: self.moov,
                                         chapterTrackID: chapterTrackID)
             self.moov.chapterTrack = chapterTrack
-            
+            recalculateSizes()
             var offset = mediaDataCount + 8 // +8 for mdat header data
             // increase the offset by the byte count of every atom except mdat
             // since we've already set the chapter track, except for the chunk offset atom, this count should include the chapter track atoms
@@ -210,8 +210,26 @@ extension Mp4File {
                 use64BitOffset: Mp4File.use64BitOffset,
                 chapterHandler: tag.chapterHandler,
                 startingOffset: offset)
+
             self.moov.chapterTrack?.mdia.minf.stbl.chunkOffsetAtom = offsetAtom
+            recalculateSizes()
         }
+    }
+    
+    private func recalculateSizes() {
+        if let stbl = self.moov.chapterTrack?.mdia.minf.stbl {
+            stbl.size = stbl.children.map({$0.size}).sum() + 8
+        }
+        if let minf = self.moov.chapterTrack?.mdia.minf {
+            minf.size = minf.children.map({$0.size}).sum() + 8
+        }
+        if let mdia = self.moov.chapterTrack?.mdia {
+            mdia.size = mdia.children.map({$0.size}).sum() + 8
+        }
+        if let trak = self.moov.chapterTrack {
+            trak.size = trak.children.map({$0.size}).sum() + 8
+        }
+        self.moov.size = self.moov.children.map({$0.size}).sum() + 8
     }
     
     func setMdat(tag: Tag) throws {

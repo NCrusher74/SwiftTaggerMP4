@@ -46,8 +46,8 @@ class Stbl: Atom {
     
     /// Initialize an `stbl` atom from its subatoms
     private init(children: [Atom]) throws {
-        let size: Int = 8 + children.map({$0.size}).sum()
-        
+        let size: Int = children.map({$0.size}).sum() + 8 // size and id bytes
+
         // required sub-atoms are `stsd`, `stsc`, `stts`, `stsz`.
         // chunkOffsetAtom is also required, but when using this initializer, we add that after the chapter track being built has been initialized, as we can't calculate the offsets until after the chapter track has been built.
         guard children.contains(where: {$0.identifier == "stsd"}) else {

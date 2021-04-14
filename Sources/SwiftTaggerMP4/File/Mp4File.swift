@@ -62,6 +62,9 @@ public class Mp4File {
 
         let outputStart = Date()
         var outputData = Data()
+        let size = optimizedRoot.map({$0.size}).sum()
+        outputData.reserveCapacity(size)
+        
         for atom in self.optimizedRoot {
             outputData.append(atom.encode)
         }
