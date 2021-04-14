@@ -68,20 +68,18 @@ class Moov: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
-        for atom in self.sortedAtoms {
-            data.append(atom.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: sortedAtoms.flatMap({$0.encode}))
+        
         return data
     }
 
     /// Initialize a `moov` atom from its children
     init(children: [Atom]) throws {
-        var size: Int = 8
-        for child in children {
-            size += child.size
-        }
+        let size: Int = 8 + children.map({$0.size}).sum()
         
         guard children.contains(where: {$0.identifier == "mvhd"}) else {
             throw MoovError.MvhdAtomNotFound

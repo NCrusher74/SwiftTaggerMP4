@@ -34,14 +34,15 @@ class Tref: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
-        for child in children {
-            data.append(child.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: children.flatMap({$0.encode}))
+        
         return data
     }
-    
+
     /// Gets and sets the `chap` child atom
     var chap: TrefSubatom? {
         get {

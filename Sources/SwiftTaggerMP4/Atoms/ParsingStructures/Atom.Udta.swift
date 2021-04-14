@@ -26,10 +26,8 @@ class Udta: Atom {
     
     /// Initialize a `udta` atom from its array of child atoms
     init(children: [Atom]) throws {
-        var size: Int = 8
-        for child in children {
-            size += child.size
-        }
+        let size: Int = 8 + children.map({$0.size}).sum()
+
         try super.init(identifier: "udta",
                        size: size,
                        children: children)

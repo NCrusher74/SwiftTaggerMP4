@@ -100,7 +100,6 @@ class Mdhd: Atom {
     /// Initialize a `mdhd` atom from a duration and language.
     ///
     /// **NOTE:** for use in a CHAPTER TRAK ONLY
-    
     init(language: ISO6392Code, moov: Moov) throws {
         
         self.version = Atom.version
@@ -112,34 +111,28 @@ class Mdhd: Atom {
         self.languageUInt16 = language.getUInt16Code()
         self.quality = 0
         
-        var payload = Data()
-        payload.append(self.version)
-        payload.append(self.flags)
+        // 4 size
+        // 4 id
+        // 4 version and flags
+        // 4 timescale
+        // 2 language
+        // 2 quality
+        var size: Int = 20
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.creationTime.uInt64.beData)
-            payload.append(self.modificationTime.uInt64.beData)
+            // creation, modification, duration * 8
+            size += 24
         } else {
-            payload.append(self.creationTime.uInt32.beData)
-            payload.append(self.modificationTime.uInt32.beData)
+            // creation, modification, duration * 4
+            size += 12
         }
-        payload.append(self.timeScale.uInt32.beData)
-        if self.version.uInt8BE == 0x01 {
-            payload.append(self.duration.uInt64.beData)
-        } else {
-            payload.append(self.duration.uInt32.beData)
-        }
-        payload.append(self.languageUInt16.beData)
-        payload.append(self.quality.uInt16.beData)
-
+        
         try super.init(identifier: "mdhd",
-                       size: payload.count + 8,
-                       payload: payload)
+                       size: size)
     }
     
     /// **CHAPTER TRACK ONLY** Initialize a `mdhd` atom from a duration and `elng` atom
     ///
     /// **NOTE:** for use in a CHAPTER TRAK ONLY
-    
     init(elng: Elng, moov: Moov) throws {
         let language = Mdhd.getLanguage(from: elng)
         
@@ -153,33 +146,25 @@ class Mdhd: Atom {
         self.languageUInt16 = language.iso6392Code.getUInt16Code()
         self.quality = 0
         
-        var payload = Data()
-        payload.append(self.version)
-        payload.append(self.flags)
+        var size: Int = 20
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.creationTime.uInt64.beData)
-            payload.append(self.modificationTime.uInt64.beData)
+            // creation, modification, duration * 8
+            size += 24
         } else {
-            payload.append(self.creationTime.uInt32.beData)
-            payload.append(self.modificationTime.uInt32.beData)
+            // creation, modification, duration * 4
+            size += 12
         }
-        payload.append(self.timeScale.uInt32.beData)
-        if self.version.uInt8BE == 0x01 {
-            payload.append(self.duration.uInt64.beData)
-        } else {
-            payload.append(self.duration.uInt32.beData)
-        }
-        payload.append(self.languageUInt16.beData)
-        payload.append(self.quality.uInt16.beData)
 
         try super.init(identifier: "mdhd",
-                       size: payload.count + 8,
-                       payload: payload)
+                       size: size)
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
         if self.version.uInt8BE == 0x01 {

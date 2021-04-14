@@ -1,9 +1,9 @@
 /*
-  Nmhd.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Nmhd.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
@@ -30,9 +30,11 @@ class Nmhd: Atom {
         try super.init(identifier: "nmhd", size: 12, payload: (self.version + self.flags))
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
         var data = Data()
+        data.reserveCapacity(4)
+        
         data.append(self.version)
         data.append(self.flags)
         return data

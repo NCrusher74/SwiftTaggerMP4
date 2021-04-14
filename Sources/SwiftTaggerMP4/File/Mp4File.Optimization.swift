@@ -69,10 +69,13 @@ extension Mp4File {
         guard chunkSizes.count == chunkOffsets.count else {
             throw Mp4FileError.ChunkSizeToChunkOffsetCountMismatch
         }
-        
+
+        let reserve = chunkSizes.sum()
         let data = self.data
+
         // Now that we know our CHUNK sizes, we can calculate the data to isolate by adding each chunk size to its corresponding offset to create a range for the data
         var mediaData = Data()
+        mediaData.reserveCapacity(reserve)
         for (index, entry) in chunkOffsets.enumerated() {
             let start = entry
             let end = start + chunkSizes[index]

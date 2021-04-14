@@ -585,17 +585,17 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNotNil(output.coverArt)
     }
     
-    func test64BitHandling() throws {
-        let path = "/Users/nolainecrusher/Desktop/test-real/1-01 Honor Harrington Book 1.m4b"
-        //let path = "/Users/nolainecrusher/Desktop/test-real/David Weber - Shadow of Victory.m4b"
-        let url = URL(fileURLWithPath: path)
-        let file = try Mp4File(location: url)
-
-        var tag = try file.tag()
-        tag.title = "new title"
-
-        let outputPath = "/Users/nolainecrusher/Desktop/TestOutput/test.m4b"
-        let output = URL(fileURLWithPath: outputPath)
-        try file.write(tag: tag, to: output)
-    }
+//    func test64BitHandling() throws {
+//        let path = "/Users/nolainecrusher/Desktop/test-real/1-01 Honor Harrington Book 1.m4b"
+//        //let path = "/Users/nolainecrusher/Desktop/test-real/David Weber - Shadow of Victory.m4b"
+//        let url = URL(fileURLWithPath: path)
+//        let file = try Mp4File(location: url)
+//
+//        var tag = try file.tag()
+//        tag.title = "new title"
+//
+//        let outputPath = "/Users/nolainecrusher/Desktop/TestOutput/test.m4b"
+//        let output = URL(fileURLWithPath: outputPath)
+//        try file.write(tag: tag, to: output)
+//    }
 }

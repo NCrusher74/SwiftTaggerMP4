@@ -74,10 +74,13 @@ class Mvhd: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
-        data.append(self.version)
-        data.append(self.flags)
+        data.reserveCapacity(reserve)
+        
+        data.append(self.version)//
+        data.append(self.flags)//
         if self.version.uInt8BE == 0x01 {
             data.append(self.creationTime.uInt64.beData)
             data.append(self.modificationTime.uInt64.beData)
@@ -85,23 +88,23 @@ class Mvhd: Atom {
             data.append(self.creationTime.uInt32.beData)
             data.append(self.modificationTime.uInt32.beData)
         }
-        data.append(self.timeScale.uInt32.beData)
+        data.append(self.timeScale.uInt32.beData)//
         if self.version.uInt8BE == 0x01 {
             data.append(self.duration.uInt64.beData)
         } else {
             data.append(self.duration.uInt32.beData)
         }
-        data.append(self.preferredRate.beData)
-        data.append(self.preferredVolume.beData)
-        data.append(Atom.addReserveData(10))
-        data.append(self.matrixStructure)
-        data.append(self.previewTime.beData)
-        data.append(self.previewDuration.beData)
-        data.append(self.posterTime.beData)
-        data.append(self.selectionTime.beData)
-        data.append(self.selectionDuration.beData)
-        data.append(self.currentTime.beData)
-        data.append(self.nextTrackID.uInt32.beData)
+        data.append(self.preferredRate.beData)//
+        data.append(self.preferredVolume.beData)//
+        data.append(Atom.addReserveData(10)) //
+        data.append(self.matrixStructure) //
+        data.append(self.previewTime.beData)//
+        data.append(self.previewDuration.beData)//
+        data.append(self.posterTime.beData)//
+        data.append(self.selectionTime.beData)//
+        data.append(self.selectionDuration.beData)//
+        data.append(self.currentTime.beData)//
+        data.append(self.nextTrackID.uInt32.beData)//
         return data
     }
 }

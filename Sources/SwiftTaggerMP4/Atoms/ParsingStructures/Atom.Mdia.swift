@@ -38,10 +38,8 @@ class Mdia: Atom {
     
     /// Initialize a `mdia` atom from its child atoms
     private init(children: [Atom]) throws {
-        var size: Int = 8
-        for child in children {
-            size += child.size
-        }
+        let size: Int = 8 + children.map({$0.size}).sum()
+
         guard children.contains(where: {$0.identifier == "mdhd"}) else {
             throw MdiaError.MdhdAtomNotFound
         }
@@ -56,7 +54,6 @@ class Mdia: Atom {
                        size: size,
                        children: children)
     }
-    
     
     convenience init(chapterHandler: ChapterHandler,
                      languages: [ICULocaleCode]?,
@@ -99,11 +96,12 @@ class Mdia: Atom {
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    override var contentData: Data {
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
-        for atom in self.sortedAtoms {
-            data.append(atom.encode)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: sortedAtoms.flatMap({$0.encode}))
+        
         return data
     }
 }

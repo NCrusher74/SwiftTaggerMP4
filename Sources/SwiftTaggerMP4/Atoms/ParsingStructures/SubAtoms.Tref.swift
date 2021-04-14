@@ -1,9 +1,9 @@
 /*
-  Subatoms.Tref.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Subatoms.Tref.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
@@ -36,12 +36,13 @@ class TrefSubatom: Atom {
                        payload: chapterTrackID.uInt32.beData)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = 4 + (trackIDs.count * 4)
         var data = Data()
-        for id in self.trackIDs {
-            data.append(id.uInt32.beData)
-        }
+        data.reserveCapacity(reserve)
+        data.append(contentsOf: trackIDs.flatMap({$0.uInt32.beData}))
+
         return data
     }
 }

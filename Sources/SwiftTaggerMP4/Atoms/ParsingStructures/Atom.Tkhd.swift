@@ -1,9 +1,9 @@
 /*
-  Tkhd.swift
-
-
-  Created by Nolaine Crusher on 6/20/20.
-*/
+ Tkhd.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/20/20.
+ */
 
 import Foundation
 
@@ -72,7 +72,7 @@ class Tkhd: Atom {
             }
         }
     }
-
+    
     /// Initialize a `tkhd` atom for a chapter track
     ///
     /// Specifically for use with chapter tracks. May not work in other contexts.
@@ -80,7 +80,7 @@ class Tkhd: Atom {
     init(mediaDuration: Double, trackID: Int) throws {
         self.version = Atom.version
         self.flags = Atom.flags
-
+        
         self.creationTime = Date().dateIntervalSince1904
         self.modificationTime = Date().dateIntervalSince1904
         self.trackID = trackID
@@ -96,42 +96,22 @@ class Tkhd: Atom {
         self.trackWidth = 0
         self.trackHeight = 0
         
-        var payload = Data()
-        payload.append(self.version)
-        payload.append(self.flags)
+        var size = 80
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.creationTime.uInt64.beData)
-            payload.append(self.modificationTime.uInt64.beData)
+            size += 24
         } else {
-            payload.append(self.creationTime.uInt32.beData)
-            payload.append(self.modificationTime.uInt32.beData)
+            size += 12
         }
-        payload.append(self.trackID.uInt32.beData)
-        payload.append(self.durationRaw)
-        payload.append(Atom.addReserveData(4))
-        payload.append(Atom.addReserveData(8))
-        payload.append(self.layer.beData)
-        payload.append(self.alternateGroup.beData)
-        payload.append(self.volume.beData)
-        payload.append(Atom.addReserveData(2))
-        payload.append(self.matrixStructure)
-        payload.append(self.trackWidth.beData)
-        payload.append(self.trackHeight.beData)
-        
-        if self.version.uInt8BE == 0x01 {
-            try super.init(identifier: "tkhd",
-                           size: payload.count + 16,
-                           payload: payload)
-        } else {
-            try super.init(identifier: "tkhd",
-                           size: payload.count + 12,
-                           payload: payload)
-        }
+        try super.init(identifier: "tkhd",
+                       size: size)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
         if self.version.uInt8BE == 0x01 {

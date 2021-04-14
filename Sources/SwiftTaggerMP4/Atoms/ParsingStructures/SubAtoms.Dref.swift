@@ -1,9 +1,9 @@
 /*
-  Subatoms.Dref.swift
-
-
-  Created by Nolaine Crusher on 7/26/20.
-*/
+ Subatoms.Dref.swift
+ 
+ 
+ Created by Nolaine Crusher on 7/26/20.
+ */
 
 import Foundation
 
@@ -25,9 +25,12 @@ class DrefSubatom: Atom {
                        payload: payload)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = 4 + data.count
         var data = Data()
+        data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
         data.append(self.data)
