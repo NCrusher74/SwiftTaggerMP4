@@ -201,12 +201,12 @@ class Stbl: Atom {
                 let start = offsets[index]
                 let end = start + size
                 let range = start ..< end
-                var chunkData = data.subdata(in: range)
+                var chunkData = data[range]
                 let stringLength = chunkData.extractToInt(2)
                 let stringData = chunkData.extractFirst(stringLength)
                 let bom: Data = Data([0xfe, 0xff])
                 let bomRange = stringData.startIndex ..< stringData.index(stringData.startIndex, offsetBy: 2)
-                if stringData.subdata(in: bomRange) == bom {
+                if stringData[bomRange] == bom {
                     if let string = String(data: stringData, encoding: .utf16) {
                         titles.append(string)
                     } else {
@@ -227,7 +227,7 @@ class Stbl: Atom {
                 for size in sizes {
                     let next = offset + size
                     let range = offset ..< next
-                    var chunkData = data.subdata(in: range)
+                    var chunkData = data[range]
                     let stringLength = chunkData.extractToInt(2)
                     if let string = chunkData.extractFirst(stringLength).stringUtf8 {
                         titles.append(string)

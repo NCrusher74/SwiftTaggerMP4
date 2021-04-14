@@ -33,14 +33,14 @@ class TrefSubatom: Atom {
         self.trackIDs = [chapterTrackID]
         try super.init(identifier: "chap",
                        size: 12,
-                       payload: chapterTrackID.int32.beData)
+                       payload: chapterTrackID.uInt32.beData)
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
    override var contentData: Data {
         var data = Data()
         for id in self.trackIDs {
-            data.append(id.int32.beData)
+            data.append(id.uInt32.beData)
         }
         return data
     }

@@ -60,16 +60,16 @@ class Elst: Atom {
         data.append(self.version)
         let versionInt = self.version.uInt8BE.int
         data.append(self.flags)
-        data.append(self.entryCount.int32.beData)
+        data.append(self.entryCount.uInt32.beData)
         for entry in editListTable {
             if versionInt == 1 {
-                data.append(entry.segmentDuration.int64.beData)
-                data.append(entry.mediaTime.int64.beData)
+                data.append(entry.segmentDuration.uInt64.beData)
+                data.append(entry.mediaTime.uInt64.beData)
             } else {
-                data.append(entry.segmentDuration.int32.beData)
-                data.append(entry.mediaTime.int32.beData)
+                data.append(entry.segmentDuration.uInt32.beData)
+                data.append(entry.mediaTime.uInt32.beData)
             }
-            data.append(entry.mediaRate.int16.beData)
+            data.append(entry.mediaRate.uInt16.beData)
             data.append(Atom.addReserveData(2))
         }
         return data

@@ -76,10 +76,10 @@ class Stsz: Atom {
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(sampleSize.int32.beData)
-        payload.append(entryCount.int32.beData)
+        payload.append(sampleSize.uInt32.beData)
+        payload.append(entryCount.uInt32.beData)
         for size in sizes {
-            payload.append(size.int32.beData)
+            payload.append(size.uInt32.beData)
         }
 
         let size = payload.count + 8
@@ -94,10 +94,10 @@ class Stsz: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(sampleSize.int32.beData)
-        data.append(entryCount.int32.beData)
+        data.append(sampleSize.uInt32.beData)
+        data.append(entryCount.uInt32.beData)
         for entry in sampleSizeTable {
-            data.append(entry.int32.beData)
+            data.append(entry.uInt32.beData)
         }
         return data
     }

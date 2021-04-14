@@ -52,9 +52,9 @@ class Ohdr: Atom {
         data.append(self.encryptionMethod.beData)
         data.append(self.encryptionPadding.beData)
         data.append(self.plainTextLength.beData)
-        data.append(self.contentIDLength.int16.beData)
-        data.append(self.rightsIssuerUrlLength.int16.beData)
-        data.append(self.textualHeadersLength.int16.beData)
+        data.append(self.contentIDLength.uInt16.beData)
+        data.append(self.rightsIssuerUrlLength.uInt16.beData)
+        data.append(self.textualHeadersLength.uInt16.beData)
         if let contentID = self.contentID {
             data.append(contentID.encodedASCII)
         }

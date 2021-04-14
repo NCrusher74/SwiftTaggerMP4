@@ -28,7 +28,7 @@ class Mdat: Atom {
         var payload = Data()
         payload.append(mediaData)
         for title in titleArray {
-            payload.append(title.count.int16.beData)
+            payload.append(title.count.uInt16.beData)
             payload.append(title.encodedUtf8)
         }
         self.payload = payload

@@ -85,9 +85,9 @@ class Tkhd: Atom {
         self.modificationTime = Date().dateIntervalSince1904
         self.trackID = trackID
         if self.version.uInt8BE == 0x01 {
-            self.durationRaw = mediaDuration.int64.beData
+            self.durationRaw = mediaDuration.uInt64.beData
         } else {
-            self.durationRaw = mediaDuration.int32.beData
+            self.durationRaw = mediaDuration.uInt32.beData
         }
         self.layer = 0
         self.alternateGroup = 0
@@ -100,13 +100,13 @@ class Tkhd: Atom {
         payload.append(self.version)
         payload.append(self.flags)
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.creationTime.int64.beData)
-            payload.append(self.modificationTime.int64.beData)
+            payload.append(self.creationTime.uInt64.beData)
+            payload.append(self.modificationTime.uInt64.beData)
         } else {
-            payload.append(self.creationTime.int32.beData)
-            payload.append(self.modificationTime.int32.beData)
+            payload.append(self.creationTime.uInt32.beData)
+            payload.append(self.modificationTime.uInt32.beData)
         }
-        payload.append(self.trackID.int32.beData)
+        payload.append(self.trackID.uInt32.beData)
         payload.append(self.durationRaw)
         payload.append(Atom.addReserveData(4))
         payload.append(Atom.addReserveData(8))
@@ -135,18 +135,18 @@ class Tkhd: Atom {
         data.append(self.version)
         data.append(self.flags)
         if self.version.uInt8BE == 0x01 {
-            data.append(self.creationTime.int64.beData)
-            data.append(self.modificationTime.int64.beData)
+            data.append(self.creationTime.uInt64.beData)
+            data.append(self.modificationTime.uInt64.beData)
         } else {
-            data.append(self.creationTime.int32.beData)
-            data.append(self.modificationTime.int32.beData)
+            data.append(self.creationTime.uInt32.beData)
+            data.append(self.modificationTime.uInt32.beData)
         }
-        data.append(self.trackID.int32.beData)
+        data.append(self.trackID.uInt32.beData)
         data.append(Atom.addReserveData(4))
         if self.version.uInt8BE == 0x01 {
-            data.append(self.duration.int64.beData)
+            data.append(self.duration.uInt64.beData)
         } else {
-            data.append(self.duration.int32.beData)
+            data.append(self.duration.uInt32.beData)
         }
         data.append(Atom.addReserveData(8))
         data.append(self.layer.beData)

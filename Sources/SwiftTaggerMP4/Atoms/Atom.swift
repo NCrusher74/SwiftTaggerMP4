@@ -110,11 +110,11 @@ public class Atom {
         if preliminarySize > UInt32.max {
             size = 1 // use extended size UInt64 instead
         }
-        data.append(size.int32.beData)
+        data.append(size.uInt32.beData)
         data.append(self.identifier.encodedISOLatin1)
         
         if preliminarySize > UInt32.max {
-            let extendedSize = preliminarySize.int64.beData
+            let extendedSize = preliminarySize.uInt64.beData
             data.append(extendedSize)
         }
         

@@ -123,10 +123,10 @@ class Stts: Atom {
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(entryCount.int32.beData)
+        payload.append(entryCount.uInt32.beData)
         for entry in entries {
-            payload.append(entry.sampleCount.int32.beData)
-            payload.append(entry.sampleDuration.int32.beData)
+            payload.append(entry.sampleCount.uInt32.beData)
+            payload.append(entry.sampleDuration.uInt32.beData)
         }
         let size = payload.count + 8
         
@@ -138,10 +138,10 @@ class Stts: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(entryCount.int32.beData)
+        data.append(entryCount.uInt32.beData)
         for entry in self.sampleTable {
-            data.append(entry.sampleCount.int32.beData)
-            data.append(entry.sampleDuration.int32.beData)
+            data.append(entry.sampleCount.uInt32.beData)
+            data.append(entry.sampleDuration.uInt32.beData)
         }
         return data
     }

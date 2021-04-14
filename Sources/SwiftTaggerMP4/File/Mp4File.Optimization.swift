@@ -77,7 +77,7 @@ extension Mp4File {
             let start = entry
             let end = start + chunkSizes[index]
             let range = start ..< end
-            mediaData.append(data.subdata(in: range))
+            mediaData.append(data[range])
         }
         return mediaData
     }

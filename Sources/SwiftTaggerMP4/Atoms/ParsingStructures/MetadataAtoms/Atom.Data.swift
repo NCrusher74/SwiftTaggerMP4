@@ -40,7 +40,7 @@ class DataAtom: Atom {
     override var contentData: Data {
         var data = Data()
         let typeInt = self.dataType.rawValue
-        data.append(typeInt.int32.beData)
+        data.append(typeInt.uInt32.beData)
         data.append(locale)
         data.append(self.data)
         return data
@@ -62,7 +62,7 @@ class DataAtom: Atom {
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.int32.beData)
+        payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8
@@ -80,7 +80,7 @@ class DataAtom: Atom {
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.int32.beData)
+        payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8
@@ -101,18 +101,18 @@ class DataAtom: Atom {
         self.locale = Data(repeating: 0x00, count: 4)
         switch identifier {
             case "rtng", "cpil", "pcst", "stik", "pgap", "shwm", "akID":
-                self.data = intValue.int8.beData
+                self.data = intValue.uInt8.beData
             case "tmpo", "\u{00A9}mvi", "\u{00A9}mvc":
-                self.data = intValue.int16.beData
+                self.data = intValue.uInt16.beData
             case "plID":
-                self.data = intValue.int64.beData
+                self.data = intValue.uInt64.beData
             default:
-                self.data = intValue.int32.beData
+                self.data = intValue.uInt32.beData
         }
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.int32.beData)
+        payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8
@@ -130,7 +130,7 @@ class DataAtom: Atom {
         
         var payload = Data()
         let typeInt = self.dataType.rawValue
-        payload.append(typeInt.int32.beData)
+        payload.append(typeInt.uInt32.beData)
         payload.append(self.locale)
         payload.append(self.data)
         let size = payload.count + 8

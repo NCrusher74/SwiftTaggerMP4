@@ -48,7 +48,7 @@ class Dref: Atom {
         var payload = Data()
         payload.append(self.version)
         payload.append(self.flags)
-        payload.append(entryCount.int32.beData)
+        payload.append(entryCount.uInt32.beData)
         payload.append(childData)
         let size = payload.count + 8
         
@@ -60,7 +60,7 @@ class Dref: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(self.entryCount.int32.beData)
+        data.append(self.entryCount.uInt32.beData)
         for child in self.children {
             data.append(child.encode)
         }

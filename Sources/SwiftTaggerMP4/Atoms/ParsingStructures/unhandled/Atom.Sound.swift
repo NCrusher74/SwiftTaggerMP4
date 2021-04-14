@@ -73,7 +73,7 @@ class SoundAtom: Atom {
         var data = Data()
         data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
-        data.append(self.soundVersion.int16.beData)
+        data.append(self.soundVersion.uInt16.beData)
         data.append(Atom.addReserveData(6))
         data.append(self.channels.beData)
         data.append(self.compressionID.beData)

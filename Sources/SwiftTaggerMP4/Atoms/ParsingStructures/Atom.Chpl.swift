@@ -51,10 +51,10 @@ class Chpl: Atom {
         payload.append(self.version)
         payload.append(self.flags)
         payload.append(self.reserved)
-        payload.append(self.chapterCount.int32.beData)
+        payload.append(self.chapterCount.uInt32.beData)
         for entry in chapterList {
-            payload.append(entry.startTime.int64.beData)
-            payload.append(entry.title.count.int8.beData)
+            payload.append(entry.startTime.uInt64.beData)
+            payload.append(entry.title.count.uInt8.beData)
             payload.append(entry.title.encodedUtf8)
         }
         
@@ -68,10 +68,10 @@ class Chpl: Atom {
         data.append(self.version)
         data.append(self.flags)
         data.append(self.reserved)
-        data.append(self.chapterCount.int32.beData)
+        data.append(self.chapterCount.uInt32.beData)
         for entry in self.chapterTable {
-            data.append(entry.startTime.int64.beData)
-            data.append(entry.title.count.int8.beData)
+            data.append(entry.startTime.uInt64.beData)
+            data.append(entry.title.count.uInt8.beData)
             data.append(entry.title.encodedUtf8)
         }
         return data

@@ -45,8 +45,8 @@ class Ctts: Atom {
         data.append(self.flags)
         data.append(self.entryCount.beData)
         for entry in self.sampleTable {
-            data.append(entry.sampleCount.int32.beData)
-            data.append(entry.sampleOffset.int32.beData)
+            data.append(entry.sampleCount.uInt32.beData)
+            data.append(entry.sampleOffset.uInt32.beData)
         }
         return data
     }

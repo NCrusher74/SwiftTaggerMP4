@@ -9,17 +9,17 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     /*
      */
 
-    func testPrint() throws {
-        //let path = "/Users/nolainecrusher/Desktop/test-real/1-01 Honor Harrington Book 1.m4b"
-        let path = "/Users/nolainecrusher/Desktop/TestOutput/test.m4b"
-        let url = URL(fileURLWithPath: path)
-        let data = try Data(contentsOf: url)
-
-        let range = 222581050 ..< 222583337
-        let subdata = data.subdata(in: range)
-        print(subdata.hexadecimal())
-        
-    }
+//    func testPrint() throws {
+//        //let path = "/Users/nolainecrusher/Desktop/test-real/1-01 Honor Harrington Book 1.m4b"
+//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test.m4b"
+//        let url = URL(fileURLWithPath: path)
+//        let data = try Data(contentsOf: url)
+//
+//        let range = 222581050 ..< 222583337
+//        let subdata = data[range]
+//        print(subdata.hexadecimal())
+//        
+//    }
     
     func testAddChapter() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)

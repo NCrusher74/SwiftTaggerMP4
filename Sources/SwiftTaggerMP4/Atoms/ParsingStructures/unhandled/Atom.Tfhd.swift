@@ -58,7 +58,7 @@ class Tfhd: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(self.trackID.int32.beData)
+        data.append(self.trackID.uInt32.beData)
         if let baseDataOffset = self.baseDataOffset {
             data.append(baseDataOffset.beData)
         }

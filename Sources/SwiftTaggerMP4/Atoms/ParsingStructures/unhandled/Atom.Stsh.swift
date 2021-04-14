@@ -44,10 +44,10 @@ class Stsh: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(self.entryCount.int32.beData)
+        data.append(self.entryCount.uInt32.beData)
         for entry in self.sampleTable {
-            data.append(entry.shadowedSampleNumber.int32.beData)
-            data.append(entry.syncSampleNumber.int32.beData)
+            data.append(entry.shadowedSampleNumber.uInt32.beData)
+            data.append(entry.syncSampleNumber.uInt32.beData)
         }
         return data
     }

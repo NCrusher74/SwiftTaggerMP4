@@ -63,12 +63,12 @@ class ChunkOffsetAtom: Atom {
         payload.append(self.version)
         payload.append(self.flags)
         
-        payload.append(self.entryCount.int32.beData)
+        payload.append(self.entryCount.uInt32.beData)
         for offset in self.chunkOffsetTable {
             if use64BitOffset {
-                payload.append(offset.int64.beData)
+                payload.append(offset.uInt64.beData)
             } else {
-                payload.append(offset.int32.beData)
+                payload.append(offset.uInt32.beData)
             }
         }
         let size = payload.count + 8
@@ -89,12 +89,12 @@ class ChunkOffsetAtom: Atom {
         var data = Data()
         data.append(self.version)
         data.append(self.flags)
-        data.append(self.entryCount.int32.beData)
+        data.append(self.entryCount.uInt32.beData)
         for offset in self.chunkOffsetTable {
             if self.identifier == "co64" {
-                data.append(offset.int64.beData)
+                data.append(offset.uInt64.beData)
             } else {
-                data.append(offset.int32.beData)
+                data.append(offset.uInt32.beData)
             }
         }
         return data

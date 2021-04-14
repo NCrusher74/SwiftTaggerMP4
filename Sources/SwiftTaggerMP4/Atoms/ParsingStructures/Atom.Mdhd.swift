@@ -116,20 +116,20 @@ class Mdhd: Atom {
         payload.append(self.version)
         payload.append(self.flags)
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.creationTime.int64.beData)
-            payload.append(self.modificationTime.int64.beData)
+            payload.append(self.creationTime.uInt64.beData)
+            payload.append(self.modificationTime.uInt64.beData)
         } else {
-            payload.append(self.creationTime.int32.beData)
-            payload.append(self.modificationTime.int32.beData)
+            payload.append(self.creationTime.uInt32.beData)
+            payload.append(self.modificationTime.uInt32.beData)
         }
-        payload.append(self.timeScale.int32.beData)
+        payload.append(self.timeScale.uInt32.beData)
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.duration.int64.beData)
+            payload.append(self.duration.uInt64.beData)
         } else {
-            payload.append(self.duration.int32.beData)
+            payload.append(self.duration.uInt32.beData)
         }
         payload.append(self.languageUInt16.beData)
-        payload.append(self.quality.int16.beData)
+        payload.append(self.quality.uInt16.beData)
 
         try super.init(identifier: "mdhd",
                        size: payload.count + 8,
@@ -157,20 +157,20 @@ class Mdhd: Atom {
         payload.append(self.version)
         payload.append(self.flags)
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.creationTime.int64.beData)
-            payload.append(self.modificationTime.int64.beData)
+            payload.append(self.creationTime.uInt64.beData)
+            payload.append(self.modificationTime.uInt64.beData)
         } else {
-            payload.append(self.creationTime.int32.beData)
-            payload.append(self.modificationTime.int32.beData)
+            payload.append(self.creationTime.uInt32.beData)
+            payload.append(self.modificationTime.uInt32.beData)
         }
-        payload.append(self.timeScale.int32.beData)
+        payload.append(self.timeScale.uInt32.beData)
         if self.version.uInt8BE == 0x01 {
-            payload.append(self.duration.int64.beData)
+            payload.append(self.duration.uInt64.beData)
         } else {
-            payload.append(self.duration.int32.beData)
+            payload.append(self.duration.uInt32.beData)
         }
         payload.append(self.languageUInt16.beData)
-        payload.append(self.quality.int16.beData)
+        payload.append(self.quality.uInt16.beData)
 
         try super.init(identifier: "mdhd",
                        size: payload.count + 8,
@@ -183,20 +183,20 @@ class Mdhd: Atom {
         data.append(self.version)
         data.append(self.flags)
         if self.version.uInt8BE == 0x01 {
-            data.append(self.creationTime.int64.beData)
-            data.append(self.modificationTime.int64.beData)
+            data.append(self.creationTime.uInt64.beData)
+            data.append(self.modificationTime.uInt64.beData)
         } else {
-            data.append(self.creationTime.int32.beData)
-            data.append(self.modificationTime.int32.beData)
+            data.append(self.creationTime.uInt32.beData)
+            data.append(self.modificationTime.uInt32.beData)
         }
-        data.append(self.timeScale.int32.beData)
+        data.append(self.timeScale.uInt32.beData)
         if self.version.uInt8BE == 0x01 {
-            data.append(self.duration.int64.beData)
+            data.append(self.duration.uInt64.beData)
         } else {
-            data.append(self.duration.int32.beData)
+            data.append(self.duration.uInt32.beData)
         }
         data.append(self.languageUInt16.beData)
-        data.append(self.quality.int16.beData)
+        data.append(self.quality.uInt16.beData)
         return data
     }
 }
