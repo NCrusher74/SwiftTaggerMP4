@@ -1,9 +1,9 @@
 /*
-  Text.swift
-
-
-  Created by Nolaine Crusher on 7/5/20.
-*/
+ Text.swift
+ 
+ 
+ Created by Nolaine Crusher on 7/5/20.
+ */
 
 import Foundation
 
@@ -75,7 +75,10 @@ class Text: Atom {
         self.fontColorGreen = 0x0000
         self.fontColorBlue = 0x0000
         
+        let reserve = 51
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(Atom.addReserveData(6))
         payload.append(self.dataReferenceIndex.beData)
         payload.append(self.displayFlags.beData)
@@ -95,16 +98,17 @@ class Text: Atom {
         payload.append(self.fontColorRed.beData)
         payload.append(self.fontColorGreen.beData)
         payload.append(self.fontColorBlue.beData)
-        let size = payload.count + 8
+        let size = reserve + 8
         
         try super.init(identifier: "text",
                        size: size,
                        payload: payload)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
         var data = Data()
+        data.reserveCapacity(size - 8)
         data.append(Atom.addReserveData(6))
         data.append(self.dataReferenceIndex.beData)
         data.append(self.displayFlags.beData)

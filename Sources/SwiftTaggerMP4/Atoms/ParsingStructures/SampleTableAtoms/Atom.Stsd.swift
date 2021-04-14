@@ -44,27 +44,34 @@ class Stsd: Atom {
         self.flags = Atom.flags
         self.entryCount = 1
         let child = try Text()
-
+        
+        let reserve = 8 + child.size
+        
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(self.version)
         payload.append(self.flags)
         payload.append(entryCount.uInt32.beData)
         payload.append(child.encode)
-        let size = payload.count + 8
+
+        let size = reserve + 8
         try super.init(identifier: "stsd",
                        size: size,
                        children: [child])
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
         data.append(self.entryCount.uInt32.beData)
-        for child in self.children {
-            data.append(child.encode)
-        }
+        data.append(contentsOf: children.flatMap({$0.encode}))
+
         return data
     }
 }

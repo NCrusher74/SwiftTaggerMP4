@@ -1,17 +1,17 @@
 /*
-  Stts.swift
-
-
-  Created by Nolaine Crusher on 6/30/20.
-*/
+ Stts.swift
+ 
+ 
+ Created by Nolaine Crusher on 6/30/20.
+ */
 
 import Foundation
 
 /*  The atom contains a compact version of a table that allows indexing from time to sample number. Other tables provide sample sizes and pointers from the sample number. Each entry in the table gives the number of consecutive samples with the same time delta, and the delta of those samples. By adding the deltas, a complete time-to-sample map can be built.
  
-    The atom contains time deltas: DT(n+1) = DT(n) + STTS(n) where STTS(n) is the (uncompressed) table entry for sample n and DT is the display time for sample (n). The sample entries are ordered by time stamps; therefore, the deltas are all nonnegative. The DT axis has a zero origin; DT(i) = SUM (for j=0 to i-1 of delta(j)), and the sum of all deltas gives the length of the media in the track (not mapped to the overall time scale, and not considering any edit list). The edit list atom provides the initial DT value if it is nonempty (nonzero).
+ The atom contains time deltas: DT(n+1) = DT(n) + STTS(n) where STTS(n) is the (uncompressed) table entry for sample n and DT is the display time for sample (n). The sample entries are ordered by time stamps; therefore, the deltas are all nonnegative. The DT axis has a zero origin; DT(i) = SUM (for j=0 to i-1 of delta(j)), and the sum of all deltas gives the length of the media in the track (not mapped to the overall time scale, and not considering any edit list). The edit list atom provides the initial DT value if it is nonempty (nonzero).
  
-    In chaptering terms, this describes the duration of each chapter */
+ In chaptering terms, this describes the duration of each chapter */
 /// A class representing a `stts` atom in an `Mp4File`'s atom structure
 ///
 /// This atom maps the duration of each sample to a display time (start time) in the media
@@ -89,7 +89,7 @@ class Stts: Atom {
         }
         return starts
     }
-
+    
     /// **CHAPTER TRACK ONLY** Initialize an `stts` atom with chapter durations for building a chapter track
     init(chapterHandler: ChapterHandler,
          mediaDuration: Double) throws {
@@ -100,27 +100,30 @@ class Stts: Atom {
         }
         var entries = [(sampleCount: Int, sampleDuration: Double)]()
         var previous = 0.0
-            var count = 1
-            for duration in durationArray {
-                if duration == previous {
-                    count += 1
-                } else {
-                    // store the number of samples with the previous duration
-                    let entry = (count, duration)
-                    entries.append(entry)
-                    // update previous to current duration
-                    previous = duration
-                    // reset the count
-                    count = 1
-                }
+        var count = 1
+        for duration in durationArray {
+            if duration == previous {
+                count += 1
+            } else {
+                // store the number of samples with the previous duration
+                let entry = (count, duration)
+                entries.append(entry)
+                // update previous to current duration
+                previous = duration
+                // reset the count
+                count = 1
             }
+        }
         
         self.sampleTable = entries
         self.entryCount = entries.count
         self.version = Atom.version
         self.flags = Atom.flags
         
+        let reserve = 8 + (8 * entries.count)
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(self.version)
         payload.append(self.flags)
         payload.append(entryCount.uInt32.beData)
@@ -128,14 +131,17 @@ class Stts: Atom {
             payload.append(entry.sampleCount.uInt32.beData)
             payload.append(entry.sampleDuration.uInt32.beData)
         }
-        let size = payload.count + 8
+        let size = reserve + 8
         
         try super.init(identifier: "stts", size: size, payload: payload)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
+        let reserve = size - 8
         var data = Data()
+        data.reserveCapacity(reserve)
+        
         data.append(self.version)
         data.append(self.flags)
         data.append(entryCount.uInt32.beData)

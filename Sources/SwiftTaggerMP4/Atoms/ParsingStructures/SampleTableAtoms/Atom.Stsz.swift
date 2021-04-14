@@ -73,32 +73,34 @@ class Stsz: Atom {
         }
         self.entryCount = sizes.count
         
+        let reserve = 12 + (sizes.count * 4)
         var payload = Data()
+        payload.reserveCapacity(reserve)
+        
         payload.append(self.version)
         payload.append(self.flags)
         payload.append(sampleSize.uInt32.beData)
         payload.append(entryCount.uInt32.beData)
-        for size in sizes {
-            payload.append(size.uInt32.beData)
-        }
+        payload.append(contentsOf: sizes.flatMap({$0.uInt32.beData}))
 
-        let size = payload.count + 8
+        let size = reserve + 8
         
         try super.init(identifier: "stsz",
                        size: size,
                        payload: payload)
     }
     
-   /// Converts the atom's contents to Data when encoding the atom to write to file.
-   override var contentData: Data {
+    /// Converts the atom's contents to Data when encoding the atom to write to file.
+    override var contentData: Data {
         var data = Data()
+        data.reserveCapacity(size - 8)
+        
         data.append(self.version)
         data.append(self.flags)
         data.append(sampleSize.uInt32.beData)
         data.append(entryCount.uInt32.beData)
-        for entry in sampleSizeTable {
-            data.append(entry.uInt32.beData)
-        }
+        data.append(contentsOf: sampleSizeTable.flatMap({$0.uInt32.beData}))
+
         return data
     }
 }
