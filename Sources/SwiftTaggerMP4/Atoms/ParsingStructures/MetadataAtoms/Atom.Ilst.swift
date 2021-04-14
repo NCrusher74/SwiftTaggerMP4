@@ -39,10 +39,7 @@ class Ilst: Atom {
 
     /// Initialize a `meta` atom for building a metadata list
     init(children: [Atom]) throws {
-        var size: Int = 8
-        for child in children {
-            size += child.size
-        }
+        let size: Int = 8 + children.map({$0.size}).sum()
         
         try super.init(identifier: "ilst",
                        size: size,

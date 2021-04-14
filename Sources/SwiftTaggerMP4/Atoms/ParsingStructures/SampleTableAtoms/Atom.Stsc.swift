@@ -45,40 +45,19 @@ class Stsc: Atom {
         
     /// **CHAPTER TRACK ONLY** Initialize an `stsc` atom with default properties for building a chapter track
     init() throws {
-        var reserve = Int()
 
-        self.version = Atom.version
-        reserve += version.count
+        self.version = Atom.version // 1
+        self.flags = Atom.flags // 3
+        self.entryCount = 1 // 4
         
-        self.flags = Atom.flags
-        reserve += flags.count
-        
-        self.entryCount = 1
-        reserve += entryCount.uInt32.beData.count
-        
-        let defaultFirstChunk = 1.uInt32.beData
-        reserve += defaultFirstChunk.count
-        
-        let defaultSamplesPerChunk = 1.uInt32.beData
-        reserve += defaultSamplesPerChunk.count
-        
-        let defaultDescriptionID = 1.uInt32.beData
-        reserve += defaultDescriptionID.count
-        
+        let defaultFirstChunk = 1.uInt32.beData // 4
+        let defaultSamplesPerChunk = 1.uInt32.beData // 4
+        let defaultDescriptionID = 1.uInt32.beData // 4
+
         self.sampleToChunkTable = [(defaultFirstChunk.uInt32BE.int, defaultSamplesPerChunk.uInt32BE.int, defaultDescriptionID.uInt32BE.int)]
         
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(entryCount.uInt32.beData)
-        payload.append(defaultFirstChunk)
-        payload.append(defaultSamplesPerChunk)
-        payload.append(defaultDescriptionID)
-        let size = reserve + 8
-        
-        try super.init(identifier: "stsc", size: size, payload: payload)
+        let size = 28
+        try super.init(identifier: "stsc", size: size)
     }
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.

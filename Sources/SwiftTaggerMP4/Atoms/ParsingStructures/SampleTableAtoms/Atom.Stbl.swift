@@ -46,10 +46,7 @@ class Stbl: Atom {
     
     /// Initialize an `stbl` atom from its subatoms
     private init(children: [Atom]) throws {
-        var size: Int = 8
-        for child in children {
-            size += child.size
-        }
+        let size: Int = 8 + children.map({$0.size}).sum()
         
         // required sub-atoms are `stsd`, `stsc`, `stts`, `stsz`.
         // chunkOffsetAtom is also required, but when using this initializer, we add that after the chapter track being built has been initialized, as we can't calculate the offsets until after the chapter track has been built.
@@ -113,7 +110,7 @@ class Stbl: Atom {
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
-        let reserve = sortedAtoms.map({$0.size}).sum()
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
         data.reserveCapacity(reserve)
         data.append(contentsOf: sortedAtoms.flatMap({$0.encode}))

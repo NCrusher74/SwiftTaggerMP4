@@ -99,7 +99,7 @@ public class UnknownMetadataAtom: Atom {
     
    /// Converts the atom's contents to Data when encoding the atom to write to file.
     override var contentData: Data {
-        let reserve = sortedAtoms.map({$0.size}).sum()
+        let reserve = children.map({$0.size}).sum()
         var data = Data()
         data.reserveCapacity(reserve)
         data.append(contentsOf: sortedAtoms.flatMap({$0.encode}))

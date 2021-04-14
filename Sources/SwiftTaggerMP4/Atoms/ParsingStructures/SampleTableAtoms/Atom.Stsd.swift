@@ -40,22 +40,13 @@ class Stsd: Atom {
     
     /// **CHAPTER TRACK ONLY** Initialize an `stsd` atom with default properties for building a chapter track
     init() throws {
-        self.version = Atom.version
-        self.flags = Atom.flags
-        self.entryCount = 1
+        self.version = Atom.version // 1
+        self.flags = Atom.flags // 3
+        self.entryCount = 1 // 4
         let child = try Text()
         
-        let reserve = 8 + child.size
+        let size = 16 + child.size
         
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(entryCount.uInt32.beData)
-        payload.append(child.encode)
-
-        let size = reserve + 8
         try super.init(identifier: "stsd",
                        size: size,
                        children: [child])

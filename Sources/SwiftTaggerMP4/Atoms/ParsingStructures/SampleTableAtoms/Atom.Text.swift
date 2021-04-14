@@ -75,34 +75,10 @@ class Text: Atom {
         self.fontColorGreen = 0x0000
         self.fontColorBlue = 0x0000
         
-        let reserve = 51
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        
-        payload.append(Atom.addReserveData(6))
-        payload.append(self.dataReferenceIndex.beData)
-        payload.append(self.displayFlags.beData)
-        payload.append(self.textJustification.beData)
-        payload.append(self.bgColorRed.beData)
-        payload.append(self.bgColorGreen.beData)
-        payload.append(self.bgColorBlue.beData)
-        payload.append(self.defineTextBoxTop.beData)
-        payload.append(self.defineTextBoxLeft.beData)
-        payload.append(self.defineTextBoxBottom.beData)
-        payload.append(self.defineTextBoxRight.beData)
-        payload.append(Atom.addReserveData(8))
-        payload.append(self.fontID.beData)
-        payload.append(self.fontFace.beData)
-        payload.append(Atom.addReserveData(1))
-        payload.append(Atom.addReserveData(2))
-        payload.append(self.fontColorRed.beData)
-        payload.append(self.fontColorGreen.beData)
-        payload.append(self.fontColorBlue.beData)
-        let size = reserve + 8
+        let size = 59
         
         try super.init(identifier: "text",
-                       size: size,
-                       payload: payload)
+                       size: size)
     }
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.

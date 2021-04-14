@@ -59,38 +59,20 @@ class ChunkOffsetAtom: Atom {
         self.entryCount = offsetArray.count
         self.chunkOffsetTable = offsetArray
         
-        
-        // 1 version + 3 flags + 4 entry count = 8
-        var reserve = 8
+        // 1 version + 3 flags + 4 entry count = 8 + size & id = 16
+        var size = 16
         if use64BitOffset {
-            reserve += chunkOffsetTable.count * 8
+            size += chunkOffsetTable.count * 8
         } else {
-            reserve += chunkOffsetTable.count * 4
+            size += chunkOffsetTable.count * 4
         }
         
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        payload.append(self.version)
-        payload.append(self.flags)
-        
-        payload.append(self.entryCount.uInt32.beData)
-        for offset in self.chunkOffsetTable {
-            if use64BitOffset {
-                payload.append(offset.uInt64.beData)
-            } else {
-                payload.append(offset.uInt32.beData)
-            }
-        }
-        
-        let size = reserve + 8
         if use64BitOffset {
             try super.init(identifier: "co64",
-                           size: size,
-                           payload: payload)
+                           size: size)
         } else {
             try super.init(identifier: "stco",
-                           size: size,
-                           payload: payload)
+                           size: size)
         }
     }
     

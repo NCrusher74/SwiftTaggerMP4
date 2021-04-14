@@ -120,20 +120,8 @@ class Stts: Atom {
         self.version = Atom.version
         self.flags = Atom.flags
         
-        let reserve = 8 + (8 * entries.count)
-        var payload = Data()
-        payload.reserveCapacity(reserve)
-        
-        payload.append(self.version)
-        payload.append(self.flags)
-        payload.append(entryCount.uInt32.beData)
-        for entry in entries {
-            payload.append(entry.sampleCount.uInt32.beData)
-            payload.append(entry.sampleDuration.uInt32.beData)
-        }
-        let size = reserve + 8
-        
-        try super.init(identifier: "stts", size: size, payload: payload)
+        let size = 16 + (8 * entries.count)
+        try super.init(identifier: "stts", size: size)
     }
     
     /// Converts the atom's contents to Data when encoding the atom to write to file.
