@@ -45,7 +45,7 @@ class Elng: Atom {
         }
         self.languages = languageArray
         
-        let size = 12 + locales.map({$0.rawValue.utf8.count}).sum()
+        let size = 12 + locales.map({$0.rawValue.count + 1}).sum()
         
         try super.init(identifier: "elng",
                        size: size)

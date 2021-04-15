@@ -11,10 +11,17 @@ import SwiftConvenienceExtensions
 public class Atom {
     /// The atom's unique four byte identifier
     public var identifier: String
+
     /// The byte count of the whole atom, including header data
     var size: Int
+
     /// The atoms sub-atom content
-    private var _children: [Atom]
+    private var _children: [Atom] {
+        didSet {
+            recalculateSize()
+        }
+    }
+
     /// The atoms sub-atom content
     var children: [Atom] {
         get {
@@ -130,11 +137,18 @@ public class Atom {
         
         data.append(self.contentData)
         
+//        if self.size == 32 {
+//            print(identifier)
+//        }
+        if self.size != data.count {
+            let difference = self.size - data.count
+            print("\(identifier): \(self.size) - \(data.count) = \(difference)")
+        }
         return data
     }
     
     func recalculateSize() {
-        self.size = children.map({$0.size}).sum() + 8
+        self.size = self.children.map({$0.size}).sum() + 8
     }
     
     /// Default version value

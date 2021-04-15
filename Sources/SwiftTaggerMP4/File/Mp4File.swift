@@ -55,13 +55,7 @@ public class Mp4File {
         setLanguage(tag: tag)
         try setChapterTrack(tag: tag)
 
-        let mdatStart = Date()
         try setMdat(tag: tag)
-        if #available(OSX 10.15, *) {
-            print("mdat time: \(Date().distance(to: mdatStart))")
-        } else {
-            // Fallback on earlier versions
-        }
 
         var outputData = Data()
         let size = optimizedRoot.map({$0.size}).sum()
@@ -139,6 +133,11 @@ public class Mp4File {
                     self.moov.chapterTrack?.mdia.mdhd.language = .unspecified
                 }
             }
+            for track in self.moov.tracks {
+                track.mdia.recalculateSize()
+                track.recalculateSize()
+            }
+            self.moov.recalculateSize()
         }
     }
     
@@ -172,7 +171,6 @@ public class Mp4File {
             rootAtoms = newRoot
         }
     }
-    
 }
 
 enum Mp4FileError: Error {

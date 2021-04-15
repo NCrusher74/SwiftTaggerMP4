@@ -348,7 +348,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.addChapter(startTime: 869018, title: "11 - Read by TP")
         tag.addChapter(startTime: 963007, title: "12 - Read by VB")
         
-//        let outputUrl = try localOutputDirectory(<#String#>)
         let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
                 
@@ -583,17 +582,5 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let output = try Tag(mp4File: try Mp4File(location: outputUrl))
         XCTAssertNotNil(output.coverArt)
-    }
-    
-    func test64BitHandling() throws {
-        let path = "/Users/nolainecrusher/Desktop/test-real/1-01 Honor Harrington Book 1.m4b"
-        //let path = "/Users/nolainecrusher/Desktop/test-real/David Weber - Shadow of Victory.m4b"
-        let url = URL(fileURLWithPath: path)
-        let file = try Mp4File(location: url)
-
-        let tag = try file.tag()
-        let outputPath = "/Users/nolainecrusher/Desktop/TestOutput/test.m4b"
-        let output = URL(fileURLWithPath: outputPath)
-        try file.write(tag: tag, to: output)
     }
 }
