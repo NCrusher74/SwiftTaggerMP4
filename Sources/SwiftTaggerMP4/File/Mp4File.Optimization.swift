@@ -12,7 +12,6 @@ import SwiftLanguageAndLocaleCodes
 extension Mp4File {
     func chunkSizes(stbl: Stbl) throws -> [Int] {
         let sampleToChunkTable = stbl.stsc.sampleToChunkTable
-        print("sampelToChunkTable count: \(sampleToChunkTable.count)")
         
         var sampleSizeTable = [Int]()
         if stbl.stsz.sampleSize == 0 {
@@ -24,9 +23,8 @@ extension Mp4File {
                 count -= 1
             }
         }
-        print("sampleSizeTable count: \(sampleSizeTable.count)")
-        
-        var remainingSamples = sampleSizeTable
+
+        var remainingSamples = sampleSizeTable[...]
         var chunkSizes: [Int] = []
         for (index, group) in sampleToChunkTable.enumerated() {
             let knownChunks: Int
@@ -65,7 +63,6 @@ extension Mp4File {
             chunkSizes.append(chunkSize)
         }
         
-        print("chunk sizes count: \(chunkSizes.count)")
         return chunkSizes
     }
 
