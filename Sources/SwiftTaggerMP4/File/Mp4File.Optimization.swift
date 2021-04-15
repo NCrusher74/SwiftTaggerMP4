@@ -157,7 +157,8 @@ extension Mp4File {
                 let udta = try Udta(children: [chpl])
                 self.moov.udta = udta
             }
-            recalculateSizes()
+            recalculateChapterTrackSizes()
+
             var chapterTrackID: Int
             if let trackID = self.moov.chapterTrackID {
                 chapterTrackID = trackID
@@ -179,7 +180,8 @@ extension Mp4File {
                                         moov: self.moov,
                                         chapterTrackID: chapterTrackID)
             self.moov.chapterTrack = chapterTrack
-            recalculateSizes()
+            recalculateChapterTrackSizes()
+
             var offset = mediaDataCount + 8 // +8 for mdat header data
             // increase the offset by the byte count of every atom except mdat
             // since we've already set the chapter track, except for the chunk offset atom, this count should include the chapter track atoms
@@ -209,31 +211,49 @@ extension Mp4File {
                 startingOffset: offset)
 
             self.moov.chapterTrack?.mdia.minf.stbl.chunkOffsetAtom = offsetAtom
-            recalculateSizes()
+            recalculateChapterTrackSizes()
         }
     }
     
-    private func recalculateSizes() {
+    private func recalculateChapterTrackSizes() {
         if let stbl = self.moov.chapterTrack?.mdia.minf.stbl {
-            stbl.size = stbl.children.map({$0.size}).sum() + 8
+            stbl.recalculateSize()
         }
         if let minf = self.moov.chapterTrack?.mdia.minf {
-            minf.size = minf.children.map({$0.size}).sum() + 8
+            minf.recalculateSize()
         }
         if let mdia = self.moov.chapterTrack?.mdia {
-            mdia.size = mdia.children.map({$0.size}).sum() + 8
+            mdia.recalculateSize()
         }
         if let trak = self.moov.chapterTrack {
-            trak.size = trak.children.map({$0.size}).sum() + 8
+            trak.recalculateSize()
         }
-        self.moov.size = self.moov.children.map({$0.size}).sum() + 8
+        self.moov.recalculateSize()
+    }
+    
+    private func recalculateSoundTrackSizes() {
+        let stbl = self.moov.soundTrack.mdia.minf.stbl
+        stbl.recalculateSize()
+
+        let minf = self.moov.soundTrack.mdia.minf
+        minf.recalculateSize()
+
+        let mdia = self.moov.soundTrack.mdia
+        mdia.recalculateSize()
+
+        let trak = self.moov.soundTrack
+        trak.recalculateSize()
+
+        self.moov.recalculateSize()
     }
     
     func setMdat(tag: Tag) throws {
         let mdat = try Mdat(mediaData: getMediaData(),
                             titleArray: tag.chapterHandler.chapterTitles)
         self.mdats = [mdat]
+        
         self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = try calculateNewMediaOffsets()
+        recalculateSoundTrackSizes()
     }
     
     func setLanguage(tag: Tag) {

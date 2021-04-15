@@ -60,7 +60,6 @@ public class Mp4File {
             // Fallback on earlier versions
         }
 
-        let outputStart = Date()
         var outputData = Data()
         let size = optimizedRoot.map({$0.size}).sum()
         outputData.reserveCapacity(size)
