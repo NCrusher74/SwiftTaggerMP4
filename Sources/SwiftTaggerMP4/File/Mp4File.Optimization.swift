@@ -108,8 +108,7 @@ extension Mp4File {
         var offsets = [newMediaDataStartingOffset]
         // we don't need the last one, as it would be an offset to nothing
         var offset = newMediaDataStartingOffset
-        let chunkSizes = try self.chunkSizes(stbl: self.moov.soundTrack.mdia.minf.stbl)
-        for chunkSize in chunkSizes.dropLast() {
+        for chunkSize in self.chunkSizes.dropLast() {
             offset += chunkSize
             offsets.append(offset)
         }
