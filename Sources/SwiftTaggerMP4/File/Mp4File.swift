@@ -15,6 +15,7 @@ public class Mp4File {
     var rootAtoms: [Atom]
     var data: Data
     static var use64BitOffset: Bool = false
+    var chunkSizes: [Int] = []
     
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
@@ -41,6 +42,8 @@ public class Mp4File {
         if self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.identifier == "co64" {
             Mp4File.use64BitOffset = true
         }
+        
+        self.chunkSizes = try self.chunkSizes(stbl: self.moov.soundTrack.mdia.minf.stbl)
     }
     
     public func tag() throws -> Tag {

@@ -12,6 +12,8 @@ import SwiftLanguageAndLocaleCodes
 extension Mp4File {
     func chunkSizes(stbl: Stbl) throws -> [Int] {
         let sampleToChunkTable = stbl.stsc.sampleToChunkTable
+        print("sampelToChunkTable count: \(sampleToChunkTable.count)")
+        
         var sampleSizeTable = [Int]()
         if stbl.stsz.sampleSize == 0 {
             sampleSizeTable = stbl.stsz.sampleSizeTable
@@ -22,6 +24,7 @@ extension Mp4File {
                 count -= 1
             }
         }
+        print("sampleSizeTable count: \(sampleSizeTable.count)")
         
         var remainingSamples = sampleSizeTable
         var chunkSizes: [Int] = []
@@ -46,6 +49,7 @@ extension Mp4File {
                 chunkSizes.append(chunkSize)
             }
         }
+        
         // Handle any remaining chunks according to the last group.
         while !remainingSamples.isEmpty {
             guard let samples = sampleToChunkTable.last?.samplesPerChunk else {
@@ -60,17 +64,18 @@ extension Mp4File {
             }
             chunkSizes.append(chunkSize)
         }
+        
+        print("chunk sizes count: \(chunkSizes.count)")
         return chunkSizes
     }
 
     func getMediaData() throws -> Data {
         let chunkOffsets = self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable
-        let chunkSizes = try self.chunkSizes(stbl: self.moov.soundTrack.mdia.minf.stbl)
-        guard chunkSizes.count == chunkOffsets.count else {
+        guard self.chunkSizes.count == chunkOffsets.count else {
             throw Mp4FileError.ChunkSizeToChunkOffsetCountMismatch
         }
 
-        let reserve = chunkSizes.sum()
+        let reserve = mediaDataCount
         let data = self.data
 
         // Now that we know our CHUNK sizes, we can calculate the data to isolate by adding each chunk size to its corresponding offset to create a range for the data
@@ -86,11 +91,7 @@ extension Mp4File {
     }
     
     private var mediaDataCount: Int {
-        do {
-            return try self.chunkSizes(stbl: self.moov.soundTrack.mdia.minf.stbl).sum()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        chunkSizes.sum()
     }
     
     func calculateNewMediaOffsets() throws -> [Int] {
@@ -142,6 +143,15 @@ extension Mp4File {
                 self.moov.udta = udta
             }
         }
+    }
+
+    func setMdat(tag: Tag) throws {
+        let mdat = try Mdat(mediaData: getMediaData(),
+                            titleArray: tag.chapterHandler.chapterTitles)
+        self.mdats = [mdat]
+        
+        self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = try calculateNewMediaOffsets()
+        recalculateSoundTrackSizes()
     }
 
     func setChapterTrack(tag: Tag) throws {
@@ -246,16 +256,7 @@ extension Mp4File {
 
         self.moov.recalculateSize()
     }
-    
-    func setMdat(tag: Tag) throws {
-        let mdat = try Mdat(mediaData: getMediaData(),
-                            titleArray: tag.chapterHandler.chapterTitles)
-        self.mdats = [mdat]
         
-        self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = try calculateNewMediaOffsets()
-        recalculateSoundTrackSizes()
-    }
-    
     func setLanguage(tag: Tag) {
         if tag.languages != [.unspecified] {
             self.languages = tag.languages
