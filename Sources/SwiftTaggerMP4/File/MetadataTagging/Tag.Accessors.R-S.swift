@@ -212,39 +212,15 @@ extension Tag {
             }
         }
     }
-    /*
-    mutating get {
-        if let string = get(.producedNotice) {
-            return string
-        } else if let copyright = self.copyright, copyright.contains("(P)") {
-            let components = copyright.components(separatedBy: "(P)")
-            if let first = components.first, first.contains("\u{00A9}") {
-                let stripped = first.components(separatedBy: "\u{00A9}")
-                self.copyright = stripped.last
-            } else {
-                self.copyright = components.first
-            }
-            if let last = components.last {
-                return "\u{21117}\(last)"
-            } else {
-                return nil
-            }
-        } else {
-            return nil
-        }
-    }
-     
-     */
+
     public var recordingCopyright: String? {
         get {
-            if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom, atom.stringValue.hasPrefix("\u{2117}") {
+            if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom {
                 return atom.stringValue
-            } else if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom {
-                return "\u{2117}\(atom.stringValue)"
             } else if let atom = metadataAtoms[.copyright] as? StringMetadataAtom, atom.stringValue.contains(" (P)") {
                 let components = atom.stringValue.components(separatedBy: " (P)")
                 if let last = components.last {
-                    return "\u{2117}\(last)"
+                    return last
                 }
             }
             return nil
@@ -252,7 +228,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try StringMetadataAtom(identifier: .recordingCopyright, stringValue: "\u{2117}\(new)")
+                    let atom = try StringMetadataAtom(identifier: .recordingCopyright, stringValue: new)
                     metadataAtoms[.recordingCopyright] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.recordingCopyright)")

@@ -235,10 +235,8 @@ extension Tag {
     
     public var copyright: String? {
         get {
-            if let atom = metadataAtoms[.copyright] as? StringMetadataAtom, atom.stringValue.hasPrefix("\u{00A9}") {
+            if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
                 return atom.stringValue
-            } else if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
-                return "\u{00A9}\(atom.stringValue)"
             } else {
                 return nil
             }
@@ -246,7 +244,7 @@ extension Tag {
         set {
             if let new = newValue {
                 do {
-                    let atom = try StringMetadataAtom(identifier: .copyright, stringValue: "\u{00A9}\(new)")
+                    let atom = try StringMetadataAtom(identifier: .copyright, stringValue: new)
                     metadataAtoms[.copyright] = atom
                 } catch {
                     fatalError("WARNING: Unable to initialize metadata atom with identifier \(StringMetadataIdentifier.copyright)")
