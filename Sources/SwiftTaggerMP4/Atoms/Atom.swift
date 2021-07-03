@@ -137,13 +137,6 @@ public class Atom {
         
         data.append(self.contentData)
         
-//        if self.size == 32 {
-//            print(identifier)
-//        }
-        if self.size != data.count {
-            let difference = self.size - data.count
-            print("\(identifier): \(self.size) - \(data.count) = \(difference)")
-        }
         return data
     }
     

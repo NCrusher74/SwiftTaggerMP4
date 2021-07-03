@@ -236,7 +236,25 @@ extension Tag {
     public var copyright: String? {
         get {
             if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
-                return atom.stringValue
+                let string = atom.stringValue
+                if string.contains(" (P)") {
+                    let components = string.components(separatedBy: " (P)")
+                    if let first = components.first, !first.contains("\u{00A9}") {
+                        return first
+                    } else if let first = components.first {
+                        let stripped = first.dropFirst(2)
+                        return String(stripped)
+                    } else {
+                        return nil
+                    }
+                } else {
+                    if string.contains("\u{00A9}") {
+                        let stripped = string.dropFirst(2)
+                        return String(stripped)
+                    } else {
+                        return string
+                    }
+                }
             } else {
                 return nil
             }
