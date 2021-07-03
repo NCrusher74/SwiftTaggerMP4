@@ -235,14 +235,21 @@ extension Tag {
     
     public var copyright: String? {
         get {
-            if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
+            var atom: StringMetadataAtom? = nil
+            if let stringAtom = metadataAtoms[.copyright] as? StringMetadataAtom {
+                atom = stringAtom
+            } else if let stringAtom = metadataAtoms[.copyrightStatement] as? StringMetadataAtom {
+                atom = stringAtom
+            }
+            
+            if let atom = atom {
                 let string = atom.stringValue
                 if string.contains(" (P)") {
                     let components = string.components(separatedBy: " (P)")
                     if let first = components.first, !first.contains("\u{00A9}") {
                         return first
                     } else if let first = components.first {
-                        let stripped = first.dropFirst(2)
+                        let stripped = first.dropFirst()
                         return String(stripped)
                     } else {
                         return nil
