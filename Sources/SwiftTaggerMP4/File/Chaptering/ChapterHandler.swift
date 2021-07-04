@@ -14,7 +14,14 @@ struct ChapterHandler {
     
     var toc: TableOfContents
     
-    init(moov: Moov, fileData: Data) throws {
+    init() {
+        self.toc = TableOfContents([])
+    }
+    
+    init(file: Mp4File) throws {
+        let moov = file.moov
+        let fileData = file.data
+        
         var chapterList = [Chapter]()
         if let chapterTrack = moov.chapterTrack {
             let stbl = chapterTrack.mdia.minf.stbl

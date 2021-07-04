@@ -13,15 +13,13 @@ public struct Tag {
     public var metadataAtoms: [AtomKey: Atom]
     public var unknownAtoms: [UnknownMetadataAtom]
     
-    public var languages: [Language]
+    public var languages: [Language] = []
     public var duration: Int
     var chapterHandler: ChapterHandler
     
     public init(mp4File: Mp4File) throws {
         let moov = mp4File.moov
-        let data = mp4File.data
-        self.chapterHandler = try ChapterHandler(
-            moov: moov, fileData: data)
+        self.chapterHandler = try ChapterHandler(file: mp4File)
 
         var metadata = [AtomKey: Atom]()
         var unknownAtoms = [UnknownMetadataAtom]()

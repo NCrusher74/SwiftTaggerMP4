@@ -582,12 +582,11 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNotNil(output.coverArt)
     }
     
-    func testAudiobookDate() throws {
-        let url = localDirectory.appendingPathComponent("test-real/basilisk.m4b")
+    func testMetadataExporter() throws {
+        let url = localDirectory.appendingPathComponent("test-real/basilisk-test.m4b")
         let file = try XCTUnwrap(Mp4File(location: url))
-        let tag = try XCTUnwrap(Tag(mp4File: file))
         
-        print(tag.releaseDate)
-        print(tag.recordingDate)
+        let exporter = MetadataExporter(file: file)
+        print(exporter.produceMetadataString(withID: true))
     }
 }

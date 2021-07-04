@@ -34,7 +34,7 @@ public class Mp4File {
             if let atom = try fileData.extractAndParseToAtom() {
                 atoms.append(atom)
             } else {
-                throw Mp4FileError.UnableToInitializeAtoms
+                throw Mp4FileError.UnableToInitializeAtomsFromFileData
             }
         }
         self.rootAtoms = atoms
@@ -179,7 +179,8 @@ enum Mp4FileError: Error {
     /// Error thrown when writing operation fails
     case OutputFailure
     /// Error thrown when atoms fail to initialize
-    case UnableToInitializeAtoms
+    case UnableToInitializeAtomsFromFileData
+    case UnableToInitializeRequiredAtom(AtomIdentifier)
     /// Error thrown when a required root atom is missing
     case MoovAtomNotFound
     /// Error thrown when a required root atom is missing
@@ -192,4 +193,5 @@ enum Mp4FileError: Error {
     case ChunkSizeToChunkOffsetCountMismatch
     /// Error thrown when the new chunk offsets array doesn't match the old chunk offsets array
     case NewChunkOffsetArrayCountMismatch
+    case ChapterHandlerMissing
 }
