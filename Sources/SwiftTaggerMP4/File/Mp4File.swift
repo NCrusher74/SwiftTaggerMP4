@@ -16,11 +16,14 @@ public class Mp4File {
     var data: Data
     static var use64BitOffset: Bool = false
     var chunkSizes: [Int] = []
+    var location: URL
     
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
     public init(location: URL) throws {
+        self.location = location
+        
         let validExtensions: [String] = ["aax", "aac", "mp4", "m4a", "m4b"]
         
         guard validExtensions.contains(location.pathExtension.lowercased()) else {

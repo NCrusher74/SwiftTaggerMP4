@@ -19,7 +19,24 @@ public struct MetadataExporter {
         }
     }
     
-    public func exportMetadataText(withID: Bool) -> String {
+    private var destination: URL {
+        let fileName = file.location.fileName + "-metadata"
+        
+        return file.location
+            .deletingPathExtension()
+            .deletingLastPathComponent()
+            .appendingPathComponent(fileName)
+            .appendingPathExtension("txt")
+    }
+    
+    public func exportMetadataText(withID: Bool) throws {
+        let string = generateMetadataText(withID: withID)
+        try string.write(to: destination,
+                      atomically: true,
+                      encoding: .utf8)
+    }
+    
+    private func generateMetadataText(withID: Bool) -> String {
         var result = """
 """
         if let tag = tag {
@@ -65,6 +82,10 @@ public struct MetadataExporter {
         
         return result
     }
+    
+//    func exportMetadataCSV(withID: Bool) -> String {
+//        
+//    }
     
     private func getIntAtomString(key: AtomKey, atom: Atom, withID: Bool) -> String? {
         let keyString = key.stringValue.convertCamelToUpperCase()

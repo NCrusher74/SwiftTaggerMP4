@@ -587,6 +587,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let file = try XCTUnwrap(Mp4File(location: url))
         
         let exporter = MetadataExporter(file: file)
-        print(exporter.produceMetadataString(withID: true))
+        XCTAssertNoThrow(try print(exporter.exportMetadataText(withID: true)))
     }
 }
