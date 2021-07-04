@@ -218,29 +218,7 @@ extension Tag {
             if let atom = metadataAtoms[.recordingCopyright] as? StringMetadataAtom {
                 return atom.stringValue
             } else {
-                var string: String? = nil
-                if let stringAtom = metadataAtoms[.copyright] as? StringMetadataAtom {
-                    string = stringAtom.stringValue
-                } else if let stringAtom = metadataAtoms[.copyrightStatement] as? StringMetadataAtom {
-                    string = stringAtom.stringValue
-                } else {
-                    return nil
-                }
-                
-                if let string = string {
-                    if string.contains(" (P)") {
-                        let components = string.components(separatedBy: " (P)")
-                        if let last = components.last {
-                            return last
-                        } else {
-                            return nil
-                        }
-                    } else {
-                        return string
-                    }
-                } else {
-                    return nil
-                }
+                return nil
             }
         }
         set {

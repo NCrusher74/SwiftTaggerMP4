@@ -235,33 +235,23 @@ extension Tag {
     
     public var copyright: String? {
         get {
-            var atom: StringMetadataAtom? = nil
-            if let stringAtom = metadataAtoms[.copyright] as? StringMetadataAtom {
-                atom = stringAtom
-            } else if let stringAtom = metadataAtoms[.copyrightStatement] as? StringMetadataAtom {
-                atom = stringAtom
+            if let string = _copyright {
+                return string
+            } else if let string = copyrightStatement {
+                return string
+            } else {
+                return nil
             }
-            
-            if let atom = atom {
-                let string = atom.stringValue
-                if string.contains(" (P)") {
-                    let components = string.components(separatedBy: " (P)")
-                    if let first = components.first, !first.contains("\u{00A9}") {
-                        return first
-                    } else if let first = components.first {
-                        let stripped = first.dropFirst()
-                        return String(stripped)
-                    } else {
-                        return nil
-                    }
-                } else {
-                    if string.contains("\u{00A9}") {
-                        let stripped = string.dropFirst(2)
-                        return String(stripped)
-                    } else {
-                        return string
-                    }
-                }
+        }
+        set {
+            copyrightStatement = newValue
+        }
+    }
+    
+    private var _copyright: String? {
+        get {
+            if let atom = metadataAtoms[.copyright] as? StringMetadataAtom {
+                return atom.stringValue
             } else {
                 return nil
             }
@@ -280,7 +270,7 @@ extension Tag {
         }
     }
     
-    public var copyrightStatement: String? {
+    private var copyrightStatement: String? {
         get {
             if let atom = metadataAtoms[.copyrightStatement] as? StringMetadataAtom {
                 return atom.stringValue

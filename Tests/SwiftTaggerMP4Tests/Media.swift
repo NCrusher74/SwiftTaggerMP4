@@ -60,3 +60,9 @@ public func localOutputDirectory(_ fileName: String) throws -> URL {
         desktopPath, isDirectory: true)
     return directory.appendingPathComponent(fileName).appendingPathExtension("m4a")
 }
+
+public let localDirectory: URL = {
+    return FileManager.default
+        .homeDirectoryForCurrentUser
+        .appendingPathComponent("Downloads/audiobook")
+}()
