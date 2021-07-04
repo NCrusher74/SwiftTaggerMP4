@@ -246,7 +246,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.conductor = "Conductor"
         tag.conductorID = 45678
         tag.copyright = "2020 Copyright"
-        tag.copyrightStatement = "Copyright Statement"
         tag.customGenre = "Genre"
         tag.description = "Description"
         tag.director = "Director"
@@ -392,7 +391,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.conductor,"Conductor")
         XCTAssertEqual(output.conductorID,45678)
         XCTAssertEqual(output.copyright,"2020 Copyright")
-        XCTAssertEqual(output.copyrightStatement,"Copyright Statement")
         XCTAssertEqual(output.customGenre,"Genre")
         XCTAssertEqual(output.description,"Description")
         XCTAssertEqual(output.director,"Director")
@@ -582,5 +580,14 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let output = try Tag(mp4File: try Mp4File(location: outputUrl))
         XCTAssertNotNil(output.coverArt)
+    }
+    
+    func testAudiobookDate() throws {
+        let url = localDirectory.appendingPathComponent("test-real/basilisk.m4b")
+        let file = try XCTUnwrap(Mp4File(location: url))
+        let tag = try XCTUnwrap(Tag(mp4File: file))
+        
+        print(tag.releaseDate)
+        print(tag.recordingDate)
     }
 }

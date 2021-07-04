@@ -63,7 +63,7 @@ extension String {
         isoFormatter.formatOptions = [.withInternetDateTime]
         isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
 
-        let formats: [String] = ["d MMM yyyy HH:mm:ss", "yyyy-MM-ddTHH:mm", "yyyy-MM-ddTHH:mm:ssZ", "MM-dd-yyyy HH:mm","yyyy-MM-ddTHH", "MMM d, yyyy", "d MMM yyyy", "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "dd.MM.yy", "dd.MM.yyyy", "dd-MM-yy", "dd-MM-yyyy", "dd-MMM-yyyy", "dd-MMM-yy", "MM-dd-yyyy", "MMMM yyyy", "yyyy-MM", "yyyy"]
+        let formats: [String] = ["d MMM yyyy HH:mm:ss", "yyyy-MM-ddTHH:mm", "yyyy-MM-ddTHH:mm:ssZ", "MM-dd-yyyy HH:mm","yyyy-MM-ddTHH", "MMM d, yyyy", "d MMM yyyy", "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "dd.MM.yy", "dd.MM.yyyy", "dd-MM-yy", "dd-MM-yyyy", "dd-MMM-yyyy", "dd-MMM-yy", "MM-dd-yyyy", "MMMM yyyy", "yyyy-MM"]
         let dateFormatters: [DateFormatter] = formats.map { format in
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -84,10 +84,32 @@ extension String {
         }
     }
     
+    @available(OSX 10.12, iOS 12.0, *)
+    func attemptDateFromYear() -> Date? {
+        guard self.count == 4 else {
+            return nil
+        }
+
+        let calendar = Calendar(identifier: .iso8601)
+        let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = calendar
+        dateComponents.timeZone = timeZone
+
+        if let int = Int(self) {
+            dateComponents.year = int
+            return calendar.date(from: dateComponents)
+        } else {
+            return nil
+        }
+    }
     
     @available(OSX 10.12, iOS 12.0, *)
     func attemptDateFromString() -> Date? {
         if let date = attemptAAXDate() {
+            return date
+        } else if let date = attemptDateFromYear() {
             return date
         } else if let date = attemptOtherDate() {
             return date
