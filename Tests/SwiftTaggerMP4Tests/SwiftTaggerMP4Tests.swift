@@ -572,10 +572,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     
     func testMetadataExporter() throws {
         let url = localDirectory.appendingPathComponent("test-real/basilisk-test.m4b")
-        let file = try XCTUnwrap(Mp4File(location: url))
         
-        let exporter = MetadataExporter(mp4File: file,
-                                        useAtomID: true)
-        XCTAssertNoThrow(try print(exporter.exportMetadata(as: .json)))
+        let exporter = try MetadataExporter(url: url, format: .useOnlyDescription)
+        XCTAssertNoThrow(try print(exporter.exportMetadata(as: .csv)))
     }
 }

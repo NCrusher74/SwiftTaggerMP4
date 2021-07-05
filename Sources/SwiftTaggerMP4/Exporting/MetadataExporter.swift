@@ -14,12 +14,32 @@ public struct MetadataExporter {
         case csv = "csv"
         case json = "json"
     }
-        
+    
+    public enum KeyFormat {
+        /// DEFAULT: Use the unique, four-byte code for the metadata item (ex: "\u{00A9}alb"
+        ///
+        /// This option is *highly* recommended if you intend to edit and then re-import the exported metadata down the line
+        case useOnlyIdentifier
+        /// Use the metadata item's string descriptor (ex: "ALBUM".)
+        ///
+        /// WARNING: This option may result in difficulties parsing the metadata when reading it back in)
+        case useOnlyDescription
+        /// Use both the four-byte code and string descriptor (ex: "ALBUM (\u{00A9}alb)"
+        ///
+        /// WARNING: This option may result in difficulties parsing the metadata when importing the metadata)
+        case useIDAndDescription
+    }
+    
     var metadata = [(keyString: String, valueString: String)]()
     
     private let file: Mp4File
     
-    init(mp4File: Mp4File, useAtomID: Bool = false) {
+    public init(url: URL, format: KeyFormat = .useOnlyIdentifier) throws {
+        let mp4File = try Mp4File(location: url)
+        self.init(mp4File: mp4File, format: format)
+    }
+    
+    private init(mp4File: Mp4File, format: KeyFormat) {
         self.file = mp4File
         var metadata = [(keyString: String, valueString: String)]()
 
@@ -30,26 +50,26 @@ public struct MetadataExporter {
                     let result = MetadataExporter
                         .getIntAtomString(key: key,
                                           atom: atom,
-                                          withID: useAtomID)
+                                          format: format)
                     metadata.append(result)
                 } else if AtomKey.stringKeys.contains(key) {
                     let result = MetadataExporter.getStringAtomString(
                         key: key,
                         atom: atom,
-                        withID: useAtomID)
+                        format: format)
                     metadata.append(result)
                 } else if key == .discNumber ||
                             key == .trackNumber {
                     let result = MetadataExporter.getPoTAtomString(
                         key: key,
                         atom: atom,
-                        withID: useAtomID)
+                        format: format)
                     metadata.append(result)
                 } else if key == .coverArt {
                     let result = MetadataExporter.getImageAtomString(
                         key: key,
                         atom: atom,
-                        withID: useAtomID)
+                        format: format)
                     metadata.append(result)
                 }
             }
@@ -107,26 +127,26 @@ public struct MetadataExporter {
                 let result = MetadataExporter
                     .getIntAtomString(key: key,
                                       atom: atom,
-                                      withID: false)
+                                      format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if AtomKey.stringKeys.contains(key) {
                 let result = MetadataExporter.getStringAtomString(
                     key: key,
                     atom: atom,
-                    withID: false)
+                    format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if key == .discNumber ||
                         key == .trackNumber {
                 let result = MetadataExporter.getPoTAtomString(
                     key: key,
                     atom: atom,
-                    withID: false)
+                    format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if key == .coverArt {
                 let result = MetadataExporter.getImageAtomString(
                     key: key,
                     atom: atom,
-                    withID: false)
+                    format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             }
         }
@@ -188,39 +208,48 @@ public struct MetadataExporter {
         
     private static func getIntAtomString(key: AtomKey,
                                          atom: Atom,
-                                         withID: Bool) -> (keyString: String, valueString: String) {
+                                         format: KeyFormat) -> (keyString: String, valueString: String) {
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
         
         if let intAtom = atom as? IntegerMetadataAtom {
             valueString = "\(intAtom.intValue)"
 
-            if withID {
-                let id = IntegerMetadataIdentifier(key: key)?.rawValue ?? "unknown"
-                
-                keyString = "\(keyString) (\(id))"
+            let id = atom.identifier
+            switch format {
+                case .useIDAndDescription:
+                    keyString = "\(keyString) (\(id))"
+                case .useOnlyIdentifier:
+                    keyString = id
+                case .useOnlyDescription:
+                    break
             }
         }
         return (keyString, valueString)
     }
     
-    private static func getStringAtomString(key: AtomKey, atom: Atom, withID: Bool) -> (keyString: String, valueString: String) {
+    private static func getStringAtomString(key: AtomKey, atom: Atom, format: KeyFormat) -> (keyString: String, valueString: String) {
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
         
         if let stringAtom = atom as? StringMetadataAtom {
             valueString = "\(stringAtom.stringValue)"
 
-            if withID {
-                let id = StringMetadataIdentifier(key: key)?.rawValue ?? "unknown"
-                
-                keyString = "\(keyString) (\(id))"
+            let id = atom.identifier
+            switch format {
+                case .useIDAndDescription:
+                    keyString = "\(keyString) (\(id))"
+                case .useOnlyIdentifier:
+                    keyString = id
+                case .useOnlyDescription:
+                    break
             }
         }
+
         return (keyString, valueString)
     }
     
-    private static func getPoTAtomString(key: AtomKey, atom: Atom, withID: Bool) -> (keyString: String, valueString: String) {
+    private static func getPoTAtomString(key: AtomKey, atom: Atom, format: KeyFormat) -> (keyString: String, valueString: String) {
 
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
@@ -237,22 +266,21 @@ public struct MetadataExporter {
             
             valueString = string
             
-            if withID {
-                let id: String
-                if key == .discNumber {
-                    id = "disk"
-                } else {
-                    id = "trkn"
-                }
-                
-                keyString = "\(keyString) (\(id))"
+            let id = atom.identifier
+            switch format {
+                case .useIDAndDescription:
+                    keyString = "\(keyString) (\(id))"
+                case .useOnlyIdentifier:
+                    keyString = id
+                case .useOnlyDescription:
+                    break
             }
         }
         
         return (keyString, valueString)
     }
     
-    private static func getImageAtomString(key: AtomKey, atom: Atom, withID: Bool) -> (keyString: String, valueString: String) {
+    private static func getImageAtomString(key: AtomKey, atom: Atom, format: KeyFormat) -> (keyString: String, valueString: String) {
 
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
@@ -277,12 +305,17 @@ public struct MetadataExporter {
             
             valueString = "\(imageFormat), \(imageSize) (\(imageDataCount) bytes)"
 
-            if withID {
-                let id = "covr"
-                
-                keyString = "\(keyString) (\(id))"
+            let id = "covr"
+            switch format {
+                case .useIDAndDescription:
+                    keyString = "\(keyString) (\(id))"
+                case .useOnlyIdentifier:
+                    keyString = id
+                case .useOnlyDescription:
+                    break
             }
         }
+        
         return (keyString, valueString)
     }
 }
