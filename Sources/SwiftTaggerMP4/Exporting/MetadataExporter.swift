@@ -9,66 +9,48 @@ import Foundation
 
 public struct MetadataExporter {
     
-    let file: Mp4File
-    
-    private var tag: Tag? {
-        if let tag = try? file.tag() {
-            return tag
-        } else {
-            return nil
-        }
+    public enum SaveAs: String {
+        case text = "txt"
+        case csv = "csv"
+        case json = "json"
     }
     
-    private var destination: URL {
-        let fileName = file.location.fileName + "-metadata"
-        
-        return file.location
-            .deletingPathExtension()
-            .deletingLastPathComponent()
-            .appendingPathComponent(fileName)
-            .appendingPathExtension("txt")
-    }
+    var metadata = [(keyString: String, valueString: String)]()
     
-    public func exportMetadataText(withID: Bool) throws {
-        let string = generateMetadataText(withID: withID)
-        try string.write(to: destination,
-                      atomically: true,
-                      encoding: .utf8)
-    }
+    private let file: Mp4File
     
-    private func generateMetadataText(withID: Bool) -> String {
-        var result = """
-"""
-        if let tag = tag {
-            for (key, atom) in tag.metadataAtoms {
+    init(mp4File: Mp4File, useAtomID: Bool = false) {
+        self.file = mp4File
+        var metadata = [(keyString: String, valueString: String)]()
+
+        if let tag = try? mp4File.tag() {
+            let atoms = tag.metadataAtoms.sorted(by: {$0.key.priority < $1.key.priority })
+            for (key, atom) in atoms {
                 if AtomKey.integerKeys.contains(key) {
-                    if let string = getIntAtomString(
-                        key: key,
-                        atom: atom,
-                        withID: withID) {
-                        result.append(string)
-                    }
+                    let result = MetadataExporter
+                        .getIntAtomString(key: key,
+                                          atom: atom,
+                                          withID: useAtomID)
+                    metadata.append(result)
                 } else if AtomKey.stringKeys.contains(key) {
-                    if let string = getStringAtomString(
+                    let result = MetadataExporter.getStringAtomString(
                         key: key,
                         atom: atom,
-                        withID: withID) {
-                        result.append(string)
-                    }
-                } else if key == .discNumber || key == .trackNumber {
-                    if let string = getPoTAtomString(
+                        withID: useAtomID)
+                    metadata.append(result)
+                } else if key == .discNumber ||
+                            key == .trackNumber {
+                    let result = MetadataExporter.getPoTAtomString(
                         key: key,
                         atom: atom,
-                        withID: withID) {
-                        result.append(string)
-                    }
+                        withID: useAtomID)
+                    metadata.append(result)
                 } else if key == .coverArt {
-                    if let string = getImageAtomString(
+                    let result = MetadataExporter.getImageAtomString(
                         key: key,
                         atom: atom,
-                        withID: withID) {
-                        result.append(string)
-                    }
+                        withID: useAtomID)
+                    metadata.append(result)
                 }
             }
             
@@ -76,64 +58,99 @@ public struct MetadataExporter {
                 let keyString = "---- \(atom.name)"
                 let valueString = atom.stringValue
                 
-                result.append("\(keyString): \(valueString)\n")
+                metadata.append((keyString, valueString))
             }
         }
-        
-        return result
+        self.metadata = metadata
+    }
+
+    private func destination(savingAs: SaveAs) -> URL {
+        let fileName = file.location.fileName + "-metadata"
+
+        return file.location
+            .deletingPathExtension()
+            .deletingLastPathComponent()
+            .appendingPathComponent(fileName)
+            .appendingPathExtension(savingAs.rawValue)
     }
     
-//    func exportMetadataCSV(withID: Bool) -> String {
-//        
+    public func exportMetadata(savingAs: SaveAs, withID: Bool = false) throws {
+        var string = """
+            """
+        
+        for (key, value) in metadata {
+            let joined = "\(key): \(value)\n"
+            string.append(joined)
+        }
+        
+        try string.write(to: destination(savingAs: savingAs),
+                         atomically: true,
+                         encoding: .utf8)
+    }
+    
+//    private func generalMetadataCSV(withID: Bool) -> {
+//        let stringToParse = generateMetadataText(withID: withID)
+//        let lines = stringToParse.components(separatedBy: .newlines)
+//
+//        var metadata = [String: String]()
+//        for line in lines {
+//            let components = line.components(separatedBy: ": ")
+//
+//            guard let first = components.first else { return }
+//            metadata[first] = components.last
+//        }
 //    }
     
-    private func getIntAtomString(key: AtomKey, atom: Atom, withID: Bool) -> String? {
-        let keyString = key.stringValue.convertCamelToUpperCase()
-
+    private static func getIntAtomString(key: AtomKey,
+                                         atom: Atom,
+                                         withID: Bool) -> (keyString: String, valueString: String) {
+        var keyString = key.stringValue.convertCamelToUpperCase()
+        var valueString = ""
+        
         if let intAtom = atom as? IntegerMetadataAtom {
-            let valueString = "\(intAtom.intValue)"
+            valueString = "\(intAtom.intValue)"
+
             if withID {
                 let id = IntegerMetadataIdentifier(key: key)?.rawValue ?? "unknown"
                 
-                return "\(keyString) (\(id)): \(valueString)\n"
-            } else {
-                return "\(keyString): \(valueString)\n"
+                keyString = "\(keyString) (\(id))"
             }
-        } else {
-            return nil
         }
+        return (keyString, valueString)
     }
     
-    private func getStringAtomString(key: AtomKey, atom: Atom, withID: Bool) -> String? {
-        let keyString = key.stringValue.convertCamelToUpperCase()
-
+    private static func getStringAtomString(key: AtomKey, atom: Atom, withID: Bool) -> (keyString: String, valueString: String) {
+        var keyString = key.stringValue.convertCamelToUpperCase()
+        var valueString = ""
+        
         if let stringAtom = atom as? StringMetadataAtom {
-            let valueString = "\(stringAtom.stringValue)"
+            valueString = "\(stringAtom.stringValue)"
 
             if withID {
                 let id = StringMetadataIdentifier(key: key)?.rawValue ?? "unknown"
                 
-                return "\(keyString) (\(id)): \(valueString)\n"
-            } else {
-                return "\(keyString): \(valueString)\n"
+                keyString = "\(keyString) (\(id))"
             }
-        } else {
-            return nil
         }
+        return (keyString, valueString)
     }
     
-    private func getPoTAtomString(key: AtomKey, atom: Atom, withID: Bool) -> String? {
-        if let potAtom = atom as? PartAndTotalMetadataAtom {
-            let keyString = key.stringValue.convertCamelToUpperCase()
+    private static func getPoTAtomString(key: AtomKey, atom: Atom, withID: Bool) -> (keyString: String, valueString: String) {
 
-            let valueString: String
+        var keyString = key.stringValue.convertCamelToUpperCase()
+        var valueString = ""
+        
+        if let potAtom = atom as? PartAndTotalMetadataAtom {
+            let string: String
             
             let part = potAtom.part
             if let total = potAtom.total {
-                valueString = "[\(part)/\(total)]"
+                string = "[\(part)/\(total)]"
             } else {
-                valueString = "\(part)"
+                string = "\(part)"
             }
+            
+            valueString = string
             
             if withID {
                 let id: String
@@ -143,18 +160,19 @@ public struct MetadataExporter {
                     id = "trkn"
                 }
                 
-                return "\(keyString) (\(id)): \(valueString)\n"
-            } else {
-                return "\(keyString): \(valueString)\n"
+                keyString = "\(keyString) (\(id))"
             }
-        } else {
-            return nil
         }
+        
+        return (keyString, valueString)
     }
     
-    private func getImageAtomString(key: AtomKey, atom: Atom, withID: Bool) -> String? {
+    private static func getImageAtomString(key: AtomKey, atom: Atom, withID: Bool) -> (keyString: String, valueString: String) {
+
+        var keyString = key.stringValue.convertCamelToUpperCase()
+        var valueString = ""
+        
         if let coverAtom = atom as? ImageMetadataAtom {
-            let keyString = key.stringValue.convertCamelToUpperCase()
             
             let imageSize = coverAtom.image.size
             let imageDataCount = coverAtom.data.data.count
@@ -172,15 +190,14 @@ public struct MetadataExporter {
                 imageFormat = "Image (unknown)"
             }
             
+            valueString = "\(imageFormat), \(imageSize) (\(imageDataCount) bytes)"
+
             if withID {
                 let id = "covr"
                 
-                return "\(keyString) (\(id)): \(imageFormat), \(imageSize) (\(imageDataCount) bytes)\n"
-            } else {
-                return "\(keyString): \(imageFormat), \(imageSize) (\(imageDataCount) bytes)\n"
+                keyString = "\(keyString) (\(id))"
             }
-        } else {
-            return nil
         }
+        return (keyString, valueString)
     }
 }

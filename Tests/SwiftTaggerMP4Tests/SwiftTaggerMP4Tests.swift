@@ -5,19 +5,7 @@ import iTunesGenreID
 @testable import SwiftTaggerMP4
 
 
-final class SwiftTaggerMP4Tests: XCTestCase {
-//    func testPrint() throws {
-//        //let path = "/Users/nolainecrusher/Desktop/test-real/1-01 Honor Harrington Book 1.m4b"
-//        let path = "/Users/nolainecrusher/Desktop/TestOutput/test.m4b"
-//        let url = URL(fileURLWithPath: path)
-//        let data = try Data(contentsOf: url)
-//
-//        let range = 222581050 ..< 222583337
-//        let subdata = data[range]
-//        print(subdata.hexadecimal())
-//        
-//    }
-    
+final class SwiftTaggerMP4Tests: XCTestCase {    
     func testAddChapter() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)
@@ -586,7 +574,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let url = localDirectory.appendingPathComponent("test-real/basilisk-test.m4b")
         let file = try XCTUnwrap(Mp4File(location: url))
         
-        let exporter = MetadataExporter(file: file)
-        XCTAssertNoThrow(try print(exporter.exportMetadataText(withID: true)))
+        let exporter = MetadataExporter(mp4File: file)
+        XCTAssertNoThrow(try print(exporter.exportMetadata(savingAs: .text, withID: true)))
     }
 }
