@@ -55,7 +55,7 @@ public struct MetadataExporter {
             }
             
             for atom in tag.unknownAtoms {
-                let keyString = "---- \(atom.name)"
+                let keyString = atom.name.uppercased()
                 let valueString = atom.stringValue
                 
                 metadata.append((keyString, valueString))
@@ -74,13 +74,16 @@ public struct MetadataExporter {
             .appendingPathExtension(savingAs.rawValue)
     }
     
-    public func exportMetadata(savingAs: SaveAs, withID: Bool = false) throws {
+    public func exportMetadataText(
+        savingAs: SaveAs,
+        separatedBy: String = ": ") throws {
         var string = """
             """
-        
-        for (key, value) in metadata {
-            let joined = "\(key): \(value)\n"
-            string.append(joined)
+        switch savingAs {
+            case .csv:
+                string = formatCSV()
+            default:
+                string = formatPlainText(separatedBy: separatedBy)
         }
         
         try string.write(to: destination(savingAs: savingAs),
@@ -88,19 +91,45 @@ public struct MetadataExporter {
                          encoding: .utf8)
     }
     
-//    private func generalMetadataCSV(withID: Bool) -> {
-//        let stringToParse = generateMetadataText(withID: withID)
-//        let lines = stringToParse.components(separatedBy: .newlines)
-//
-//        var metadata = [String: String]()
-//        for line in lines {
-//            let components = line.components(separatedBy: ": ")
-//
-//            guard let first = components.first else { return }
-//            metadata[first] = components.last
-//        }
-//    }
+    private func formatCSV() -> String {
+        var string = """
+            """
+        let keyItems = metadata.map({$0.keyString})
+        let valueItems = metadata.map({$0.valueString.replacingOccurrences(of: ",", with: "\\")})
+        
+        string.append(keyItems.joined(separator: ",") + "\n")
+        string.append(valueItems.joined(separator: ","))
+        return string
+    }
     
+    private func formatPlainText(separatedBy: String) -> String {
+        var string = """
+            """
+        var count = 0
+        let sorted = metadata.map({$0.keyString}).sorted(by: {$0.count > $1.count})
+        
+        if let first = sorted.first {
+            count = first.count + 6
+        }
+        
+        for (key, value) in metadata {
+            var joined = ""
+            if separatedBy == ": " {
+                var separator = ":"
+                var difference = count - key.count
+                while difference > 0 {
+                    separator.append(" ")
+                    difference = difference - 1
+                }
+                joined = key+separator+value+"\n"
+            } else {
+                joined = key+separatedBy+value+"\n"
+            }
+            string.append(joined)
+        }
+        return string
+    }
+        
     private static func getIntAtomString(key: AtomKey,
                                          atom: Atom,
                                          withID: Bool) -> (keyString: String, valueString: String) {
