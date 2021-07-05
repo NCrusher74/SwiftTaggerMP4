@@ -9,10 +9,11 @@ import Foundation
 
 public struct MetadataExporter {
     
-    public enum SaveAs: String {
+    public enum OutputType: String {
         case text = "txt"
         case csv = "csv"
         case json = "json"
+        case cue = "cue"
     }
     
     public enum KeyFormat {
@@ -84,7 +85,7 @@ public struct MetadataExporter {
         self.metadata = metadata
     }
 
-    private func destination(savingAs: SaveAs) -> URL {
+    private func destination(savingAs: OutputType) -> URL {
         let fileName = file.location.fileName + "-metadata"
 
         return file.location
@@ -95,8 +96,9 @@ public struct MetadataExporter {
     }
     
     public func exportMetadata(
-        as savingAs: SaveAs,
-        separatedBy: String = ": ") throws {
+        as savingAs: OutputType,
+        separatedBy: String = ": ",
+        usingFullMetadataForCue: Bool = false) throws {
         var string = """
             """
         switch savingAs {
@@ -108,6 +110,17 @@ public struct MetadataExporter {
             case .json:
                 let data = try formatJSON()
                 try data.write(to: destination(savingAs: .json))
+            case .cue:
+                let generator = AudiobookCueGenerator(
+                    url: file.location,
+                    tag: try file.tag(),
+                    metadata: metadata,
+                    fullMetadata: usingFullMetadataForCue)
+                string = generator.output
+
+                try string.write(to: destination(savingAs: savingAs),
+                                 atomically: true,
+                                 encoding: .utf8)
             default:
                 string = formatPlainText(separatedBy: separatedBy)
                 try string.write(to: destination(savingAs: savingAs),

@@ -574,6 +574,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let url = localDirectory.appendingPathComponent("test-real/basilisk-test.m4b")
         
         let exporter = try MetadataExporter(url: url, format: .useOnlyDescription)
-        XCTAssertNoThrow(try print(exporter.exportMetadata(as: .csv)))
+        XCTAssertNoThrow(print(try exporter.exportMetadata(as: .cue)))
     }
 }
