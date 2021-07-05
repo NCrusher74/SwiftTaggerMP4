@@ -576,6 +576,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let exporter = MetadataExporter(mp4File: file,
                                         useAtomID: true)
-        XCTAssertNoThrow(try print(exporter.exportMetadataText(savingAs: .text)))
+        XCTAssertNoThrow(try print(exporter.exportMetadata(as: .json)))
     }
 }

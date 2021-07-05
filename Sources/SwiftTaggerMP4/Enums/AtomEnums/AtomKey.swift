@@ -7,6 +7,7 @@
 
 import Foundation
 public enum AtomKey: Hashable {
+    
     /// The country code of the iTunes store
     case appleStoreCountryID
     /// The iTunes-store artist identifier
@@ -598,23 +599,38 @@ public enum AtomKey: Hashable {
         return keys
     }
 
-    init(string: String, name: String?) {
-        if string == "covr" {
+    init(idString: String, name: String?) {
+        if idString == "covr" {
             self = .coverArt
-        } else if string == "trkn" {
+        } else if idString == "trkn" {
             self = .trackNumber
-        } else if string == "disk" {
+        } else if idString == "disk" {
             self = .discNumber
-        } else if string == "----" {
+        } else if idString == "----" {
             self = .unknown(name ?? "")
         } else {
-            if let stringID = StringMetadataIdentifier(rawValue: string) {
-                self.init(atomID: stringID)
-            } else if let intID = IntegerMetadataIdentifier(rawValue: string) {
-                self.init(atomID: intID)
+            if let identifier = StringMetadataIdentifier(rawValue: idString) {
+                self.init(atomID: identifier)
+            } else if let identifier = IntegerMetadataIdentifier(rawValue: idString) {
+                self.init(atomID: identifier)
             } else {
-                fatalError("Cannot initialize atom key for metadata atom \(string)")
+                fatalError("Cannot initialize atom key for metadata atom \(idString)")
             }
         }
+    }
+    
+    init?(stringValue: String) {
+        for key in AtomKey.knownCases {
+            if stringValue == key.stringValue.convertCamelToUpperCase() {
+                self = key
+            } else if stringValue.contains("----") {
+                
+                let trimmed = stringValue.trimmingCharacters(in: CharacterSet(charactersIn: " -)("))
+                self = .unknown(trimmed.capitalized)
+            } else {
+                self = .unknown(stringValue.capitalized)
+            }
+        }
+        return nil
     }
 }

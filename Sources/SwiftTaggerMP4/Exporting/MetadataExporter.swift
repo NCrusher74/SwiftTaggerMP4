@@ -14,7 +14,7 @@ public struct MetadataExporter {
         case csv = "csv"
         case json = "json"
     }
-    
+        
     var metadata = [(keyString: String, valueString: String)]()
     
     private let file: Mp4File
@@ -55,10 +55,10 @@ public struct MetadataExporter {
             }
             
             for atom in tag.unknownAtoms {
-                let keyString = atom.name.uppercased()
+                let keyString = atom.name.uppercased() + " (----)"
                 let valueString = atom.stringValue
                 
-                metadata.append((keyString, valueString))
+                metadata.append((keyString,valueString))
             }
         }
         self.metadata = metadata
@@ -74,28 +74,84 @@ public struct MetadataExporter {
             .appendingPathExtension(savingAs.rawValue)
     }
     
-    public func exportMetadataText(
-        savingAs: SaveAs,
+    public func exportMetadata(
+        as savingAs: SaveAs,
         separatedBy: String = ": ") throws {
         var string = """
             """
         switch savingAs {
             case .csv:
                 string = formatCSV()
+                try string.write(to: destination(savingAs: savingAs),
+                                 atomically: true,
+                                 encoding: .utf8)
+            case .json:
+                let data = try formatJSON()
+                try data.write(to: destination(savingAs: .json))
             default:
                 string = formatPlainText(separatedBy: separatedBy)
+                try string.write(to: destination(savingAs: savingAs),
+                                 atomically: true,
+                                 encoding: .utf8)
         }
-        
-        try string.write(to: destination(savingAs: savingAs),
-                         atomically: true,
-                         encoding: .utf8)
     }
     
+    private func formatJSON() throws -> Data {
+        var formatted = [String: String]()
+
+        let knownAtoms = try file.tag().metadataAtoms
+        for (key, atom) in knownAtoms {
+            let keyString = atom.identifier
+
+            if AtomKey.integerKeys.contains(key) {
+                let result = MetadataExporter
+                    .getIntAtomString(key: key,
+                                      atom: atom,
+                                      withID: false)
+                formatted[keyString] = result.valueString
+            } else if AtomKey.stringKeys.contains(key) {
+                let result = MetadataExporter.getStringAtomString(
+                    key: key,
+                    atom: atom,
+                    withID: false)
+                formatted[keyString] = result.valueString
+            } else if key == .discNumber ||
+                        key == .trackNumber {
+                let result = MetadataExporter.getPoTAtomString(
+                    key: key,
+                    atom: atom,
+                    withID: false)
+                formatted[keyString] = result.valueString
+            } else if key == .coverArt {
+                let result = MetadataExporter.getImageAtomString(
+                    key: key,
+                    atom: atom,
+                    withID: false)
+                formatted[keyString] = result.valueString
+            }
+        }
+        
+        for atom in try file.tag().unknownAtoms {
+            let keyString = atom.identifier + atom.name
+            formatted[keyString] = atom.stringValue
+        }
+        
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(formatted)
+        return data
+    }
+        
     private func formatCSV() -> String {
         var string = """
             """
         let keyItems = metadata.map({$0.keyString})
-        let valueItems = metadata.map({$0.valueString.replacingOccurrences(of: ",", with: "\\")})
+        let valueItems = metadata
+            .map({$0.valueString
+                .replacingOccurrences(of: ",", with: ";")
+                .replacingOccurrences(of: "\n", with: "\\")
+                .replacingOccurrences(of: "\u{2117}", with: "(P)")
+                .replacingOccurrences(of: "\u{00A9}", with: "(c)")
+            })
         
         string.append(keyItems.joined(separator: ",") + "\n")
         string.append(valueItems.joined(separator: ","))
@@ -229,4 +285,9 @@ public struct MetadataExporter {
         }
         return (keyString, valueString)
     }
+}
+
+enum ExporterError: Error {
+    case unableToEncodeJSON
+    case unableToWriteJSON
 }
