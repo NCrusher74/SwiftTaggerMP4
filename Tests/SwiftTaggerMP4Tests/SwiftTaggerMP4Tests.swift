@@ -576,10 +576,10 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
-        XCTAssertNoThrow(try tag.export(file: .text, format: .useOnlyDescription))
+        XCTAssertNoThrow(try tag.exportMetadata(file: .text, format: .useOnlyDescription))
     }
     
-    func testMetadataImporterCSV() throws {
+    func testMetadataImporter() throws {
         let url = localDirectory
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
@@ -599,5 +599,14 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let output = url.deletingLastPathComponent().appendingPathComponent("import-test.m4b")
         
         XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
+    }
+    
+    func testChapterExporter() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        let tag = try mp4.tag()
+
+        XCTAssertNoThrow(try tag.exportChapters(format: .ogg))
     }
 }

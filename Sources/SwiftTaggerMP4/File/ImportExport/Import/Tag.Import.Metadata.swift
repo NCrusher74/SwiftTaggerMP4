@@ -10,11 +10,7 @@ import Foundation
 extension Tag {
     /// Import metadata from a .csv or .json file
     mutating func importMetadata(location: URL) throws {
-        guard let format = ExportFormat(rawValue: location.pathExtension.lowercased()) else {
-            throw ImporterError.UnhandledFormat
-        }
-
-        guard format == .csv || .json else {
+        guard let format = MetadataExportFormat(rawValue: location.pathExtension.lowercased()) else {
             throw ImporterError.UnhandledFormat
         }
         

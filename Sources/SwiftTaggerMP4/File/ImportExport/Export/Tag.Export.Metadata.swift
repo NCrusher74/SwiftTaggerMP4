@@ -23,7 +23,7 @@ extension Tag {
         case useIDAndDescription
     }
     
-    private func destination(savingAs: ImportExportFormat) -> URL {
+    private func destination(savingAs: MetadataExportFormat) -> URL {
         let fileName = location.fileName
 
         return location
@@ -33,8 +33,8 @@ extension Tag {
             .appendingPathExtension(savingAs.rawValue)
     }
     
-    public mutating func export(
-        file savingAs: ImportExportFormat,
+    public mutating func exportMetadata(
+        file savingAs: MetadataExportFormat,
         format: DetailPreference,
         separatedBy: String = ": ",
         usingFullMetadataForCue: Bool = false) throws {
@@ -44,26 +44,21 @@ extension Tag {
         switch savingAs {
             case .csv:
                 string = try formatAsCSV()
-                try string.write(to: destination(savingAs: savingAs),
-                                 atomically: true,
-                                 encoding: .utf8)
+                try string.write(
+                    to: destination(savingAs: savingAs),
+                    atomically: true,
+                    encoding: .utf8)
             case .json:
                 let data = try formatAsJSON()
                 try data.write(to: destination(savingAs: .json))
-            case .cue:
-                string = formatAsCue(url: location,
-                                     fullMetadata: usingFullMetadataForCue)
-
-                try string.write(to: destination(savingAs: savingAs),
-                                 atomically: true,
-                                 encoding: .utf8)
             default:
                 string = formatAsText(
                     separatedBy: separatedBy,
                     format: format)
-                try string.write(to: destination(savingAs: savingAs),
-                                 atomically: true,
-                                 encoding: .utf8)
+                try string.write(
+                    to: destination(savingAs: savingAs),
+                    atomically: true,
+                    encoding: .utf8)
         }
     }
     
@@ -132,57 +127,6 @@ extension Tag {
         return formatted
     }
     
-    private func formatAsCue(url: URL,fullMetadata: Bool) -> String {
-        var string = """
-            """
-        
-        if let album = album {
-            string.append("TITLE \"\(album)\"\n")
-        }
-        
-        if let albumArtist = albumArtist {
-            string.append("PERFORMER \"\(albumArtist)\"\n")
-        }
-        
-        if fullMetadata {
-            if let composer = composer {
-                string.append("COMPOSER \"\(composer)\"\n")
-            }
-            var genre: String? {
-                if let predefined = predefinedGenre {
-                    return predefined.stringValue
-                } else {
-                    return customGenre
-                }
-            }
-            
-            if let isrc = isrc {
-                string.append("ISRC \"\(isrc)\"\n")
-            }
-            
-            if let genre = genre {
-                string.append("GENRE \"\(genre)\"\n")
-            }
-            
-            if let description = comment {
-                string.append("MESSAGE \"\(description)\"\n")
-            }
-        }
-        
-        string.append("FILE \"\(url.lastPathComponent)\" \(url.pathExtension.uppercased())\n")
-        
-        var track = 1
-        for chapter in chapterList {
-            string.append("  TRACK \(pad: track, toWidth: 2, using: "0") AUDIO\n")
-            string.append("    TITLE \"\(chapter.title)\"\n")
-            string.append("    INDEX 01 \(chapter.startTime.cueTimeStamp)\n")
-            
-            track += 1
-        }
-        
-        return string
-    }
-
     private func formatAsJSON() throws -> Data {
         let dict = try getMetadataAsDictionary()
         let encoder = JSONEncoder()
