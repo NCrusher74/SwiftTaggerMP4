@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ImportExportFormat: String {
+public enum ExportFormat: String {
     case text = "txt"
     case csv = "csv"
     case json = "json"

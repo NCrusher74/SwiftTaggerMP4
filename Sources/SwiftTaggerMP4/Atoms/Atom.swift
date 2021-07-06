@@ -105,19 +105,6 @@ public class Atom {
         fatalError("Override contentData in subclass: \(type(of: self)).")
     }
     
-    var atomKey: AtomKey {
-        if self.identifier == "----" {
-            if let atom = self as? UnknownMetadataAtom {
-                let name = atom.name
-                return AtomKey(idString: self.identifier, name: name)
-            } else {
-                fatalError("Unable to initialize atom key for unknown atom")
-            }
-        } else {
-            return AtomKey(idString: self.identifier, name: nil)
-        }
-    }
-    
     /// Converts an atom to data for writing to file
     var encode: Data {
         var data = Data()

@@ -10,7 +10,6 @@ import SwiftLanguageAndLocaleCodes
 
 public struct Tag {
     public var metadataAtoms: [AtomKey: Atom]
-    public var unknownAtoms: [UnknownMetadataAtom]
     
     public var languages: [Language] = []
     public var duration: Int
@@ -23,25 +22,21 @@ public struct Tag {
 
         let moov = mp4File.moov
         var metadata = [AtomKey: Atom]()
-        var unknownAtoms = [UnknownMetadataAtom]()
         if moov.udta?.meta?.ilst.children == nil {
             self.metadataAtoms = [:]
-            self.unknownAtoms = []
         } else {
             for atom in moov.udta?.meta?.ilst.children ?? [] {
-                if StringMetadataIdentifier(rawValue: atom.identifier) != nil ||
-                    IntegerMetadataIdentifier(rawValue: atom.identifier) != nil ||
-                    atom.identifier == "disk" || atom.identifier == "trkn" || atom.identifier == "covr" {
-                    metadata[atom.atomKey] = atom
-                } else if atom.identifier == "----" {
-                    metadata[atom.atomKey] = atom
-                    if let unknown = atom as? UnknownMetadataAtom {
-                        unknownAtoms.append(unknown)
+                if atom.identifier == "----" {
+                    if let atom = atom as? UnknownMetadataAtom {
+                        let key = AtomKey.unknown(atom.name)
+                        metadata[key] = atom
                     }
+                } else {
+                    let key = AtomKey(idString: atom.identifier)
+                    metadata[key] = atom
                 }
             }
             self.metadataAtoms = metadata
-            self.unknownAtoms = unknownAtoms
         }
         
         if let languages = mp4File.languages {

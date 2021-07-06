@@ -10,8 +10,14 @@ import SwiftConvenienceExtensions
 
 
 extension Tag {
-    public mutating func removeAllMetadata() {
-        self.metadataAtoms = [:]
+    /// Erases all metadata except cover art. Use `removeCoverArt` if necessary
+    public mutating func removeAllMetadata(includingCoverArt: Bool = false) {
+        if includingCoverArt {
+            metadataAtoms = [:]
+        } else {
+            metadataAtoms = metadataAtoms
+                .filter({$0.key == .coverArt})
+        }
     }
     
     public var coverArt: NativeImage? {

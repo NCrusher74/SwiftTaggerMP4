@@ -24,7 +24,7 @@ extension Tag {
     }
     
     private func destination(savingAs: ImportExportFormat) -> URL {
-        let fileName = location.fileName + "-metadata"
+        let fileName = location.fileName
 
         return location
             .deletingPathExtension()
@@ -73,78 +73,60 @@ extension Tag {
         let atoms = metadataAtoms.sorted(by: {$0.key.priority < $1.key.priority })
         for (key, atom) in atoms {
             if AtomKey.integerKeys.contains(key) {
-                let result = getIntAtomString(key: key,
+                let result = getIntAtomStrings(key: key,
                                               atom: atom,
                                               format: format)
                 metadata.append(result)
             } else if AtomKey.stringKeys.contains(key) {
-                let result = getStringAtomString(
+                let result = getStringAtomStrings(
                     key: key,
                     atom: atom,
                     format: format)
                 metadata.append(result)
             } else if key == .discNumber ||
                         key == .trackNumber {
-                let result = getPoTAtomString(
+                let result = getPoTAtomStrings(
                     key: key,
                     atom: atom,
                     format: format)
                 metadata.append(result)
-            } else if key == .coverArt {
-                let result = getImageAtomString(
-                    key: key,
-                    atom: atom,
-                    format: format)
+            } else {
+                let result = getUnknownAtomStrings(key: key, atom: atom, format: format)
                 metadata.append(result)
             }
-        }
-        
-        for atom in unknownAtoms {
-            let keyString = "(----) " + atom.name.uppercased()
-            let valueString = atom.stringValue
-            
-            metadata.append((keyString,valueString))
         }
         return metadata
     }
     
     private func getMetadataAsDictionary() throws -> [String: String] {
         var formatted = [String: String]()
-        
-        let knownAtoms = metadataAtoms
-        for (key, atom) in knownAtoms {
+        for (key, atom) in metadataAtoms
+            .filter({$0.key != .coverArt}) {
+
             let keyString = atom.identifier
             
             if AtomKey.integerKeys.contains(key) {
-                let result = getIntAtomString(key: key,
+                let result = getIntAtomStrings(key: key,
                                       atom: atom,
                                       format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if AtomKey.stringKeys.contains(key) {
-                let result = getStringAtomString(
+                let result = getStringAtomStrings(
                     key: key,
                     atom: atom,
                     format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if key == .discNumber ||
                         key == .trackNumber {
-                let result = getPoTAtomString(
+                let result = getPoTAtomStrings(
                     key: key,
                     atom: atom,
                     format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
-            } else if key == .coverArt {
-                let result = getImageAtomString(
-                    key: key,
-                    atom: atom,
-                    format: .useOnlyIdentifier)
-                formatted[keyString] = result.valueString
+            } else {
+                let result = getUnknownAtomStrings(key: key, atom: atom, format: .useOnlyIdentifier)
+                formatted[result.keyString] = result.valueString
             }
-        }
-        
-        for atom in unknownAtoms {
-            let keyString = atom.name
-            formatted[keyString] = atom.stringValue
         }
         
         return formatted
@@ -209,25 +191,27 @@ extension Tag {
     }
         
     private func formatAsCSV() throws -> String {
-        var string = """
-            """
+        var keyString = ""
+        var valueString = ""
+        
         let dict = try getMetadataAsDictionary()
-        let keys = dict.map({$0.key})
-        let values = try substituteCharactersOnExport()
-        string.append(keys.joined(separator: ",") + "\n")
-        string.append(values.joined(separator: ","))
+        for (key, value) in dict {
+            keyString.append(key + ",")
+            let corrected = value
+                .replacingOccurrences(of: ",", with: ";")
+                .replacingOccurrences(of: "\n", with: "\\")
+                .replacingOccurrences(of: "\u{2117}", with: "(P)")
+                .replacingOccurrences(of: "\u{00A9}", with: "(c)")
+            valueString.append(corrected + ",")
+        }
+        
+        keyString = keyString.trimmingCharacters(in: CharacterSet(charactersIn: ","))
+        valueString = valueString.trimmingCharacters(in: CharacterSet(charactersIn: ","))
+        
+        let string = keyString + "\n" + valueString
         return string
     }
-    
-    private func substituteCharactersOnExport() throws -> [String] {
-        let dict = try getMetadataAsDictionary()
-        return dict.map({$0.value                .replacingOccurrences(of: ",", with: ";")
-            .replacingOccurrences(of: "\n", with: "\\")
-            .replacingOccurrences(of: "\u{2117}", with: "(P)")
-            .replacingOccurrences(of: "\u{00A9}", with: "(c)")
-        })
-    }
-    
+        
     private func formatAsText(separatedBy: String, format: DetailPreference) -> String {
         let metadata = getMetadataAsArray(format: format)
         
@@ -259,7 +243,7 @@ extension Tag {
         return string
     }
         
-    private func getIntAtomString(key: AtomKey,
+    private func getIntAtomStrings(key: AtomKey,
                                          atom: Atom,
                                          format: DetailPreference) -> (keyString: String, valueString: String) {
         var keyString = key.stringValue.convertCamelToUpperCase()
@@ -281,7 +265,7 @@ extension Tag {
         return (keyString, valueString)
     }
     
-    private func getStringAtomString(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
+    private func getStringAtomStrings(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
         
@@ -302,7 +286,7 @@ extension Tag {
         return (keyString, valueString)
     }
     
-    private func getPoTAtomString(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
+    private func getPoTAtomStrings(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
 
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
@@ -333,40 +317,12 @@ extension Tag {
         return (keyString, valueString)
     }
     
-    private func getImageAtomString(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
-
-        var keyString = key.stringValue.convertCamelToUpperCase()
+    func getUnknownAtomStrings(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
+        let keyString = "(----) " + key.stringValue.uppercased()
         var valueString = ""
         
-        if let coverAtom = atom as? ImageMetadataAtom {
-            
-            let imageSize = coverAtom.image.size
-            let imageDataCount = coverAtom.data.data.count
-            let imageFormat: String
-            
-            if coverAtom.data.dataType == .bmp {
-                imageFormat = "Image (BMP)"
-            } else if coverAtom.data.dataType == .gif {
-                imageFormat = "Image (GIF)"
-            } else if coverAtom.data.dataType == .jpeg {
-                imageFormat = "Image (JPG)"
-            } else if coverAtom.data.dataType == .png {
-                imageFormat = "Image (PNG)"
-            } else {
-                imageFormat = "Image (unknown)"
-            }
-            
-            valueString = "\(imageFormat), \(imageSize) (\(imageDataCount) bytes)"
-
-            let id = "covr"
-            switch format {
-                case .useIDAndDescription:
-                    keyString = "\(keyString) (\(id))"
-                case .useOnlyIdentifier:
-                    keyString = id
-                case .useOnlyDescription:
-                    break
-            }
+        if let unknownAtom = atom as? UnknownMetadataAtom {
+            valueString = "\(unknownAtom.stringValue)"
         }
         
         return (keyString, valueString)

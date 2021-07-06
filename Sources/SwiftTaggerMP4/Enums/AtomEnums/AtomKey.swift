@@ -625,16 +625,15 @@ public enum AtomKey: Hashable {
     
     init?(stringValue: String) {
         if stringValue.hasPrefix("(----) ") {
-            let trimmed = String(stringValue.dropFirst(7))
+            let trimmed = stringValue.dropFirst(6)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
             self = .unknown(trimmed)
+        } else if AtomKey.knownIdentifiers.contains(stringValue) {
+            self.init(idString: stringValue)
         } else {
             for key in AtomKey.knownCases {
                 if stringValue == key.stringValue.convertCamelToUpperCase() {
                     self = key
-                } else if stringValue.hasPrefix("(----) ") {
-                    
-                    let trimmed = stringValue.trimmingCharacters(in: CharacterSet(charactersIn: "(----) "))
-                    self = .unknown(trimmed.capitalized)
                 } else {
                     self = .unknown(stringValue.capitalized)
                 }
