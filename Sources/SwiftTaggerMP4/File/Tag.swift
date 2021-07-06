@@ -8,7 +8,6 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 
-
 public struct Tag {
     public var metadataAtoms: [AtomKey: Atom]
     public var unknownAtoms: [UnknownMetadataAtom]
@@ -16,11 +15,13 @@ public struct Tag {
     public var languages: [Language] = []
     public var duration: Int
     var chapterHandler: ChapterHandler
+    var location: URL
     
     public init(mp4File: Mp4File) throws {
-        let moov = mp4File.moov
+        self.location = mp4File.location
         self.chapterHandler = try ChapterHandler(file: mp4File)
 
+        let moov = mp4File.moov
         var metadata = [AtomKey: Atom]()
         var unknownAtoms = [UnknownMetadataAtom]()
         if moov.udta?.meta?.ilst.children == nil {
@@ -49,5 +50,5 @@ public struct Tag {
             self.languages = [.unspecified]
         }
         self.duration = Int(mp4File.duration)
-    }
+    }    
 }

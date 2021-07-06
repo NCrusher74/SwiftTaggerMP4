@@ -466,7 +466,7 @@ public enum AtomKey: Hashable {
         }
     }
     
-    private init(atomID: IntegerMetadataIdentifier) {
+    init(atomID: IntegerMetadataIdentifier) {
         switch atomID {
             case .appleStoreCountryID: self = .appleStoreCountryID
             case .artistID: self = .artistID
@@ -498,7 +498,7 @@ public enum AtomKey: Hashable {
         return keys
     }
     
-    private init(atomID: StringMetadataIdentifier) {
+    init(atomID: StringMetadataIdentifier) {
         switch atomID {
             case .acknowledgment: self = .acknowledgment
             case .album: self = .album
@@ -599,7 +599,11 @@ public enum AtomKey: Hashable {
         return keys
     }
 
-    init(idString: String, name: String?) {
+    static var knownIdentifiers: [String] {
+        return IntegerMetadataIdentifier.rawValues + StringMetadataIdentifier.rawValues + ["covr", "trkn", "disk", "----"]
+    }
+    
+    init(idString: String, name: String? = nil) {
         if idString == "covr" {
             self = .coverArt
         } else if idString == "trkn" {
@@ -614,23 +618,28 @@ public enum AtomKey: Hashable {
             } else if let identifier = IntegerMetadataIdentifier(rawValue: idString) {
                 self.init(atomID: identifier)
             } else {
-                fatalError("Cannot initialize atom key for metadata atom \(idString)")
+                self = .unknown(name ?? "")
             }
         }
     }
     
     init?(stringValue: String) {
-        for key in AtomKey.knownCases {
-            if stringValue == key.stringValue.convertCamelToUpperCase() {
-                self = key
-            } else if stringValue.contains("----") {
-                
-                let trimmed = stringValue.trimmingCharacters(in: CharacterSet(charactersIn: " -)("))
-                self = .unknown(trimmed.capitalized)
-            } else {
-                self = .unknown(stringValue.capitalized)
+        if stringValue.hasPrefix("(----) ") {
+            let trimmed = String(stringValue.dropFirst(7))
+            self = .unknown(trimmed)
+        } else {
+            for key in AtomKey.knownCases {
+                if stringValue == key.stringValue.convertCamelToUpperCase() {
+                    self = key
+                } else if stringValue.hasPrefix("(----) ") {
+                    
+                    let trimmed = stringValue.trimmingCharacters(in: CharacterSet(charactersIn: "(----) "))
+                    self = .unknown(trimmed.capitalized)
+                } else {
+                    self = .unknown(stringValue.capitalized)
+                }
             }
+            return nil
         }
-        return nil
     }
 }

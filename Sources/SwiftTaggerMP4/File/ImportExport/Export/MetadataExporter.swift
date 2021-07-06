@@ -7,156 +7,134 @@
 
 import Foundation
 
-public struct MetadataExporter {
-    
-    public enum OutputType: String {
-        case text = "txt"
-        case csv = "csv"
-        case json = "json"
-        case cue = "cue"
-    }
-    
-    public enum KeyFormat {
+extension Tag {
+    public enum DetailPreference {
         /// DEFAULT: Use the unique, four-byte code for the metadata item (ex: "\u{00A9}alb"
         ///
         /// This option is *highly* recommended if you intend to edit and then re-import the exported metadata down the line
         case useOnlyIdentifier
         /// Use the metadata item's string descriptor (ex: "ALBUM".)
         ///
-        /// WARNING: This option may result in difficulties parsing the metadata when reading it back in)
+        /// This is intended to be a human-readable output and not intended to be used to re-import the metadata
         case useOnlyDescription
         /// Use both the four-byte code and string descriptor (ex: "ALBUM (\u{00A9}alb)"
         ///
-        /// WARNING: This option may result in difficulties parsing the metadata when importing the metadata)
+        /// This is intended to be a human-readable output and not intended to be used to re-import the metadata
         case useIDAndDescription
     }
     
-    var metadata = [(keyString: String, valueString: String)]()
-    
-    private let file: Mp4File
-    
-    public init(url: URL, format: KeyFormat = .useOnlyIdentifier) throws {
-        let mp4File = try Mp4File(location: url)
-        self.init(mp4File: mp4File, format: format)
-    }
-    
-    private init(mp4File: Mp4File, format: KeyFormat) {
-        self.file = mp4File
-        var metadata = [(keyString: String, valueString: String)]()
+    private func destination(savingAs: ImportExportFormat) -> URL {
+        let fileName = location.fileName + "-metadata"
 
-        if let tag = try? mp4File.tag() {
-            let atoms = tag.metadataAtoms.sorted(by: {$0.key.priority < $1.key.priority })
-            for (key, atom) in atoms {
-                if AtomKey.integerKeys.contains(key) {
-                    let result = MetadataExporter
-                        .getIntAtomString(key: key,
-                                          atom: atom,
-                                          format: format)
-                    metadata.append(result)
-                } else if AtomKey.stringKeys.contains(key) {
-                    let result = MetadataExporter.getStringAtomString(
-                        key: key,
-                        atom: atom,
-                        format: format)
-                    metadata.append(result)
-                } else if key == .discNumber ||
-                            key == .trackNumber {
-                    let result = MetadataExporter.getPoTAtomString(
-                        key: key,
-                        atom: atom,
-                        format: format)
-                    metadata.append(result)
-                } else if key == .coverArt {
-                    let result = MetadataExporter.getImageAtomString(
-                        key: key,
-                        atom: atom,
-                        format: format)
-                    metadata.append(result)
-                }
-            }
-            
-            for atom in tag.unknownAtoms {
-                let keyString = atom.name.uppercased() + " (----)"
-                let valueString = atom.stringValue
-                
-                metadata.append((keyString,valueString))
-            }
-        }
-        self.metadata = metadata
-    }
-
-    private func destination(savingAs: OutputType) -> URL {
-        let fileName = file.location.fileName + "-metadata"
-
-        return file.location
+        return location
             .deletingPathExtension()
             .deletingLastPathComponent()
             .appendingPathComponent(fileName)
             .appendingPathExtension(savingAs.rawValue)
     }
     
-    public func exportMetadata(
-        as savingAs: OutputType,
+    public mutating func export(
+        file savingAs: ImportExportFormat,
+        format: DetailPreference,
         separatedBy: String = ": ",
         usingFullMetadataForCue: Bool = false) throws {
+                
         var string = """
             """
         switch savingAs {
             case .csv:
-                string = formatCSV()
+                string = try formatAsCSV()
                 try string.write(to: destination(savingAs: savingAs),
                                  atomically: true,
                                  encoding: .utf8)
             case .json:
-                let data = try formatJSON()
+                let data = try formatAsJSON()
                 try data.write(to: destination(savingAs: .json))
             case .cue:
-                let generator = AudiobookCueGenerator(
-                    url: file.location,
-                    tag: try file.tag(),
-                    metadata: metadata,
-                    fullMetadata: usingFullMetadataForCue)
-                string = generator.output
+                string = formatAsCue(url: location,
+                                     fullMetadata: usingFullMetadataForCue)
 
                 try string.write(to: destination(savingAs: savingAs),
                                  atomically: true,
                                  encoding: .utf8)
             default:
-                string = formatPlainText(separatedBy: separatedBy)
+                string = formatAsText(
+                    separatedBy: separatedBy,
+                    format: format)
                 try string.write(to: destination(savingAs: savingAs),
                                  atomically: true,
                                  encoding: .utf8)
         }
     }
     
-    private func formatJSON() throws -> Data {
+    private func getMetadataAsArray(format: DetailPreference) -> [(keyString: String, valueString: String)] {
+        var metadata = [(keyString: String, valueString: String)]()
+        
+        let atoms = metadataAtoms.sorted(by: {$0.key.priority < $1.key.priority })
+        for (key, atom) in atoms {
+            if AtomKey.integerKeys.contains(key) {
+                let result = getIntAtomString(key: key,
+                                              atom: atom,
+                                              format: format)
+                metadata.append(result)
+            } else if AtomKey.stringKeys.contains(key) {
+                let result = getStringAtomString(
+                    key: key,
+                    atom: atom,
+                    format: format)
+                metadata.append(result)
+            } else if key == .discNumber ||
+                        key == .trackNumber {
+                let result = getPoTAtomString(
+                    key: key,
+                    atom: atom,
+                    format: format)
+                metadata.append(result)
+            } else if key == .coverArt {
+                let result = getImageAtomString(
+                    key: key,
+                    atom: atom,
+                    format: format)
+                metadata.append(result)
+            }
+        }
+        
+        for atom in unknownAtoms {
+            let keyString = "(----) " + atom.name.uppercased()
+            let valueString = atom.stringValue
+            
+            metadata.append((keyString,valueString))
+        }
+        return metadata
+    }
+    
+    private func getMetadataAsDictionary() throws -> [String: String] {
         var formatted = [String: String]()
-
-        let knownAtoms = try file.tag().metadataAtoms
+        
+        let knownAtoms = metadataAtoms
         for (key, atom) in knownAtoms {
             let keyString = atom.identifier
-
+            
             if AtomKey.integerKeys.contains(key) {
-                let result = MetadataExporter
-                    .getIntAtomString(key: key,
+                let result = getIntAtomString(key: key,
                                       atom: atom,
                                       format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if AtomKey.stringKeys.contains(key) {
-                let result = MetadataExporter.getStringAtomString(
+                let result = getStringAtomString(
                     key: key,
                     atom: atom,
                     format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if key == .discNumber ||
                         key == .trackNumber {
-                let result = MetadataExporter.getPoTAtomString(
+                let result = getPoTAtomString(
                     key: key,
                     atom: atom,
                     format: .useOnlyIdentifier)
                 formatted[keyString] = result.valueString
             } else if key == .coverArt {
-                let result = MetadataExporter.getImageAtomString(
+                let result = getImageAtomString(
                     key: key,
                     atom: atom,
                     format: .useOnlyIdentifier)
@@ -164,36 +142,98 @@ public struct MetadataExporter {
             }
         }
         
-        for atom in try file.tag().unknownAtoms {
-            let keyString = atom.identifier + atom.name
+        for atom in unknownAtoms {
+            let keyString = atom.name
             formatted[keyString] = atom.stringValue
         }
         
+        return formatted
+    }
+    
+    private func formatAsCue(url: URL,fullMetadata: Bool) -> String {
+        var string = """
+            """
+        
+        if let album = album {
+            string.append("TITLE \"\(album)\"\n")
+        }
+        
+        if let albumArtist = albumArtist {
+            string.append("PERFORMER \"\(albumArtist)\"\n")
+        }
+        
+        if fullMetadata {
+            if let composer = composer {
+                string.append("COMPOSER \"\(composer)\"\n")
+            }
+            var genre: String? {
+                if let predefined = predefinedGenre {
+                    return predefined.stringValue
+                } else {
+                    return customGenre
+                }
+            }
+            
+            if let isrc = isrc {
+                string.append("ISRC \"\(isrc)\"\n")
+            }
+            
+            if let genre = genre {
+                string.append("GENRE \"\(genre)\"\n")
+            }
+            
+            if let description = comment {
+                string.append("MESSAGE \"\(description)\"\n")
+            }
+        }
+        
+        string.append("FILE \"\(url.lastPathComponent)\" \(url.pathExtension.uppercased())\n")
+        
+        var track = 1
+        for chapter in chapterList {
+            string.append("  TRACK \(pad: track, toWidth: 2, using: "0") AUDIO\n")
+            string.append("    TITLE \"\(chapter.title)\"\n")
+            string.append("    INDEX 01 \(chapter.startTime.cueTimeStamp)\n")
+            
+            track += 1
+        }
+        
+        return string
+    }
+
+    private func formatAsJSON() throws -> Data {
+        let dict = try getMetadataAsDictionary()
         let encoder = JSONEncoder()
-        let data = try encoder.encode(formatted)
+        let data = try encoder.encode(dict)
         return data
     }
         
-    private func formatCSV() -> String {
+    private func formatAsCSV() throws -> String {
         var string = """
             """
-        let keyItems = metadata.map({$0.keyString})
-        let valueItems = metadata
-            .map({$0.valueString
-                .replacingOccurrences(of: ",", with: ";")
-                .replacingOccurrences(of: "\n", with: "\\")
-                .replacingOccurrences(of: "\u{2117}", with: "(P)")
-                .replacingOccurrences(of: "\u{00A9}", with: "(c)")
-            })
-        
-        string.append(keyItems.joined(separator: ",") + "\n")
-        string.append(valueItems.joined(separator: ","))
+        let dict = try getMetadataAsDictionary()
+        let keys = dict.map({$0.key})
+        let values = try substituteCharactersOnExport()
+        string.append(keys.joined(separator: ",") + "\n")
+        string.append(values.joined(separator: ","))
         return string
     }
     
-    private func formatPlainText(separatedBy: String) -> String {
+    private func substituteCharactersOnExport() throws -> [String] {
+        let dict = try getMetadataAsDictionary()
+        return dict.map({$0.value                .replacingOccurrences(of: ",", with: ";")
+            .replacingOccurrences(of: "\n", with: "\\")
+            .replacingOccurrences(of: "\u{2117}", with: "(P)")
+            .replacingOccurrences(of: "\u{00A9}", with: "(c)")
+        })
+    }
+    
+    private func formatAsText(separatedBy: String, format: DetailPreference) -> String {
+        let metadata = getMetadataAsArray(format: format)
+        
         var string = """
             """
+
         var count = 0
         let sorted = metadata.map({$0.keyString}).sorted(by: {$0.count > $1.count})
         
@@ -219,9 +259,9 @@ public struct MetadataExporter {
         return string
     }
         
-    private static func getIntAtomString(key: AtomKey,
+    private func getIntAtomString(key: AtomKey,
                                          atom: Atom,
-                                         format: KeyFormat) -> (keyString: String, valueString: String) {
+                                         format: DetailPreference) -> (keyString: String, valueString: String) {
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
         
@@ -241,7 +281,7 @@ public struct MetadataExporter {
         return (keyString, valueString)
     }
     
-    private static func getStringAtomString(key: AtomKey, atom: Atom, format: KeyFormat) -> (keyString: String, valueString: String) {
+    private func getStringAtomString(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
         
@@ -262,7 +302,7 @@ public struct MetadataExporter {
         return (keyString, valueString)
     }
     
-    private static func getPoTAtomString(key: AtomKey, atom: Atom, format: KeyFormat) -> (keyString: String, valueString: String) {
+    private func getPoTAtomString(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
 
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
@@ -293,7 +333,7 @@ public struct MetadataExporter {
         return (keyString, valueString)
     }
     
-    private static func getImageAtomString(key: AtomKey, atom: Atom, format: KeyFormat) -> (keyString: String, valueString: String) {
+    private func getImageAtomString(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
 
         var keyString = key.stringValue.convertCamelToUpperCase()
         var valueString = ""
