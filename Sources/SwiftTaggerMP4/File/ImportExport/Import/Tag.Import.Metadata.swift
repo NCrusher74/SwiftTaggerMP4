@@ -27,22 +27,19 @@ extension Tag {
     
     private mutating func parseStringDictionary(_ data: [String: String]) throws {
         for (key, value) in data {
-            
+
             let keyString = key
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let valueString = value
                 .trimmingCharacters(in: .whitespacesAndNewlines)
-           
-            if let known = AtomKey(stringValue: keyString) {
-                if let stringID = StringMetadataIdentifier(key: known) {
-                    importStringAtom(key: known, id: stringID, stringValue: valueString)
-                } else if let intID = IntegerMetadataIdentifier(key: known) {
-                    importIntegerAtom(key: known, id: intID, stringValue: valueString)
-                } else if known == .discNumber || known == .trackNumber {
-                    importPoTAtom(key: known, stringValue: valueString)
-                } else {
-                    importUnknownAtom(keyString: keyString, stringValue: valueString)
-                }
+
+            let known = AtomKey(stringValue: keyString)
+            if let stringID = StringMetadataIdentifier(key: known) {
+                importStringAtom(key: known, id: stringID, stringValue: valueString)
+            } else if let intID = IntegerMetadataIdentifier(key: known) {
+                importIntegerAtom(key: known, id: intID, stringValue: valueString)
+            } else if known == .discNumber || known == .trackNumber {
+                importPoTAtom(key: known, stringValue: valueString)
             } else {
                 importUnknownAtom(keyString: keyString, stringValue: valueString)
             }
@@ -146,6 +143,78 @@ extension Tag {
     }
     
     mutating func parseMetadataFromCue(_ header: String) {
+        var lines = header.components(separatedBy: .newlines)
+            .map({$0.trimmingCharacters(in: .whitespaces)})
+        
+        let watchedItems = ["TITLE", "PERFORMER", "GENRE", "COMPOSER", "ISRC", "MESSAGE"]
+        while !lines.isEmpty {
+            let line = lines.extractFirst()
+
+            if line.hasPrefix("FILE") {
+                continue
+            } else if line.hasPrefix("REM") {
+                attemptMetadataFromRemark(line)
+            } else {                
+                for item in watchedItems {
+                    if line.hasPrefix(item) {
+                        let trimmed = line.dropFirst(item.count)
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                            .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+                        
+                        switch item {
+                            case "TITLE":
+                                self.album = trimmed
+                            case "PERFORMER":
+                                self.albumArtist = trimmed
+                            case "COMPOSER":
+                                self.composer = trimmed
+                            case "ISRC":
+                                self.isrc = trimmed
+                            case "MESSAGE":
+                                self.comment = trimmed
+                            case "GENRE":
+                                if let predefined = Genre(stringValue: trimmed) {
+                                    self.predefinedGenre = predefined
+                                } else {
+                                    self.customGenre = trimmed
+                                }
+                            default: continue
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private mutating func attemptMetadataFromRemark(_ line: String) {
+        var trimmed = line.dropFirst(3)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if let distance = trimmed.distance(of: "\"") {
+            let descriptor = trimmed.extractFirst(distance)
+                .trimmingCharacters(in: .whitespaces)
+            
+            let metadataString = trimmed
+                .trimmingCharacters(
+                    in: CharacterSet(charactersIn: "\""))
+                .trimmingCharacters(
+                    in: .whitespacesAndNewlines)
+
+            let key = AtomKey(stringValue: descriptor)
+            
+            if AtomKey.stringKeys.contains(key) {
+                guard let id = StringMetadataIdentifier(key: key) else { return }
+                importStringAtom(key: key, id: id, stringValue: metadataString)
+            } else if AtomKey.integerKeys.contains(key) {
+                guard let id = IntegerMetadataIdentifier(key: key) else { return }
+                
+                importIntegerAtom(key: key, id: id, stringValue: metadataString)
+            } else if key == .discNumber || key == .trackNumber {
+                importPoTAtom(key: key, stringValue: metadataString)
+            } else {
+                importUnknownAtom(keyString: descriptor.capitalized, stringValue: metadataString)
+            }
+        }
     }
 }
 

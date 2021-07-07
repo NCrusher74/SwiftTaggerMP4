@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import StringMetric
+
 public enum AtomKey: Hashable {
     
     /// The country code of the iTunes store
@@ -623,22 +625,40 @@ public enum AtomKey: Hashable {
         }
     }
     
-    init?(stringValue: String) {
-        if stringValue.hasPrefix("(----) ") {
-            let trimmed = stringValue.dropFirst(6)
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            self = .unknown(trimmed)
-        } else if AtomKey.knownIdentifiers.contains(stringValue) {
-            self.init(idString: stringValue)
-        } else {
-            for key in AtomKey.knownCases {
-                if stringValue == key.stringValue.convertCamelToUpperCase() {
-                    self = key
-                } else {
-                    self = .unknown(stringValue.capitalized)
-                }
+    private static let stringValueMapping: [String: AtomKey] = {
+        var map = [String: AtomKey]()
+        for key in AtomKey.knownCases {
+            map[key.stringValue.lowercased()] = key
+        }
+        return map
+    }()
+    
+    private static func compare(_ string: String) -> AtomKey? {
+        for key in AtomKey.knownCases {
+            if key.stringValue.lowercased()
+                .distance(between: string) > 0.97 {
+                return key
             }
-            return nil
+        }; return nil
+    }
+    
+    init(stringValue: String) {
+        var stringValue = stringValue.lowercased()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if stringValue.hasPrefix("(----) ") {
+            stringValue = stringValue.dropFirst(6)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+
+        if AtomKey.knownIdentifiers.contains(stringValue) {
+            self.init(idString: stringValue)
+        } else if let mapped = AtomKey.stringValueMapping[stringValue] {
+            self = mapped
+        } else if let match = AtomKey.compare(stringValue) {
+            self = match
+        } else {
+            self = .unknown(stringValue)
         }
     }
 }

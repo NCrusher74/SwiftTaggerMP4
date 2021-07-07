@@ -6,8 +6,9 @@
 //
 
 import Foundation
+fileprivate let badChars = CharacterSet.alphanumerics.inverted
+
 extension String {
-    
     private func attemptAAXDate() -> Date? {
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
@@ -117,4 +118,50 @@ extension String {
             return nil
         }
     }
+    
+    private var uppercasingFirst: String {
+        return prefix(1).uppercased() + dropFirst()
+    }
+    
+    private var lowercasingFirst: String {
+        return prefix(1).lowercased() + dropFirst()
+    }
+
+    var camelized: String {
+        guard !isEmpty else {
+            return ""
+        }
+        
+        let parts = self.components(separatedBy: badChars)
+        
+        let first = String(describing: parts.first!).lowercasingFirst
+        let rest = parts.dropFirst().map({String($0).uppercasingFirst})
+        
+        return ([first] + rest).joined(separator: "")
+    }
+    
+    mutating func extractFirst(_ k: Int = 0) -> String {
+        let extraction = self.prefix(k)
+        self = String(self.dropFirst(k))
+        return String(extraction)
+    }
+
+    func convertCamelCase() -> String {
+        return self
+            .replacingOccurrences(of: "([A-Z])",
+                                  with: " $1",
+                                  options: .regularExpression,
+                                  range: range(of: self))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .uppercasingFirst
+    }
+}
+
+extension StringProtocol {
+    func distance(of element: Element) -> Int? { firstIndex(of: element)?.distance(in: self) }
+    func distance<S: StringProtocol>(of string: S) -> Int? { range(of: string)?.lowerBound.distance(in: self) }
+}
+
+extension String.Index {
+    func distance<S: StringProtocol>(in string: S) -> Int { string.distance(to: self) }
 }

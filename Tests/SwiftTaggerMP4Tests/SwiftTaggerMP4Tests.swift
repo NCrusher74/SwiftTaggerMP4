@@ -1,11 +1,19 @@
 import XCTest
 import SwiftLanguageAndLocaleCodes
 import iTunesGenreID
+import StringMetric
 
 @testable import SwiftTaggerMP4
 
 
-final class SwiftTaggerMP4Tests: XCTestCase {    
+final class SwiftTaggerMP4Tests: XCTestCase {
+    
+//    func testStringMetrics() {
+//        let a = "appleStoreCountryID".lowercased()
+//        let b = "APPLE STORE COUNTRY ID".lowercased()
+//        print(a.distance(between: b)) // 0.97
+//    }
+
     func testAddChapter() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)
@@ -584,9 +592,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
-        
+
         XCTAssertEqual(tag.metadataAtoms.count, 11)
-        
+
         XCTAssertNoThrow(tag.removeAllMetadata())
         XCTAssertEqual(tag.metadataAtoms.count, 1)
 
@@ -595,9 +603,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         XCTAssertNoThrow(try tag.importMetadata(location: csv))
         XCTAssertEqual(tag.metadataAtoms.count, 27)
-        
+
         let output = url.deletingLastPathComponent().appendingPathComponent("import-test.m4b")
-        
+
         XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
     }
     
@@ -609,24 +617,16 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         XCTAssertNoThrow(try tag.exportChapters(format: .cue))
     }
-    
-    func testChapterImporter() throws {
+
+    func testCueMetadataImport() throws {
         let url = localDirectory
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
-        
-        XCTAssertNoThrow(try tag.exportChapters(format: .cue))
-        let exportTitle = tag.title
-        let exportArtist = tag.artist
-        let exportCount = tag.chapterList.count
-        let exported = tag.chapterList
 
-        tag.removeAllChapters()
         tag.removeAllMetadata()
-        XCTAssertTrue(tag.chapterList.isEmpty)
         XCTAssertEqual(tag.metadataAtoms.count, 1)
-        
+
         let cueURL = url
             .deletingPathExtension()
             .appendingPathExtension("cue")
@@ -635,9 +635,42 @@ final class SwiftTaggerMP4Tests: XCTestCase {
                             location: cueURL,
                             format: .cue))
 
-        XCTAssertEqual(tag.chapterList.count, exportCount)
-        XCTAssertEqual(tag.chapterList, exported)
-        XCTAssertEqual(tag.title, exportTitle)
-        XCTAssertEqual(tag.artist, exportArtist)
+        XCTAssertEqual(tag.metadataAtoms.count, 12)
+        XCTAssertEqual(tag.album, "Totally Awesome Book of Awesomeness")
+        XCTAssertEqual(tag.albumArtist, "John Doe")
+        XCTAssertEqual(tag.composer, "Joe Blow")
+        XCTAssertEqual(tag.conductor, "conductor")
+        XCTAssertEqual(tag.copyright, "Copyright")
+        XCTAssertEqual(tag.composerID, 1234567)
+        XCTAssertEqual(tag.originalArtist, "Some Guy")
+        XCTAssertEqual(tag.customGenre, "My Genre")
+        XCTAssertEqual(tag.comment, "This is a message")
+        XCTAssertEqual(tag.isrc, "Stuff")
+        XCTAssertEqual(tag["Unknown Tag"], "Freeform stuff")
+    }
+    
+    func testChapterImporter() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+
+        tag.removeAllChapters()
+        tag.removeAllMetadata()
+        XCTAssertTrue(tag.chapterList.isEmpty)
+        XCTAssertEqual(tag.metadataAtoms.count, 1)
+
+        let cueURL = url
+            .deletingPathExtension()
+            .appendingPathExtension("cue")
+
+        XCTAssertNoThrow(try tag.importChapters(
+                            location: cueURL,
+                            format: .cue))
+
+//        XCTAssertEqual(tag.chapterList.count, exportCount)
+//        XCTAssertEqual(tag.chapterList, exported)
+//        XCTAssertEqual(tag.title, exportTitle)
+//        XCTAssertEqual(tag.artist, exportArtist)
     }
 }

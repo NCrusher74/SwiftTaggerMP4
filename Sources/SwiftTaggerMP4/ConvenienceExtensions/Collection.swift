@@ -13,3 +13,29 @@ extension Collection where Element: Equatable {
         return self.dropFirst().allSatisfy { $0 == first }
     }
 }
+
+extension Collection {
+    func distance(to index: Index) -> Int { distance(from: startIndex, to: index) }
+}
+
+extension Array where Element == String {
+    mutating func extractFirst() -> String {
+        guard !self.isEmpty else {
+            return String()
+        }
+        let extraction = self.first!
+        self = Array<String>(self.dropFirst())
+        return extraction
+    }
+}
+
+extension Array where Element == Int {
+    mutating func extractFirst() -> Int {
+        guard !self.isEmpty else {
+            return Int()
+        }
+        let extraction = self.first!
+        self = Array<Int>(self.dropFirst())
+        return extraction
+    }
+}

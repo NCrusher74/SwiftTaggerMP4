@@ -19,7 +19,11 @@ let package = Package(
             from: "2.0.0"),
         .package(
             url: "https://github.com/NCrusher74/iTunesGenreID",
-            from: "1.0.0")
+            from: "1.0.0"),
+        .package(
+            name: "StringMetric",
+            url: "https://github.com/NCrusher74/StringMetric.swift.git",
+            from: "0.0.0"),
     ],
     targets: [
         .target(
@@ -28,6 +32,7 @@ let package = Package(
                 .product(name: "SwiftLanguageAndLocaleCodes", package: "SwiftLanguageAndLocaleCodes"),
                 .product(name: "SwiftConvenienceExtensions", package: "SwiftConvenienceExtensions"),
                 .product(name: "iTunesGenreID", package: "iTunesGenreID"),
+                .product(name: "StringMetric", package: "StringMetric"),
             ],
             path: "Sources"),
         .testTarget(
