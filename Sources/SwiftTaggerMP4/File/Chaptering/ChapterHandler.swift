@@ -14,10 +14,6 @@ struct ChapterHandler {
     
     var toc: TableOfContents
     
-    init() {
-        self.toc = TableOfContents([])
-    }
-    
     init(file: Mp4File) throws {
         let moov = file.moov
         let fileData = file.data

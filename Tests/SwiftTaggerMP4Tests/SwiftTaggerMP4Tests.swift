@@ -607,6 +607,37 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
 
-        XCTAssertNoThrow(try tag.exportChapters(format: .ogg))
+        XCTAssertNoThrow(try tag.exportChapters(format: .cue))
+    }
+    
+    func testChapterImporter() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        XCTAssertNoThrow(try tag.exportChapters(format: .cue))
+        let exportTitle = tag.title
+        let exportArtist = tag.artist
+        let exportCount = tag.chapterList.count
+        let exported = tag.chapterList
+
+        tag.removeAllChapters()
+        tag.removeAllMetadata()
+        XCTAssertTrue(tag.chapterList.isEmpty)
+        XCTAssertEqual(tag.metadataAtoms.count, 1)
+        
+        let cueURL = url
+            .deletingPathExtension()
+            .appendingPathExtension("cue")
+
+        XCTAssertNoThrow(try tag.importChapters(
+                            location: cueURL,
+                            format: .cue))
+
+        XCTAssertEqual(tag.chapterList.count, exportCount)
+        XCTAssertEqual(tag.chapterList, exported)
+        XCTAssertEqual(tag.title, exportTitle)
+        XCTAssertEqual(tag.artist, exportArtist)
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import iTunesGenreID
 
 extension Tag {
     /// Import metadata from a .csv or .json file
@@ -143,11 +144,16 @@ extension Tag {
                 .replacingOccurrences(of: "(c)", with: "\u{00A9}")
             })
     }
+    
+    mutating func parseMetadataFromCue(_ header: String) {
+    }
 }
 
 enum ImporterError: Error {
     case UnhandledFormat
     case CSVIsEmptyOrCorrupt
     case CSVDataIsCorrupted
+    case InvalidChapterData
+    case PossibleCountMismatch
 }
 
