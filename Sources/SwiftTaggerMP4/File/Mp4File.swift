@@ -16,11 +16,14 @@ public class Mp4File {
     var data: Data
     static var use64BitOffset: Bool = false
     var chunkSizes: [Int] = []
+    var location: URL
     
     /// Initialize an Mp4File from a local file
     /// - Parameter location: the `url` of the mp4 file
     /// - Throws: `InvalidFileFormat` if the file is not a valid mp4 file
     public init(location: URL) throws {
+        self.location = location
+        
         let validExtensions: [String] = ["aax", "aac", "mp4", "m4a", "m4b"]
         
         guard validExtensions.contains(location.pathExtension.lowercased()) else {
@@ -34,7 +37,7 @@ public class Mp4File {
             if let atom = try fileData.extractAndParseToAtom() {
                 atoms.append(atom)
             } else {
-                throw Mp4FileError.UnableToInitializeAtoms
+                throw Mp4FileError.UnableToInitializeAtomsFromFileData
             }
         }
         self.rootAtoms = atoms
@@ -179,7 +182,8 @@ enum Mp4FileError: Error {
     /// Error thrown when writing operation fails
     case OutputFailure
     /// Error thrown when atoms fail to initialize
-    case UnableToInitializeAtoms
+    case UnableToInitializeAtomsFromFileData
+    case UnableToInitializeRequiredAtom(AtomIdentifier)
     /// Error thrown when a required root atom is missing
     case MoovAtomNotFound
     /// Error thrown when a required root atom is missing
@@ -192,4 +196,5 @@ enum Mp4FileError: Error {
     case ChunkSizeToChunkOffsetCountMismatch
     /// Error thrown when the new chunk offsets array doesn't match the old chunk offsets array
     case NewChunkOffsetArrayCountMismatch
+    case ChapterHandlerMissing
 }

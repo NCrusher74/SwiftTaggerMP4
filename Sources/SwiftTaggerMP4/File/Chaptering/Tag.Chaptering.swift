@@ -14,7 +14,6 @@ extension Tag {
     /// `startTime`: The chapter's start time, in milliseconds
     /// `title`: The chapter's title
     public var chapterList: [Chapter] {
-        let chapterHandler = self.chapterHandler
         return chapterHandler.toc.chapters
     }
     
@@ -25,7 +24,7 @@ extension Tag {
     ///  - startTime: The chapter start in milliseconds
     ///  - title: The chapter title
     public mutating func addChapter(startTime: Int, title: String) {
-        chapterHandler.toc.addChapter(startTime: startTime, title: title)
+        self.chapterHandler.toc.addChapter(startTime: startTime, title: title)
     }
     
     /// Removes the chapter at the specified start time.

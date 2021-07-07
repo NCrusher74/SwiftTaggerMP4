@@ -9,7 +9,7 @@ import Foundation
 /// Metadata atom identifiers associated with atoms containing integer content
 ///
 /// "Integer content", for our purposes, also includes boolean values, which are stored as 1 for `true` or 0 for `false`
-enum IntegerMetadataIdentifier: String {
+enum IntegerMetadataIdentifier: String, CaseIterable {
     /// The country code of the iTunes store
     case appleStoreCountryID = "sfID"
     /// The iTunes-store artist identifier
@@ -56,6 +56,32 @@ enum IntegerMetadataIdentifier: String {
     }
 }
 
+extension IntegerMetadataIdentifier {
+    init?(key: AtomKey) {
+        switch key {
+            case .appleStoreCountryID: self = .appleStoreCountryID
+            case .artistID: self = .artistID
+            case .bpm: self = .bpm
+            case .compilation: self = .compilation
+            case .composerID: self = .composerID
+            case .conductorID: self = .conductorID
+            case .gaplessPlayback: self = .gaplessPlayback
+            case .genreID: self = .genreID
+            case .iTunesAccountType: self = .iTunesAccountType
+            case .movementCount: self = .movementCount
+            case .movementNumber: self = .movementNumber
+            case .mediaKind: self = .mediaKind
+            case .playlistID: self = .playlistID
+            case .podcast: self = .podcast
+            case .rating: self = .rating
+            case .showWorkAndMovement: self = .showWorkAndMovement
+            case .tvEpisodeNumber: self = .tvEpisodeNumber
+            case .tvSeason: self = .tvSeason
+            case .year: self = .year
+            default: return nil
+        }
+    }
+}
 /// Metadata atom identifiers associated with atoms containing string content
 ///
 /// "String content", for our purposes, may also include:
@@ -244,5 +270,101 @@ enum StringMetadataIdentifier: String, CaseIterable {
         return try StringMetadataAtom(identifier: self.rawValue,
                                       size: size,
                                       payload: payload)
+    }
+}
+
+extension StringMetadataIdentifier {
+    init?(key: AtomKey) {
+        switch key {
+            case .acknowledgment: self = .acknowledgment
+            case .album: self = .album
+            case .albumArtist: self = .albumArtist
+            case .albumArtistSort: self = .albumArtistSort
+            case .albumSort: self = .albumSort
+            case .arranger: self = .arranger
+            case .arrangerKeywords: self = .arrangerKeywords
+            case .artDirector: self = .artDirector
+            case .artist: self = .artist
+            case .artistKeywords: self = .artistKeywords
+            case .artistSort: self = .artistSort
+            case .artistUrl: self = .artistUrl
+            case .category: self = .category
+            case .comment: self = .comment
+            case .composer: self = .composer
+            case .composerKeywords: self = .composerKeywords
+            case .composerSort: self = .composerSort
+            case .conductor: self = .conductor
+            case .copyright: self = .copyright
+            case .copyrightStatement: self = .copyrightStatement
+            case .customGenre: self = .customGenre
+            case .description: self = .description
+            case .director: self = .director
+            case .editDateAndDescription1: self = .editDateAndDescription1
+            case .editDateAndDescription2: self = .editDateAndDescription2
+            case .editDateAndDescription3: self = .editDateAndDescription3
+            case .editDateAndDescription4: self = .editDateAndDescription4
+            case .editDateAndDescription5: self = .editDateAndDescription5
+            case .editDateAndDescription6: self = .editDateAndDescription6
+            case .editDateAndDescription7: self = .editDateAndDescription7
+            case .editDateAndDescription8: self = .editDateAndDescription8
+            case .editDateAndDescription9: self = .editDateAndDescription9
+            case .encodedBy: self = .encodedBy
+            case .encodingTool: self = .encodingTool
+            case .executiveProducer: self = .executiveProducer
+            case .format: self = .format
+            case .grouping: self = .grouping
+            case .information: self = .information
+            case .isrc: self = .isrc
+            case .iTunesAccount: self = .iTunesAccount
+            case .keywords: self = .keywords
+            case .label: self = .label
+            case .labelUrl: self = .labelUrl
+            case .linerNotes: self = .linerNotes
+            case .longDescription: self = .longDescription
+            case .lyrics: self = .lyrics
+            case .lyricist: self = .lyricist
+            case .movementName: self = .movementName
+            case .narrator: self = .narrator
+            case .originalArtist: self = .originalArtist
+            case .owner: self = .owner
+            case .performers: self = .performers
+            case .podcastID: self = .podcastID
+            case .podcastUrl: self = .podcastUrl
+            case .predefinedGenre: self = .predefinedGenre
+            case .producer: self = .producer
+            case .producerKeywords: self = .producerKeywords
+            case .publisher: self = .publisher
+            case .purchaseDate: self = .purchaseDate
+            case .recordCompany: self = .recordCompany
+            case .recordCompanyUrl: self = .recordCompanyUrl
+            case .recordingDate: self = .recordingDate
+            case .recordingCopyright: self = .recordingCopyright
+            case .releaseDate: self = .releaseDate
+            case .requirements: self = .requirements
+            case .sellerID: self = .sellerID
+            case .soundEngineer: self = .soundEngineer
+            case .softwareVersion: self = .softwareVersion
+            case .soloist: self = .soloist
+            case .songDescription: self = .songDescription
+            case .songwriter: self = .songwriter
+            case .songwriterKeywords: self = .songwriterKeywords
+            case .sourceCredit: self = .sourceCredit
+            case .subtitle: self = .subtitle
+            case .subtitleKeywords: self = .subtitleKeywords
+            case .title: self = .title
+            case .titleKeywords: self = .titleKeywords
+            case .titleSort: self = .titleSort
+            case .thanks: self = .thanks
+            case .trackSubtitle: self = .trackSubtitle
+            case .tvEpisodeTitle: self = .tvEpisodeTitle
+            case .tvNetwork: self = .tvNetwork
+            case .tvShow: self = .tvShow
+            case .tvShowDescription: self = .tvShowDescription
+            case .tvShowSort: self = .tvShowSort
+            case .website: self = .website
+            case .workName: self = .workName
+            case .writer: self = .writer
+            default: return nil
+        }
     }
 }

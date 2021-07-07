@@ -109,12 +109,12 @@ public class Atom {
         if self.identifier == "----" {
             if let atom = self as? UnknownMetadataAtom {
                 let name = atom.name
-                return AtomKey(string: self.identifier, name: name)
+                return AtomKey(idString: self.identifier, name: name)
             } else {
                 fatalError("Unable to initialize atom key for unknown atom")
             }
         } else {
-            return AtomKey(string: self.identifier, name: nil)
+            return AtomKey(idString: self.identifier, name: nil)
         }
     }
     

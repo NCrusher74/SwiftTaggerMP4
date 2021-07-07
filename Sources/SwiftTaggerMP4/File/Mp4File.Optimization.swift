@@ -142,19 +142,21 @@ extension Mp4File {
     }
 
     func setMdat(tag: Tag) throws {
+        let titles = tag.chapterHandler.chapterTitles
         let mdat = try Mdat(mediaData: getMediaData(),
-                            titleArray: tag.chapterHandler.chapterTitles)
+                            titleArray: titles)
         self.mdats = [mdat]
         
         self.moov.soundTrack.mdia.minf.stbl.chunkOffsetAtom.chunkOffsetTable = try calculateNewMediaOffsets()
     }
-
+    
     func setChapterTrack(tag: Tag) throws {
         if tag.chapterList.isEmpty {
             self.moov.chapterTrack = nil
             self.moov.udta?.chpl = nil
             self.moov.chapterTrackID = nil
         } else {
+            
             let chpl = try Chpl(from: tag.chapterList)
             if self.moov.udta != nil {
                 self.moov.udta?.chpl = chpl
@@ -179,22 +181,23 @@ extension Mp4File {
             for language in self.languages ?? [] {
                 locales.append(language.localeCode)
             }
-            let chapterTrack = try Trak(chapterHandler: tag.chapterHandler,
-                                        languages: locales,
-                                        moov: self.moov,
-                                        chapterTrackID: chapterTrackID)
+            let chapterTrack = try Trak(
+                chapterHandler: tag.chapterHandler,
+                languages: locales,
+                moov: self.moov,
+                chapterTrackID: chapterTrackID)
             self.moov.chapterTrack = chapterTrack
-
+            
             var offset = mediaDataCount + 8 // +8 for mdat header data
             // increase the offset by the byte count of every atom except mdat
             // since we've already set the chapter track, except for the chunk offset atom, this count should include the chapter track atoms
             let filteredAtoms = rootAtoms.filter({
-                $0.identifier != "mdat" &&
-                    $0.identifier != "free" &&
-                    $0.identifier != "skip" &&
-                    $0.identifier != "wide"})
+                                                    $0.identifier != "mdat" &&
+                                                        $0.identifier != "free" &&
+                                                        $0.identifier != "skip" &&
+                                                        $0.identifier != "wide"})
             offset += filteredAtoms.map({$0.size}).sum()
-
+            
             // we still need to add the chunk offset atom, but the starting offset will include the atom itself, which doesn't exist yet, so we need to calculate its size
             // +4 for size, +4 identifier, +4 version and flags +4 entry count
             offset += 16
@@ -212,7 +215,7 @@ extension Mp4File {
                 use64BitOffset: Mp4File.use64BitOffset,
                 chapterHandler: tag.chapterHandler,
                 startingOffset: offset)
-
+            
             self.moov.chapterTrack?.mdia.minf.stbl.chunkOffsetAtom = offsetAtom
             self.moov.chapterTrack?.mdia.minf.stbl.recalculateSize()
             self.moov.chapterTrack?.mdia.minf.recalculateSize()

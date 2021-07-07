@@ -7,6 +7,7 @@
 
 import Foundation
 public enum AtomKey: Hashable {
+    
     /// The country code of the iTunes store
     case appleStoreCountryID
     /// The iTunes-store artist identifier
@@ -230,6 +231,241 @@ public enum AtomKey: Hashable {
     /// Freeform metadata string (may be another data type, such as integer or boolean or date, stored as a string)
     case unknown(String)
     
+    var priority: Int {
+        switch self {
+            case .appleStoreCountryID: return 97
+            case .artistID: return 12
+            case .bpm: return 65
+            case .compilation: return 20
+            case .composerID: return 19
+            case .conductorID: return 70
+            case .gaplessPlayback: return 64
+            case .genreID: return 71
+            case .iTunesAccount: return 89
+            case .iTunesAccountType: return 90
+            case .movementCount: return 43
+            case .movementNumber: return 42
+            case .mediaKind: return 66
+            case .podcast: return 27
+            case .playlistID: return 63
+            case .rating: return 62
+            case .showWorkAndMovement: return 44
+            case .tvEpisodeNumber: return 37
+            case .tvSeason: return 35
+            case .year: return 28
+            case .acknowledgment: return 96
+            case .album: return 1
+            case .albumArtist: return 3
+            case .albumArtistSort: return 4
+            case .albumSort: return 2
+            case .arranger: return 67
+            case .arrangerKeywords: return 68
+            case .artDirector: return 77
+            case .artist: return 11
+            case .artistKeywords: return 14
+            case .artistSort: return 13
+            case .artistUrl: return 15
+            case .category: return 49
+            case .comment: return 26
+            case .composer: return 16
+            case .composerKeywords: return 18
+            case .composerSort: return 17
+            case .conductor: return 69
+            case .copyright: return 60
+            case .copyrightStatement: return 61
+            case .customGenre: return 48
+            case .description: return 25
+            case .director: return 76
+            case .editDateAndDescription1: return 103
+            case .editDateAndDescription2: return 104
+            case .editDateAndDescription3: return 105
+            case .editDateAndDescription4: return 106
+            case .editDateAndDescription5: return 107
+            case .editDateAndDescription6: return 108
+            case .editDateAndDescription7: return 109
+            case .editDateAndDescription8: return 110
+            case .editDateAndDescription9: return 111
+            case .encodedBy: return 83
+            case .encodingTool: return 84
+            case .executiveProducer: return 72
+            case .format: return 85
+            case .grouping: return 50
+            case .information: return 88
+            case .isrc: return 51
+            case .keywords: return 52
+            case .label: return 58
+            case .labelUrl: return 59
+            case .linerNotes: return 101
+            case .longDescription: return 102
+            case .lyrics: return 100
+            case .lyricist: return 78
+            case .movementName: return 41
+            case .narrator: return 79
+            case .originalArtist: return 53
+            case .owner: return 57
+            case .performers: return 80
+            case .podcastID: return 45
+            case .podcastUrl: return 46
+            case .predefinedGenre: return 47
+            case .producer: return 73
+            case .producerKeywords: return 74
+            case .publisher: return 56
+            case .purchaseDate: return 92
+            case .recordCompany: return 54
+            case .recordCompanyUrl: return 55
+            case .recordingDate: return 29
+            case .recordingCopyright: return 75
+            case .releaseDate: return 30
+            case .requirements: return 87
+            case .sellerID: return 91
+            case .soundEngineer: return 81
+            case .softwareVersion: return 86
+            case .soloist: return 82
+            case .songDescription: return 24
+            case .songwriter: return 22
+            case .songwriterKeywords: return 23
+            case .sourceCredit: return 94
+            case .subtitle: return 5
+            case .subtitleKeywords: return 6
+            case .title: return 7
+            case .titleKeywords: return 9
+            case .titleSort: return 8
+            case .thanks: return 95
+            case .trackSubtitle: return 10
+            case .tvEpisodeTitle: return 36
+            case .tvNetwork: return 38
+            case .tvShow: return 33
+            case .tvShowDescription: return 34
+            case .tvShowSort: return 39
+            case .website: return 93
+            case .workName: return 40
+            case .writer: return 21
+            case .coverArt: return 98
+            case .trackNumber: return 32
+            case .discNumber: return 31
+            case .unknown(_): return 99
+        }
+    }
+    static var knownCases: [AtomKey] {
+        return [.acknowledgment, .album, .albumArtist, .albumArtistSort, .albumSort, .appleStoreCountryID, .arranger, .arrangerKeywords, .artDirector, .artist, .artistID, .artistKeywords, .artistSort, .artistUrl, .bpm, .category, .comment, .compilation, .composer, .composerID, .composerKeywords, .composerSort, .conductor, .conductorID, .copyright, .copyrightStatement, .coverArt, .customGenre, .description, .director, .discNumber, .editDateAndDescription1, .editDateAndDescription2, .editDateAndDescription3, .editDateAndDescription4, .editDateAndDescription5, .editDateAndDescription6, .editDateAndDescription7, .editDateAndDescription8, .editDateAndDescription9, .encodedBy, .encodingTool, .executiveProducer, .format, .gaplessPlayback, .genreID, .grouping, .iTunesAccount, .iTunesAccountType, .information, .isrc, .keywords, .label, .labelUrl, .linerNotes, .longDescription, .lyrics, .lyricist, .mediaKind, .movementName, .movementCount, .movementNumber, .narrator, .originalArtist, .owner, .performers, .playlistID, .podcast, .podcastID, .podcastUrl, .predefinedGenre, .producer, .producerKeywords, .publisher, .purchaseDate, .rating, .recordCompany, .recordCompanyUrl, .recordingCopyright, .recordingDate, .releaseDate, .requirements, .sellerID, .showWorkAndMovement, .softwareVersion, .soloist, .songDescription, .songwriter, .songwriterKeywords, .soundEngineer, .sourceCredit, .subtitle, .subtitleKeywords, .thanks, .title, .titleKeywords, .titleSort, .trackNumber, .trackSubtitle, .tvEpisodeNumber, .tvSeason, .tvShow, .tvNetwork, .tvShowSort, .tvEpisodeTitle, .tvShowDescription, .website, .workName, .writer, .year]
+    }
+    
+    var stringValue: String {
+        switch self {
+            case .appleStoreCountryID: return "appleStoreCountryID"
+            case .artistID: return "artistID"
+            case .bpm: return "bpm"
+            case .compilation: return "compilation"
+            case .composerID: return "composerID"
+            case .conductorID: return "conductorID"
+            case .gaplessPlayback: return "gaplessPlayback"
+            case .genreID: return "genreID"
+            case .iTunesAccount: return "iTunesAccount"
+            case .iTunesAccountType: return "iTunesAccountType"
+            case .movementCount: return "movementCount"
+            case .movementNumber: return "movementNumber"
+            case .mediaKind: return "mediaKind"
+            case .podcast: return "podcast"
+            case .playlistID: return "playlistID"
+            case .rating: return "rating"
+            case .showWorkAndMovement: return "showWorkAndMovement"
+            case .tvEpisodeNumber: return "tvEpisodeNumber"
+            case .tvSeason: return "tvSeason"
+            case .year: return "year"
+            case .acknowledgment: return "acknowledgment"
+            case .album: return "album"
+            case .albumArtist: return "albumArtist"
+            case .albumArtistSort: return "albumArtistSort"
+            case .albumSort: return "albumSort"
+            case .arranger: return "arranger"
+            case .arrangerKeywords: return "arrangerKeywords"
+            case .artDirector: return "artDirector"
+            case .artist: return "artist"
+            case .artistKeywords: return "artistKeywords"
+            case .artistSort: return "artistSort"
+            case .artistUrl: return "artistUrl"
+            case .category: return "category"
+            case .comment: return "comment"
+            case .composer: return "composer"
+            case .composerKeywords: return "composerKeywords"
+            case .composerSort: return "composerSort"
+            case .conductor: return "conductor"
+            case .copyright: return "copyright"
+            case .copyrightStatement: return "copyrightStatement"
+            case .customGenre: return "customGenre"
+            case .description: return "description"
+            case .director: return "director"
+            case .editDateAndDescription1: return "editDateAndDescription1"
+            case .editDateAndDescription2: return "editDateAndDescription2"
+            case .editDateAndDescription3: return "editDateAndDescription3"
+            case .editDateAndDescription4: return "editDateAndDescription4"
+            case .editDateAndDescription5: return "editDateAndDescription5"
+            case .editDateAndDescription6: return "editDateAndDescription6"
+            case .editDateAndDescription7: return "editDateAndDescription7"
+            case .editDateAndDescription8: return "editDateAndDescription8"
+            case .editDateAndDescription9: return "editDateAndDescription9"
+            case .encodedBy: return "encodedBy"
+            case .encodingTool: return "encodingTool"
+            case .executiveProducer: return "executiveProducer"
+            case .format: return "format"
+            case .grouping: return "grouping"
+            case .information: return "information"
+            case .isrc: return "isrc"
+            case .keywords: return "keywords"
+            case .label: return "label"
+            case .labelUrl: return "labelUrl"
+            case .linerNotes: return "linerNotes"
+            case .longDescription: return "longDescription"
+            case .lyrics: return "lyrics"
+            case .lyricist: return "lyricist"
+            case .movementName: return "movementName"
+            case .narrator: return "narrator"
+            case .originalArtist: return "originalArtist"
+            case .owner: return "owner"
+            case .performers: return "performers"
+            case .podcastID: return "podcastID"
+            case .podcastUrl: return "podcastUrl"
+            case .predefinedGenre: return "predefinedGenre"
+            case .producer: return "producer"
+            case .producerKeywords: return "producerKeywords"
+            case .publisher: return "publisher"
+            case .purchaseDate: return "purchaseDate"
+            case .recordCompany: return "recordCompany"
+            case .recordCompanyUrl: return "recordCompanyUrl"
+            case .recordingDate: return "recordingDate"
+            case .recordingCopyright: return "recordingCopyright"
+            case .releaseDate: return "releaseDate"
+            case .requirements: return "requirements"
+            case .sellerID: return "sellerID"
+            case .soundEngineer: return "soundEngineer"
+            case .softwareVersion: return "softwareVersion"
+            case .soloist: return "soloist"
+            case .songDescription: return "songDescription"
+            case .songwriter: return "songwriter"
+            case .songwriterKeywords: return "songwriterKeywords"
+            case .sourceCredit: return "sourceCredit"
+            case .subtitle: return "subtitle"
+            case .subtitleKeywords: return "subtitleKeywords"
+            case .title: return "title"
+            case .titleKeywords: return "titleKeywords"
+            case .titleSort: return "titleSort"
+            case .thanks: return "thanks"
+            case .trackSubtitle: return "trackSubtitle"
+            case .tvEpisodeTitle: return "tvEpisodeTitle"
+            case .tvNetwork: return "tvNetwork"
+            case .tvShow: return "tvShow"
+            case .tvShowDescription: return "tvShowDescription"
+            case .tvShowSort: return "tvShowSort"
+            case .website: return "website"
+            case .workName: return "workName"
+            case .writer: return "writer"
+            case .coverArt: return "coverArt"
+            case .trackNumber: return "trackNumber"
+            case .discNumber: return "discNumber"
+            case .unknown(let string): return string
+        }
+    }
+    
     private init(atomID: IntegerMetadataIdentifier) {
         switch atomID {
             case .appleStoreCountryID: self = .appleStoreCountryID
@@ -254,6 +490,14 @@ public enum AtomKey: Hashable {
         }
     }
 
+    static var integerKeys: [AtomKey] {
+        var keys = [AtomKey]()
+        for item in IntegerMetadataIdentifier.allCases {
+            keys.append(AtomKey(atomID: item))
+        }
+        return keys
+    }
+    
     private init(atomID: StringMetadataIdentifier) {
         switch atomID {
             case .acknowledgment: self = .acknowledgment
@@ -347,23 +591,46 @@ public enum AtomKey: Hashable {
         }
     }
     
-    init(string: String, name: String?) {
-        if string == "covr" {
+    static var stringKeys: [AtomKey] {
+        var keys = [AtomKey]()
+        for item in StringMetadataIdentifier.allCases {
+            keys.append(AtomKey(atomID: item))
+        }
+        return keys
+    }
+
+    init(idString: String, name: String?) {
+        if idString == "covr" {
             self = .coverArt
-        } else if string == "trkn" {
+        } else if idString == "trkn" {
             self = .trackNumber
-        } else if string == "disk" {
+        } else if idString == "disk" {
             self = .discNumber
-        } else if string == "----" {
+        } else if idString == "----" {
             self = .unknown(name ?? "")
         } else {
-            if let stringID = StringMetadataIdentifier(rawValue: string) {
-                self.init(atomID: stringID)
-            } else if let intID = IntegerMetadataIdentifier(rawValue: string) {
-                self.init(atomID: intID)
+            if let identifier = StringMetadataIdentifier(rawValue: idString) {
+                self.init(atomID: identifier)
+            } else if let identifier = IntegerMetadataIdentifier(rawValue: idString) {
+                self.init(atomID: identifier)
             } else {
-                fatalError("Cannot initialize atom key for metadata atom \(string)")
+                fatalError("Cannot initialize atom key for metadata atom \(idString)")
             }
         }
+    }
+    
+    init?(stringValue: String) {
+        for key in AtomKey.knownCases {
+            if stringValue == key.stringValue.convertCamelToUpperCase() {
+                self = key
+            } else if stringValue.contains("----") {
+                
+                let trimmed = stringValue.trimmingCharacters(in: CharacterSet(charactersIn: " -)("))
+                self = .unknown(trimmed.capitalized)
+            } else {
+                self = .unknown(stringValue.capitalized)
+            }
+        }
+        return nil
     }
 }
