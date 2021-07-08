@@ -13,19 +13,24 @@ extension Tag {
         let string = try String(contentsOf: location)
 
         switch format {
-            default:
-                try importCueFormat(string)
+            case .ogg: importOggFormat(string)
+            case .mp4v2: importMp4v2Format(string)
+            default: importCueFormat(string)
         }
     }
     
-    private mutating func importCueFormat(_ chapterString: String) throws {
+    private mutating func importCueFormat(_ chapterString: String) {
         var sections = chapterString.components(separatedBy: "TRACK")
 
         let header = sections.extractFirst()
         parseMetadataFromCue(header)
         
-        var titles = [String]()
-        var starts = [Int]()
+        guard !sections.isEmpty else {
+            print("Cannot Import Files; Source file has no chapter data.")
+            return
+        }
+
+        removeAllChapters()
         while !sections.isEmpty {
             let current = sections.extractFirst()
             
@@ -46,34 +51,20 @@ extension Tag {
                 .components(separatedBy: ":")
             let startTime = segments.millisecondsFromMMSSFF()
             
-            titles.append(titleLine)
-            starts.append(startTime)
-        }
-        
-        guard starts.count == titles.count else {
-            print("Unable to import chapters. The number of chapter titles differs from the number of chapter start times.")
-            return
-        }
-
-        removeAllChapters()
-        while !starts.isEmpty {
-            let title = titles.extractFirst()
-            let start = starts.extractFirst()
-
-            addChapter(startTime: start, title: title)
+            addChapter(startTime: startTime, title: titleLine)
         }
     }
     
     // CHAPTER01=00:00:00.000
     // CHAPTER01NAME=Chapter 1
     private mutating func importOggFormat(_ chapterString: String) {
-        var chapterString = chapterString
-
-        // get rid of everything before the stuff we want
-        if let index = chapterString.distance(of: "CHAPTER"), index != 0 {
-            chapterString = String(chapterString.dropFirst(index))
-        }
         
+        guard chapterString.hasPrefix("CHAPTER01=") else {
+            print("Cannot import chapter data; chapter information is in incorrect format. Please be sure the chapter information is formatted as follows (with nothing before the first line of chapter information):\n CHAPTER01=00:00:00.000\n CHAPTER01NAME=Chapter 1")
+            return
+        }
+        let chapterString = chapterString
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         var lines = chapterString.components(separatedBy: .newlines)
         
         guard !lines.isEmpty else {
@@ -86,18 +77,18 @@ extension Tag {
             let timeStampLine = lines.extractFirst()
             let titleLine = lines.extractFirst()
             
-            var timeStamp = timeStampLine
-            if let index = timeStampLine.distance(of: "=") {
-                timeStamp = String(timeStampLine.dropFirst(index))
+            var startTime = 0
+            if let timeStamp = timeStampLine.components(separatedBy: "=").last {
+                startTime = timeStamp.millisecondsFromHHMMSSZZZ()
             }
-            
-            let startTime = timeStamp.millisecondsFromHHMMSSZZZ()
             
             var title = "Untitled"
-            if let index = titleLine.distance(of: "=") {
-                title = String(titleLine.dropFirst(index))
+            if let string = titleLine.components(separatedBy: "=").last {
+                title = string
             }
             
+            print(startTime)
+            print(title)
             addChapter(startTime: startTime, title: title)
         }
     }
@@ -105,6 +96,7 @@ extension Tag {
     // 00:00:00.000 Chapter Title
     private mutating func importMp4v2Format(_ chapterString: String) {
         var chapterString = chapterString
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         
         // get rid of everything before the stuff we want
         if let index = chapterString.distance(of: "00:"), index != 0 {

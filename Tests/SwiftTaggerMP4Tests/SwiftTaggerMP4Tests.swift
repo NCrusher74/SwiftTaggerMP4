@@ -609,7 +609,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
     }
     
-    func testChapterExporter() throws {
+    func testChapterExporterCue() throws {
         let url = localDirectory
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
@@ -618,53 +618,39 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNoThrow(try tag.exportChapters(format: .cue))
     }
 
-//    func testCueMetadataImport() throws {
-//        let url = localDirectory
-//            .appendingPathComponent("test-real/basilisk.m4b")
-//        let mp4 = try Mp4File(location: url)
-//        var tag = try mp4.tag()
-//
-//        tag.removeAllMetadata()
-//        XCTAssertEqual(tag.metadataAtoms.count, 1)
-//
-//        let cueURL = url
-//            .deletingPathExtension()
-//            .appendingPathExtension("cue")
-//
-//        XCTAssertNoThrow(try tag.importChapters(
-//                            location: cueURL,
-//                            format: .cue))
-//
-//        XCTAssertEqual(tag.metadataAtoms.count, 12)
-//        XCTAssertEqual(tag.album, "Totally Awesome Book of Awesomeness")
-//        XCTAssertEqual(tag.albumArtist, "John Doe")
-//        XCTAssertEqual(tag.composer, "Joe Blow")
-//        XCTAssertEqual(tag.conductor, "conductor")
-//        XCTAssertEqual(tag.copyright, "Copyright")
-//        XCTAssertEqual(tag.composerID, 1234567)
-//        XCTAssertEqual(tag.originalArtist, "Some Guy")
-//        XCTAssertEqual(tag.customGenre, "My Genre")
-//        XCTAssertEqual(tag.comment, "This is a message")
-//        XCTAssertEqual(tag.isrc, "Stuff")
-//        XCTAssertEqual(tag["Unknown Tag"], "Freeform stuff")
-//    }
-    
-    func testChapterImporter() throws {
+    func testChapterExporterOgg() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        let tag = try mp4.tag()
+        
+        XCTAssertNoThrow(try tag.exportChapters(format: .ogg))
+    }
+
+    func testChapterExporterMp4v2() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        let tag = try mp4.tag()
+        
+        XCTAssertNoThrow(try tag.exportChapters(format: .mp4v2))
+    }
+
+    func testCueChapterImporter() throws {
         let url = localDirectory
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
 
-        let exportCount = tag.chapterList.count
-        let exported = tag.chapterList
-        let exportedTitle = tag.album
-        let exportedArtist = tag.albumArtist
-        
         let cueURL = url
             .deletingPathExtension()
             .appendingPathExtension("cue")
-
+        
         XCTAssertNoThrow(try tag.exportChapters(format: .cue))
+        let exportCount = tag.chapterList.count
+        let exportedTitle = tag.album
+        let exportedArtist = tag.albumArtist
+        
         
         tag.removeAllChapters()
         tag.removeAllMetadata()
@@ -676,8 +662,59 @@ final class SwiftTaggerMP4Tests: XCTestCase {
                             format: .cue))
 
         XCTAssertEqual(tag.chapterList.count, exportCount)
-        XCTAssertEqual(tag.chapterList, exported)
         XCTAssertEqual(tag.album, exportedTitle)
         XCTAssertEqual(tag.albumArtist, exportedArtist)
+    }
+    
+    func testOggChapterImporter() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        let exportCount = tag.chapterList.count
+        let exported = tag.chapterList
+
+        let txtURL = url
+            .deletingPathExtension()
+            .appendingPathExtension("txt")
+        
+        XCTAssertNoThrow(try tag.exportChapters(format: .ogg))
+        
+        tag.removeAllChapters()
+        XCTAssertTrue(tag.chapterList.isEmpty)
+        
+        XCTAssertNoThrow(try tag.importChapters(
+                            location: txtURL,
+                            format: .ogg))
+        
+        XCTAssertEqual(tag.chapterList.count, exportCount)
+        XCTAssertEqual(tag.chapterList, exported)
+    }
+
+    func testMp4v2ChapterImporter() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        let exportCount = tag.chapterList.count
+        let exported = tag.chapterList
+        
+        let txtURL = url
+            .deletingPathExtension()
+            .appendingPathExtension("txt")
+        
+        XCTAssertNoThrow(try tag.exportChapters(format: .mp4v2))
+        
+        tag.removeAllChapters()
+        XCTAssertTrue(tag.chapterList.isEmpty)
+        
+        XCTAssertNoThrow(try tag.importChapters(
+                            location: txtURL,
+                            format: .mp4v2))
+        
+        XCTAssertEqual(tag.chapterList.count, exportCount)
+        XCTAssertEqual(tag.chapterList, exported)
     }
 }
