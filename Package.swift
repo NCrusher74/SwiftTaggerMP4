@@ -16,7 +16,7 @@ let package = Package(
             from: "2.0.0"),
         .package(
             url: "https://github.com/NCrusher74/SwiftConvenienceExtensions",
-            from: "2.0.0"),
+            from: "3.0.0"),
         .package(
             url: "https://github.com/NCrusher74/iTunesGenreID",
             from: "1.0.0"),

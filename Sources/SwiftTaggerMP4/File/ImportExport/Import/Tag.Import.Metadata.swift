@@ -224,5 +224,6 @@ enum ImporterError: Error {
     case CSVDataIsCorrupted
     case InvalidChapterData
     case PossibleCountMismatch
+    case InvalidOggChapterContent
 }
 
