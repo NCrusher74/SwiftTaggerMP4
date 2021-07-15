@@ -7,22 +7,7 @@
 
 import Foundation
 
-extension Tag {
-    public enum DetailPreference {
-        /// DEFAULT: Use the unique, four-byte code for the metadata item (ex: "\u{00A9}alb"
-        ///
-        /// This option is *highly* recommended if you intend to edit and then re-import the exported metadata down the line
-        case useOnlyIdentifier
-        /// Use the metadata item's string descriptor (ex: "ALBUM".)
-        ///
-        /// This is intended to be a human-readable output and not intended to be used to re-import the metadata
-        case useOnlyDescription
-        /// Use both the four-byte code and string descriptor (ex: "ALBUM (\u{00A9}alb)"
-        ///
-        /// This is intended to be a human-readable output and not intended to be used to re-import the metadata
-        case useIDAndDescription
-    }
-    
+extension Tag {    
     private func destination(savingAs: MetadataExportFormat) -> URL {
         let fileName = location.fileName
 
@@ -35,8 +20,6 @@ extension Tag {
     
     public mutating func exportMetadata(
         file savingAs: MetadataExportFormat,
-        format: DetailPreference,
-        separatedBy: String = ": ",
         usingFullMetadataForCue: Bool = false) throws {
                 
         var string = """
@@ -52,9 +35,7 @@ extension Tag {
                 let data = try formatAsJSON()
                 try data.write(to: destination(savingAs: .json))
             default:
-                string = formatAsText(
-                    separatedBy: separatedBy,
-                    format: format)
+                string = formatAsText()
                 try string.write(
                     to: destination(savingAs: savingAs),
                     atomically: true,
@@ -62,10 +43,11 @@ extension Tag {
         }
     }
     
-    private func getMetadataAsArray(format: DetailPreference) -> [(keyString: String, valueString: String)] {
+    private func getMetadataAsArray(format: MetadataExportFormat) -> [(keyString: String, valueString: String)] {
         var metadata = [(keyString: String, valueString: String)]()
-        
-        let atoms = metadataAtoms.sorted(by: {$0.key.priority < $1.key.priority })
+
+        let atoms = metadataAtoms.sorted(by: {$0.key.priority < $1.key.priority }).filter({$0.key != .coverArt})
+
         for (key, atom) in atoms {
             if AtomKey.integerKeys.contains(key) {
                 let result = getIntAtomStrings(key: key,
@@ -86,44 +68,19 @@ extension Tag {
                     format: format)
                 metadata.append(result)
             } else {
-                let result = getUnknownAtomStrings(key: key, atom: atom, format: format)
+                let result = getUnknownAtomStrings(key: key, atom: atom)
                 metadata.append(result)
             }
         }
+
         return metadata
     }
     
     private func getMetadataAsDictionary() throws -> [String: String] {
         var formatted = [String: String]()
-        for (key, atom) in metadataAtoms
-            .filter({$0.key != .coverArt}) {
-
-            let keyString = atom.identifier
-            
-            if AtomKey.integerKeys.contains(key) {
-                let result = getIntAtomStrings(key: key,
-                                      atom: atom,
-                                      format: .useOnlyIdentifier)
-                formatted[keyString] = result.valueString
-            } else if AtomKey.stringKeys.contains(key) {
-                let result = getStringAtomStrings(
-                    key: key,
-                    atom: atom,
-                    format: .useOnlyIdentifier)
-                formatted[keyString] = result.valueString
-            } else if key == .discNumber ||
-                        key == .trackNumber {
-                let result = getPoTAtomStrings(
-                    key: key,
-                    atom: atom,
-                    format: .useOnlyIdentifier)
-                formatted[keyString] = result.valueString
-            } else {
-                let result = getUnknownAtomStrings(key: key, atom: atom, format: .useOnlyIdentifier)
-                formatted[result.keyString] = result.valueString
-            }
+        for (key, value) in getMetadataAsArray(format: .json) {
+            formatted[key] = value
         }
-        
         return formatted
     }
     
@@ -156,8 +113,8 @@ extension Tag {
         return string
     }
         
-    private func formatAsText(separatedBy: String, format: DetailPreference) -> String {
-        let metadata = getMetadataAsArray(format: format)
+    private func formatAsText() -> String {
+        let metadata = getMetadataAsArray(format: .text)
         
         var string = """
             """
@@ -170,70 +127,56 @@ extension Tag {
         }
         
         for (key, value) in metadata {
-            var joined = ""
-            if separatedBy == ": " {
-                var separator = ":"
-                var difference = count - key.count
-                while difference > 0 {
-                    separator.append(" ")
-                    difference = difference - 1
-                }
-                joined = key+separator+value+"\n"
-            } else {
-                joined = key+separatedBy+value+"\n"
-            }
+            let difference = count - key.count
+            let separator = ":".padRight(difference)
+            let joined = key + separator + value + "\n"
             string.append(joined)
         }
         return string
     }
-        
+    
     private func getIntAtomStrings(key: AtomKey,
                                          atom: Atom,
-                                         format: DetailPreference) -> (keyString: String, valueString: String) {
-        var keyString = key.stringValue.convertCamelToUpperCase()
-        var valueString = ""
+                                         format: MetadataExportFormat) -> (keyString: String, valueString: String) {
+        var keyString = String()
+        var valueString = String()
         
         if let intAtom = atom as? IntegerMetadataAtom {
             valueString = "\(intAtom.intValue)"
 
-            let id = atom.identifier
             switch format {
-                case .useIDAndDescription:
-                    keyString = "\(keyString) (\(id))"
-                case .useOnlyIdentifier:
-                    keyString = id
-                case .useOnlyDescription:
-                    break
+                case .text:
+                    keyString = "(\(atom.identifier)) " + key.stringValue.convertCamelToUpperCase()
+                default: keyString = atom.identifier
             }
         }
+        keyString = keyString.replacingOccurrences(of: " I D", with: " ID")
+        keyString = keyString.replacingOccurrences(of: "I TUNES", with: "ITUNES")
         return (keyString, valueString)
     }
     
-    private func getStringAtomStrings(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
-        var keyString = key.stringValue.convertCamelToUpperCase()
-        var valueString = ""
+    private func getStringAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
+        var keyString = String()
+        var valueString = String()
         
         if let stringAtom = atom as? StringMetadataAtom {
             valueString = "\(stringAtom.stringValue)"
 
-            let id = atom.identifier
             switch format {
-                case .useIDAndDescription:
-                    keyString = "\(keyString) (\(id))"
-                case .useOnlyIdentifier:
-                    keyString = id
-                case .useOnlyDescription:
-                    break
+                case .text:
+                    keyString = "(\(atom.identifier)) " + key.stringValue.convertCamelToUpperCase()
+                default: keyString = atom.identifier
             }
         }
-
+        keyString = keyString.replacingOccurrences(of: " I D", with: " ID")
+        keyString = keyString.replacingOccurrences(of: "I TUNES", with: "ITUNES")
         return (keyString, valueString)
     }
     
-    private func getPoTAtomStrings(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
+    private func getPoTAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
 
-        var keyString = key.stringValue.convertCamelToUpperCase()
-        var valueString = ""
+        var keyString = String()
+        var valueString = String()
         
         if let potAtom = atom as? PartAndTotalMetadataAtom {
             let string: String
@@ -247,21 +190,18 @@ extension Tag {
             
             valueString = string
             
-            let id = atom.identifier
             switch format {
-                case .useIDAndDescription:
-                    keyString = "\(keyString) (\(id))"
-                case .useOnlyIdentifier:
-                    keyString = id
-                case .useOnlyDescription:
-                    break
+                case .text:
+                keyString = "(\(atom.identifier)) " + key.stringValue.convertCamelToUpperCase()
+                default:
+                    keyString = atom.identifier
             }
         }
         
         return (keyString, valueString)
     }
     
-    func getUnknownAtomStrings(key: AtomKey, atom: Atom, format: DetailPreference) -> (keyString: String, valueString: String) {
+    func getUnknownAtomStrings(key: AtomKey, atom: Atom) -> (keyString: String, valueString: String) {
         let keyString = "(----) " + key.stringValue.uppercased()
         var valueString = ""
         

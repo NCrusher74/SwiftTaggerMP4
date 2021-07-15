@@ -21,7 +21,7 @@ extension Tag {
             try parseStringDictionary(jsonData)
         } else {
             let stringInput = try String(contentsOf: location)
-            try importFromCSV(csvString: stringInput)
+            try importFromCSV(string: stringInput)
         }
     }
     
@@ -57,9 +57,19 @@ extension Tag {
             return
         }
         
-        var lastInt: Int? = nil
-        if let last = components.last {
-            lastInt = Int(last)
+        let lastInt: Int?
+        if components.count > 1 {
+            if let last = components.last {
+                if let int = Int(last) {
+                    lastInt = int
+                } else {
+                    lastInt = nil
+                }
+            } else {
+                lastInt = nil
+            }
+        } else {
+            lastInt = nil
         }
         
         let id: String
@@ -76,7 +86,10 @@ extension Tag {
         }
     }
     
-    private mutating func importIntegerAtom(key: AtomKey, id: IntegerMetadataIdentifier, stringValue: String) {
+    private mutating func importIntegerAtom(
+        key: AtomKey,
+        id: IntegerMetadataIdentifier,
+        stringValue: String) {
         if let int = Int(stringValue) {
             if let atom = try? IntegerMetadataAtom(identifier: id, intValue: int) {
                 metadataAtoms[key] = atom
@@ -99,8 +112,8 @@ extension Tag {
         }
     }
     
-    private mutating func importFromCSV(csvString: String) throws {
-        let lines = csvString.components(separatedBy: .newlines)
+    private mutating func importFromCSV(string: String) throws {
+        let lines = string.components(separatedBy: .newlines)
         guard lines.count == 2 else {
             throw ImporterError.CSVIsEmptyOrCorrupt
         }
@@ -118,16 +131,14 @@ extension Tag {
         
         var stringDictionary = [String: String]()
         while !keys.isEmpty {
-            let idString = keys.first!
-            var value = values.first!
+            let idString = keys.extractFirst()
+            var value = values.extractFirst()
 
             if idString == "keyw" {
                 value = value.replacingOccurrences(of: ",", with: ";")
             }
 
             stringDictionary[idString] = value
-            keys.removeFirst()
-            values.removeFirst()
         }
         
         try parseStringDictionary(stringDictionary)
@@ -146,7 +157,7 @@ extension Tag {
         var lines = header.components(separatedBy: .newlines)
             .map({$0.trimmingCharacters(in: .whitespaces)})
         
-        let watchedItems = ["TITLE", "PERFORMER", "GENRE", "COMPOSER", "ISRC", "MESSAGE"]
+        let recognized = ["TITLE", "PERFORMER", "GENRE", "COMPOSER", "ISRC", "MESSAGE"]
         while !lines.isEmpty {
             let line = lines.extractFirst()
 
@@ -155,7 +166,7 @@ extension Tag {
             } else if line.hasPrefix("REM") {
                 attemptMetadataFromRemark(line)
             } else {                
-                for item in watchedItems {
+                for item in recognized {
                     if line.hasPrefix(item) {
                         let trimmed = line.dropFirst(item.count)
                             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -187,20 +198,19 @@ extension Tag {
     }
     
     private mutating func attemptMetadataFromRemark(_ line: String) {
-        var trimmed = line.dropFirst(3)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if let distance = trimmed.distance(of: "\"") {
-            let descriptor = trimmed.extractFirst(distance)
+        var line = line
+        if let distance = line.distance(of: "\"") {
+            let remark = line
+                .extractFirst(distance)
                 .trimmingCharacters(in: .whitespaces)
-            
-            let metadataString = trimmed
+            let key = AtomKey(stringValue: remark)
+
+            let metadataString = line
                 .trimmingCharacters(
                     in: CharacterSet(charactersIn: "\""))
                 .trimmingCharacters(
                     in: .whitespacesAndNewlines)
 
-            let key = AtomKey(stringValue: descriptor)
             
             if AtomKey.stringKeys.contains(key) {
                 guard let id = StringMetadataIdentifier(key: key) else { return }
@@ -212,7 +222,7 @@ extension Tag {
             } else if key == .discNumber || key == .trackNumber {
                 importPoTAtom(key: key, stringValue: metadataString)
             } else {
-                importUnknownAtom(keyString: descriptor.capitalized, stringValue: metadataString)
+                importUnknownAtom(keyString: key.stringValue.convertCamelCase(), stringValue: metadataString)
             }
         }
     }

@@ -49,24 +49,50 @@ extension Tag {
             if let composer = composer {
                 string.append("COMPOSER \"\(composer)\"\n")
             }
-            var genre: String? {
-                if let predefined = predefinedGenre {
-                    return predefined.stringValue
-                } else {
-                    return customGenre
-                }
-            }
             
             if let isrc = isrc {
                 string.append("ISRC \"\(isrc)\"\n")
             }
             
-            if let genre = genre {
+            if let genre = predefinedGenre {
                 string.append("GENRE \"\(genre)\"\n")
             }
             
             if let description = comment {
                 string.append("MESSAGE \"\(description)\"\n")
+            }
+            
+            for (key, value) in metadataAtoms
+                .filter({$0.key != .album ||
+                            $0.key != .albumArtist ||
+                            $0.key != .comment ||
+                            $0.key != .composer ||
+                            $0.key != .isrc ||
+                            $0.key != .predefinedGenre}) {
+                if AtomKey.stringKeys.contains(key) {
+                    if let atom = value as? StringMetadataAtom {
+                        string.append("REM \(key.stringValue.convertCamelCase()) \"\(atom.stringValue)\"\n")
+                    }
+                } else if AtomKey.integerKeys.contains(key) {
+                    if let atom = value as? IntegerMetadataAtom {
+                        string.append("REM \(key.stringValue.convertCamelCase()) \(atom.intValue)\n")
+                    }
+                } else if key == .discNumber || key == .trackNumber {
+                    if let atom = value as? PartAndTotalMetadataAtom {
+                        var stringValue = ""
+                        if let total = atom.total {
+                            stringValue = "[\(atom.part)/\(total)]"
+                        } else {
+                            stringValue = "\(atom.part)"
+                        }
+                        
+                        string.append("REM \(key.stringValue.convertCamelCase()) \"\(stringValue)\"\n")
+                    }
+                } else if key == .unknown(key.stringValue) {
+                    if let atom = value as? UnknownMetadataAtom {
+                        string.append("REM (----)  \(key.stringValue.convertCamelCase()) \"\(atom.stringValue)\"\n")
+                    }
+                }
             }
         }
         
@@ -74,9 +100,9 @@ extension Tag {
         
         var track = 1
         for chapter in chapterList {
-            string.append("  TRACK \(pad: track, toWidth: 2, using: "0") AUDIO\n")
-            string.append("    TITLE \"\(chapter.title)\"\n")
-            string.append("    INDEX 01 \(chapter.startTime.cueTimeStamp)\n")
+            string.append("TRACK \(pad: track, toWidth: 2, using: "0") AUDIO\n".padLeft(2))
+            string.append("TITLE \"\(chapter.title)\"\n".padLeft(4))
+            string.append("INDEX 01 \(chapter.startTime.cueTimeStamp)\n".padLeft(4))
             
             track += 1
         }

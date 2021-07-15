@@ -348,6 +348,7 @@ public enum AtomKey: Hashable {
             case .unknown(_): return 99
         }
     }
+    
     static var knownCases: [AtomKey] {
         return [.acknowledgment, .album, .albumArtist, .albumArtistSort, .albumSort, .appleStoreCountryID, .arranger, .arrangerKeywords, .artDirector, .artist, .artistID, .artistKeywords, .artistSort, .artistUrl, .bpm, .category, .comment, .compilation, .composer, .composerID, .composerKeywords, .composerSort, .conductor, .conductorID, .copyright, .copyrightStatement, .coverArt, .customGenre, .description, .director, .discNumber, .editDateAndDescription1, .editDateAndDescription2, .editDateAndDescription3, .editDateAndDescription4, .editDateAndDescription5, .editDateAndDescription6, .editDateAndDescription7, .editDateAndDescription8, .editDateAndDescription9, .encodedBy, .encodingTool, .executiveProducer, .format, .gaplessPlayback, .genreID, .grouping, .iTunesAccount, .iTunesAccountType, .information, .isrc, .keywords, .label, .labelUrl, .linerNotes, .longDescription, .lyrics, .lyricist, .mediaKind, .movementName, .movementCount, .movementNumber, .narrator, .originalArtist, .owner, .performers, .playlistID, .podcast, .podcastID, .podcastUrl, .predefinedGenre, .producer, .producerKeywords, .publisher, .purchaseDate, .rating, .recordCompany, .recordCompanyUrl, .recordingCopyright, .recordingDate, .releaseDate, .requirements, .sellerID, .showWorkAndMovement, .softwareVersion, .soloist, .songDescription, .songwriter, .songwriterKeywords, .soundEngineer, .sourceCredit, .subtitle, .subtitleKeywords, .thanks, .title, .titleKeywords, .titleSort, .trackNumber, .trackSubtitle, .tvEpisodeNumber, .tvSeason, .tvShow, .tvNetwork, .tvShowSort, .tvEpisodeTitle, .tvShowDescription, .website, .workName, .writer, .year]
     }
@@ -492,14 +493,6 @@ public enum AtomKey: Hashable {
         }
     }
 
-    static var integerKeys: [AtomKey] {
-        var keys = [AtomKey]()
-        for item in IntegerMetadataIdentifier.allCases {
-            keys.append(AtomKey(atomID: item))
-        }
-        return keys
-    }
-    
     init(atomID: StringMetadataIdentifier) {
         switch atomID {
             case .acknowledgment: self = .acknowledgment
@@ -593,6 +586,14 @@ public enum AtomKey: Hashable {
         }
     }
     
+    static var integerKeys: [AtomKey] {
+        var keys = [AtomKey]()
+        for item in IntegerMetadataIdentifier.allCases {
+            keys.append(AtomKey(atomID: item))
+        }
+        return keys
+    }
+    
     static var stringKeys: [AtomKey] {
         var keys = [AtomKey]()
         for item in StringMetadataIdentifier.allCases {
@@ -600,65 +601,121 @@ public enum AtomKey: Hashable {
         }
         return keys
     }
+    
+    var identifier: String? {
+        if AtomKey.stringKeys.contains(self) {
+            if let stringID = StringMetadataIdentifier(key: self) {
+                return stringID.rawValue
+            } else {
+                return nil
+            }
+        } else if AtomKey.integerKeys.contains(self) {
+            if let intID = IntegerMetadataIdentifier(key: self) {
+                return intID.rawValue
+            } else {
+                return nil
+            }
+        } else if self == .discNumber {
+            return "disk"
+        } else if self == .trackNumber {
+            return "trkn"
+        } else if self == .coverArt {
+            return "covr"
+        } else {
+            return "----"
+        }
+    }
+    
+//    private static var mappedID: [String : AtomKey ] {
+//        var map = [String : AtomKey]()
+//        for key in AtomKey.knownCases {
+//            if let identifier = key.identifier {
+//                map[identifier] = key
+//            }
+//        }
+//        return map
+//    }
+//
+//    private static var mappedUpperCasedString: [String : AtomKey] {
+//        var map = [String : AtomKey]()
+//        for key in AtomKey.knownCases {
+//            let string =
+//                key.stringValue.convertCamelToUpperCase()
+//                .replacingOccurrences(of: "I D", with: "ID")
+//                .replacingOccurrences(of: "I TUNES", with: "ITUNES")
+//            map[string] = key
+//        }
+//        return map
+//    }
+//
+//    private static var mappedCapitalizedString: [String : AtomKey] {
+//        var map = [String : AtomKey]()
+//        for key in AtomKey.knownCases {
+//            let string = key.stringValue.convertCamelCase()
+//            map[string] = key
+//        }
+//        return map
+//    }
+    
+    private static var mapped: [String : AtomKey] {
+        var map = [String : AtomKey]()
+        for key in AtomKey.knownCases {
+            if let identifier = key.identifier {
+                map[identifier] = key
+            }
 
-    static var knownIdentifiers: [String] {
-        return IntegerMetadataIdentifier.rawValues + StringMetadataIdentifier.rawValues + ["covr", "trkn", "disk", "----"]
+            let upperCased =
+                key.stringValue.convertCamelToUpperCase()
+                .replacingOccurrences(of: " I D", with: " ID")
+                .replacingOccurrences(of: "I TUNES", with: "ITUNES")
+            map[upperCased] = key
+
+            let capitalized = key.stringValue.convertCamelCase()
+            map[capitalized] = key
+        }
+        return map
     }
     
     init(idString: String, name: String? = nil) {
-        if idString == "covr" {
-            self = .coverArt
-        } else if idString == "trkn" {
-            self = .trackNumber
-        } else if idString == "disk" {
-            self = .discNumber
-        } else if idString == "----" {
-            self = .unknown(name ?? "")
+        if let mapped = AtomKey.mapped[idString] {
+            self = mapped
         } else {
-            if let identifier = StringMetadataIdentifier(rawValue: idString) {
-                self.init(atomID: identifier)
-            } else if let identifier = IntegerMetadataIdentifier(rawValue: idString) {
-                self.init(atomID: identifier)
-            } else {
-                self = .unknown(name ?? "")
-            }
+            self = .unknown(name ?? "")
         }
-    }
-    
-    private static let stringValueMapping: [String: AtomKey] = {
-        var map = [String: AtomKey]()
-        for key in AtomKey.knownCases {
-            map[key.stringValue.lowercased()] = key
-        }
-        return map
-    }()
-    
-    private static func compare(_ string: String) -> AtomKey? {
-        for key in AtomKey.knownCases {
-            if key.stringValue.lowercased()
-                .distance(between: string) > 0.97 {
-                return key
-            }
-        }; return nil
     }
     
     init(stringValue: String) {
-        var stringValue = stringValue.lowercased()
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var charSet = CharacterSet.whitespacesAndNewlines
+        charSet.formUnion(CharacterSet(charactersIn: ":"))
 
-        if stringValue.hasPrefix("(----) ") {
-            stringValue = stringValue.dropFirst(6)
+        var trimmed = stringValue
+            .trimmingCharacters(in: charSet)
+        
+        if trimmed.hasPrefix("(") {
+            let idString = trimmed.extractFirst(6).trimmingCharacters(in: CharacterSet(charactersIn: "()"))
+            
+            if idString == "----" {
+                let descriptor = trimmed.trimmingCharacters(in: .whitespaces)
+                self.init(idString: idString, name: descriptor)
+            } else {
+                self.init(idString: idString)
+            }
+        } else if trimmed.hasPrefix("REM") {
+            let retrimmed = trimmed
+                .dropFirst(3)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
-        }
 
-        if AtomKey.knownIdentifiers.contains(stringValue) {
-            self.init(idString: stringValue)
-        } else if let mapped = AtomKey.stringValueMapping[stringValue] {
-            self = mapped
-        } else if let match = AtomKey.compare(stringValue) {
-            self = match
+            if let mapped = AtomKey.mapped[retrimmed] {
+                self = mapped
+            } else {
+                self = .unknown(retrimmed)
+            }
         } else {
-            self = .unknown(stringValue)
+            if let mapped = AtomKey.mapped[trimmed] {
+                self = mapped
+            } else {
+                self = .unknown(trimmed)
+            }
         }
     }
 }
