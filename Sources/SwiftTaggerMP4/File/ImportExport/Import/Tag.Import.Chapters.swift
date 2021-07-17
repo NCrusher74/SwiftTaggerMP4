@@ -87,8 +87,6 @@ extension Tag {
                 title = string
             }
             
-            print(startTime)
-            print(title)
             addChapter(startTime: startTime, title: title)
         }
     }

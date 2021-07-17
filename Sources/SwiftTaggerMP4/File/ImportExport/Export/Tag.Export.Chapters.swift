@@ -54,7 +54,7 @@ extension Tag {
                 string.append("ISRC \"\(isrc)\"\n")
             }
             
-            if let genre = predefinedGenre {
+            if let genre = predefinedGenre?.stringValue {
                 string.append("GENRE \"\(genre)\"\n")
             }
             
@@ -71,13 +71,27 @@ extension Tag {
                             $0.key != .predefinedGenre}) {
                 if AtomKey.stringKeys.contains(key) {
                     if let atom = value as? StringMetadataAtom {
-                        string.append("REM \(key.stringValue.convertCamelCase()) \"\(atom.stringValue)\"\n")
+                        string.append("REM \(key.upperCasedStringValue) \"\(atom.stringValue)\"\n")
                     }
                 } else if AtomKey.integerKeys.contains(key) {
                     if let atom = value as? IntegerMetadataAtom {
-                        string.append("REM \(key.stringValue.convertCamelCase()) \(atom.intValue)\n")
+
+                        var valueString = String(atom.intValue)
+                        if key == .compilation ||
+                            key == .gaplessPlayback ||
+                            key == .podcast ||
+                            key == .showWorkAndMovement {
+                            if valueString == "0" {
+                                valueString = "False"
+                            } else if valueString == "1" {
+                                valueString = "True"
+                            }
+                        }
+                        
+                        string.append("REM \(key.upperCasedStringValue) \"\(valueString)\"\n")
                     }
-                } else if key == .discNumber || key == .trackNumber {
+                } else if key == .discNumber ||
+                            key == .trackNumber {
                     if let atom = value as? PartAndTotalMetadataAtom {
                         var stringValue = ""
                         if let total = atom.total {
@@ -86,11 +100,11 @@ extension Tag {
                             stringValue = "\(atom.part)"
                         }
                         
-                        string.append("REM \(key.stringValue.convertCamelCase()) \"\(stringValue)\"\n")
+                        string.append("REM \(key.upperCasedStringValue) \"\(stringValue)\"\n")
                     }
-                } else if key == .unknown(key.stringValue) {
+                } else if key == .unknown(key.capitalizedStringValue) {
                     if let atom = value as? UnknownMetadataAtom {
-                        string.append("REM (----)  \(key.stringValue.convertCamelCase()) \"\(atom.stringValue)\"\n")
+                        string.append("REM (----)  \(key.upperCasedStringValue) \"\(atom.stringValue)\"\n")
                     }
                 }
             }

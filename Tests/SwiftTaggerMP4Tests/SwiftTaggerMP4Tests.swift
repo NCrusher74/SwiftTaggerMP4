@@ -605,7 +605,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNoThrow(try tag.exportMetadata(file: .csv))
     }
 
-    func testMetadataImporter() throws {
+    func testMetadataImporterText() throws {
         let url = localDirectory
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
@@ -616,29 +616,409 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertNoThrow(tag.removeAllMetadata())
         XCTAssertEqual(tag.metadataAtoms.count, 1)
 
-        let csv = url.deletingPathExtension()
+        let text = url.deletingPathExtension()
             .appendingPathExtension("txt")
 
-        XCTAssertNoThrow(try tag.importMetadata(location: csv))
-        XCTAssertEqual(tag.metadataAtoms.count, 27)
+        XCTAssertNoThrow(try tag.importMetadata(location: text))
+        XCTAssertEqual(tag.metadataAtoms.count, 110)
 
-        let output = url.deletingLastPathComponent().appendingPathComponent("import-test.m4b")
+        let outputURL = url.deletingLastPathComponent().appendingPathComponent("import-test-text.m4b")
 
-        XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputURL))
+        let outputFile = try Mp4File(location: outputURL)
+        let output = try outputFile.tag()
+        
+        XCTAssertEqual(output.acknowledgment,"Acknowledgment")
+        XCTAssertEqual(output.album,"Album")
+        XCTAssertEqual(output.albumArtist,"Album Artist")
+        XCTAssertEqual(output.albumArtistSort,"Sort, AlbumArtist")
+        XCTAssertEqual(output.albumSort,"Sort, Album")
+        XCTAssertEqual(output.appleStoreCountryID,123)
+        XCTAssertEqual(output.arranger,"Arranger")
+        XCTAssertEqual(output.arrangerKeywords,["Arranger", "Keywords"])
+        XCTAssertEqual(output.artDirector,"Art Director")
+        XCTAssertEqual(output.artist,"Artist")
+        XCTAssertEqual(output.artistID,1234567)
+        XCTAssertEqual(output.artistKeywords,["Artist", "Keywords"])
+        XCTAssertEqual(output.artistSort,"Sort, Artist")
+        XCTAssertEqual(output.artistUrl,"www.url.com")
+        XCTAssertEqual(output.bpm,99)
+        XCTAssertEqual(output.category,"Category")
+        XCTAssertEqual(output.comment,"Comment")
+        XCTAssertEqual(output.compilation,true)
+        XCTAssertEqual(output.composer,"Composer")
+        XCTAssertEqual(output.composerKeywords,["Composer", "Keywords"])
+        XCTAssertEqual(output.composerSort,"Sort, Composer")
+        XCTAssertEqual(output.conductor,"Conductor")
+        XCTAssertEqual(output.conductorID,3456789)
+        XCTAssertEqual(output.copyright,"2021 Copyright")
+        XCTAssertEqual(output.customGenre,"Genre")
+        XCTAssertEqual(output.description,"Description")
+        XCTAssertEqual(output.director,"Director")
+        XCTAssertEqual(output.discNumber.index,6)
+        XCTAssertEqual(output.discNumber.total,11)
+        XCTAssertEqual(output.editDateAndDescription1,"EDD1")
+        XCTAssertEqual(output.editDateAndDescription2,"EDD2")
+        XCTAssertEqual(output.editDateAndDescription3,"EDD3")
+        XCTAssertEqual(output.editDateAndDescription4,"EDD4")
+        XCTAssertEqual(output.editDateAndDescription5,"EDD5")
+        XCTAssertEqual(output.editDateAndDescription6,"EDD6")
+        XCTAssertEqual(output.editDateAndDescription7,"EDD7")
+        XCTAssertEqual(output.editDateAndDescription8,"EDD8")
+        XCTAssertEqual(output.editDateAndDescription9,"EDD9")
+        XCTAssertEqual(output.encodedBy,"Encoded By")
+        XCTAssertEqual(output.encodingTool,"Encoding Tool")
+        XCTAssertEqual(output.executiveProducer,"Executive Producer")
+        XCTAssertEqual(output.labelUrl,"www.label.url")
+        XCTAssertEqual(output.format,"Format")
+        XCTAssertEqual(output.gaplessPlayback,true)
+        XCTAssertEqual(output.genreID?.identifier,Genre.audiobooks(.audiobooks).identifier)
+        XCTAssertEqual(output.grouping,"Grouping")
+        XCTAssertEqual(output.information,"Information")
+        XCTAssertEqual(output.isrc,"ISRC1234ISRC")
+        XCTAssertEqual(output.iTunesAccount, "Itunes Account")
+        XCTAssertEqual(output.iTunesAccountType,82)
+        XCTAssertEqual(output.keywords,["Tag", "Keywords"])
+        XCTAssertEqual(output.label,"Label")
+        XCTAssertEqual(output.linerNotes,"Liner Notes")
+        XCTAssertEqual(output.longDescription,"Long Description")
+        XCTAssertEqual(output.lyricist,"Lyricist")
+        XCTAssertEqual(output.lyrics,"Lyrics")
+        XCTAssertEqual(output.mediaKind,.audiobook)
+        XCTAssertEqual(output.movementCount,3)
+        XCTAssertEqual(output.movementNumber,1)
+        XCTAssertEqual(output.movement,"Movement Name")
+        XCTAssertEqual(output.narrator,"Narrator")
+        XCTAssertEqual(output.originalArtist,"Original Artist")
+        XCTAssertEqual(output.owner,"Owner")
+        XCTAssertEqual(output.performers,["Performers"])
+        XCTAssertEqual(output.playlistID,5678901)
+        XCTAssertEqual(output.podcast,true)
+        XCTAssertEqual(output.podcastID,"Podcast")
+        XCTAssertEqual(output.podcastFeed,"www.podcast.url")
+        XCTAssertEqual(output.predefinedGenre?.stringValue,Genre.audiobooks(.audiobooksLatino).stringValue)
+        XCTAssertEqual(output.producer,"Producer")
+        XCTAssertEqual(output.producerKeywords,["Producer", "Keywords"])
+        XCTAssertEqual(output.publisher,"Publisher")
+        XCTAssertEqual(output.recordCompanyUrl,"www.recordcompany.url")
+        XCTAssertEqual(output.rating,.clean)
+        XCTAssertEqual(output.recordCompany,"Record Company")
+        XCTAssertEqual(output.recordingCopyright,"2021 Recording Copyright")
+        XCTAssertEqual(output.requirements,"Requirements")
+        XCTAssertEqual(output.sellerID,"SellerID")
+        XCTAssertEqual(output.showWorkAndMovement,true)
+        XCTAssertEqual(output.softwareVersion,"Software Version")
+        XCTAssertEqual(output.soloist,"Soloist")
+        XCTAssertEqual(output.songDescription,"Song Description")
+        XCTAssertEqual(output.songwriterKeywords,["Songwriter", "Keywords"])
+        XCTAssertEqual(output.songwriter,"Songwriter")
+        XCTAssertEqual(output.soundEngineer,"Sound Engineer")
+        XCTAssertEqual(output.sourceCredit,"Source")
+        XCTAssertEqual(output.subtitle,"Subtitle")
+        XCTAssertEqual(output.subtitleKeywords,["Subtitle", "Keywords"])
+        XCTAssertEqual(output.thanks,"Thanks")
+        XCTAssertEqual(output.title,"Title")
+        XCTAssertEqual(output.titleKeywords,["Title", "Keywords"])
+        XCTAssertEqual(output.titleSort,"Sort, Title")
+        XCTAssertEqual(output.trackNumber.index,7)
+        XCTAssertEqual(output.trackNumber.total,13)
+        XCTAssertEqual(output.trackSubtitle,"Track Subtitle")
+        XCTAssertEqual(output.tvEpisodeNumber,12)
+        XCTAssertEqual(output.tvSeason,5)
+        XCTAssertEqual(output.tvShow,"TV Show")
+        XCTAssertEqual(output.tvNetwork,"Network")
+        XCTAssertEqual(output.tvShowSort,"Sort, Show")
+        XCTAssertEqual(output.tvEpisodeTitle,"Episode Title")
+        XCTAssertEqual(output.tvShowDescription,"Show Description")
+        XCTAssertEqual(output.website,"www.website.com")
+        XCTAssertEqual(output.workName,"Work")
+        XCTAssertEqual(output.writer,"Writer")
+        XCTAssertEqual(output.year,2021)
+        XCTAssertEqual(output.releaseDate, Date.distantFuture)
+        XCTAssertEqual(output.recordingDate, Date.distantPast)
+        XCTAssertEqual(output.purchaseDate, Date.distantFuture)
     }
-    
-    func testChapterExporterCue() throws {
+
+    func testMetadataImporterCSV() throws {
         let url = localDirectory
             .appendingPathComponent("test-real/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        XCTAssertEqual(tag.metadataAtoms.count, 11)
+        
+        XCTAssertNoThrow(tag.removeAllMetadata())
+        XCTAssertEqual(tag.metadataAtoms.count, 1)
+        
+        let csv = url.deletingPathExtension()
+            .appendingPathExtension("csv")
+        
+        XCTAssertNoThrow(try tag.importMetadata(location: csv))
+        XCTAssertEqual(tag.metadataAtoms.count, 110)
+        
+        let outputURL = url.deletingLastPathComponent().appendingPathComponent("import-test-csv.m4b")
+        
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputURL))
+        let outputFile = try Mp4File(location: outputURL)
+        let output = try outputFile.tag()
+        
+        XCTAssertEqual(output.acknowledgment,"Acknowledgment")
+        XCTAssertEqual(output.album,"Album")
+        XCTAssertEqual(output.albumArtist,"Album Artist")
+        XCTAssertEqual(output.albumArtistSort,"Sort, AlbumArtist")
+        XCTAssertEqual(output.albumSort,"Sort, Album")
+        XCTAssertEqual(output.appleStoreCountryID,123)
+        XCTAssertEqual(output.arranger,"Arranger")
+        XCTAssertEqual(output.arrangerKeywords,["Arranger", "Keywords"])
+        XCTAssertEqual(output.artDirector,"Art Director")
+        XCTAssertEqual(output.artist,"Artist")
+        XCTAssertEqual(output.artistID,1234567)
+        XCTAssertEqual(output.artistKeywords,["Artist", "Keywords"])
+        XCTAssertEqual(output.artistSort,"Sort, Artist")
+        XCTAssertEqual(output.artistUrl,"www.url.com")
+        XCTAssertEqual(output.bpm,99)
+        XCTAssertEqual(output.category,"Category")
+        XCTAssertEqual(output.comment,"Comment")
+        XCTAssertEqual(output.compilation,true)
+        XCTAssertEqual(output.composer,"Composer")
+        XCTAssertEqual(output.composerKeywords,["Composer", "Keywords"])
+        XCTAssertEqual(output.composerSort,"Sort, Composer")
+        XCTAssertEqual(output.conductor,"Conductor")
+        XCTAssertEqual(output.conductorID,3456789)
+        XCTAssertEqual(output.copyright,"2021 Copyright")
+        XCTAssertEqual(output.customGenre,"Genre")
+        XCTAssertEqual(output.description,"Description")
+        XCTAssertEqual(output.director,"Director")
+        XCTAssertEqual(output.discNumber.index,6)
+        XCTAssertEqual(output.discNumber.total,11)
+        XCTAssertEqual(output.editDateAndDescription1,"EDD1")
+        XCTAssertEqual(output.editDateAndDescription2,"EDD2")
+        XCTAssertEqual(output.editDateAndDescription3,"EDD3")
+        XCTAssertEqual(output.editDateAndDescription4,"EDD4")
+        XCTAssertEqual(output.editDateAndDescription5,"EDD5")
+        XCTAssertEqual(output.editDateAndDescription6,"EDD6")
+        XCTAssertEqual(output.editDateAndDescription7,"EDD7")
+        XCTAssertEqual(output.editDateAndDescription8,"EDD8")
+        XCTAssertEqual(output.editDateAndDescription9,"EDD9")
+        XCTAssertEqual(output.encodedBy,"Encoded By")
+        XCTAssertEqual(output.encodingTool,"Encoding Tool")
+        XCTAssertEqual(output.executiveProducer,"Executive Producer")
+        XCTAssertEqual(output.labelUrl,"www.label.url")
+        XCTAssertEqual(output.format,"Format")
+        XCTAssertEqual(output.gaplessPlayback,true)
+        XCTAssertEqual(output.genreID?.identifier,Genre.audiobooks(.audiobooks).identifier)
+        XCTAssertEqual(output.grouping,"Grouping")
+        XCTAssertEqual(output.information,"Information")
+        XCTAssertEqual(output.isrc,"ISRC1234ISRC")
+        XCTAssertEqual(output.iTunesAccount, "Itunes Account")
+        XCTAssertEqual(output.iTunesAccountType,82)
+        XCTAssertEqual(output.keywords,["Tag", "Keywords"])
+        XCTAssertEqual(output.label,"Label")
+        XCTAssertEqual(output.linerNotes,"Liner Notes")
+        XCTAssertEqual(output.longDescription,"Long Description")
+        XCTAssertEqual(output.lyricist,"Lyricist")
+        XCTAssertEqual(output.lyrics,"Lyrics")
+        XCTAssertEqual(output.mediaKind,.audiobook)
+        XCTAssertEqual(output.movementCount,3)
+        XCTAssertEqual(output.movementNumber,1)
+        XCTAssertEqual(output.movement,"Movement Name")
+        XCTAssertEqual(output.narrator,"Narrator")
+        XCTAssertEqual(output.originalArtist,"Original Artist")
+        XCTAssertEqual(output.owner,"Owner")
+        XCTAssertEqual(output.performers,["Performers"])
+        XCTAssertEqual(output.playlistID,5678901)
+        XCTAssertEqual(output.podcast,true)
+        XCTAssertEqual(output.podcastID,"Podcast")
+        XCTAssertEqual(output.podcastFeed,"www.podcast.url")
+        XCTAssertEqual(output.predefinedGenre?.stringValue,Genre.audiobooks(.audiobooksLatino).stringValue)
+        XCTAssertEqual(output.producer,"Producer")
+        XCTAssertEqual(output.producerKeywords,["Producer", "Keywords"])
+        XCTAssertEqual(output.publisher,"Publisher")
+        XCTAssertEqual(output.recordCompanyUrl,"www.recordcompany.url")
+        XCTAssertEqual(output.rating,.clean)
+        XCTAssertEqual(output.recordCompany,"Record Company")
+        XCTAssertEqual(output.recordingCopyright,"2021 Recording Copyright")
+        XCTAssertEqual(output.requirements,"Requirements")
+        XCTAssertEqual(output.sellerID,"SellerID")
+        XCTAssertEqual(output.showWorkAndMovement,true)
+        XCTAssertEqual(output.softwareVersion,"Software Version")
+        XCTAssertEqual(output.soloist,"Soloist")
+        XCTAssertEqual(output.songDescription,"Song Description")
+        XCTAssertEqual(output.songwriterKeywords,["Songwriter", "Keywords"])
+        XCTAssertEqual(output.songwriter,"Songwriter")
+        XCTAssertEqual(output.soundEngineer,"Sound Engineer")
+        XCTAssertEqual(output.sourceCredit,"Source")
+        XCTAssertEqual(output.subtitle,"Subtitle")
+        XCTAssertEqual(output.subtitleKeywords,["Subtitle", "Keywords"])
+        XCTAssertEqual(output.thanks,"Thanks")
+        XCTAssertEqual(output.title,"Title")
+        XCTAssertEqual(output.titleKeywords,["Title", "Keywords"])
+        XCTAssertEqual(output.titleSort,"Sort, Title")
+        XCTAssertEqual(output.trackNumber.index,7)
+        XCTAssertEqual(output.trackNumber.total,13)
+        XCTAssertEqual(output.trackSubtitle,"Track Subtitle")
+        XCTAssertEqual(output.tvEpisodeNumber,12)
+        XCTAssertEqual(output.tvSeason,5)
+        XCTAssertEqual(output.tvShow,"TV Show")
+        XCTAssertEqual(output.tvNetwork,"Network")
+        XCTAssertEqual(output.tvShowSort,"Sort, Show")
+        XCTAssertEqual(output.tvEpisodeTitle,"Episode Title")
+        XCTAssertEqual(output.tvShowDescription,"Show Description")
+        XCTAssertEqual(output.website,"www.website.com")
+        XCTAssertEqual(output.workName,"Work")
+        XCTAssertEqual(output.writer,"Writer")
+        XCTAssertEqual(output.year,2021)
+        XCTAssertEqual(output.releaseDate, Date.distantFuture)
+        XCTAssertEqual(output.recordingDate, Date.distantPast)
+        XCTAssertEqual(output.purchaseDate, Date.distantFuture)
+    }
+
+    func testMetadataImporterJSON() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        XCTAssertEqual(tag.metadataAtoms.count, 11)
+        
+        XCTAssertNoThrow(tag.removeAllMetadata())
+        XCTAssertEqual(tag.metadataAtoms.count, 1)
+        
+        let json = url.deletingPathExtension()
+            .appendingPathExtension("json")
+        
+        XCTAssertNoThrow(try tag.importMetadata(location: json))
+        XCTAssertEqual(tag.metadataAtoms.count, 110)
+        
+        let outputURL = url.deletingLastPathComponent().appendingPathComponent("import-test-json.m4b")
+        
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: outputURL))
+        let outputFile = try Mp4File(location: outputURL)
+        let output = try outputFile.tag()
+        
+        XCTAssertEqual(output.acknowledgment,"Acknowledgment")
+        XCTAssertEqual(output.album,"Album")
+        XCTAssertEqual(output.albumArtist,"Album Artist")
+        XCTAssertEqual(output.albumArtistSort,"Sort, AlbumArtist")
+        XCTAssertEqual(output.albumSort,"Sort, Album")
+        XCTAssertEqual(output.appleStoreCountryID,123)
+        XCTAssertEqual(output.arranger,"Arranger")
+        XCTAssertEqual(output.arrangerKeywords,["Arranger", "Keywords"])
+        XCTAssertEqual(output.artDirector,"Art Director")
+        XCTAssertEqual(output.artist,"Artist")
+        XCTAssertEqual(output.artistID,1234567)
+        XCTAssertEqual(output.artistKeywords,["Artist", "Keywords"])
+        XCTAssertEqual(output.artistSort,"Sort, Artist")
+        XCTAssertEqual(output.artistUrl,"www.url.com")
+        XCTAssertEqual(output.bpm,99)
+        XCTAssertEqual(output.category,"Category")
+        XCTAssertEqual(output.comment,"Comment")
+        XCTAssertEqual(output.compilation,true)
+        XCTAssertEqual(output.composer,"Composer")
+        XCTAssertEqual(output.composerKeywords,["Composer", "Keywords"])
+        XCTAssertEqual(output.composerSort,"Sort, Composer")
+        XCTAssertEqual(output.conductor,"Conductor")
+        XCTAssertEqual(output.conductorID,3456789)
+        XCTAssertEqual(output.copyright,"2021 Copyright")
+        XCTAssertEqual(output.customGenre,"Genre")
+        XCTAssertEqual(output.description,"Description")
+        XCTAssertEqual(output.director,"Director")
+        XCTAssertEqual(output.discNumber.index,6)
+        XCTAssertEqual(output.discNumber.total,11)
+        XCTAssertEqual(output.editDateAndDescription1,"EDD1")
+        XCTAssertEqual(output.editDateAndDescription2,"EDD2")
+        XCTAssertEqual(output.editDateAndDescription3,"EDD3")
+        XCTAssertEqual(output.editDateAndDescription4,"EDD4")
+        XCTAssertEqual(output.editDateAndDescription5,"EDD5")
+        XCTAssertEqual(output.editDateAndDescription6,"EDD6")
+        XCTAssertEqual(output.editDateAndDescription7,"EDD7")
+        XCTAssertEqual(output.editDateAndDescription8,"EDD8")
+        XCTAssertEqual(output.editDateAndDescription9,"EDD9")
+        XCTAssertEqual(output.encodedBy,"Encoded By")
+        XCTAssertEqual(output.encodingTool,"Encoding Tool")
+        XCTAssertEqual(output.executiveProducer,"Executive Producer")
+        XCTAssertEqual(output.labelUrl,"www.label.url")
+        XCTAssertEqual(output.format,"Format")
+        XCTAssertEqual(output.gaplessPlayback,true)
+        XCTAssertEqual(output.genreID?.identifier,Genre.audiobooks(.audiobooks).identifier)
+        XCTAssertEqual(output.grouping,"Grouping")
+        XCTAssertEqual(output.information,"Information")
+        XCTAssertEqual(output.isrc,"ISRC1234ISRC")
+        XCTAssertEqual(output.iTunesAccount, "Itunes Account")
+        XCTAssertEqual(output.iTunesAccountType,82)
+        XCTAssertEqual(output.keywords,["Tag", "Keywords"])
+        XCTAssertEqual(output.label,"Label")
+        XCTAssertEqual(output.linerNotes,"Liner Notes")
+        XCTAssertEqual(output.longDescription,"Long Description")
+        XCTAssertEqual(output.lyricist,"Lyricist")
+        XCTAssertEqual(output.lyrics,"Lyrics")
+        XCTAssertEqual(output.mediaKind,.audiobook)
+        XCTAssertEqual(output.movementCount,3)
+        XCTAssertEqual(output.movementNumber,1)
+        XCTAssertEqual(output.movement,"Movement Name")
+        XCTAssertEqual(output.narrator,"Narrator")
+        XCTAssertEqual(output.originalArtist,"Original Artist")
+        XCTAssertEqual(output.owner,"Owner")
+        XCTAssertEqual(output.performers,["Performers"])
+        XCTAssertEqual(output.playlistID,5678901)
+        XCTAssertEqual(output.podcast,true)
+        XCTAssertEqual(output.podcastID,"Podcast")
+        XCTAssertEqual(output.podcastFeed,"www.podcast.url")
+        XCTAssertEqual(output.predefinedGenre?.stringValue,Genre.audiobooks(.audiobooksLatino).stringValue)
+        XCTAssertEqual(output.producer,"Producer")
+        XCTAssertEqual(output.producerKeywords,["Producer", "Keywords"])
+        XCTAssertEqual(output.publisher,"Publisher")
+        XCTAssertEqual(output.recordCompanyUrl,"www.recordcompany.url")
+        XCTAssertEqual(output.rating,.clean)
+        XCTAssertEqual(output.recordCompany,"Record Company")
+        XCTAssertEqual(output.recordingCopyright,"2021 Recording Copyright")
+        XCTAssertEqual(output.requirements,"Requirements")
+        XCTAssertEqual(output.sellerID,"SellerID")
+        XCTAssertEqual(output.showWorkAndMovement,true)
+        XCTAssertEqual(output.softwareVersion,"Software Version")
+        XCTAssertEqual(output.soloist,"Soloist")
+        XCTAssertEqual(output.songDescription,"Song Description")
+        XCTAssertEqual(output.songwriterKeywords,["Songwriter", "Keywords"])
+        XCTAssertEqual(output.songwriter,"Songwriter")
+        XCTAssertEqual(output.soundEngineer,"Sound Engineer")
+        XCTAssertEqual(output.sourceCredit,"Source")
+        XCTAssertEqual(output.subtitle,"Subtitle")
+        XCTAssertEqual(output.subtitleKeywords,["Subtitle", "Keywords"])
+        XCTAssertEqual(output.thanks,"Thanks")
+        XCTAssertEqual(output.title,"Title")
+        XCTAssertEqual(output.titleKeywords,["Title", "Keywords"])
+        XCTAssertEqual(output.titleSort,"Sort, Title")
+        XCTAssertEqual(output.trackNumber.index,7)
+        XCTAssertEqual(output.trackNumber.total,13)
+        XCTAssertEqual(output.trackSubtitle,"Track Subtitle")
+        XCTAssertEqual(output.tvEpisodeNumber,12)
+        XCTAssertEqual(output.tvSeason,5)
+        XCTAssertEqual(output.tvShow,"TV Show")
+        XCTAssertEqual(output.tvNetwork,"Network")
+        XCTAssertEqual(output.tvShowSort,"Sort, Show")
+        XCTAssertEqual(output.tvEpisodeTitle,"Episode Title")
+        XCTAssertEqual(output.tvShowDescription,"Show Description")
+        XCTAssertEqual(output.website,"www.website.com")
+        XCTAssertEqual(output.workName,"Work")
+        XCTAssertEqual(output.writer,"Writer")
+        XCTAssertEqual(output.year,2021)
+        XCTAssertEqual(output.releaseDate, Date.distantFuture)
+        XCTAssertEqual(output.recordingDate, Date.distantPast)
+        XCTAssertEqual(output.purchaseDate, Date.distantFuture)
+    }
+
+    func testChapterExporterCue() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/test.m4b")
+        let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
 
-        XCTAssertNoThrow(try tag.exportChapters(format: .cue))
+        XCTAssertNoThrow(try tag.exportChapters(format: .cue, usingFullCueMetadata: true))
     }
 
     func testChapterExporterOgg() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("test-real/test.m4b")
         let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
         
@@ -647,7 +1027,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testChapterExporterMp4v2() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("test-real/test.m4b")
         let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
         
@@ -656,7 +1036,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testCueChapterImporter() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("test-real/test.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
 
@@ -669,8 +1049,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let exported = tag.chapterList
         let exportedTitle = tag.album
         let exportedArtist = tag.albumArtist
-        
-        
+                
         tag.removeAllChapters()
         tag.removeAllMetadata()
         XCTAssertTrue(tag.chapterList.isEmpty)
@@ -688,7 +1067,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     
     func testOggChapterImporter() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("test-real/test.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
@@ -697,7 +1076,8 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         let txtURL = url
             .deletingPathExtension()
-            .appendingPathExtension("txt")
+            .deletingLastPathComponent()
+            .appendingPathComponent("basilisk-ogg.txt")
         
         XCTAssertNoThrow(try tag.exportChapters(format: .ogg))
         
@@ -714,7 +1094,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testMp4v2ChapterImporter() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("test-real/test.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
@@ -723,8 +1103,9 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         let txtURL = url
             .deletingPathExtension()
-            .appendingPathExtension("txt")
-        
+            .deletingLastPathComponent()
+            .appendingPathComponent("basilisk-mp4v2.txt")
+
         XCTAssertNoThrow(try tag.exportChapters(format: .mp4v2))
         
         tag.removeAllChapters()
@@ -745,6 +1126,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         var tag = try mp4.tag()
         
         tag.removeAllMetadata()
+        XCTAssertEqual(tag.metadataAtoms.count, 1)
 
         tag.acknowledgment = "Acknowledgment"
         tag.album = "Album"
@@ -860,24 +1242,26 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         tag.year = 2021
         
         tag.removeAllChapters()
-        tag.addChapter(startTime: 0, title: "Intro")
-        tag.addChapter(startTime: 25*60*1000, title: "Intro")
-        tag.addChapter(startTime: 50*60*1000, title: "Chapter 001")
-        tag.addChapter(startTime: 75*60*1000, title: "Chapter 002")
-        tag.addChapter(startTime: 100*60*1000, title: "Chapter 003")
-        tag.addChapter(startTime: 150*60*1000, title: "Chapter 004")
-        tag.addChapter(startTime: 175*60*1000, title: "Chapter 005")
-        tag.addChapter(startTime: 200*60*1000, title: "Chapter 006")
-        tag.addChapter(startTime: 225*60*1000, title: "Chapter 007")
-        tag.addChapter(startTime: 250*60*1000, title: "Chapter 008")
-        tag.addChapter(startTime: 275*60*1000, title: "Chapter 009")
-        tag.addChapter(startTime: 300*60*1000, title: "Chapter 010")
-        tag.addChapter(startTime: 325*60*1000, title: "Chapter 011")
-        tag.addChapter(startTime: 350*60*1000, title: "Chapter 012")
-        tag.addChapter(startTime: 375*60*1000, title: "Chapter 013")
-        tag.addChapter(startTime: 400*60*1000, title: "Chapter 014")
-        tag.addChapter(startTime: 425*60*1000, title: "Chapter 015")
-        tag.addChapter(startTime: 450*60*1000, title: "Chapter 016")
+        XCTAssertTrue(tag.chapterList.isEmpty)
+        
+        tag.addChapter(startTime: 0, title: "Introduction")
+        tag.addChapter(startTime: 25*60*1000, title: "Chapter 001")
+        tag.addChapter(startTime: 50*60*1000, title: "Chapter 002")
+        tag.addChapter(startTime: 75*60*1000, title: "Chapter 003")
+        tag.addChapter(startTime: 100*60*1000, title: "Chapter 004")
+        tag.addChapter(startTime: 150*60*1000, title: "Chapter 005")
+        tag.addChapter(startTime: 175*60*1000, title: "Chapter 006")
+        tag.addChapter(startTime: 200*60*1000, title: "Chapter 007")
+        tag.addChapter(startTime: 225*60*1000, title: "Chapter 008")
+        tag.addChapter(startTime: 250*60*1000, title: "Chapter 009")
+        tag.addChapter(startTime: 275*60*1000, title: "Chapter 010")
+        tag.addChapter(startTime: 300*60*1000, title: "Chapter 011")
+        tag.addChapter(startTime: 325*60*1000, title: "Chapter 012")
+        tag.addChapter(startTime: 350*60*1000, title: "Chapter 013")
+        tag.addChapter(startTime: 375*60*1000, title: "Chapter 014")
+        tag.addChapter(startTime: 400*60*1000, title: "Chapter 015")
+        tag.addChapter(startTime: 425*60*1000, title: "Chapter 016")
+        tag.addChapter(startTime: 450*60*1000, title: "Chapter 017")
         
         let count = tag.metadataAtoms.count
         let chapterCount = tag.chapterList.count
@@ -944,7 +1328,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(result.gaplessPlayback, true)
         XCTAssertEqual(result.grouping, "Grouping")
         XCTAssertEqual(result.iTunesAccount, "Itunes Account")
-        XCTAssertEqual(result.iTunesAccountType, 4567890)
+        XCTAssertEqual(result.iTunesAccountType, 82)
         XCTAssertEqual(result.information, "Information")
         XCTAssertEqual(result.isrc, "ISRC1234ISRC")
         XCTAssertEqual(result.keywords, ["Tag", "Keywords"])
@@ -1010,149 +1394,149 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
         XCTAssertEqual(result.chapterList.count, chapterCount)
     }
-    
-//    func testFullTestFile() throws {
-//        let url = localDirectory
-//            .appendingPathComponent("test-real/basilisk.m4b")
-//        let mp4 = try Mp4File(location: url)
-//        var tag = try mp4.tag()
-//
-//        tag.removeAllMetadata()
-//
-//        tag.acknowledgment = "Acknowledgment"
-//        tag.album = "Album"
-//        tag.albumArtist = "Album Artist"
-//        tag.albumSort = "Sort, Album"
-//        tag.albumArtistSort = "Sort, AlbumArtist"
-//        tag.appleStoreCountryID = 123
-//        tag.arranger = "Arranger"
-//        tag.arrangerKeywords = ["Arranger", "Keywords"]
-//        tag.artDirector = "Art Director"
-//        tag.artist = "Artist"
-//        tag.artistID = 1234567
-//        tag.artistKeywords = ["Artist", "Keywords"]
-//        tag.artistSort = "Sort, Artist"
-//        tag.artistUrl = "www.url.com"
-//        tag.bpm = 99
-//        tag.category = "Category"
-//        tag.comment = "Comment"
-//        tag.compilation = true
-//        tag.composer = "Composer"
-//        tag.composerID = 2345678
-//        tag.composerKeywords = ["Composer", "Keywords"]
-//        tag.composerSort = "Sort, Composer"
-//        tag.conductor = "Conductor"
-//        tag.conductorID = 3456789
-//        tag.contentRating = .au_Movie_G("String")
-//        tag.copyright = "2021 Copyright"
-//        tag.customGenre = "Genre"
-//        tag.description = "Description"
-//        tag.director = "Director"
-//        tag.discNumber.index = 6
-//        tag.discNumber.total = 11
-//        tag.editDateAndDescription1 = "EDD1"
-//        tag.editDateAndDescription2 = "EDD2"
-//        tag.editDateAndDescription3 = "EDD3"
-//        tag.editDateAndDescription4 = "EDD4"
-//        tag.editDateAndDescription5 = "EDD5"
-//        tag.editDateAndDescription6 = "EDD6"
-//        tag.editDateAndDescription7 = "EDD7"
-//        tag.editDateAndDescription8 = "EDD8"
-//        tag.editDateAndDescription9 = "EDD9"
-//        tag.encodedBy = "Encoded By"
-//        tag.encodingTool = "Encoding Tool"
-//        tag.executiveProducer = "Executive Producer"
-//        tag.format = "Format"
-//        tag.gaplessPlayback = true
-//        tag.genreID = .audiobooks(.audiobooks)
-//        tag.grouping = "Grouping"
-//        tag.iTunesAccount = "Itunes Account"
-//        tag.iTunesAccountType = 4567890
-//        tag.information = "Information"
-//        tag.isrc = "ISRC1234ISRC"
-//        tag.keywords = ["Tag", "Keywords"]
-//        tag.label = "Label"
-//        tag.labelUrl = "www.label.url"
-//        tag.languages = [.english]
-//        tag.linerNotes = "Liner Notes"
-//        tag.longDescription = "Long Description"
-//        tag.lyricist = "Lyricist"
-//        tag.lyrics = "Lyrics"
-//        tag.mediaKind = .audiobook
-//        tag.movement = "Movement Name"
-//        tag.movementNumber = 1
-//        tag.movementCount = 3
-//        tag.narrator = "Narrator"
-//        tag.originalArtist = "Original Artist"
-//        tag.owner = "Owner"
-//        tag.performers = ["Performers"]
-//        tag.playlistID = 5678901
-//        tag.podcast = true
-//        tag.podcastFeed = "www.podcast.url"
-//        tag.podcastID = "Podcast"
-//        tag.predefinedGenre = .audiobooks(.audiobooksLatino)
-//        tag.producer = "Producer"
-//        tag.producerKeywords = ["Producer", "Keywords"]
-//        tag.publisher = "Publisher"
-//        tag.purchaseDate = Date.distantFuture
-//        tag.rating = .clean
-//        tag.recordCompany = "Record Company"
-//        tag.recordCompanyUrl = "www.recordcompany.url"
-//        tag.recordingCopyright = "2021 Recording Copyright"
-//        tag.recordingDate = Date.distantPast
-//        tag.releaseDate = Date.distantFuture
-//        tag.requirements = "Requirements"
-//        tag.sellerID = "SellerID"
-//        tag.showWorkAndMovement = true
-//        tag.softwareVersion = "Software Version"
-//        tag.soloist = "Soloist"
-//        tag.songDescription = "Song Description"
-//        tag.songwriter = "Songwriter"
-//        tag.songwriterKeywords = ["Songwriter", "Keywords"]
-//        tag.soundEngineer = "Sound Engineer"
-//        tag.sourceCredit = "Source"
-//        tag.subtitle = "Subtitle"
-//        tag.subtitleKeywords = ["Subtitle", "Keywords"]
-//        tag.thanks = "Thanks"
-//        tag.title = "Title"
-//        tag.titleKeywords = ["Title", "Keywords"]
-//        tag.titleSort = "Sort, Title"
-//        tag.trackNumber.index = 7
-//        tag.trackNumber.total = 13
-//        tag.trackSubtitle = "Track Subtitle"
-//        tag.tvEpisodeNumber = 12
-//        tag.tvEpisodeTitle = "Episode Title"
-//        tag.tvNetwork = "Network"
-//        tag.tvShow = "TV Show"
-//        tag.tvSeason = 5
-//        tag.tvShowDescription = "Show Description"
-//        tag.website = "www.website.com"
-//        tag.tvShowSort = "Sort, Show"
-//        tag.workName = "Work"
-//        tag.writer = "Writer"
-//        tag.year = 2021
-//
-//        tag.removeAllChapters()
-//        tag.addChapter(startTime: 0, title: "Intro")
-//        tag.addChapter(startTime: 25*60*1000, title: "Intro")
-//        tag.addChapter(startTime: 50*60*1000, title: "Chapter 001")
-//        tag.addChapter(startTime: 75*60*1000, title: "Chapter 002")
-//        tag.addChapter(startTime: 100*60*1000, title: "Chapter 003")
-//        tag.addChapter(startTime: 150*60*1000, title: "Chapter 004")
-//        tag.addChapter(startTime: 175*60*1000, title: "Chapter 005")
-//        tag.addChapter(startTime: 200*60*1000, title: "Chapter 006")
-//        tag.addChapter(startTime: 225*60*1000, title: "Chapter 007")
-//        tag.addChapter(startTime: 250*60*1000, title: "Chapter 008")
-//        tag.addChapter(startTime: 275*60*1000, title: "Chapter 009")
-//        tag.addChapter(startTime: 300*60*1000, title: "Chapter 010")
-//        tag.addChapter(startTime: 325*60*1000, title: "Chapter 011")
-//        tag.addChapter(startTime: 350*60*1000, title: "Chapter 012")
-//        tag.addChapter(startTime: 375*60*1000, title: "Chapter 013")
-//        tag.addChapter(startTime: 400*60*1000, title: "Chapter 014")
-//        tag.addChapter(startTime: 425*60*1000, title: "Chapter 015")
-//        tag.addChapter(startTime: 450*60*1000, title: "Chapter 016")
-//
-//        let output = url.deletingLastPathComponent().appendingPathComponent("output.m4b")
-//        XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
-//    }
+
+    func testPrint() throws {
+        let url = localDirectory
+            .appendingPathComponent("test-real/basilisk.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        tag.removeAllMetadata()
+        
+        tag.acknowledgment = "Acknowledgment"
+        tag.album = "Album"
+        tag.albumArtist = "Album Artist"
+        tag.albumSort = "Sort, Album"
+        tag.albumArtistSort = "Sort, AlbumArtist"
+        tag.appleStoreCountryID = 123
+        tag.arranger = "Arranger"
+        tag.arrangerKeywords = ["Arranger", "Keywords"]
+        tag.artDirector = "Art Director"
+        tag.artist = "Artist"
+        tag.artistID = 1234567
+        tag.artistKeywords = ["Artist", "Keywords"]
+        tag.artistSort = "Sort, Artist"
+        tag.artistUrl = "www.url.com"
+        tag.bpm = 99
+        tag.category = "Category"
+        tag.comment = "Comment"
+        tag.compilation = true
+        tag.composer = "Composer"
+        tag.composerID = 2345678
+        tag.composerKeywords = ["Composer", "Keywords"]
+        tag.composerSort = "Sort, Composer"
+        tag.conductor = "Conductor"
+        tag.conductorID = 3456789
+        tag.contentRating = .au_Movie_G("String")
+        tag.copyright = "2021 Copyright"
+        tag.customGenre = "Genre"
+        tag.description = "Description"
+        tag.director = "Director"
+        tag.discNumber.index = 6
+        tag.discNumber.total = 11
+        tag.editDateAndDescription1 = "EDD1"
+        tag.editDateAndDescription2 = "EDD2"
+        tag.editDateAndDescription3 = "EDD3"
+        tag.editDateAndDescription4 = "EDD4"
+        tag.editDateAndDescription5 = "EDD5"
+        tag.editDateAndDescription6 = "EDD6"
+        tag.editDateAndDescription7 = "EDD7"
+        tag.editDateAndDescription8 = "EDD8"
+        tag.editDateAndDescription9 = "EDD9"
+        tag.encodedBy = "Encoded By"
+        tag.encodingTool = "Encoding Tool"
+        tag.executiveProducer = "Executive Producer"
+        tag.format = "Format"
+        tag.gaplessPlayback = true
+        tag.genreID = .audiobooks(.audiobooks)
+        tag.grouping = "Grouping"
+        tag.iTunesAccount = "Itunes Account"
+        tag.iTunesAccountType = 4567890
+        tag.information = "Information"
+        tag.isrc = "ISRC1234ISRC"
+        tag.keywords = ["Tag", "Keywords"]
+        tag.label = "Label"
+        tag.labelUrl = "www.label.url"
+        tag.languages = [.english]
+        tag.linerNotes = "Liner Notes"
+        tag.longDescription = "Long Description"
+        tag.lyricist = "Lyricist"
+        tag.lyrics = "Lyrics"
+        tag.mediaKind = .audiobook
+        tag.movement = "Movement Name"
+        tag.movementNumber = 1
+        tag.movementCount = 3
+        tag.narrator = "Narrator"
+        tag.originalArtist = "Original Artist"
+        tag.owner = "Owner"
+        tag.performers = ["Performers"]
+        tag.playlistID = 5678901
+        tag.podcast = true
+        tag.podcastFeed = "www.podcast.url"
+        tag.podcastID = "Podcast"
+        tag.predefinedGenre = .audiobooks(.audiobooksLatino)
+        tag.producer = "Producer"
+        tag.producerKeywords = ["Producer", "Keywords"]
+        tag.publisher = "Publisher"
+        tag.purchaseDate = Date.distantFuture
+        tag.rating = .clean
+        tag.recordCompany = "Record Company"
+        tag.recordCompanyUrl = "www.recordcompany.url"
+        tag.recordingCopyright = "2021 Recording Copyright"
+        tag.recordingDate = Date.distantPast
+        tag.releaseDate = Date.distantFuture
+        tag.requirements = "Requirements"
+        tag.sellerID = "SellerID"
+        tag.showWorkAndMovement = true
+        tag.softwareVersion = "Software Version"
+        tag.soloist = "Soloist"
+        tag.songDescription = "Song Description"
+        tag.songwriter = "Songwriter"
+        tag.songwriterKeywords = ["Songwriter", "Keywords"]
+        tag.soundEngineer = "Sound Engineer"
+        tag.sourceCredit = "Source"
+        tag.subtitle = "Subtitle"
+        tag.subtitleKeywords = ["Subtitle", "Keywords"]
+        tag.thanks = "Thanks"
+        tag.title = "Title"
+        tag.titleKeywords = ["Title", "Keywords"]
+        tag.titleSort = "Sort, Title"
+        tag.trackNumber.index = 7
+        tag.trackNumber.total = 13
+        tag.trackSubtitle = "Track Subtitle"
+        tag.tvEpisodeNumber = 12
+        tag.tvEpisodeTitle = "Episode Title"
+        tag.tvNetwork = "Network"
+        tag.tvShow = "TV Show"
+        tag.tvSeason = 5
+        tag.tvShowDescription = "Show Description"
+        tag.website = "www.website.com"
+        tag.tvShowSort = "Sort, Show"
+        tag.workName = "Work"
+        tag.writer = "Writer"
+        tag.year = 2021
+        
+        tag.removeAllChapters()
+        tag.addChapter(startTime: 0, title: "Intro")
+        tag.addChapter(startTime: 25*60*1000, title: "Chapter 001")
+        tag.addChapter(startTime: 50*60*1000, title: "Chapter 002")
+        tag.addChapter(startTime: 75*60*1000, title: "Chapter 003")
+        tag.addChapter(startTime: 100*60*1000, title: "Chapter 004")
+        tag.addChapter(startTime: 150*60*1000, title: "Chapter 005")
+        tag.addChapter(startTime: 175*60*1000, title: "Chapter 006")
+        tag.addChapter(startTime: 200*60*1000, title: "Chapter 007")
+        tag.addChapter(startTime: 225*60*1000, title: "Chapter 008")
+        tag.addChapter(startTime: 250*60*1000, title: "Chapter 009")
+        tag.addChapter(startTime: 275*60*1000, title: "Chapter 010")
+        tag.addChapter(startTime: 300*60*1000, title: "Chapter 011")
+        tag.addChapter(startTime: 325*60*1000, title: "Chapter 012")
+        tag.addChapter(startTime: 350*60*1000, title: "Chapter 013")
+        tag.addChapter(startTime: 375*60*1000, title: "Chapter 014")
+        tag.addChapter(startTime: 400*60*1000, title: "Chapter 015")
+        tag.addChapter(startTime: 425*60*1000, title: "Chapter 016")
+        tag.addChapter(startTime: 450*60*1000, title: "Chapter 017")
+        
+        let output = url.deletingLastPathComponent().appendingPathComponent("test.m4b")
+        XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
+    }
 }

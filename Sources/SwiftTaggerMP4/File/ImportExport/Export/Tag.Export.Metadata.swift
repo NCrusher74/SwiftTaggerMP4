@@ -142,17 +142,36 @@ extension Tag {
         var valueString = String()
         
         if let intAtom = atom as? IntegerMetadataAtom {
-            valueString = "\(intAtom.intValue)"
+            if key == .compilation ||
+                key == .gaplessPlayback ||
+                key == .podcast ||
+                key == .showWorkAndMovement {
+
+                let intValue = intAtom.intValue
+                if intValue == 0 {
+                    valueString = "False"
+                } else if intValue == 1 {
+                    valueString = "True"
+                }
+            } else {
+                valueString = "\(intAtom.intValue)"
+            }
 
             switch format {
                 case .text:
-                    keyString = "(\(atom.identifier)) " + key.stringValue.convertCamelToUpperCase()
+                    keyString = "(\(atom.identifier)) " + key.upperCasedStringValue
                 default: keyString = atom.identifier
             }
         }
+        keyString = cleanString(keyString: keyString)
+        return (keyString, valueString)
+    }
+    
+    private func cleanString(keyString: String) -> String {
+        var keyString = keyString
         keyString = keyString.replacingOccurrences(of: " I D", with: " ID")
         keyString = keyString.replacingOccurrences(of: "I TUNES", with: "ITUNES")
-        return (keyString, valueString)
+        return keyString
     }
     
     private func getStringAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
@@ -164,12 +183,11 @@ extension Tag {
 
             switch format {
                 case .text:
-                    keyString = "(\(atom.identifier)) " + key.stringValue.convertCamelToUpperCase()
+                    keyString = "(\(atom.identifier)) " + key.upperCasedStringValue
                 default: keyString = atom.identifier
             }
         }
-        keyString = keyString.replacingOccurrences(of: " I D", with: " ID")
-        keyString = keyString.replacingOccurrences(of: "I TUNES", with: "ITUNES")
+        keyString = cleanString(keyString: keyString)
         return (keyString, valueString)
     }
     
@@ -192,7 +210,7 @@ extension Tag {
             
             switch format {
                 case .text:
-                keyString = "(\(atom.identifier)) " + key.stringValue.convertCamelToUpperCase()
+                keyString = "(\(atom.identifier)) " + key.upperCasedStringValue
                 default:
                     keyString = atom.identifier
             }
@@ -202,7 +220,7 @@ extension Tag {
     }
     
     func getUnknownAtomStrings(key: AtomKey, atom: Atom) -> (keyString: String, valueString: String) {
-        let keyString = "(----) " + key.stringValue.uppercased()
+        let keyString = "(----) " + key.stringValue
         var valueString = ""
         
         if let unknownAtom = atom as? UnknownMetadataAtom {
