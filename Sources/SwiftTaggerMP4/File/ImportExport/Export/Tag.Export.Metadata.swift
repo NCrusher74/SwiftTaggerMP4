@@ -180,7 +180,7 @@ extension Tag {
         return (keyString, valueString)
     }
     
-    func getUnknownAtomStrings(key: AtomKey, atom: Atom) -> (keyString: String, valueString: String) {
+    private func getUnknownAtomStrings(key: AtomKey, atom: Atom) -> (keyString: String, valueString: String) {
         let keyString = "(----) " + key.stringValue
         var valueString = String()
         
