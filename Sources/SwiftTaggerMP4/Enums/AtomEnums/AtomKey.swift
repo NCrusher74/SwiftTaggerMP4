@@ -639,6 +639,23 @@ public enum AtomKey: Hashable {
         }
     }
     
+    func keyString(format: MetadataExportFormat) -> String {
+        switch self {
+            case .unknown(_):
+                return "(----) " + stringValue
+            default:
+                if let identifier = identifier {
+                    switch format {
+                        case .text:
+                            return "(\(identifier)) " + upperCasedStringValue
+                        default: return identifier
+                    }
+                } else {
+                    return String()
+                }
+        }
+    }
+
     private static var mapped: [String : AtomKey] {
         var map = [String : AtomKey]()
         for key in AtomKey.knownCases {

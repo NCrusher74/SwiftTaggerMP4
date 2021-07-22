@@ -11,6 +11,9 @@ import SwiftConvenienceExtensions
 public class Atom {
     /// The atom's unique four byte identifier
     public var identifier: String
+    var key: AtomKey {
+        return AtomKey(idString: identifier)
+    }
 
     /// The byte count of the whole atom, including header data
     var size: Int
