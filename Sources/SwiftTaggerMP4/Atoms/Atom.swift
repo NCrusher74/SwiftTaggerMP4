@@ -184,12 +184,4 @@ public class Atom {
             }
         }
     }
-
-    func keyString(format: MetadataExportFormat) -> String {
-        switch format {
-            case .text:
-                return "(\(identifier)) " + key.upperCasedStringValue
-            default: return identifier
-        }
-    }    
 }

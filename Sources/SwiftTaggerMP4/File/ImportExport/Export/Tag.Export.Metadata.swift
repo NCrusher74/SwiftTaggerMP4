@@ -138,7 +138,7 @@ extension Tag {
     private func getIntAtomStrings(key: AtomKey,
                                          atom: Atom,
                                          format: MetadataExportFormat) -> (keyString: String, valueString: String) {
-        var keyString = atom.keyString(format: format)
+        var keyString = key.keyString(format: format)
         var valueString = String()
         
         if let intAtom = atom as? IntegerMetadataAtom {
@@ -157,7 +157,7 @@ extension Tag {
     }
     
     private func getStringAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
-        var keyString = atom.keyString(format: format)
+        var keyString = key.keyString(format: format)
         var valueString = String()
         
         if let stringAtom = atom as? StringMetadataAtom {
@@ -170,7 +170,7 @@ extension Tag {
     
     private func getPoTAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
 
-        let keyString = atom.keyString(format: format)
+        let keyString = key.keyString(format: format)
         var valueString = String()
         
         if let potAtom = atom as? PartAndTotalMetadataAtom {
