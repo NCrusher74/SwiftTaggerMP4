@@ -40,7 +40,7 @@ class Stts: Atom {
             entryArray.append(entry)
         }
         self.sampleTable = entryArray
-        
+
         try super.init(identifier: identifier,
                        size: size,
                        payload: payload)
@@ -93,27 +93,36 @@ class Stts: Atom {
     /// **CHAPTER TRACK ONLY** Initialize an `stts` atom with chapter durations for building a chapter track
     init(chapterHandler: ChapterHandler,
          mediaDuration: Double) throws {
+
         let durationArray = chapterHandler.calculateDurationsFromStartTimes(
             mediaDuration: mediaDuration)
-        guard !durationArray.isEmpty else {
+
+        guard let first = durationArray.first else {
             throw StblError.SampleDurationArrayIsEmpty
         }
+        
         var entries = [(sampleCount: Int, sampleDuration: Double)]()
-        var previous = 0.0
+        var currentDuration = first
         var count = 1
-        for duration in durationArray {
-            if duration == previous {
+        func registerPending() {
+            entries.append((count, currentDuration))
+        }
+        
+        for duration in durationArray.dropFirst() {
+            if duration == currentDuration {
+                // increase the count by 1, but don’t register it yet, since there might be more to come
                 count += 1
             } else {
-                // store the number of samples with the previous duration
-                let entry = (count, duration)
-                entries.append(entry)
-                // update previous to current duration
-                previous = duration
-                // reset the count
+                // new duration, so first register whatever is pending
+                registerPending()
+                
+                // then start counting this duration
+                currentDuration = duration
                 count = 1
             }
         }
+        // register whatever is left over
+        registerPending()
         
         self.sampleTable = entries
         self.entryCount = entries.count

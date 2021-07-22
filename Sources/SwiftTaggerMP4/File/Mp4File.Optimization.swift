@@ -8,7 +8,6 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 
-
 extension Mp4File {
     func chunkSizes(stbl: Stbl) throws -> [Int] {
         let sampleToChunkTable = stbl.stsc.sampleToChunkTable
@@ -153,10 +152,9 @@ extension Mp4File {
     func setChapterTrack(tag: Tag) throws {
         if tag.chapterList.isEmpty {
             self.moov.chapterTrack = nil
-            self.moov.udta?.chpl = nil
             self.moov.chapterTrackID = nil
+            self.moov.udta?.chpl = nil
         } else {
-            
             let chpl = try Chpl(from: tag.chapterList)
             if self.moov.udta != nil {
                 self.moov.udta?.chpl = chpl

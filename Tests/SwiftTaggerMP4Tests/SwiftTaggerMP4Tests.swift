@@ -8,12 +8,6 @@ import StringMetric
 
 final class SwiftTaggerMP4Tests: XCTestCase {
     
-//    func testStringMetrics() {
-//        let a = "appleStoreCountryID".lowercased()
-//        let b = "APPLE STORE COUNTRY ID".lowercased()
-//        print(a.distance(between: b)) // 0.97
-//    }
-
     func testAddChapter() throws {
         let mp4 = try Mp4File(location: sampleNoMeta)
         var tag = try Tag(mp4File: mp4)
@@ -186,16 +180,16 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(tag.encodingTool, "Chapter and Verse V 1.5")
         XCTAssertEqual(tag.comment, "https://archive.org/details/frost_to-night_1710.poem_librivox")
         tag.removeAllMetadata()
-        XCTAssertTrue(tag.metadataAtoms.isEmpty)
-        XCTAssertTrue(tag.metadataAtoms.isEmpty)
-//        let outputUrl = try localDirectory(fileName: "test-removeMeta", fileExtension: "m4b")
+        XCTAssertEqual(tag.metadataAtoms.count, 1)
+
+        
+        //        let outputUrl = try localDirectory(fileName: "test-removeMeta", fileExtension: "m4b")
         let outputUrl = tempOutputDirectory
         try mp4.write(tag: tag, to: outputUrl)
         
         let outputMp4 = try Mp4File(location: outputUrl)
         let output = try Tag(mp4File: outputMp4)
-        XCTAssertTrue(output.metadataAtoms.isEmpty)
-        XCTAssertTrue(output.metadataAtoms.isEmpty)
+        XCTAssertEqual(output.metadataAtoms.count, 1)
     }
     
     func testTag() throws {
@@ -580,38 +574,20 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     
     func testMetadataExporterText() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/output.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
         XCTAssertNoThrow(try tag.exportMetadata(file: .text))
     }
 
-    func testMetadataExporterJSON() throws {
-        let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
-        let mp4 = try Mp4File(location: url)
-        var tag = try mp4.tag()
-        
-        XCTAssertNoThrow(try tag.exportMetadata(file: .json))
-    }
-
-    func testMetadataExporterCSV() throws {
-        let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
-        let mp4 = try Mp4File(location: url)
-        var tag = try mp4.tag()
-        
-        XCTAssertNoThrow(try tag.exportMetadata(file: .csv))
-    }
-
     func testMetadataImporterText() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("testing/output.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
 
-        XCTAssertEqual(tag.metadataAtoms.count, 11)
+        XCTAssertEqual(tag.metadataAtoms.count, 110)
 
         XCTAssertNoThrow(tag.removeAllMetadata())
         XCTAssertEqual(tag.metadataAtoms.count, 1)
@@ -739,13 +715,22 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.purchaseDate, Date.distantFuture)
     }
 
-    func testMetadataImporterCSV() throws {
+    func testMetadataExporterCSV() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("testing/output.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
-        XCTAssertEqual(tag.metadataAtoms.count, 11)
+        XCTAssertNoThrow(try tag.exportMetadata(file: .csv))
+    }
+    
+    func testMetadataImporterCSV() throws {
+        let url = localDirectory
+            .appendingPathComponent("testing/output.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        XCTAssertEqual(tag.metadataAtoms.count, 110)
         
         XCTAssertNoThrow(tag.removeAllMetadata())
         XCTAssertEqual(tag.metadataAtoms.count, 1)
@@ -873,13 +858,22 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(output.purchaseDate, Date.distantFuture)
     }
 
-    func testMetadataImporterJSON() throws {
+    func testMetadataExporterJSON() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("testing/output.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
-        XCTAssertEqual(tag.metadataAtoms.count, 11)
+        XCTAssertNoThrow(try tag.exportMetadata(file: .json))
+    }
+    
+    func testMetadataImporterJSON() throws {
+        let url = localDirectory
+            .appendingPathComponent("testing/output.m4b")
+        let mp4 = try Mp4File(location: url)
+        var tag = try mp4.tag()
+        
+        XCTAssertEqual(tag.metadataAtoms.count, 110)
         
         XCTAssertNoThrow(tag.removeAllMetadata())
         XCTAssertEqual(tag.metadataAtoms.count, 1)
@@ -1009,7 +1003,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testChapterExporterCue() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
 
@@ -1018,7 +1012,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testChapterExporterOgg() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
         
@@ -1027,7 +1021,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testChapterExporterMp4v2() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         let tag = try mp4.tag()
         
@@ -1036,7 +1030,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testCueChapterImporter() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
 
@@ -1046,7 +1040,6 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         
         XCTAssertNoThrow(try tag.exportChapters(format: .cue))
         let exportCount = tag.chapterList.count
-        let exported = tag.chapterList
         let exportedTitle = tag.album
         let exportedArtist = tag.albumArtist
                 
@@ -1060,14 +1053,13 @@ final class SwiftTaggerMP4Tests: XCTestCase {
                             format: .cue))
 
         XCTAssertEqual(tag.chapterList.count, exportCount)
-        XCTAssertEqual(tag.chapterList, exported)
         XCTAssertEqual(tag.album, exportedTitle)
         XCTAssertEqual(tag.albumArtist, exportedArtist)
     }
     
     func testOggChapterImporter() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
@@ -1077,7 +1069,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let txtURL = url
             .deletingPathExtension()
             .deletingLastPathComponent()
-            .appendingPathComponent("basilisk-ogg.txt")
+            .appendingPathComponent("basilisk.txt")
         
         XCTAssertNoThrow(try tag.exportChapters(format: .ogg))
         
@@ -1094,7 +1086,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
 
     func testMp4v2ChapterImporter() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/test.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
@@ -1104,7 +1096,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         let txtURL = url
             .deletingPathExtension()
             .deletingLastPathComponent()
-            .appendingPathComponent("basilisk-mp4v2.txt")
+            .appendingPathComponent("basilisk.txt")
 
         XCTAssertNoThrow(try tag.exportChapters(format: .mp4v2))
         
@@ -1121,7 +1113,7 @@ final class SwiftTaggerMP4Tests: XCTestCase {
     
     func testFullMetaCueImport() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
@@ -1245,24 +1237,25 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertTrue(tag.chapterList.isEmpty)
         
         tag.addChapter(startTime: 0, title: "Introduction")
-        tag.addChapter(startTime: 25*60*1000, title: "Chapter 001")
-        tag.addChapter(startTime: 50*60*1000, title: "Chapter 002")
-        tag.addChapter(startTime: 75*60*1000, title: "Chapter 003")
-        tag.addChapter(startTime: 100*60*1000, title: "Chapter 004")
-        tag.addChapter(startTime: 150*60*1000, title: "Chapter 005")
-        tag.addChapter(startTime: 175*60*1000, title: "Chapter 006")
-        tag.addChapter(startTime: 200*60*1000, title: "Chapter 007")
-        tag.addChapter(startTime: 225*60*1000, title: "Chapter 008")
-        tag.addChapter(startTime: 250*60*1000, title: "Chapter 009")
-        tag.addChapter(startTime: 275*60*1000, title: "Chapter 010")
-        tag.addChapter(startTime: 300*60*1000, title: "Chapter 011")
-        tag.addChapter(startTime: 325*60*1000, title: "Chapter 012")
-        tag.addChapter(startTime: 350*60*1000, title: "Chapter 013")
-        tag.addChapter(startTime: 375*60*1000, title: "Chapter 014")
-        tag.addChapter(startTime: 400*60*1000, title: "Chapter 015")
-        tag.addChapter(startTime: 425*60*1000, title: "Chapter 016")
-        tag.addChapter(startTime: 450*60*1000, title: "Chapter 017")
+        tag.addChapter(startTime: 1500000, title: "Chapter 001")
+        tag.addChapter(startTime: 3000000, title: "Chapter 002")
+        tag.addChapter(startTime: 4500000, title: "Chapter 003")
+        tag.addChapter(startTime: 6000000, title: "Chapter 004")
+        tag.addChapter(startTime: 7500000, title: "Chapter 005")
+        tag.addChapter(startTime: 9000000, title: "Chapter 006")
+        tag.addChapter(startTime: 10500000, title: "Chapter 007")
+        tag.addChapter(startTime: 12000000, title: "Chapter 008")
+        tag.addChapter(startTime: 13500000, title: "Chapter 009")
+        tag.addChapter(startTime: 15000000, title: "Chapter 010")
+        tag.addChapter(startTime: 16500000, title: "Chapter 011")
+        tag.addChapter(startTime: 18000000, title: "Chapter 012")
+        tag.addChapter(startTime: 19500000, title: "Chapter 013")
+        tag.addChapter(startTime: 21000000, title: "Chapter 014")
+        tag.addChapter(startTime: 22500000, title: "Chapter 015")
+        tag.addChapter(startTime: 24000000, title: "Chapter 016")
+        tag.addChapter(startTime: 25500000, title: "Chapter 017")
         
+        let chapterList = tag.chapterList
         let count = tag.metadataAtoms.count
         let chapterCount = tag.chapterList.count
 
@@ -1393,150 +1386,59 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(result.year, 2021)
 
         XCTAssertEqual(result.chapterList.count, chapterCount)
+        XCTAssertEqual(chapterList, result.chapterList)
     }
-
-    func testPrint() throws {
+    
+    func testChapterDiscrepancy() throws {
         let url = localDirectory
-            .appendingPathComponent("test-real/basilisk.m4b")
+            .appendingPathComponent("testing/basilisk.m4b")
         let mp4 = try Mp4File(location: url)
         var tag = try mp4.tag()
         
-        tag.removeAllMetadata()
-        
-        tag.acknowledgment = "Acknowledgment"
-        tag.album = "Album"
-        tag.albumArtist = "Album Artist"
-        tag.albumSort = "Sort, Album"
-        tag.albumArtistSort = "Sort, AlbumArtist"
-        tag.appleStoreCountryID = 123
-        tag.arranger = "Arranger"
-        tag.arrangerKeywords = ["Arranger", "Keywords"]
-        tag.artDirector = "Art Director"
-        tag.artist = "Artist"
-        tag.artistID = 1234567
-        tag.artistKeywords = ["Artist", "Keywords"]
-        tag.artistSort = "Sort, Artist"
-        tag.artistUrl = "www.url.com"
-        tag.bpm = 99
-        tag.category = "Category"
-        tag.comment = "Comment"
-        tag.compilation = true
-        tag.composer = "Composer"
-        tag.composerID = 2345678
-        tag.composerKeywords = ["Composer", "Keywords"]
-        tag.composerSort = "Sort, Composer"
-        tag.conductor = "Conductor"
-        tag.conductorID = 3456789
-        tag.contentRating = .au_Movie_G("String")
-        tag.copyright = "2021 Copyright"
-        tag.customGenre = "Genre"
-        tag.description = "Description"
-        tag.director = "Director"
-        tag.discNumber.index = 6
-        tag.discNumber.total = 11
-        tag.editDateAndDescription1 = "EDD1"
-        tag.editDateAndDescription2 = "EDD2"
-        tag.editDateAndDescription3 = "EDD3"
-        tag.editDateAndDescription4 = "EDD4"
-        tag.editDateAndDescription5 = "EDD5"
-        tag.editDateAndDescription6 = "EDD6"
-        tag.editDateAndDescription7 = "EDD7"
-        tag.editDateAndDescription8 = "EDD8"
-        tag.editDateAndDescription9 = "EDD9"
-        tag.encodedBy = "Encoded By"
-        tag.encodingTool = "Encoding Tool"
-        tag.executiveProducer = "Executive Producer"
-        tag.format = "Format"
-        tag.gaplessPlayback = true
-        tag.genreID = .audiobooks(.audiobooks)
-        tag.grouping = "Grouping"
-        tag.iTunesAccount = "Itunes Account"
-        tag.iTunesAccountType = 4567890
-        tag.information = "Information"
-        tag.isrc = "ISRC1234ISRC"
-        tag.keywords = ["Tag", "Keywords"]
-        tag.label = "Label"
-        tag.labelUrl = "www.label.url"
-        tag.languages = [.english]
-        tag.linerNotes = "Liner Notes"
-        tag.longDescription = "Long Description"
-        tag.lyricist = "Lyricist"
-        tag.lyrics = "Lyrics"
-        tag.mediaKind = .audiobook
-        tag.movement = "Movement Name"
-        tag.movementNumber = 1
-        tag.movementCount = 3
-        tag.narrator = "Narrator"
-        tag.originalArtist = "Original Artist"
-        tag.owner = "Owner"
-        tag.performers = ["Performers"]
-        tag.playlistID = 5678901
-        tag.podcast = true
-        tag.podcastFeed = "www.podcast.url"
-        tag.podcastID = "Podcast"
-        tag.predefinedGenre = .audiobooks(.audiobooksLatino)
-        tag.producer = "Producer"
-        tag.producerKeywords = ["Producer", "Keywords"]
-        tag.publisher = "Publisher"
-        tag.purchaseDate = Date.distantFuture
-        tag.rating = .clean
-        tag.recordCompany = "Record Company"
-        tag.recordCompanyUrl = "www.recordcompany.url"
-        tag.recordingCopyright = "2021 Recording Copyright"
-        tag.recordingDate = Date.distantPast
-        tag.releaseDate = Date.distantFuture
-        tag.requirements = "Requirements"
-        tag.sellerID = "SellerID"
-        tag.showWorkAndMovement = true
-        tag.softwareVersion = "Software Version"
-        tag.soloist = "Soloist"
-        tag.songDescription = "Song Description"
-        tag.songwriter = "Songwriter"
-        tag.songwriterKeywords = ["Songwriter", "Keywords"]
-        tag.soundEngineer = "Sound Engineer"
-        tag.sourceCredit = "Source"
-        tag.subtitle = "Subtitle"
-        tag.subtitleKeywords = ["Subtitle", "Keywords"]
-        tag.thanks = "Thanks"
-        tag.title = "Title"
-        tag.titleKeywords = ["Title", "Keywords"]
-        tag.titleSort = "Sort, Title"
-        tag.trackNumber.index = 7
-        tag.trackNumber.total = 13
-        tag.trackSubtitle = "Track Subtitle"
-        tag.tvEpisodeNumber = 12
-        tag.tvEpisodeTitle = "Episode Title"
-        tag.tvNetwork = "Network"
-        tag.tvShow = "TV Show"
-        tag.tvSeason = 5
-        tag.tvShowDescription = "Show Description"
-        tag.website = "www.website.com"
-        tag.tvShowSort = "Sort, Show"
-        tag.workName = "Work"
-        tag.writer = "Writer"
-        tag.year = 2021
-        
         tag.removeAllChapters()
-        tag.addChapter(startTime: 0, title: "Intro")
-        tag.addChapter(startTime: 25*60*1000, title: "Chapter 001")
-        tag.addChapter(startTime: 50*60*1000, title: "Chapter 002")
-        tag.addChapter(startTime: 75*60*1000, title: "Chapter 003")
-        tag.addChapter(startTime: 100*60*1000, title: "Chapter 004")
-        tag.addChapter(startTime: 150*60*1000, title: "Chapter 005")
-        tag.addChapter(startTime: 175*60*1000, title: "Chapter 006")
-        tag.addChapter(startTime: 200*60*1000, title: "Chapter 007")
-        tag.addChapter(startTime: 225*60*1000, title: "Chapter 008")
-        tag.addChapter(startTime: 250*60*1000, title: "Chapter 009")
-        tag.addChapter(startTime: 275*60*1000, title: "Chapter 010")
-        tag.addChapter(startTime: 300*60*1000, title: "Chapter 011")
-        tag.addChapter(startTime: 325*60*1000, title: "Chapter 012")
-        tag.addChapter(startTime: 350*60*1000, title: "Chapter 013")
-        tag.addChapter(startTime: 375*60*1000, title: "Chapter 014")
-        tag.addChapter(startTime: 400*60*1000, title: "Chapter 015")
-        tag.addChapter(startTime: 425*60*1000, title: "Chapter 016")
-        tag.addChapter(startTime: 450*60*1000, title: "Chapter 017")
+        XCTAssertTrue(tag.chapterList.isEmpty)
+        XCTAssertTrue(((mp4.moov.udta?.chpl?.chapterTable.isEmpty) != nil))
         
-        let output = url.deletingLastPathComponent().appendingPathComponent("test.m4b")
+        tag.addChapter(startTime: 0, title: "Introduction")
+        tag.addChapter(startTime: 1500000, title: "Chapter 001")
+        tag.addChapter(startTime: 3000000, title: "Chapter 002")
+        tag.addChapter(startTime: 4500000, title: "Chapter 003")
+        tag.addChapter(startTime: 6000000, title: "Chapter 004")
+        tag.addChapter(startTime: 7500000, title: "Chapter 005")
+        tag.addChapter(startTime: 9000000, title: "Chapter 006")
+        tag.addChapter(startTime: 10500000, title: "Chapter 007")
+        tag.addChapter(startTime: 12000000, title: "Chapter 008")
+        tag.addChapter(startTime: 13500000, title: "Chapter 009")
+        tag.addChapter(startTime: 15000000, title: "Chapter 010")
+        tag.addChapter(startTime: 16500000, title: "Chapter 011")
+        tag.addChapter(startTime: 18000000, title: "Chapter 012")
+        tag.addChapter(startTime: 19500000, title: "Chapter 013")
+        tag.addChapter(startTime: 21000000, title: "Chapter 014")
+        tag.addChapter(startTime: 22500000, title: "Chapter 015")
+        tag.addChapter(startTime: 24000000, title: "Chapter 016")
+        tag.addChapter(startTime: 25500000, title: "Chapter 017")
+
+        let chapterList = tag.chapterList
+        let chapterCount = tag.chapterList.count
+
+        let cueURL = url
+            .deletingPathExtension()
+            .appendingPathExtension("cue")
+        
+        XCTAssertNoThrow(try tag.exportChapters(format: .cue, usingFullCueMetadata: true))
+        
+        XCTAssertNoThrow(try tag.importChapters(location: cueURL, format: .cue))
+
+        XCTAssertEqual(tag.chapterList.count, chapterCount)
+        
+        let output = url.deletingLastPathComponent().appendingPathComponent("output.m4b")
         XCTAssertNoThrow(try mp4.write(tag: tag, to: output))
+        
+        let resultMp4 = try Mp4File(location: output)
+        let result = try resultMp4.tag()
+
+        XCTAssertEqual(result.chapterList.count, chapterCount)
+        XCTAssertEqual(chapterList, result.chapterList)
     }
+
 }

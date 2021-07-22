@@ -26,7 +26,11 @@ class Chpl: Atom {
         
         var chapters: [Chapter] = []
         while !data.isEmpty {
-            let chapterStartTime = data.extractToInt(8)
+            let startTimeRaw = data.extractFirst(8)
+            // this is the start time as 100 nanosecond units
+            // we need to convert it to milliseconds. We will lose a little precision. Oh well.
+            let chapterStartTime = startTimeRaw.uInt64BE.int / 10000
+
             let titleSize = data.extractToInt(1)
             let title = data.extractFirst(titleSize).stringUtf8 ?? "Untitled Chapter"
             let chapter = Chapter(startTime: chapterStartTime, title: title)
@@ -64,7 +68,7 @@ class Chpl: Atom {
         data.append(self.reserved)
         data.append(self.chapterCount.uInt32.beData)
         for entry in self.chapterTable {
-            data.append(entry.startTime.uInt64.beData)
+            data.append((entry.startTime * 10000).uInt64.beData)
             data.append(entry.title.count.uInt8.beData)
             data.append(entry.title.encodedUtf8)
         }

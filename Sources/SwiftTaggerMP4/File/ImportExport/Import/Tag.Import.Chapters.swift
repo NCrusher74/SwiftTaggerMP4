@@ -40,13 +40,13 @@ extension Tag {
             guard var titleLine = lines.first(where: {$0.hasPrefix("TITLE")}) else { continue }
 
             guard var startLine = lines.first(where: {$0.hasPrefix("INDEX 01")}) else { continue }
-
+            
             titleLine = titleLine.dropFirst(5)
                 .trimmingCharacters(in: .whitespaces)
                 .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
             
             startLine = startLine.dropFirst(8).trimmingCharacters(in: .whitespaces)
-
+            
             var segments = startLine
                 .components(separatedBy: ":")
             let startTime = segments.millisecondsFromMMSSFF()

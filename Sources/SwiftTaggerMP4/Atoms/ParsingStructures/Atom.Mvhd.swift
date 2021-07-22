@@ -12,15 +12,12 @@ class Mvhd: Atom {
     
     var version: Data
     private var flags: Data
-    var creationTime: Int
-    var modificationTime: Int
     /// the number of "ticks" per second in the media
     var timeScale: Double
     /// the duration in milliseconds
     var duration: Double
     var preferredRate: UInt32
     var preferredVolume: UInt16
-    private var matrixStructure: Data
     var previewTime: UInt32
     var previewDuration: UInt32
     var posterTime: UInt32
@@ -36,12 +33,14 @@ class Mvhd: Atom {
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
 
+        let creationTime: Int
+        let modificationTime: Int
         if self.version.uInt8BE == 0x01 {
-            self.creationTime = data.extractToInt(8)
-            self.modificationTime = data.extractToInt(8)
+            creationTime = data.extractToInt(8)
+            modificationTime = data.extractToInt(8)
         } else {
-            self.creationTime = data.extractToInt(4)
-            self.modificationTime = data.extractToInt(4)
+            creationTime = data.extractToInt(4)
+            modificationTime = data.extractToInt(4)
         }
         
         self.timeScale = data.extractToDouble(4)
@@ -56,7 +55,7 @@ class Mvhd: Atom {
         // reserved
         _ = data.extractFirst(10)
         // we're not touching this
-        self.matrixStructure = data.extractFirst(36)
+        let matrixStructure = data.extractFirst(36)
         self.previewTime = data.extractFirst(4).uInt32BE
         self.previewDuration = data.extractFirst(4).uInt32BE
         self.posterTime = data.extractFirst(4).uInt32BE
@@ -66,6 +65,9 @@ class Mvhd: Atom {
         self.nextTrackID = data.extractFirst(4).uInt32BE.int
         
         try super.init(identifier: identifier, size: size, payload: payload)
+        self.creationTime = creationTime
+        self.modificationTime = modificationTime
+        self.matrixStructure = matrixStructure
     }
     
     /// Increment the `nextTrackID` property when the current `nextTrackID` is used
@@ -79,8 +81,8 @@ class Mvhd: Atom {
         var data = Data()
         data.reserveCapacity(reserve)
         
-        data.append(self.version)//
-        data.append(self.flags)//
+        data.append(self.version)
+        data.append(self.flags)
         if self.version.uInt8BE == 0x01 {
             data.append(self.creationTime.uInt64.beData)
             data.append(self.modificationTime.uInt64.beData)
@@ -88,23 +90,23 @@ class Mvhd: Atom {
             data.append(self.creationTime.uInt32.beData)
             data.append(self.modificationTime.uInt32.beData)
         }
-        data.append(self.timeScale.uInt32.beData)//
+        data.append(self.timeScale.uInt32.beData)
         if self.version.uInt8BE == 0x01 {
             data.append(self.duration.uInt64.beData)
         } else {
             data.append(self.duration.uInt32.beData)
         }
-        data.append(self.preferredRate.beData)//
-        data.append(self.preferredVolume.beData)//
-        data.append(Atom.addReserveData(10)) //
-        data.append(self.matrixStructure) //
-        data.append(self.previewTime.beData)//
-        data.append(self.previewDuration.beData)//
-        data.append(self.posterTime.beData)//
-        data.append(self.selectionTime.beData)//
-        data.append(self.selectionDuration.beData)//
-        data.append(self.currentTime.beData)//
-        data.append(self.nextTrackID.uInt32.beData)//
+        data.append(self.preferredRate.beData)
+        data.append(self.preferredVolume.beData)
+        data.append(Atom.addReserveData(10))
+        data.append(self.matrixStructure)
+        data.append(self.previewTime.beData)
+        data.append(self.previewDuration.beData)
+        data.append(self.posterTime.beData)
+        data.append(self.selectionTime.beData)
+        data.append(self.selectionDuration.beData)
+        data.append(self.currentTime.beData)
+        data.append(self.nextTrackID.uInt32.beData)
         return data
     }
 }

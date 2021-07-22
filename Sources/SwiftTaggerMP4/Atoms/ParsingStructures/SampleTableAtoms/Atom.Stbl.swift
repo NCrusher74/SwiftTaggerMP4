@@ -74,10 +74,6 @@ class Stbl: Atom {
         let stsd = try Stsd()
         let stsc = try Stsc()
 
-        var starts = [Double]()
-        for start in chapterHandler.chapterStarts {
-            starts.append(Double(start))
-        }
         let mvhd = moov.mvhd
         let stts = try Stts(chapterHandler: chapterHandler,
                             mediaDuration: mvhd.duration)

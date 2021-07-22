@@ -127,6 +127,11 @@ public class Atom {
         return data
     }
     
+    /// Calculate the size of a parent atom from the size of the child atoms it contains.
+    ///
+    /// Only to be used with atoms that contain ONLY their child atoms.
+    ///
+    /// If the atom has a payload separate from it's children, this won't work.
     func recalculateSize() {
         self.size = self.children.map({$0.size}).sum() + 8
     }
@@ -139,6 +144,18 @@ public class Atom {
         return Data(repeating: 0x00, count: 3)
     }
     
+    /// The 36-byte matrix structure used in `mvhd` and `tkhd` atoms
+    var matrixStructure: Data =
+        Data([ 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
+               0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+               0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+               0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+               0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+               0x00, 0x00, 0x40, 0x00, 0x00, 0x00 ])
+
+    var creationTime = Date().dateIntervalSince1904
+    var modificationTime = Date().dateIntervalSince1904
+
     /// Returns *k* bytes of null data for use in atoms with required reserve space
     static func addReserveData(_ k: Int) -> Data {
         return Data(repeating: 0x00, count: k)

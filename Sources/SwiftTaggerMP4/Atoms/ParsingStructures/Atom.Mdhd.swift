@@ -12,8 +12,6 @@ import SwiftLanguageAndLocaleCodes
 class Mdhd: Atom {
     private var version: Data
     private var flags: Data
-    var creationTime: Int
-    var modificationTime: Int
     /// The media timescale, i.e. the number of "ticks" per second. In practical terms, this is usually the sampling rate for the audio track, or 1000 for a text track
     var timeScale: Double
     /// The duration of the media contained in the track
@@ -27,13 +25,17 @@ class Mdhd: Atom {
         
         self.version = data.extractFirst(1)
         self.flags = data.extractFirst(3)
+
+        let creationTime: Int
+        let modificationTime: Int
         if self.version.uInt8BE == 0x01 {
-            self.creationTime = data.extractFirst(8).uInt64BE.int
-            self.modificationTime = data.extractFirst(8).uInt64BE.int
+            creationTime = data.extractFirst(8).uInt64BE.int
+            modificationTime = data.extractFirst(8).uInt64BE.int
         } else {
-            self.creationTime = data.extractFirst(4).uInt32BE.int
-            self.modificationTime = data.extractFirst(4).uInt32BE.int
+            creationTime = data.extractFirst(4).uInt32BE.int
+            modificationTime = data.extractFirst(4).uInt32BE.int
         }
+        
         self.timeScale = data.extractToDouble(4)
         if self.version.uInt8BE == 0x01 {
             self.duration = data.extractToDouble(8)
@@ -47,6 +49,9 @@ class Mdhd: Atom {
         try super.init(identifier: identifier,
                        size: size,
                        payload: payload)
+        
+        self.creationTime = creationTime        
+        self.modificationTime = modificationTime        
     }
     
     /// Retrieves the `ICULocaleCode` from the `elng` atom (if one exists) and converts it an `ISO-639-2` code
@@ -104,8 +109,6 @@ class Mdhd: Atom {
         
         self.version = Atom.version
         self.flags = Atom.flags
-        self.creationTime = Date().dateIntervalSince1904
-        self.modificationTime = Date().dateIntervalSince1904
         self.timeScale = 1000
         self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000
         self.languageUInt16 = language.getUInt16Code()
@@ -138,8 +141,6 @@ class Mdhd: Atom {
         
         self.version = Atom.version
         self.flags = Atom.flags
-        self.creationTime = Date().dateIntervalSince1904
-        self.modificationTime = Date().dateIntervalSince1904
         
         self.timeScale = 1000
         self.duration = moov.mvhd.duration / moov.mvhd.timeScale * 1000

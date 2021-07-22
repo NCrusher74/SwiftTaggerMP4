@@ -8,7 +8,6 @@
 import Foundation
 import SwiftConvenienceExtensions
 /// A type that collates chapter data contained in the sample table atoms of a chapter track and converts it to a usable dictionary of chapter information
-public typealias TOC = TableOfContents
 public typealias Chapter = TableOfContents.Chapter
 struct ChapterHandler {
     
@@ -24,15 +23,17 @@ struct ChapterHandler {
             let stts = stbl.stts
             let initialStart: Int
             let timeScale = chapterTrack.mdia.mdhd.timeScale
+            print(timeScale)
             if let elst = moov.soundTrack.edts?.elst {
                 initialStart = Int((elst.firstStart / timeScale) * 1000)
             } else {
                 initialStart = 0
             }
+            
             let startTimes = stts.getStartTimesFromDurations(
                 timeScale: timeScale,
                 initialStart: initialStart)
-            
+
             if startTimes.isEmpty {
                 chapterList = []
             } else {
@@ -68,7 +69,7 @@ struct ChapterHandler {
                 }
             }
         }
-        let toc = TOC(chapterList)
+        let toc = TableOfContents(chapterList)
         self.toc = toc
     }
     
@@ -120,6 +121,7 @@ struct ChapterHandler {
         var chapterDurations = [Double]()
         let enumeratedStarts = chapterStarts.enumerated()
         let firstStart = chapterStarts.first ?? 0
+
         // Handle all but the last one.
         for (index, startTime) in enumeratedStarts.dropLast() {
             let followingTime = chapterStarts[chapterStarts.index(after: index)]
@@ -129,7 +131,6 @@ struct ChapterHandler {
         // Handle the last one.
         let lastStart = chapterStarts.last ?? firstStart
         chapterDurations.append(mediaDuration - Double(lastStart))
-        
         return chapterDurations
     }
     
