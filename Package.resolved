@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "iTunesGenreID",
+        "repositoryURL": "https://github.com/NCrusher74/iTunesGenreID",
+        "state": {
+          "branch": null,
+          "revision": "343f34128669a5694e2745c36920570ea860b3fe",
+          "version": "1.0.4"
+        }
+      },
+      {
+        "package": "StringMetric",
+        "repositoryURL": "https://github.com/NCrusher74/StringMetric.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "335a7407181e615f660bb5601806a544dc4ed3a8",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "SwiftConvenienceExtensions",
+        "repositoryURL": "https://github.com/NCrusher74/SwiftConvenienceExtensions",
+        "state": {
+          "branch": null,
+          "revision": "a789e32038031a4742d4673eba1e07edf24b03b8",
+          "version": "3.0.15"
+        }
+      },
+      {
+        "package": "SwiftLanguageAndLocaleCodes",
+        "repositoryURL": "https://github.com/NCrusher74/SwiftLanguageAndLocaleCodes",
+        "state": {
+          "branch": null,
+          "revision": "6f3a3fa43e96db0c2e9aecf8a4891e9ba4964b9b",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
