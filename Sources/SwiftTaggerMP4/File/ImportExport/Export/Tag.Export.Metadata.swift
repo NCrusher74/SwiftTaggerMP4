@@ -138,31 +138,13 @@ extension Tag {
     private func getIntAtomStrings(key: AtomKey,
                                          atom: Atom,
                                          format: MetadataExportFormat) -> (keyString: String, valueString: String) {
-        var keyString = String()
+        var keyString = atom.keyString(format: format)
         var valueString = String()
         
         if let intAtom = atom as? IntegerMetadataAtom {
-            if key == .compilation ||
-                key == .gaplessPlayback ||
-                key == .podcast ||
-                key == .showWorkAndMovement {
-
-                let intValue = intAtom.intValue
-                if intValue == 0 {
-                    valueString = "False"
-                } else if intValue == 1 {
-                    valueString = "True"
-                }
-            } else {
-                valueString = "\(intAtom.intValue)"
-            }
-
-            switch format {
-                case .text:
-                    keyString = "(\(atom.identifier)) " + key.upperCasedStringValue
-                default: keyString = atom.identifier
-            }
+            valueString = intAtom.valueString
         }
+        
         keyString = cleanString(keyString: keyString)
         return (keyString, valueString)
     }
@@ -175,45 +157,24 @@ extension Tag {
     }
     
     private func getStringAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
-        var keyString = String()
+        var keyString = atom.keyString(format: format)
         var valueString = String()
         
         if let stringAtom = atom as? StringMetadataAtom {
-            valueString = "\(stringAtom.stringValue)"
-
-            switch format {
-                case .text:
-                    keyString = "(\(atom.identifier)) " + key.upperCasedStringValue
-                default: keyString = atom.identifier
-            }
+            valueString = stringAtom.stringValue
         }
+        
         keyString = cleanString(keyString: keyString)
         return (keyString, valueString)
     }
     
     private func getPoTAtomStrings(key: AtomKey, atom: Atom, format: MetadataExportFormat) -> (keyString: String, valueString: String) {
 
-        var keyString = String()
+        let keyString = atom.keyString(format: format)
         var valueString = String()
         
         if let potAtom = atom as? PartAndTotalMetadataAtom {
-            let string: String
-            
-            let part = potAtom.part
-            if let total = potAtom.total {
-                string = "[\(part)/\(total)]"
-            } else {
-                string = "\(part)"
-            }
-            
-            valueString = string
-            
-            switch format {
-                case .text:
-                keyString = "(\(atom.identifier)) " + key.upperCasedStringValue
-                default:
-                    keyString = atom.identifier
-            }
+            valueString = potAtom.valueString
         }
         
         return (keyString, valueString)
@@ -221,10 +182,10 @@ extension Tag {
     
     func getUnknownAtomStrings(key: AtomKey, atom: Atom) -> (keyString: String, valueString: String) {
         let keyString = "(----) " + key.stringValue
-        var valueString = ""
+        var valueString = String()
         
         if let unknownAtom = atom as? UnknownMetadataAtom {
-            valueString = "\(unknownAtom.stringValue)"
+            valueString = unknownAtom.stringValue
         }
         
         return (keyString, valueString)

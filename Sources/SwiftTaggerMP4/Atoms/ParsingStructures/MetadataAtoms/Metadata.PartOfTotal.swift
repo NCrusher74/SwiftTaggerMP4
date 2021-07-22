@@ -107,4 +107,13 @@ class PartAndTotalMetadataAtom: Atom {
             self[.data] = newValue
         }
     }
+
+    var valueString: String {
+        if let total = total {
+            return "[\(part)/\(total)]"
+        } else {
+            return String(part)
+        }
+    }
+    
 }

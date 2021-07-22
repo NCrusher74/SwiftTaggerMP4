@@ -112,4 +112,21 @@ class IntegerMetadataAtom: Atom {
             self[.data] = newValue
         }
     }
+
+    var valueString: String {
+        let key = AtomKey(idString: self.identifier)
+        if key == .compilation ||
+            key == .gaplessPlayback ||
+            key == .podcast ||
+            key == .showWorkAndMovement {
+            
+            if intValue == 1 {
+                return "True"
+            } else {
+                return "False"
+            }
+        } else {
+            return String(intValue)
+        }
+    }
 }
