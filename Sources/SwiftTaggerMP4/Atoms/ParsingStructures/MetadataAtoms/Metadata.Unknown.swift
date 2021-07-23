@@ -11,6 +11,8 @@ import Foundation
 ///
 /// Though the content of these atoms may be presented as integers, dates, or any number of other types, typically it is stored as a string
 public class UnknownMetadataAtom: Atom {
+    public override var description: String { stringValue }
+    
     /// The unrecognized identifier of the atom as a freeform string
     public var name: String
     /// The content of the atom

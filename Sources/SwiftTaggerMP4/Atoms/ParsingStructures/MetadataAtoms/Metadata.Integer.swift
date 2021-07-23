@@ -113,7 +113,7 @@ class IntegerMetadataAtom: Atom {
         }
     }
 
-    var valueString: String {
+    override var description: String {
         let key = AtomKey(idString: self.identifier)
         if key == .compilation ||
             key == .gaplessPlayback ||

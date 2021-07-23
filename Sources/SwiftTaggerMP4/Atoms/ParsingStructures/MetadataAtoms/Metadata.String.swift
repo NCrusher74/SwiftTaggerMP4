@@ -9,6 +9,8 @@ import Foundation
 
 /// A class representing the metadata atoms in an `Mp4File`'s atom structure
 class StringMetadataAtom: Atom {
+    override var description: String { stringValue }
+    
     /// The content of a string metadata atom
     var stringValue: String
     

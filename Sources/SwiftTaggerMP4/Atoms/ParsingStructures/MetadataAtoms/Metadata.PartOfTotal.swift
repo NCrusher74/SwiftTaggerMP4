@@ -108,7 +108,7 @@ class PartAndTotalMetadataAtom: Atom {
         }
     }
 
-    var valueString: String {
+    override var description: String {
         if let total = total {
             return "[\(part)/\(total)]"
         } else {

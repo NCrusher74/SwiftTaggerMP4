@@ -8,13 +8,30 @@
 import Foundation
 import SwiftConvenienceExtensions
 
-public class Atom {
+public class Atom: CustomStringConvertible {
     /// The atom's unique four byte identifier
     public var identifier: String
-    var key: AtomKey {
-        return AtomKey(idString: identifier)
+
+    var key: AtomKey? {
+        if StringMetadataIdentifier(rawValue: identifier) != nil {
+            return AtomKey(idString: identifier)
+        } else if IntegerMetadataIdentifier(rawValue: identifier) != nil {
+            return AtomKey(idString: identifier)
+        } else if identifier == "trkn" || identifier == "disk" || identifier == "covr" || identifier == "----" {
+            return AtomKey(idString: identifier)
+        } else {
+            return nil
+        }
     }
 
+    public var description: String {
+        if key != nil {
+            fatalError("Override from metadata atom \(identifier)")
+        } else {
+            return identifier
+        }
+    }
+    
     /// The byte count of the whole atom, including header data
     var size: Int
 
