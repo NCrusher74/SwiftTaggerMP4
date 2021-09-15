@@ -1440,5 +1440,4 @@ final class SwiftTaggerMP4Tests: XCTestCase {
         XCTAssertEqual(result.chapterList.count, chapterCount)
         XCTAssertEqual(chapterList, result.chapterList)
     }
-
 }

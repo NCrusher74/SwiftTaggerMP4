@@ -470,13 +470,13 @@ public enum AtomKey: Hashable {
     }
     
     var upperCasedStringValue: String {
-        self.stringValue.convertCamelToUpperCase()
+        self.stringValue.titleCased().uppercased()
             .replacingOccurrences(of: " I D", with: " ID")
             .replacingOccurrences(of: "I TUNES", with: "ITUNES")
     }
     
     var capitalizedStringValue: String {
-        self.stringValue.convertedCamelCase()
+        self.stringValue.titleCased().capitalized
             .replacingOccurrences(of: " I D", with: " ID")
             .replacingOccurrences(of: "I Tunes", with: "iTunes")
             .replacingOccurrences(of: "Tv", with: "TV")
@@ -664,12 +664,12 @@ public enum AtomKey: Hashable {
             }
             
             let upperCased =
-                key.stringValue.convertCamelToUpperCase()
+                key.stringValue.titleCased().uppercased()
                 .replacingOccurrences(of: " I D", with: " ID")
                 .replacingOccurrences(of: "I TUNES", with: "ITUNES")
             map[upperCased] = key
 
-            let capitalized = key.stringValue.convertedCamelCase().capitalized
+            let capitalized = key.stringValue.titleCased().capitalized
             map[capitalized] = key
         }
         return map
